@@ -6,6 +6,7 @@ import i18n from 'i18next';
 import { flatMap, map } from 'lodash';
 import PrivateLayout from '../../layout/PrivateLayout';
 import Dashboard from '../../pages/Dashboard';
+import Project from '../../pages/Project/ListProject';
 
 const routes = [
   {
@@ -13,6 +14,12 @@ const routes = [
     component: Dashboard,
     exact: true,
     title: i18n.t('dashboard.title'),
+  },
+  {
+    path: '/du-an',
+    component: Project,
+    exact: true,
+    title: i18n.t('project.title'),
   },
 ];
 
