@@ -40,8 +40,6 @@ class PrivateLayout extends Component {
   render() {
     const { children, logout, isAuthenticated } = this.props;
     if (!isAuthenticated) return <Redirect to="/login" />;
-    console.log(this.state.collapsed);
-    
     return (
       <PrivateLayoutWrapper>
         <Layout className="windowView">

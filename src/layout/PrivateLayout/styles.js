@@ -91,18 +91,39 @@ const PrivateLayoutWrapper = styled.div`
 
     .ant-menu {
       border-right: 1px solid #fff;
+      .ant-menu-submenu-title:hover {
+        color: ${({ theme }) => theme.palette.lightPrimary};
+      }
+      .ant-menu-submenu-title:hover > .ant-menu-submenu-arrow::before{
+        background: ${({ theme }) => theme.palette.lightPrimary};
+      }
+      .ant-menu-submenu-title:hover > .ant-menu-submenu-arrow::after{
+        background: ${({ theme }) => theme.palette.lightPrimary};
+      }
+
+      .ant-menu-submenu-selected {
+        color: ${({ theme }) => theme.palette.lightPrimary};
+      }
     }
     .ant-menu-item {
       color: ${({ theme }) => theme.text.secondary};
+      
+      
       &.ant-menu-item-selected {
-        color: ${({ theme }) => theme.palette.primary};
+        color: ${({ theme }) => theme.palette.lightPrimary};
+        background: ${({ theme }) => theme.background.light};
         & > span {
-          color: ${({ theme }) => theme.text.primary};
+          color: ${({ theme }) => theme.text.lightPrimary};
           font-weight: ${({ theme }) => theme.fontWeight.bold};
         }
       }
+      
+    }
+    .ant-menu-item::after {
+      border-right: 3px solid ${({ theme }) => theme.background.light};
     }
   }
+  
 
   .header {
     position: 'fixed';

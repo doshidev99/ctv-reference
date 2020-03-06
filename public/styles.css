@@ -56,3 +56,11 @@
 .anticon-tcrm-setting:before {
     content: "\62";
 }
+
+.ant-calendar-today .ant-calendar-date {
+    color: #4E7CFF !important;
+    border-color:#4E7CFF !important;
+}
+.ant-calendar-date:hover{
+    background-color: #c2efff !important;;
+}

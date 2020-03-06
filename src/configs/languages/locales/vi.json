@@ -81,7 +81,8 @@
     "title": "Dashboard"
   },
   "project": {
-    "title": "Dự án"
+    "title": "Dự án",
+    "listProjectTitle": "Danh sách dự án"
   },
 
   "user": {
@@ -105,14 +106,14 @@
   },
 
   "button": {
-    "create": "Create",
-    "add": "Add",
-    "edit": "Edit",
-    "cancel": "Cancel",
-    "delete": "Delete",
-    "save": "Save",
+    "create": "Tạo mới",
+    "add": "Thêm",
+    "edit": "Sửa",
+    "cancel": "Hủy",
+    "delete": "Xóa",
+    "save": "Lưu",
     "ok": "Ok",
-    "search": "Search",
+    "search": "Tìm kiếm",
     "reset": "Reset",
     "resetMyPassword": "Reset Password",
     "submit": "Submit",

@@ -74,7 +74,7 @@ export default class SideBarMenu extends Component {
         findLast(
           sidebarMenu,
           menu => window.location.pathname.indexOf(menu.url) === 0,
-        ) || sidebarMenu[0],
+        ) || {key: 'dashboard'},
     };
   }
 

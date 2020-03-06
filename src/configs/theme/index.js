@@ -1,7 +1,7 @@
 const theme = {
   palette: {
     primary: '#ff4a4a',
-    lightPrimary: '#4cb1e8',
+    lightPrimary: '#4E7CFF',
     secondary: 'rgba(45, 48, 71, 1)',
     loadingBackgroundColor: '#2c3e51cc',
     color: ['#788195', '#E4E6E9'],
@@ -25,9 +25,12 @@ const theme = {
     content: '#fff',
     input: '#efeff0',
     disabled: '#969696',
+    light: '#c2efff',
+    
   },
   text: {
     primary: '#1f2933',
+    white: '#fff',
     lightPrimary: '#3e4c59',
     secondary: '#7b8794',
     tabTitle: '#262626',
