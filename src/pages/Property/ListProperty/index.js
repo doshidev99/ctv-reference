@@ -1,28 +1,28 @@
 import React from "react";
 import i18next from "i18next";
 import { Layout } from "antd";
-import ProjectPageWrapper from "./styles";
+import PropertyPageWrapper from "./styles";
 import PageTitle from "../../../components/common/PageTitle/index";
 import CreateButton from "../../../components/RestActions/CreateButton"
-import ProjectTable from "../../../containers/ProjectTable"
+import PropertyTable from "../../../containers/PropertyTable"
 import Filter from "./Filter"
 
 
-export default function Project() {
+export default function Property() {
   return (
-    <ProjectPageWrapper>
-      <PageTitle>{i18next.t("project.listProjectTitle")}</PageTitle>
+    <PropertyPageWrapper>
+      <PageTitle>{i18next.t("property.listPropertyTitle")}</PageTitle>
       <Layout>
         <div className="filterArea">
           <Filter />
         </div>
-        <div className="projectAction">
+        <div className="propertyAction">
           <div className="actionBox">
             <CreateButton source={i18next.t("button.create")} />
           </div>
         </div>
-        <ProjectTable />
+        <PropertyTable />
       </Layout>
-    </ProjectPageWrapper>
+    </PropertyPageWrapper>
   );
 }

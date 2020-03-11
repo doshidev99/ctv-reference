@@ -80,9 +80,9 @@
   "dashboard": {
     "title": "Dashboard"
   },
-  "project": {
+  "property": {
     "title": "Dự án",
-    "listProjectTitle": "Danh sách dự án"
+    "listPropertyTitle": "Danh sách dự án"
   },
 
   "user": {
