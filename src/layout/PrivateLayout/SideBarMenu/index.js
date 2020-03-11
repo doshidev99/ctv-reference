@@ -5,7 +5,7 @@ import { history } from "../../../redux/store";
 
 const sidebarMenu = [
   {
-    key: "project",
+    key: "property",
     text: "Dự án",
     url: "/du-an",
     icon: "project",

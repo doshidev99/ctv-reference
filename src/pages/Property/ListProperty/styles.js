@@ -47,7 +47,7 @@ export default styled.div`
     }
   }
 
-  .projectAction {
+  .propertyAction {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 5px;

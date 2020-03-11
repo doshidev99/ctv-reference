@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Table, Icon, Tag } from "antd";
-import { getListProjectAction } from "../../redux/project/actions";
+import { getListPropertyAction } from "../../redux/property/actions";
 
 
 const columns = [
@@ -69,9 +69,9 @@ const columns = [
 
 
 
-class ProjectTable extends Component {
+class PropertyTable extends Component {
   componentDidMount() {
-    this.props.getListProject();
+    this.props.getListProperty();
   }
 
   render() {
@@ -82,19 +82,19 @@ class ProjectTable extends Component {
     )
   }
 }
-ProjectTable.propTypes = {
+PropertyTable.propTypes = {
   data: PropTypes.array,
 };
 
 
 
 const mapStateToProps = state => ({
-  data: state.project.projects,
+  data: state.property.propertys,
 })
 
 const mapDispatchToProps = dispatch => ({
-  getListProject: () => {
-    dispatch(getListProjectAction())
+  getListProperty: () => {
+    dispatch(getListPropertyAction())
   },
 })
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectTable)
+export default connect(mapStateToProps, mapDispatchToProps)(PropertyTable)
