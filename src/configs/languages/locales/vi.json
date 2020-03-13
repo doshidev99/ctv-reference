@@ -82,7 +82,8 @@
   },
   "property": {
     "title": "Dự án",
-    "listPropertyTitle": "Danh sách dự án"
+    "listPropertyTitle": "Danh sách dự án",
+    "newPropertyTitle": "Tạo mới dự án"
   },
 
   "user": {

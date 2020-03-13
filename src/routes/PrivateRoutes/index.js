@@ -6,7 +6,8 @@ import i18n from 'i18next';
 import { flatMap, map } from 'lodash';
 import PrivateLayout from '../../layout/PrivateLayout';
 import Dashboard from '../../pages/Dashboard';
-import Property from '../../pages/Property/ListProperty';
+import ListProperty from '../../pages/Property/ListProperty';
+import NewProperty from '../../pages/Property/NewProperty';
 
 const routes = [
   {
@@ -17,9 +18,23 @@ const routes = [
   },
   {
     path: '/du-an',
-    component: Property,
+    component: ListProperty,
     exact: true,
     title: i18n.t('property.title'),
+    routes: [
+      {
+        path: '/',
+        component: ListProperty,
+        exact: true,
+        title: i18n.t('property.title'),
+      },
+      {
+        path: '/tao-moi',
+        component: NewProperty,
+        exact: true,
+        title: i18n.t('property.title'),
+      },
+    ],
   },
 ];
 
