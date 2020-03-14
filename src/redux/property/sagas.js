@@ -8,7 +8,7 @@ import {data} from './tempData'
 
 function * getListProperty () {
   try {
-    localStorage.setItem("propertys", JSON.stringify(data));
+    localStorage.setItem("properties", JSON.stringify(data));
     yield put(getListPropertySuccessAction(data));
   } catch (error) {
     yield put(getListPropertyFailureAction(error));

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Table, Icon, Tag } from "antd";
-import { getListPropertyAction } from "../../redux/property/actions";
+import { getListPropertyAction } from "../../../redux/property/actions";
 
 
 const columns = [
@@ -89,7 +89,7 @@ PropertyTable.propTypes = {
 
 
 const mapStateToProps = state => ({
-  data: state.property.propertys,
+  data: state.property.properties,
 })
 
 const mapDispatchToProps = dispatch => ({
