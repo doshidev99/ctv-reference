@@ -13,6 +13,9 @@ const AppWrapper = styled.div`
     background-image: ${({ theme }) =>
       `linear-gradient(90deg, ${theme.palette.lightPrimary}, ${theme.palette.primary})`};
   }
+  .ant-input:focus, .ant-input:hover  {
+    border-color: ${({ theme }) => `${theme.palette.lightPrimary} !important`}
+  }
 `;
 
 export default AppWrapper;

@@ -30,7 +30,7 @@ export default styled.div`
     }
     &:disabled {
       background: ${theme.background.content};
-      color: ${theme.text.primary};
+      color: ${theme.text.lightPrimary};
       cursor: text !important;
     }
 
@@ -43,7 +43,7 @@ export default styled.div`
         top: -20px;
         left: 0px;
         font-size: 90%;
-        color: ${theme.palette.primary};
+        color: ${theme.palette.lightPrimary};
       }
     }
 
@@ -61,7 +61,7 @@ export default styled.div`
       width: 0;
       bottom: 0px;
       position: absolute;
-      background: ${theme.palette.primary};
+      background: ${theme.palette.lightPrimary};
       transition: 300ms ease all;
       left: 0%;
     }

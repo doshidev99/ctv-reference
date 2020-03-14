@@ -7,7 +7,6 @@ const {Item} = Form
 export default class Filter extends Component {
   search = () => {
     console.log('search');
-    
   }
 
   render() {

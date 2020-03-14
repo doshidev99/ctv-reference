@@ -45,6 +45,12 @@
       "validateMsg": {
         "required": "Email không được để trống"
       }
+    },
+    "propertyName": {
+      "placeholder": "Tên dự án",
+      "validateMsg": {
+        "required": "Tên dự án không được để trống"
+      }
     }
   },
 

@@ -6,8 +6,8 @@ import i18n from 'i18next';
 import { flatMap, map } from 'lodash';
 import PrivateLayout from '../../layout/PrivateLayout';
 import Dashboard from '../../pages/Dashboard';
-import ListProperty from '../../pages/Property/ListProperty';
-import NewProperty from '../../pages/Property/NewProperty';
+import NewProperty from '../../pages/NewProperty';
+import ListProperty from '../../pages/ListProperty';
 
 const routes = [
   {

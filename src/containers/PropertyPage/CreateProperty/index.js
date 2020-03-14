@@ -1,57 +1,48 @@
 import React, { Component } from 'react'
 import i18n from "i18next";
 import { Layout, Form, Icon, Button } from "antd";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
-import PageTitle from "../../components/common/PageTitle/index";
-import MaterialInput from "../../components/common/MaterialInput/index";
+import Editor from '../../../components/common/Editor/index'
+import MaterialInput from "../../../components/common/MaterialInput/index";
 
 const FormItem = Form.Item;
 
 class CreatePropertyForm extends Component {
+  handleChange = () => {
+    console.log('abc');
+    
+  }
+
   render() {
     const { form } = this.props;
-    console.log(1234);
-    
+
     const { getFieldDecorator } = form;
     return (
       <div>
-        <PageTitle>{i18n.t("property.newPropertyTitle")}</PageTitle>
         <Layout>
           <Form layout="vertical" onSubmit={this.handleSubmit}>
             <FormItem>
-              {getFieldDecorator("username", {
+              {getFieldDecorator("propertyName", {
                 rules: [
                   {
                     required: true,
-                    message: i18n.t("input.username.validateMsg.required"),
+                    message: i18n.t("input.propertyName.validateMsg.required"),
                   },
                 ],
               })(
                 <MaterialInput
-                  placeholder={i18n.t("input.username.placeholder")}
+                  placeholder={i18n.t("input.propertyName.placeholder")}
                   prefix={
-                    <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
+                    <span />
                   }
                 />,
               )}
             </FormItem>
             <FormItem>
-              {getFieldDecorator("password", {
-                rules: [
-                  {
-                    required: true,
-                    message: i18n.t("input.password.validateMsg.required"),
-                  },
-                ],
-              })(
-                <MaterialInput
-                  placeholder={i18n.t("input.password.placeholder")}
-                  prefix={
-                    <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
-                  }
-                  type="password"
-                />,
-              )}
+              <Editor
+                value=""
+                onChange={this.handleChange} />
             </FormItem>
             <div className="sub-action-div">
               <a className="login-form-forgot" href="/forgot-password">
@@ -60,7 +51,7 @@ class CreatePropertyForm extends Component {
             </div>
             <div className="action-div">
               <Button
-                type="primary"
+                type="secondary"
                 htmlType="submit"
                 className="login-form-button"
               >
@@ -80,4 +71,4 @@ class CreatePropertyForm extends Component {
 CreatePropertyForm.propTypes = {
   form: PropTypes.object,
 };
-export default CreatePropertyForm;
+export default withRouter((Form.create()(CreatePropertyForm)));

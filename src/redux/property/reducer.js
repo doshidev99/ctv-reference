@@ -3,7 +3,7 @@ import { PropertyTypes } from "./actions";
 
 // Setup inintial state for app
 export const initialState = {
-  propertys: [],
+  properties: [],
   loading: false,
   listPropertySuccess: undefined,
   listPropertyFailure: undefined,
@@ -17,7 +17,7 @@ const getListProperty = state => ({
 
 const getListPropertySuccess = (state, { data }) => ({
   ...state,
-  propertys: data,
+  properties: data,
   loading: false,
   listPropertySuccess: true,
   listPropertyFailure: false,

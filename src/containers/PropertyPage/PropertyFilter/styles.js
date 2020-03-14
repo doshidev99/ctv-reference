@@ -31,7 +31,8 @@ export default styled.div`
       justify-content: space-evenly;
       .filterBtn, .cancelFilterBtn {
         width: 75px;
-        margin: 5px;;
+        margin: 5px;
+        border: none
       }
       .filterBtn {
         background: ${({ theme }) => theme.palette.lightPrimary};

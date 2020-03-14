@@ -20,8 +20,10 @@ class Login extends Component {
   };
 
   render() {
+    console.log(this.props);
     
     const { form, isAuthenticated } = this.props;
+    
     if (isAuthenticated) {
       return <Redirect to="/" />;
     }
