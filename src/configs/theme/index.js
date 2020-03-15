@@ -53,6 +53,7 @@ const theme = {
     green: '#27ae61',
     red: '#e64c38',
     blue: '#0992d0',
+    white: '#fff',
   },
   alert: {
     error: 'red',

@@ -45,6 +45,18 @@
       "validateMsg": {
         "required": "Email không được để trống"
       }
+    },
+    "propertyName": {
+      "placeholder": "Tên dự án",
+      "validateMsg": {
+        "required": "Tên dự án không được để trống"
+      }
+    },
+    "propertyOverview": {
+      "placeholder": "Tổng quan dự án",
+      "validateMsg": {
+        "required": "Tên dự án không được để trống"
+      }
     }
   },
 
@@ -82,7 +94,8 @@
   },
   "property": {
     "title": "Dự án",
-    "listPropertyTitle": "Danh sách dự án"
+    "listPropertyTitle": "Danh sách dự án",
+    "newPropertyTitle": "Tạo mới dự án"
   },
 
   "user": {

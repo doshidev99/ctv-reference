@@ -94,7 +94,7 @@ function requestWrapper(method) {
       method,
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
-        // 'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Origin': '*',
       },
     };
     // check that req url is relative and request was sent to our domain
@@ -116,6 +116,7 @@ function requestWrapper(method) {
       ...defaults,
       headers: { ...params, ...defaults.headers },
     };
+    // console.log(paramsObj)
     return customFetch(convertUrl, paramsObj);
   };
   return request;
