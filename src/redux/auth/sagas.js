@@ -1,26 +1,38 @@
-import { takeEvery, put } from "redux-saga/effects";
+import { takeEvery, put, call } from "redux-saga/effects";
 import {
   AuthTypes,
   loginSuccessAction,
   loginFailureAction,
 } from "./actions";
+import { staffLoginApi } from "../../api/modules/staff";
+import { apiWrapper } from "../../utils/reduxUtils";
 
 
 function* loginSaga({ params }) {
   try {
-    const {username, password} = params;
-    let response=null
-    if(username === 'admin' && password === '123456') {
-      response = {
-        user: {
-          id: 1,
-          username: 'Admin',
-          fullName: 'Nguyen Van A',
-          role: 'Super Admin',
-        },
-        token: "this is token",
-      }
-    }
+
+    // const {username, password} = params;
+    // let response=null
+    // if(username === 'admin' && password === '123456') {
+    //   response = {
+    //     user: {
+    //       id: 1,
+    //       username: 'Admin',
+    //       fullName: 'Nguyen Van A',
+    //       role: 'Super Admin',
+    //     },
+    //     token: "this is token",
+    //   }
+    // }
+    const response = yield call(
+      apiWrapper,
+      {
+        isShowLoading: true,
+        isShowSucceedNoti: false,
+      },
+      staffLoginApi,
+      params,
+    );
    
     if (response.token) {
       localStorage.setItem("sessionToken", response.token);

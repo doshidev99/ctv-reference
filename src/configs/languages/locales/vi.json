@@ -51,6 +51,12 @@
       "validateMsg": {
         "required": "Tên dự án không được để trống"
       }
+    },
+    "propertyOverview": {
+      "placeholder": "Tổng quan dự án",
+      "validateMsg": {
+        "required": "Tên dự án không được để trống"
+      }
     }
   },
 

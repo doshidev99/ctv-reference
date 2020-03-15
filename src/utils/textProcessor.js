@@ -35,3 +35,7 @@ export const formatMoney = (number, n = 2, x = 3) => {
 export const formatDateTime = date => {
   return date && moment(date).format('HH:mmA, DD/MM/YY');
 };
+
+export const dateTimeUnix = () => {
+  return moment().unix()
+}

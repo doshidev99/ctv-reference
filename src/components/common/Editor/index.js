@@ -32,17 +32,21 @@ export default class Editor extends Component {
   }
 
   render() {
+    const { label } = this.props;
+
     const options = {
       theme: 'snow',
       formats: Editor.formats,
-      placeholder: 'Write Something',
+      placeholder:label,
       value: this.state.value,
       onChange: this.handleChange,
       modules: this.quillModules,
-      height: 100,
+      
     };
     return (
+      
       <QuillEditorWrapper>
+        <label>{label}</label>
         <ReactQuill {...options} />
       </QuillEditorWrapper>
     );
