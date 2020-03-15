@@ -4,7 +4,6 @@ import { AuthTypes } from './actions';
 // Setup inintial state for app
 export const initialState = {
   isAuthenticated: !!localStorage.getItem('sessionToken'),
-  // isAuthenticated:true,
   data: {
     fullName: localStorage.getItem('fullName') || '',
     id: localStorage.getItem('id'),

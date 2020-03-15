@@ -17,7 +17,8 @@ import UploadImageWrapper from './style';
 import { getRecordData } from '../../../utils/tools';
 import { del } from '../../../api/utils';
 import user from '../../../assets/images/user.png';
-import { getUrl, uploadMedia } from '../../../api/uploadMedia';
+// import { getUrl, uploadFile } from '../../../api/uploadMedia';
+import { uploadFile, getSignedUrlS3 } from '../../../utils/uploadFile'
 
 const uploadUrl = `${process.env.REACT_APP_SERVER_URL}/uploadFile`;
 const FormItem = Form.Item;
@@ -89,8 +90,8 @@ class UploadImage extends Component {
         loading: true,
       });
 
-      const responseS3 = await getUrl(croppedFile.name, croppedFile.type);
-      await uploadMedia(responseS3.uploadUrl, croppedFile);
+      const responseS3 = await getSignedUrlS3(croppedFile.name, croppedFile.type);
+      await uploadFile(responseS3.uploadUrl, croppedFile);
       this.setState({
         imgDisplay: responseS3.url,
         loading: false,
