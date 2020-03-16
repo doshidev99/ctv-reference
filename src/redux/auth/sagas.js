@@ -1,4 +1,7 @@
-import { takeEvery, put } from "redux-saga/effects";
+import {
+  takeEvery,
+  put,
+} from "redux-saga/effects";
 import {
   AuthTypes,
   loginSuccessAction,
@@ -6,11 +9,16 @@ import {
 } from "./actions";
 
 
-function* loginSaga({ params }) {
+function* loginSaga({
+  params,
+}) {
   try {
-    const {username, password} = params;
-    let response=null
-    if(username === 'admin' && password === '123456') {
+    const {
+      username,
+      password,
+    } = params;
+    let response = null
+    if (username === 'admin' && password === '123456') {
       response = {
         user: {
           id: 1,
@@ -21,7 +29,7 @@ function* loginSaga({ params }) {
         token: "this is token",
       }
     }
-   
+
     if (response.token) {
       localStorage.setItem("sessionToken", response.token);
       localStorage.setItem("fullName", response.user.fullName)

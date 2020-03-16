@@ -7,9 +7,18 @@ const PublicLayoutWrapper = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items:center
+    align-items:center  
   }
 
+  .main-img {
+    background-image: url(https://res.cloudinary.com/csmenouvo/image/upload/v1550032735/background/login_background.jpg);
+    background-color: transparent;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 100vh;
+  }
+  
   .main-content {
     background-color: white;
     padding: 70px 50px;
