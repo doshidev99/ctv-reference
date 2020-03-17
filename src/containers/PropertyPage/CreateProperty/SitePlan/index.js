@@ -3,7 +3,7 @@ import { Input, Button, Upload, message, Form, Icon, Modal } from "antd";
 import { connect } from "react-redux";
 import SitePlanWrapper from "./styles";
 
-import { uploadFileSuccessAction } from "../../../../redux/property/actions";
+import { uploadFileSuccessAction, removeOneSitePlanAction, addNewSitePlanSuccessAction, removeSitePlanImageAction } from "../../../../redux/property/actions";
 import { getSignedUrlS3, uploadFile } from "../../../../utils/uploadFile";
 
 const FormItem = Form.Item;
@@ -22,37 +22,6 @@ class SitePlan extends Component {
     loading: false,
     previewVisible: false,
     previewImage: '',
-    fileList: [
-      {
-        uid: '-1',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      },
-      {
-        uid: '-2',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      },
-      {
-        uid: '-3',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      },
-      {
-        uid: '-4',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      },
-      {
-        uid: '-5',
-        name: 'image.png',
-        status: 'error',
-      },
-    ],
   };
 
 
@@ -70,12 +39,16 @@ class SitePlan extends Component {
     }
   };
 
-  handleRemove = () => {
-    console.log("Handle remove here");
-  };
-
   handleUpload = async ({ file, onSuccess, onError }) => {
     try {
+      const title = await this.props.form.validateFields((err, val) => {
+        if (err) {
+          onError("Error cmnr =)))");
+          return false;
+        }
+        return val;
+      });
+
       const signedUrlS3 = await getSignedUrlS3(
         file.name,
         file.type,
@@ -83,7 +56,8 @@ class SitePlan extends Component {
       );
 
       uploadFile(file, signedUrlS3.url).then(response => {
-        this.props.uploadFileSuccess(response.url);
+        this.props.uploadImageSuccess(response.url);
+        this.props.addNewSitePlanSuccess(this.props.id, title.sitePlanTitle, response.url);
         onSuccess("OK");
       });
     } catch (error) {
@@ -91,6 +65,17 @@ class SitePlan extends Component {
     }
   };
 
+
+
+  handleRemove = () => {
+    this.props.handleRemoveSitePlan(this.props.id)
+  };
+
+  removeImage = (e) => {
+    this.props.removeImage(this.props.id, e.url)
+  }
+
+  // Preview
   handleCancel = () => this.setState({ previewVisible: false });
 
   handlePreview = async file => {
@@ -106,8 +91,15 @@ class SitePlan extends Component {
   };
 
   render() {
-    const { previewVisible, previewImage, fileList } = this.state;
-    
+    const { previewVisible, previewImage } = this.state;
+    const {link} = this.props;
+    let fileList = link || []
+
+    fileList = fileList.map((e, index) => ({
+      url: e,
+      status: 'done',
+      uid: index,
+    }))
     const uploadButton = (
       <div>
         <Icon type="plus" />
@@ -117,10 +109,9 @@ class SitePlan extends Component {
     // const {imageUrl} = this.props
     return (
       <SitePlanWrapper>
-        <div className="inputArea">
-          <div className="title">
-            <FormItem>
-              {this.props.getFieldDecorator(this.props.name, {
+        <div className="title">
+          <FormItem>
+            {this.props.form.getFieldDecorator("sitePlanTitle", {
               rules: [
                 {
                   required: true,
@@ -129,7 +120,6 @@ class SitePlan extends Component {
               ],
             })(
               <div>
-                <label>Mặt bằng</label>
                 <Input
                   className="sitePlanLabel"
                   name={this.props.name}
@@ -137,36 +127,27 @@ class SitePlan extends Component {
                 />
               </div>,
             )}
-            </FormItem>
+          </FormItem>
            
-          </div>
-          <div className="files">
+        </div>
+        <div className="files">
+          <div className="upload">
             <Upload
-              className="upload"
               onChange={this.handleOnChange}
-              onRemove={this.handleRemove}
               listType="picture-card"
               fileList={fileList}
-              showUploadList={false}
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              // customRequest={this.handleUpload}
+              customRequest={this.handleUpload}
               onPreview={this.handlePreview}
+              onRemove={this.removeImage}
             >
               {fileList.length >= 8 ? null : uploadButton}
-              {/* <Button shape="circle" icon="upload" /> */}
             </Upload>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
           </div>
-        </div>
-        <div className="actionGroup">
-          <Button type="primary" onClick={this.props.handleExpandSitePlan}>
-          Thêm
-          </Button>
-          <Button type="danger" onClick={this.props.handleRemoveSitePlan}>
-          Hủy
-          </Button>
+         
+          <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+            <img alt="example" style={{ width: '100%' }} src={previewImage} />
+          </Modal>
+          <Button icon="minus" shape="circle" onClick={this.handleRemove} />
         </div>
       </SitePlanWrapper>
     );
@@ -181,5 +162,18 @@ const mapDispatchToProps = dispatch => ({
   uploadImageSuccess: fileUrl => {
     dispatch(uploadFileSuccessAction(fileUrl, "create"));
   },
+
+  addNewSitePlanSuccess :(id, title, url) => {
+    dispatch(addNewSitePlanSuccessAction(id, title, url));
+  },
+
+  handleRemoveSitePlan: id => {
+    dispatch(removeOneSitePlanAction(id));
+  },
+
+  removeImage: (id, url) => {
+    dispatch(removeSitePlanImageAction(id, url))
+  },
+
 });
-export default connect(mapStateToProps, mapDispatchToProps)(SitePlan);
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(SitePlan));
