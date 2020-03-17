@@ -29,6 +29,7 @@ export default class Editor extends Component {
 
   handleChange(value) {
     this.setState({ value });
+    this.props.onChange(value)
   }
 
   render() {

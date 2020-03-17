@@ -1,12 +1,9 @@
 import styled from "styled-components";
 
 export default styled.div`
-  margin-bottom: 10px
-
-.inputArea {
   display: flex;
   justify-content: space-between;
-  .legacyInfoLabel {
+  .title {
     width: 300px;
     display: block;
   }
@@ -16,7 +13,6 @@ export default styled.div`
   }
   .files {
     width: 300px;
-    margin-top: 10px
     display: flex;
     justify-content: flex-end;
     .upload, .cancel {
@@ -30,6 +26,5 @@ export default styled.div`
       }
     }
   }
-}
   
 `;

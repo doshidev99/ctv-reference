@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { Upload, Button, message } from 'antd'
+import { connect } from "react-redux";
 import SalePolicyWrapper from './styles'
 import { getSignedUrlS3, uploadFile } from '../../../../utils/uploadFile';
+import {addSalePolicyAction, uploadFileSuccessAction, removeSalePolicyAction  } from "../../../../redux/property/actions";
 
-export default class SalePolicy extends Component {
+class SalePolicy extends Component {
   handleOnChange = async info => {
     if (info.file.status !== "uploading") {
       // console.log(info.file, info.fileList);
@@ -23,7 +25,7 @@ export default class SalePolicy extends Component {
   };
 
   handleRemove = () => {
-    console.log("Handle remove here");
+    this.props.removePolicy()
   };
 
   handleUpload = async ({ file, onSuccess, onError }) => {
@@ -36,6 +38,7 @@ export default class SalePolicy extends Component {
 
       uploadFile(file, signedUrlS3.url).then(response => {
         this.props.uploadFileSuccess(response.url);
+        this.props.addSalePolicy(response.url);
         onSuccess("OK");
       });
     } catch (error) {
@@ -65,3 +68,24 @@ export default class SalePolicy extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  salePolicy: state.property.salePolicy,
+  file: state.property.fileUrl,
+})
+
+const mapDispatchToProps = dispatch => ({
+  uploadFileSuccess: fileUrl => {
+    dispatch(uploadFileSuccessAction(fileUrl, "create"));
+  },
+  addSalePolicy: fileUrl => {
+    dispatch(addSalePolicyAction(fileUrl));
+  },
+  removePolicy: () => {
+    dispatch(removeSalePolicyAction());
+  },
+
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(SalePolicy);

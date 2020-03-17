@@ -1,14 +1,18 @@
 import React, { Component } from "react";
 import { Input, Button, Upload, message, Form } from "antd";
 import { connect } from "react-redux";
-import LegacyInfoWrapper from "./styles";
+import LegalInfoWrapper from "./styles";
 
-import { uploadFileSuccessAction } from "../../../../redux/property/actions";
+import {
+  uploadFileSuccessAction,
+  addNewLegalInfoSuccessAction,
+  removeOneLegalInfoAction,
+} from "../../../../redux/property/actions";
 import { getSignedUrlS3, uploadFile } from "../../../../utils/uploadFile";
 
 const FormItem = Form.Item;
 
-class LegacyInfo extends Component {
+class LegalInfo extends Component {
   handleOnChange = async info => {
     if (info.file.status !== "uploading") {
       // console.log(info.file, info.fileList);
@@ -27,20 +31,26 @@ class LegacyInfo extends Component {
     }
   };
 
-  handleRemove = () => {
-    console.log("Handle remove here");
-  };
 
   handleUpload = async ({ file, onSuccess, onError }) => {
     try {
+      const title = await this.props.form.validateFields((err,val) => {
+        if (err) {
+          onError("Error cmnr =)))");
+          return false;
+        }
+        return val
+      });
+
       const signedUrlS3 = await getSignedUrlS3(
         file.name,
         file.type,
         "policyInformation",
       );
-
       uploadFile(file, signedUrlS3.url).then(response => {
         this.props.uploadFileSuccess(response.url);
+        this.props.addNewLegalInfoSuccess(this.props.id, title.legalInfo, response.url);
+
         onSuccess("OK");
       });
     } catch (error) {
@@ -48,53 +58,46 @@ class LegacyInfo extends Component {
     }
   };
 
+  
+  handleRemove = () => {
+    this.props.handleRemoveLegalInfo(this.props.id)
+  }
+
   render() {
-    
     return (
-      <LegacyInfoWrapper>
-        <div className="inputArea">
-          <div className="title">
-            <FormItem>
-              {this.props.getFieldDecorator(this.props.name, {
+      <LegalInfoWrapper>
+        <div className="title">
+          <FormItem>
+            {this.props.form.getFieldDecorator("legalInfo", {
               rules: [
                 {
                   required: true,
-                  message: "Tiêu đề ko đc đê trống",
+                  message: "Tiêu đề ko đc để trống",
                 },
               ],
             })(
               <div>
-                <label>Hồ sơ pháp lý</label>
-                <Input
-                  className="legacyInfo"
-                  name={this.props.name}
-                  placeholder="Tiêu đề"
-                />
+                <Input className="legalInfo" placeholder="Tiêu đề" />
               </div>,
             )}
-            </FormItem>
-           
-          </div>
-          <div className="files">
-            <Upload
-              className="upload"
-              onChange={this.handleOnChange}
-              onRemove={this.handleRemove}
-              customRequest={this.handleUpload}
-            >
-              <Button shape="circle" icon="upload" />
-            </Upload>
-          </div>
+          </FormItem>
         </div>
-        <div className="actionGroup">
-          <Button type="primary" onClick={this.props.handleExpandLegacy}>
-          Thêm
-          </Button>
-          <Button type="danger" onClick={this.props.handleRemoveLegacy}>
-          Hủy
-          </Button>
+
+        <div className="files">
+          <Upload
+            className="upload"
+            onChange={this.handleOnChange}
+            customRequest={this.handleUpload}
+          >
+            <Button shape="circle" icon="upload" />
+          </Upload>
+          <Button
+            icon="minus"
+            shape="circle"
+            onClick={this.handleRemove}
+          />
         </div>
-      </LegacyInfoWrapper>
+      </LegalInfoWrapper>
     );
   }
 }
@@ -107,5 +110,15 @@ const mapDispatchToProps = dispatch => ({
   uploadFileSuccess: fileUrl => {
     dispatch(uploadFileSuccessAction(fileUrl, "create"));
   },
+  addNewLegalInfoSuccess: (id, title, url) => {
+    dispatch(addNewLegalInfoSuccessAction(id, title, url));
+  },
+  handleRemoveLegalInfo: id => {
+    dispatch(removeOneLegalInfoAction(id));
+  },
+ 
 });
-export default connect(mapStateToProps, mapDispatchToProps)(LegacyInfo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Form.create()(LegalInfo));

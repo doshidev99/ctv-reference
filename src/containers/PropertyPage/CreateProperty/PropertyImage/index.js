@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
-import { Upload, Icon, Modal } from 'antd';
+import { Upload, Icon, Modal, message } from 'antd';
+import { connect } from "react-redux";
 import PropertyImageWrapper from './styles'
+
+import { uploadFileSuccessAction, removePropertyImagetAction, addPropertyImageAction } from "../../../../redux/property/actions";
+import { getSignedUrlS3, uploadFile } from "../../../../utils/uploadFile";
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -11,43 +15,10 @@ function getBase64(file) {
   });
 }
 
-export default class PropertyImage extends Component {
+class PropertyImage extends Component {
   state = {
     previewVisible: false,
     previewImage: '',
-    fileList: [
-      {
-        uid: '-1',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://www.perryhomes.com/Content/_gallery/homes/photos/2919crawforddrive_w1060_h596.jpg',
-      },
-      {
-        uid: '-2',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://www.perryhomes.com/Content/_gallery/homes/photos/2919crawforddrive_w1060_h596.jpg',
-
-      },
-      {
-        uid: '-3',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://www.perryhomes.com/Content/_gallery/homes/photos/2919crawforddrive_w1060_h596.jpg',
-
-      },
-      {
-        uid: '-4',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://www.perryhomes.com/Content/_gallery/homes/photos/2919crawforddrive_w1060_h596.jpg',
-      },
-      {
-        uid: '-5',
-        name: 'image.png',
-        status: 'error',
-      },
-    ],
   };
 
   handleCancel = () => this.setState({ previewVisible: false });
@@ -63,10 +34,52 @@ export default class PropertyImage extends Component {
     });
   };
 
-  handleChange = ({ fileList }) => this.setState({ fileList });
+  handleOnChange = async info => {
+    if (info.file.status !== "uploading") {
+      // console.log(info.file, info.fileList);
+    }
+    if (info.file.status === "done") {
+      let newFileName = this.props.file;
+      newFileName = newFileName.substring(newFileName.lastIndexOf("/") + 1);
+      info.file.name = newFileName;
+      message.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  };
+
+  handleUpload = async ({ file, onSuccess, onError }) => {
+    try {
+      const signedUrlS3 = await getSignedUrlS3(
+        file.name,
+        file.type,
+        "sitePlanImage",
+      );
+
+      uploadFile(file, signedUrlS3.url).then(response => {
+        this.props.uploadImageSuccess(response.url);
+        this.props.addPropertyImage(response.url);
+        onSuccess("OK");
+      });
+    } catch (error) {
+      onError("Error cmnr =)))");
+    }
+  };
+
+  handleRemove = (e) => {
+    this.props.removeImage(e.url)
+  }
 
   render() {
-    const { previewVisible, previewImage, fileList } = this.state;
+    const { previewVisible, previewImage } = this.state;
+    const {images} = this.props;
+    let fileList = images || []
+
+    fileList = fileList.map((e, index) => ({
+      url: e,
+      status: 'done',
+      uid: index,
+    }))
     const uploadButton = (
       <div>
         <Icon type="plus" />
@@ -85,7 +98,9 @@ export default class PropertyImage extends Component {
           listType="picture-card"
           fileList={fileList}
           onPreview={this.handlePreview}
-          onChange={this.handleChange}
+          onChange={this.handleOnChange}
+          customRequest={this.handleUpload}
+          onRemove={this.handleRemove}
         >
           {fileList.length >= 8 ? null : uploadButton}
         </Upload>
@@ -96,3 +111,24 @@ export default class PropertyImage extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  file: state.property.fileUrl,
+  images: state.property.propertyImage,
+});
+
+const mapDispatchToProps = dispatch => ({
+  uploadImageSuccess: fileUrl => {
+    dispatch(uploadFileSuccessAction(fileUrl, "create"));
+  },
+
+  addPropertyImage :(url) => {
+    dispatch(addPropertyImageAction(url));
+  },
+
+  removeImage: url => {
+    dispatch(removePropertyImagetAction(url));
+  },
+
+});
+export default connect(mapStateToProps, mapDispatchToProps)(PropertyImage);

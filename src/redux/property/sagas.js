@@ -4,8 +4,8 @@ import {
   getListPropertySuccessAction,
   getListPropertyFailureAction,
 
-  uploadFileSuccessAction,
-  uploadFileFailureAction,
+  // uploadFileSuccessAction,
+  // uploadFileFailureAction,
 
 } from "./actions";
 import {data} from './tempData'
@@ -19,17 +19,7 @@ function* getListProperty () {
   }
 }
 
-function* uploadFile({file}) {
-  try {
-    console.log(file);
-    
-    yield put(uploadFileSuccessAction(file));
-  } catch (error) {
-    yield put(uploadFileFailureAction(error));
-  }
-}
 
 export default [
   takeEvery(PropertyTypes.GET_LIST_PROPERTY, getListProperty),
-  takeEvery(PropertyTypes.UPLOAD_FILE, uploadFile),
 ];
