@@ -115,7 +115,6 @@ function requestWrapper(method) {
       ...defaults,
       headers: { ...params, ...defaults.headers },
     };
-    // console.log(paramsObj)
     return customFetch(convertUrl, paramsObj);
   };
   return request;

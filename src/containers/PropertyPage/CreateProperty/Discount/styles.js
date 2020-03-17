@@ -1,24 +1,26 @@
 import styled from "styled-components";
 
 export default styled.div`
-  margin: 15px 0;
-  .inputArea {
-    display:flex;
-    margin-bottom: 10px;
-    label {
-      display: block;
+  margin-bottom: 10px;
+  display: flex;
+  label {
+    display: block;
+  }
+  .title {
+    margin-right: 20px;
+    .ant-input {
+      min-width: 350px;
     }
-    .title {
-      margin-right: 20px;
-      .ant-input {
-        width: 500px;
-      }
+  }
+  .proportion {
+    .ant-input {
+      max-width: 100px;
     }
-    .proportion {
-      .ant-input {
-        width: 100px;
-      }
-    }
+  }
+
+  .ant-btn {
+    margin-top: 20.8px;
+    margin-left: 10px;
   }
  
 `;

@@ -12,7 +12,7 @@ export default class ProductTable extends Component {
   render() {
     const floors = [];
     for (let i = 0; i < 4; i+=1) {
-      floors.push(<Floor />)
+      floors.push(<Floor key={i} />)
     }
     return (
       <ProductTableWrapper>
