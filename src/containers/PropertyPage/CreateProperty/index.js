@@ -39,7 +39,7 @@ class CreatePropertyForm extends Component {
   };
 
   handleRemoveLegacy =  async e => {
-    
+
     if (this.state.numberOfLegacy > 1) {
       e.target.parentNode.parentNode.remove();
     }
@@ -97,8 +97,8 @@ class CreatePropertyForm extends Component {
           handleExpandLegacy={this.handleExpandLegacy}
           handleRemoveLegacy={this.handleRemoveLegacy}
         />,
-        
-      
+
+
       );
     }
     for (let i = 0; i < this.state.numberOfSitePlan; i += 1) {
@@ -110,8 +110,8 @@ class CreatePropertyForm extends Component {
           handleExpandSitePlan={this.handleExpandSitePlan}
           handleRemoveSitePlan={this.handleRemoveSitePlan}
         />,
-        
-      
+
+
       );
     }
     for (let i = 0; i < this.state.numberOfDiscount; i += 1) {
@@ -123,8 +123,8 @@ class CreatePropertyForm extends Component {
           handleExpandDiscount={this.handleExpandDiscount}
           handleRemoveDiscount={this.handleRemoveDiscount}
         />,
-        
-      
+
+
       );
     }
 
@@ -168,7 +168,7 @@ class CreatePropertyForm extends Component {
               </div>
               {discountArea}
             </div>
-            
+
             <div className="productTable">
               <div className="productTableTitle">
                 <span>Bảng hàng</span>
