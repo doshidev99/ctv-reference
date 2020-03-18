@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { Upload, Button, message } from 'antd'
-import SalePolicyWrapper from './styles'
+import { connect } from "react-redux";
+import SalesPolicyWrapper from './styles'
 import { getSignedUrlS3, uploadFile } from '../../../../utils/uploadFile';
+import {addSalesPolicyAction, uploadFileSuccessAction, removeSalesPolicyAction  } from "../../../../redux/property/actions";
 
-export default class SalePolicy extends Component {
+class SalesPolicy extends Component {
   handleOnChange = async info => {
     if (info.file.status !== "uploading") {
       // console.log(info.file, info.fileList);
@@ -23,7 +25,7 @@ export default class SalePolicy extends Component {
   };
 
   handleRemove = () => {
-    console.log("Handle remove here");
+    this.props.removePolicy()
   };
 
   handleUpload = async ({ file, onSuccess, onError }) => {
@@ -31,11 +33,12 @@ export default class SalePolicy extends Component {
       const signedUrlS3 = await getSignedUrlS3(
         file.name,
         file.type,
-        "policyInformation",
+        "salesPolicy",
       );
 
       uploadFile(file, signedUrlS3.url).then(response => {
         this.props.uploadFileSuccess(response.url);
+        this.props.addSalesPolicy(response.url);
         onSuccess("OK");
       });
     } catch (error) {
@@ -45,7 +48,7 @@ export default class SalePolicy extends Component {
 
   render() {
     return (
-      <SalePolicyWrapper>
+      <SalesPolicyWrapper>
         <div className="title">
           <span>
             Chính sách bán hàng
@@ -61,7 +64,28 @@ export default class SalePolicy extends Component {
             <Button shape="circle" icon="upload" />
           </Upload>
         </div>
-      </SalePolicyWrapper>
+      </SalesPolicyWrapper>
     )
   }
 }
+
+const mapStateToProps = state => ({
+  salesPolicy: state.property.salesPolicy,
+  file: state.property.fileUrl,
+})
+
+const mapDispatchToProps = dispatch => ({
+  uploadFileSuccess: fileUrl => {
+    dispatch(uploadFileSuccessAction(fileUrl, "create"));
+  },
+  addSalesPolicy: fileUrl => {
+    dispatch(addSalesPolicyAction(fileUrl));
+  },
+  removePolicy: () => {
+    dispatch(removeSalesPolicyAction());
+  },
+
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(SalesPolicy);
