@@ -1,6 +1,6 @@
 import { takeEvery, put, call } from "redux-saga/effects";
 import {
-  AuthTypes,
+  StaffTypes,
   loginSuccessAction,
   loginFailureAction,
 } from "./actions";
@@ -8,22 +8,10 @@ import { staffLoginApi } from "../../api/modules/staff";
 import { apiWrapper } from "../../utils/reduxUtils";
 
 
-function* loginSaga({ params }) {
+function* loginSaga({
+  params,
+}) {
   try {
-
-    // const {username, password} = params;
-    // let response=null
-    // if(username === 'admin' && password === '123456') {
-    //   response = {
-    //     user: {
-    //       id: 1,
-    //       username: 'Admin',
-    //       fullName: 'Nguyen Van A',
-    //       role: 'Super Admin',
-    //     },
-    //     token: "this is token",
-    //   }
-    // }
     const response = yield call(
       apiWrapper,
       {
@@ -36,8 +24,8 @@ function* loginSaga({ params }) {
    
     if (response.token) {
       localStorage.setItem("sessionToken", response.token);
-      localStorage.setItem("fullName", response.user.fullName)
-      localStorage.setItem("fullName", response.user.id)
+      localStorage.setItem("fullName", response.fullName)
+      localStorage.setItem("fullName", response.id)
       yield put(loginSuccessAction(response));
     } else {
       yield put(loginFailureAction(response));
@@ -49,10 +37,12 @@ function* loginSaga({ params }) {
 
 function logoutSaga() {
   if (localStorage.getItem("sessionToken")) {
-    localStorage.clear();
+    localStorage.clear('sessionToken');
+    localStorage.clear('fullName');
+    localStorage.clear('id');
   }
 }
 export default [
-  takeEvery(AuthTypes.LOGIN, loginSaga),
-  takeEvery(AuthTypes.LOGOUT, logoutSaga),
+  takeEvery(StaffTypes.LOGIN, loginSaga),
+  takeEvery(StaffTypes.LOGOUT, logoutSaga),
 ];

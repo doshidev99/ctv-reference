@@ -1,7 +1,7 @@
 import { all } from "redux-saga/effects";
-import authSaga from "./auth/sagas";
+import staffSaga from "./staff/sagas";
 import propertySaga from "./property/sagas";
 
 export default function* root() {
-  yield all([...authSaga, ...propertySaga]);
+  yield all([...staffSaga, ...propertySaga]);
 }

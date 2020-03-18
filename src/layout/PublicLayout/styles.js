@@ -7,14 +7,23 @@ const PublicLayoutWrapper = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items:center
+    align-items:center  
   }
 
+  .main-img {
+    background-image: url(https://images.unsplash.com/photo-1464082354059-27db6ce50048?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80);
+    background-color: transparent;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 100vh;
+  }
+  
   .main-content {
     background-color: white;
     padding: 70px 50px;
     text-align: center;
-    height: 80vh;
+    height: 55vh;
     max-width: 450px;
     min-width: 450px;
     width: auto;
