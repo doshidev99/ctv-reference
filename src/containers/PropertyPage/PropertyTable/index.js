@@ -63,18 +63,8 @@ const columns = [
     key: "option",
     render: () => (
       <div className="option">
-        <span className="btnOption">
-          {" "}
-          <Icon type="edit" />
-          {" "}
-        </span>
-        {" "}
-        <span className="btnOption">
-          {" "}
-          <Icon type="delete" />
-          {" "}
-        </span>
-        {" "}
+        <span className="btnOption"><Icon type="edit" /></span>
+        <span className="btnOption"><Icon type="delete" /></span>
       </div>
     ),
   },

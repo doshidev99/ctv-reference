@@ -5,8 +5,8 @@ import {
   connectRouter,
 } from 'connected-react-router';
 import {
-  auth,
-} from './auth/reducer';
+  staff,
+} from './staff/reducer';
 import {
   property,
 } from './property/reducer';
@@ -14,6 +14,6 @@ import {
 export default history =>
   combineReducers({
     router: connectRouter(history),
-    auth,
+    staff,
     property,
   });

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { withRouter, Redirect } from "react-router-dom";
 import { Form, Icon, Button, Checkbox } from "antd";
 import i18n from "i18next";
-import { loginAction } from "../../redux/auth/actions";
+import { loginAction } from "../../redux/staff/actions";
 import MaterialInput from "../../components/common/MaterialInput/index";
 
 const FormItem = Form.Item;
@@ -21,8 +21,6 @@ class Login extends Component {
 
   render() {
     const { form, isAuthenticated } = this.props;
-    console.log(this.props.isLoading);
-    
     
     if (isAuthenticated) {
       return <Redirect to="/" />;
@@ -97,8 +95,8 @@ Login.propTypes = {
   isAuthenticated: PropTypes.bool,
 };
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  isLoading: state.auth.isShowLoading,
+  isAuthenticated: state.staff.isAuthenticated,
+  isLoading: state.staff.isShowLoading,
 });
 const mapDispatchToProps = dispatch => ({
   login: params => {

@@ -1,6 +1,6 @@
 import { takeEvery, put, call } from "redux-saga/effects";
 import {
-  AuthTypes,
+  StaffTypes,
   loginSuccessAction,
   loginFailureAction,
 } from "./actions";
@@ -43,6 +43,6 @@ function logoutSaga() {
   }
 }
 export default [
-  takeEvery(AuthTypes.LOGIN, loginSaga),
-  takeEvery(AuthTypes.LOGOUT, logoutSaga),
+  takeEvery(StaffTypes.LOGIN, loginSaga),
+  takeEvery(StaffTypes.LOGOUT, logoutSaga),
 ];

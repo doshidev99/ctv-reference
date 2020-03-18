@@ -55,8 +55,8 @@ export function* apiWrapper(
 }
 
 export function* checkError(res) {
-  const auth = yield select(state => state.auth);
-  if (res.code === 401 && auth.isAuthenticated) {
+  const staff = yield select(state => state.staff);
+  if (res.code === 401 && staff.isAuthenticated) {
     console.log('System failed ~~');
   }
   if (ERROR_CODE.indexOf(res.code) > -1) {
