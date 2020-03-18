@@ -76,5 +76,5 @@ const PrivateRoutes = () => (
 PrivateRoutes.propTypes = {};
 
 export default connect(state => ({
-  isAuthenticated: state.auth.isAuthenticated,
+  isAuthenticated: state.staff.isAuthenticated,
 }))(PrivateRoutes);

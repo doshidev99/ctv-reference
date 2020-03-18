@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 
 export default styled.div`
-  .propertyNameLabel, .commissionLabel, .discountTitle, .sitePlanTitle, .productTableTitle, .othersTitle, .legalTitle {
+  .propertyNameLabel, .commissionLabel, 
+  .discountTitle, .sitePlanTitle, 
+  .productTableTitle, .othersTitle, 
+  .legalTitle, .cityLabel, .typeLabel {
     font-size: 18px;
     font-weight: 500;
   }
-  
  
   .overview {
     .ql-container{
@@ -17,7 +19,7 @@ export default styled.div`
     margin-bottom: 10px;
   }
 
-  .positionDescription {
+  .locationDescription {
     .ql-container{
       height: 100px;
     }
@@ -40,6 +42,12 @@ export default styled.div`
     }
   }
 
+  .discountArea {
+    margin-bottom: 10px;
+  }
+  .productTable {
+    margin-bottom: 10px;
+  }
 
   .others {
     margin-bottom: 20px;

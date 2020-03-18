@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import { Table, Icon, Tag } from "antd";
 import { getListPropertyAction } from "../../../redux/property/actions";
 
-
 const columns = [
   {
     title: "Tên dự án",
@@ -25,9 +24,9 @@ const columns = [
     key: "date",
   },
   {
-    title: 'Trạng thái',
-    key: 'status',
-    dataIndex: 'status',
+    title: "Trạng thái",
+    key: "status",
+    dataIndex: "status",
     render: tags => (
       <span>
         {tags.map(tag => {
@@ -37,13 +36,13 @@ const columns = [
               color = "green";
               break;
             case "terminated":
-              color ="volcano";
+              color = "volcano";
               break;
             case "postpond":
-              color ="gold";
+              color = "gold";
               break;
             default:
-              color ="geekblue";
+              color = "geekblue";
               break;
           }
           return (
@@ -58,7 +57,7 @@ const columns = [
   {
     title: "Tùy chọn",
     key: "option",
-    render:  () => (
+    render: () => (
       <div className="option">
         <span className="btnOption"><Icon type="edit" /></span>
         <span className="btnOption"><Icon type="delete" /></span>
@@ -66,8 +65,6 @@ const columns = [
     ),
   },
 ];
-
-
 
 class PropertyTable extends Component {
   componentDidMount() {
@@ -79,22 +76,20 @@ class PropertyTable extends Component {
       <div>
         <Table columns={columns} dataSource={this.props.data} />
       </div>
-    )
+    );
   }
 }
 PropertyTable.propTypes = {
   data: PropTypes.array,
 };
 
-
-
 const mapStateToProps = state => ({
   data: state.property.properties,
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   getListProperty: () => {
-    dispatch(getListPropertyAction())
+    dispatch(getListPropertyAction());
   },
-})
-export default connect(mapStateToProps, mapDispatchToProps)(PropertyTable)
+});
+export default connect(mapStateToProps, mapDispatchToProps)(PropertyTable);

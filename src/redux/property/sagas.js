@@ -1,4 +1,7 @@
-import { takeEvery, put } from "redux-saga/effects";
+import {
+  takeEvery,
+  put,
+} from "redux-saga/effects";
 import {
   PropertyTypes,
   getListPropertySuccessAction,
@@ -8,12 +11,22 @@ import {
   // uploadFileFailureAction,
 
 } from "./actions";
-import {data} from './tempData'
+import {
+  data,
+} from './tempData';
+import {
+  getProperties,
+} from '../../api/modules/property/index';
 
 function* getListProperty () {
   try {
-    localStorage.setItem("properties", JSON.stringify(data));
-    yield put(getListPropertySuccessAction(data));
+    const response = yield getProperties();
+    if (response.results) {
+      yield put(getListPropertySuccessAction(data));
+    } else {
+      yield put(getListPropertyFailureAction(data));
+    }
+
   } catch (error) {
     yield put(getListPropertyFailureAction(error));
   }

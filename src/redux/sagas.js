@@ -1,5 +1,5 @@
 import { all } from "redux-saga/effects";
-import authSaga from "./auth/sagas";
+import staffSaga from "./staff/sagas";
 import propertySaga from "./property/sagas";
 import transactionSaga from "./transaction/sagas";
 

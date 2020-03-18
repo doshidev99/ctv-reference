@@ -6,20 +6,20 @@ export default styled.div`
   .ant-row {
     width: 100%;
   }
-  .positionDescription {
+  .locationDescription {
     .ql-container{
       height: 200px;
     }
     width: 95%;
     margin-right: 20px
     
-    .positionLabel {
+    .locationLabel {
       font-size: 18px;
       font-weight: 500;
     }
   }
 
-  .positionMap {
+  .locationMap {
     width: 100%;
     .leaflet-container {
       width: 100%;

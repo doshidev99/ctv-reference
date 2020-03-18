@@ -5,7 +5,7 @@ const { RangePicker } = DatePicker;
 const {Item} = Form
 export default class Filter extends Component {
   search = () => {
-    console.log('search');
+    // console.log('search');
   }
 
   render() {

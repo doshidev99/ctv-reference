@@ -6,72 +6,100 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Editor from "../../../components/common/Editor/index";
 import StyleWrapper from "./styles";
-import LegalInfo from "./LegalInfo";
-import Postion from "./Position";
+import LegalRecord from "./LegalRecord";
+import Location from "./Location";
 import SitePlan from "./SitePlan";
-import SalePolicy from "./SalePolicy";
+import SalesPolicy from "./SalesPolicy";
 import PriceList from "./PriceList";
 import PropertyImage from "./PropertyImage";
 import Discount from "./Discount";
 import ProductTable from "./ProductTable";
 import {
-  addNewLegalInfoAction,
+  addNewLegalRecordAction,
   addNewSitePlanAction,
   addNewDiscountAction,
 } from "../../../redux/property/actions";
+import Room from "./Room";
 
 const FormItem = Form.Item;
 const { Option } = Select;
 class CreatePropertyForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      numberOfLegalInfo: 1,
-      numberOfSitePlan: 1,
-      numberOfDiscount: 1,
-    };
+  state = {
+    isActive: true,
+    status: "0",
+    city: "0",
+    type: "0",
   }
 
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      const { legalInfo, sitePlan, discounts, salePolicy, priceList, propertyImage, productTable} =this.props
+      const {
+        legalRecords,
+        sitePlans,
+        // discounts,
+        salesPolicy,
+        priceList,
+        propertyImage,
+        productTable,
+        location,
+        locationDescription,
+      } = this.props;
       values = {
         ...values,
-        legalInfo, sitePlan, discounts, salePolicy, priceList, propertyImage, productTable,
-      }
+        legalRecords,
+        sitePlans,
+        // discounts,
+        salesPolicy,
+        priceList,
+        propertyImage,
+        productTable,
+        location: {
+          latitude: location[0],
+          longitude: location[1],
+        },
+        locationDescription,
+      };
+      // eslint-disable-next-line no-console
       console.log(values);
 
       if (!err) {
-        console.log("OK");
+        // console.log("Error cmnr =))");
       }
     });
   };
 
   onChangeSwitch = checked => {
-    console.log(`switch to ${checked}`);
-  };
-
-  handleExpandDiscount = () => {
     this.setState({
-      // eslint-disable-next-line react/no-access-state-in-setstate
-      numberOfDiscount: this.state.numberOfDiscount + 1,
-    });
+      isActive: checked,
+    })
   };
 
-  handleRemoveDiscount = e => {
-    if (this.state.numberOfDiscount > 1) {
-      e.target.parentNode.parentNode.parentNode.parentNode.remove();
-    }
-  };
+  onChangeStatus = status => {
+    this.setState({
+      status: Number(status),
+    })
+  }
+
+  onChangeCity = city => {
+    this.setState({
+      city: Number(city),
+    })
+  }
+
+  onChangeType = type => {
+    this.setState({
+      type: Number(type),
+    })
+  }
 
   render() {
-    const { form, legalInfo, sitePlan, discounts } = this.props;
+    const { form, legalRecords, sitePlans, discounts } = this.props;
 
     const { getFieldDecorator } = form;
 
-    const legalArea = legalInfo.map(e => <LegalInfo key={e.id} id={e.id} />);
-    const sitePlanArea = sitePlan.map(e => (
+    const legalArea = legalRecords.map(e => <LegalRecord key={e.id} id={e.id} />);
+    const sitePlanArea = sitePlans.map(e => (
       <SitePlan key={e.id} id={e.id} link={e.link} />
     ));
     const discountArea = discounts.map(e => <Discount key={e.id} id={e.id} />);
@@ -94,13 +122,48 @@ class CreatePropertyForm extends Component {
                 </div>,
               )}
             </FormItem>
-
+            <Row gutter={16}>
+              <Col xs={6}>
+                <FormItem>
+                  {getFieldDecorator("city", {
+                      initialValue: this.state.status,
+                      valuePropName: "option",
+                    })(
+                      <div className="city">
+                        <label className="cityLabel">Thành phố</label>
+                        <Select defaultValue={this.state.city} onChange={this.onChangeCity}>
+                          <Option value="0">Đà Nẵng</Option>
+                          <Option value="1">Hội An</Option>
+                          <Option value="2">Hà Nội</Option>
+                        </Select>
+                      </div>,
+                    )}
+                </FormItem>
+              </Col>
+              <Col xs={6}>
+                <FormItem>
+                  {getFieldDecorator("type", {
+                      initialValue: this.state.type,
+                      valuePropName: "option",
+                    })(
+                      <div className="type">
+                        <label className="typeLabel">Loại dự án</label>
+                        <Select defaultValue={this.state.status} onChange={this.onChangeType}>
+                          <Option value="0">Hotel</Option>
+                          <Option value="1">Shop House</Option>
+                          <Option value="2">Resort</Option>
+                        </Select>
+                      </div>,
+                    )}
+                </FormItem>
+              </Col>
+            </Row>
             <FormItem className="overview">
               {getFieldDecorator("overview", {
                 rules: [
                   {
                     required: true,
-                    message: "ABC",
+                    message: "Vui lòng nhập thông tin tổng quan dự án",
                   },
                 ],
               })(<Editor label="Tổng quan dự án" />)}
@@ -114,14 +177,14 @@ class CreatePropertyForm extends Component {
                   </div>
                   {legalArea}
                   <div className="actionGroup">
-                    <Button type="primary" onClick={this.props.expandLegalInfo}>
+                    <Button type="primary" onClick={this.props.expandLegalRecord}>
                       Thêm
                     </Button>
                   </div>
                 </div>
               </Col>
             </Row>
-            <Postion />
+            <Location />
 
             {/*  Chưa validate */}
             <Row>
@@ -140,7 +203,7 @@ class CreatePropertyForm extends Component {
               </Col>
             </Row>
 
-            <SalePolicy />
+            <SalesPolicy />
             <PriceList />
             <PropertyImage />
             <Row>
@@ -187,7 +250,10 @@ class CreatePropertyForm extends Component {
               <Row>
                 <Col offset={8} xs={3}>
                   <FormItem>
-                    {getFieldDecorator("display")(
+                    {getFieldDecorator("isActive", {
+                      valuePropName: "checked",
+                      initialValue: this.state.isActive,
+                    })(
                       <div className="display">
                         <label>Hiển thị</label>
                         <Switch defaultChecked onChange={this.onChangeSwitch} />
@@ -196,16 +262,22 @@ class CreatePropertyForm extends Component {
                   </FormItem>
                 </Col>
                 <Col offset={3} xs={6}>
-                  {getFieldDecorator("status")(
-                    <div className="status">
-                      <label>Tình trạng</label>
-                      <Select defaultValue="0">
-                        <Option value="0">Bình thường</Option>
-                        <Option value="1">Hot</Option>
-                        <Option value="2">New</Option>
-                      </Select>
-                    </div>,
-                  )}
+                  <FormItem valuepropname="option">
+                    {getFieldDecorator("status", {
+                      initialValue: this.state.status,
+                      valuePropName: "option",
+                    })(
+                      <div className="status">
+                        <label>Tình trạng</label>
+                        <Select defaultValue={this.state.status} onChange={this.onChangeStatus}>
+                          <Option value="0">Bình thường</Option>
+                          <Option value="1">Hot</Option>
+                          <Option value="2">New</Option>
+                        </Select>
+                      </div>,
+                    )}
+
+                  </FormItem>
                 </Col>
               </Row>
             </div>
@@ -216,23 +288,44 @@ class CreatePropertyForm extends Component {
               </Button>
             </div>
           </Form>
+          <Room />
         </Layout>
       </StyleWrapper>
     );
   }
 }
 
+CreatePropertyForm.propTypes = {
+  form: PropTypes.object,
+};
 const mapStateToProps = state => {
-  const {legalInfo, sitePlan, discounts, salePolicy, priceList, propertyImage, productTable} = state.property
+  const {
+    legalRecords,
+    sitePlans,
+    discounts,
+    salesPolicy,
+    priceList,
+    propertyImage,
+    productTable,
+    location,
+    locationDescription,
+  } = state.property;
   return {
-    legalInfo, sitePlan, discounts, salePolicy, priceList, propertyImage, productTable,
-  }
-}
-
+    legalRecords,
+    sitePlans,
+    discounts,
+    salesPolicy,
+    priceList,
+    propertyImage,
+    productTable,
+    location,
+    locationDescription,
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
-  expandLegalInfo: () => {
-    dispatch(addNewLegalInfoAction());
+  expandLegalRecord: () => {
+    dispatch(addNewLegalRecordAction());
   },
 
   expandSitePlan: () => {
@@ -244,9 +337,6 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-CreatePropertyForm.propTypes = {
-  form: PropTypes.object,
-};
 export default connect(
   mapStateToProps,
   mapDispatchToProps,

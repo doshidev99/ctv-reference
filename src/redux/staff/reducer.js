@@ -1,5 +1,5 @@
 import { makeReducerCreator } from '../../utils/reduxUtils';
-import { AuthTypes } from './actions';
+import { StaffTypes } from './actions';
 
 // Setup inintial state for app
 export const initialState = {
@@ -9,6 +9,7 @@ export const initialState = {
     id: localStorage.getItem('id'),
   },
   roles: '',
+  isShowLoading: false,
   loginError: false,
   loginSuccess: false,
 };
@@ -16,6 +17,7 @@ export const initialState = {
 
 const loginSuccess = state => ({
   ...state,
+  isShowLoading: false,
   isAuthenticated: true,
   loginError: false,
   loginSuccess: true,
@@ -23,6 +25,7 @@ const loginSuccess = state => ({
 
 const loginFail = (state, {error}) => ({
   ...state,
+  isShowLoading: false,
   isAuthenticated: false,
   loginError: error,
   loginSuccess: false,
@@ -33,8 +36,13 @@ const logout = () => ({
   isAuthenticated: false,
 });
 
-export const auth = makeReducerCreator(initialState, {
-  [AuthTypes.LOGIN_AUTH_SUCCESS]: loginSuccess,
-  [AuthTypes.LOGIN_AUTH_FAIL]: loginFail,
-  [AuthTypes.LOGOUT]: logout,
+const loginLoading = (state) => ({
+  ...state,
+  isShowLoading: true,
+})
+export const staff = makeReducerCreator(initialState, {
+  [StaffTypes.LOGIN_STAFF_SUCCESS]: loginSuccess,
+  [StaffTypes.LOGIN_STAFF_FAIL]: loginFail,
+  [StaffTypes.LOGOUT]: logout,
+  [StaffTypes.LOGIN]: loginLoading,
 });

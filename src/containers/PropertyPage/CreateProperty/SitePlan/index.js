@@ -57,7 +57,7 @@ class SitePlan extends Component {
 
       uploadFile(file, signedUrlS3.url).then(response => {
         this.props.uploadImageSuccess(response.url);
-        this.props.addNewSitePlanSuccess(this.props.id, title.sitePlan, response.url);
+        this.props.addNewSitePlanSuccess(this.props.id, title.sitePlanTitle, response.url);
         onSuccess("OK");
       });
     } catch (error) {
@@ -111,7 +111,7 @@ class SitePlan extends Component {
       <SitePlanWrapper>
         <div className="title">
           <FormItem>
-            {this.props.form.getFieldDecorator("sitePlan", {
+            {this.props.form.getFieldDecorator("sitePlanTitle", {
               rules: [
                 {
                   required: true,
