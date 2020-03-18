@@ -80,19 +80,41 @@ class TransactionTable extends Component {
   }
 
   render() {
-    // console.log(this.props.data)
+    // console.log(this.props.data);
+    var result = this.props.data;
+    var newDate = result.map(e => {
+      return new Date(e.createdAt).toISOString().split('T')[0];
+    });
+    for (let i = 0; i < result.length; i++) {
+      result[i].createdAt = newDate[i];
+    }
+    for (let i = 0; i < result.length; i++) {
+      if (result[i].status === 0 ) {
+        result[i].status = "Đang xử lý"
+      }
+      else if (result[i].status === 1 ) {
+        result[i].status = "Đã cọc"
+      }
+      else if (result[i].status === 2 ) {
+        result[i].status = "Hoàn Thành"
+      }
+      else if (result[i].status === 3 ) {
+        result[i].status = "Hủy bỏ"
+      }
+      // result[i].status = newDate[i];
+    }
     return (
       <div>
-        <Table columns={columns} dataSource={this.props.data} rowKey="date"/>
-        {/* <Table dataSource={this.props.data} colums={columns} rowKey="id">
-          <columns title="Thời gian" dataIndex="date" key="date" />
+        {/* <Table columns={columns} dataSource={this.props.data} rowKey="date"/> */}
+        <Table dataSource={this.props.data} colums={columns} rowKey="id">
+          <columns title="Thời gian" dataIndex="createdAt" key="createdAt" />
           <columns title="Mã giao dịch" dataIndex="code" key="code" />
-          <columns title="Mã hợp đồng" dataIndex="contract" key="contract" />
-          <columns title="Dự án" dataIndex="name" key="name" />
-          <columns title="Tên KH" dataIndex="customer" key="customer" />
-          <columns title="Tên CTV" dataIndex="collaborator" key="collaborator" />
+          <columns title="Mã hợp đồng" dataIndex="code" key="contract" />
+          <columns title="Dự án" dataIndex="propertyName" key="name" />
+          <columns title="Tên KH" dataIndex="customerId" key="customer" />
+          <columns title="Tên CTV" dataIndex="realtorId" key="collaborator" />
           <columns title="Tình trạng" dataIndex="status" key="status" />
-        </Table> */}
+        </Table>
       </div>
     )
   }

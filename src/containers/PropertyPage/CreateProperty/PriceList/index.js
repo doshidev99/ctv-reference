@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { Upload, Button, message } from 'antd'
+import { connect } from "react-redux";
 import PriceListWrapper from './styles'
 import { getSignedUrlS3, uploadFile } from '../../../../utils/uploadFile';
+import {addPriceListAction, uploadFileSuccessAction, removePriceListAction  } from "../../../../redux/property/actions";
 
-export default class SalePolicy extends Component {
+class PriceList extends Component {
   handleOnChange = async info => {
     if (info.file.status !== "uploading") {
       // console.log(info.file, info.fileList);
@@ -23,8 +25,7 @@ export default class SalePolicy extends Component {
   };
 
   handleRemove = () => {
-    console.log("Handle remove here");
-
+    this.props.removePriceList()
   };
 
   handleUpload = async ({ file, onSuccess, onError }) => {
@@ -66,3 +67,25 @@ export default class SalePolicy extends Component {
     )
   }
 }
+
+
+const mapStateToProps = state => ({
+  priceList: state.property.priceList,
+  file: state.property.fileUrl,
+})
+
+const mapDispatchToProps = dispatch => ({
+  uploadFileSuccess: fileUrl => {
+    dispatch(uploadFileSuccessAction(fileUrl, "create"));
+  },
+  addPriceList: fileUrl => {
+    dispatch(addPriceListAction(fileUrl));
+  },
+  removePriceList: () => {
+    dispatch(removePriceListAction());
+  },
+
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(PriceList);

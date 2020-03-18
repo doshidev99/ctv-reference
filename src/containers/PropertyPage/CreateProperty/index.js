@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import i18n from "i18next";
-import { Layout, Form, Input, Button, Switch, Select } from "antd";
-import { withRouter } from "react-router-dom";
-// import { connect } from "react-redux";
+import { Layout, Form, Input, Button, Switch, Select, Row, Col } from "antd";
+// import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Editor from "../../../components/common/Editor/index";
 import StyleWrapper from "./styles";
-import LegacyInfo from "./LegacyInfo";
+import LegalInfo from "./LegalInfo";
 import Postion from "./Position";
 import SitePlan from "./SitePlan";
 import SalePolicy from "./SalePolicy";
@@ -14,120 +14,67 @@ import PriceList from "./PriceList";
 import PropertyImage from "./PropertyImage";
 import Discount from "./Discount";
 import ProductTable from "./ProductTable";
+import {
+  addNewLegalInfoAction,
+  addNewSitePlanAction,
+  addNewDiscountAction,
+} from "../../../redux/property/actions";
 
 const FormItem = Form.Item;
-const {Option} = Select
+const { Option } = Select;
 class CreatePropertyForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      numberOfLegacy: 1,
+      numberOfLegalInfo: 1,
       numberOfSitePlan: 1,
       numberOfDiscount: 1,
     };
   }
 
-  onChangeSwitch = (checked) =>{
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      const { legalInfo, sitePlan, discounts, salePolicy, priceList, propertyImage, productTable} =this.props
+      values = {
+        ...values,
+        legalInfo, sitePlan, discounts, salePolicy, priceList, propertyImage, productTable,
+      }
+      console.log(values);
+
+      if (!err) {
+        console.log("OK");
+      }
+    });
+  };
+
+  onChangeSwitch = checked => {
     console.log(`switch to ${checked}`);
-  }
-
-  handleExpandLegacy = () => {
-    this.setState({
-      // eslint-disable-next-line react/no-access-state-in-setstate
-      numberOfLegacy: this.state.numberOfLegacy + 1,
-    });
   };
-
-  handleRemoveLegacy =  async e => {
-
-    if (this.state.numberOfLegacy > 1) {
-      e.target.parentNode.parentNode.remove();
-    }
-  };
-
-  handleExpandSitePlan = () => {
-    this.setState({
-      // eslint-disable-next-line react/no-access-state-in-setstate
-      numberOfSitePlan: this.state.numberOfSitePlan + 1,
-    });
-  };
-
-  handleRemoveSitePlan= e => {
-    if (this.state.numberOfSitePlan > 1) {
-      e.target.parentNode.parentNode.remove();
-    }
-  };
-
 
   handleExpandDiscount = () => {
     this.setState({
       // eslint-disable-next-line react/no-access-state-in-setstate
       numberOfDiscount: this.state.numberOfDiscount + 1,
     });
-  }
+  };
 
   handleRemoveDiscount = e => {
     if (this.state.numberOfDiscount > 1) {
-      e.target.parentNode.parentNode.remove();
+      e.target.parentNode.parentNode.parentNode.parentNode.remove();
     }
-  }
-
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        this.props.login(values);
-      }
-    });
   };
 
   render() {
-    const { form } = this.props;
+    const { form, legalInfo, sitePlan, discounts } = this.props;
 
     const { getFieldDecorator } = form;
-    const legacyArea = [];
-    const sitePlanArea=[];
-    const discountArea = []
-    for (let i = 0; i < this.state.numberOfLegacy; i += 1) {
-      legacyArea.push(
-        <LegacyInfo
-          key={`legacyInfo${i + 1}`}
-          getFieldDecorator={getFieldDecorator}
-          name={`legacyInfo${i + 1}`}
-          handleExpandLegacy={this.handleExpandLegacy}
-          handleRemoveLegacy={this.handleRemoveLegacy}
-        />,
 
-
-      );
-    }
-    for (let i = 0; i < this.state.numberOfSitePlan; i += 1) {
-      sitePlanArea.push(
-        <SitePlan
-          key={`sitePlan${i + 1}`}
-          getFieldDecorator={getFieldDecorator}
-          name={`sitePlan${i + 1}`}
-          handleExpandSitePlan={this.handleExpandSitePlan}
-          handleRemoveSitePlan={this.handleRemoveSitePlan}
-        />,
-
-
-      );
-    }
-    for (let i = 0; i < this.state.numberOfDiscount; i += 1) {
-      discountArea.push(
-        <Discount
-          key={`sitePlan${i + 1}`}
-          getFieldDecorator={getFieldDecorator}
-          name={`sitePlan${i + 1}`}
-          handleExpandDiscount={this.handleExpandDiscount}
-          handleRemoveDiscount={this.handleRemoveDiscount}
-        />,
-
-
-      );
-    }
-
+    const legalArea = legalInfo.map(e => <LegalInfo key={e.id} id={e.id} />);
+    const sitePlanArea = sitePlan.map(e => (
+      <SitePlan key={e.id} id={e.id} link={e.link} />
+    ));
+    const discountArea = discounts.map(e => <Discount key={e.id} id={e.id} />);
     return (
       <StyleWrapper>
         <Layout>
@@ -147,27 +94,85 @@ class CreatePropertyForm extends Component {
                 </div>,
               )}
             </FormItem>
+
             <FormItem className="overview">
-              <Editor label="Tổng quan dự án" onChange={this.handleChange} />
+              {getFieldDecorator("overview", {
+                rules: [
+                  {
+                    required: true,
+                    message: "ABC",
+                  },
+                ],
+              })(<Editor label="Tổng quan dự án" />)}
             </FormItem>
-            {legacyArea}
+
+            <Row>
+              <Col xs={24} lg={16} xl={12}>
+                <div className="legalArea">
+                  <div className="legalTitle">
+                    <span>Hồ sơ pháp lý</span>
+                  </div>
+                  {legalArea}
+                  <div className="actionGroup">
+                    <Button type="primary" onClick={this.props.expandLegalInfo}>
+                      Thêm
+                    </Button>
+                  </div>
+                </div>
+              </Col>
+            </Row>
             <Postion />
-            {sitePlanArea}
+
+            {/*  Chưa validate */}
+            <Row>
+              <Col xs={24}>
+                <div className="sitePlanArea">
+                  <div className="sitePlanTitle">
+                    <span>Mặt bằng</span>
+                  </div>
+                  {sitePlanArea}
+                  <div className="actionGroup">
+                    <Button type="primary" onClick={this.props.expandSitePlan}>
+                      Thêm
+                    </Button>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+
             <SalePolicy />
             <PriceList />
             <PropertyImage />
-            <FormItem>
-              <div className="commission">
-                <label className="commissionLabel">Tỉ lệ hoa hồng (%)</label>
-                <Input />
-              </div>
-            </FormItem>
-            <div>
-              <div className="discountTitle">
-                <span>Tỷ lệ chiết khấu</span>
-              </div>
-              {discountArea}
-            </div>
+            <Row>
+              <Col>
+                <FormItem>
+                  {getFieldDecorator("commission")(
+                    <div className="commission">
+                      <label className="commissionLabel">
+                        Tỉ lệ hoa hồng (%)
+                      </label>
+                      <Input />
+                    </div>,
+                  )}
+                </FormItem>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col xs={24} lg={20} xl={12}>
+                <div className="discountArea">
+                  <div className="discountTitle">
+                    <span>Tỷ lệ chiết khấu</span>
+                  </div>
+                  {discountArea}
+                  <div className="actionGroup">
+                    <Button type="primary" onClick={this.props.expandDiscount}>
+                      Thêm
+                    </Button>
+                  </div>
+                </div>
+              </Col>
+            </Row>
 
             <div className="productTable">
               <div className="productTableTitle">
@@ -179,25 +184,36 @@ class CreatePropertyForm extends Component {
               <div className="othersTitle">
                 <span>Khác</span>
               </div>
-              <div className="flex">
-                <div className="display">
-                  <label>Hiển thị</label>
-                  <Switch defaultChecked onChange={this.onChangeSwitch} />
-                </div>
-                <div className="status">
-                  <label>Tình trạng</label>
-                  <Select defaultValue="0">
-                    <Option value="0">Bình thường</Option>
-                    <Option value="1">Hot</Option>
-                    <Option value="2">New</Option>
-                  </Select>
-
-                </div>
-              </div>
+              <Row>
+                <Col offset={8} xs={3}>
+                  <FormItem>
+                    {getFieldDecorator("display")(
+                      <div className="display">
+                        <label>Hiển thị</label>
+                        <Switch defaultChecked onChange={this.onChangeSwitch} />
+                      </div>,
+                    )}
+                  </FormItem>
+                </Col>
+                <Col offset={3} xs={6}>
+                  {getFieldDecorator("status")(
+                    <div className="status">
+                      <label>Tình trạng</label>
+                      <Select defaultValue="0">
+                        <Option value="0">Bình thường</Option>
+                        <Option value="1">Hot</Option>
+                        <Option value="2">New</Option>
+                      </Select>
+                    </div>,
+                  )}
+                </Col>
+              </Row>
             </div>
 
             <div className="submitButton">
-              <Button type="primary">Thêm dự án</Button>
+              <Button type="primary" onClick={this.handleSubmit}>
+                Thêm dự án
+              </Button>
             </div>
           </Form>
         </Layout>
@@ -206,15 +222,32 @@ class CreatePropertyForm extends Component {
   }
 }
 
-// const mapStateToProps = state => ({
-//   data: state.property.properties,
-// })
+const mapStateToProps = state => {
+  const {legalInfo, sitePlan, discounts, salePolicy, priceList, propertyImage, productTable} = state.property
+  return {
+    legalInfo, sitePlan, discounts, salePolicy, priceList, propertyImage, productTable,
+  }
+}
 
-// const mapDispatchToProps = dispatch => ({
 
-// })
+const mapDispatchToProps = dispatch => ({
+  expandLegalInfo: () => {
+    dispatch(addNewLegalInfoAction());
+  },
+
+  expandSitePlan: () => {
+    dispatch(addNewSitePlanAction());
+  },
+
+  expandDiscount: () => {
+    dispatch(addNewDiscountAction());
+  },
+});
 
 CreatePropertyForm.propTypes = {
   form: PropTypes.object,
 };
-export default withRouter(Form.create()(CreatePropertyForm));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Form.create()(CreatePropertyForm));

@@ -1,9 +1,7 @@
 import styled from "styled-components";
 
 export default styled.div`
-  margin-bottom: 10px
-
-.inputArea {
+  margin-top: 10px
   display: flex;
   justify-content: space-between;
   .sitePlanLabel {
@@ -15,30 +13,17 @@ export default styled.div`
     margin-bottom: 0;
   }
   .files {
-    margin-top: 10px
     display: flex;
-    justify-content: flex-end;
-    .upload, .cancel {
-      font-size: 20px
-      margin-right: 10px;
-      display: flex;
-      flex-direction: row-reverse;
+    .upload {
+      max-width: 700px;
+      min-width: 400px;
 
-      .ant-upload-list {
-        display: flex
-      }
-
-      .ant-upload-select-picture-card i {
-        font-size: 32px;
-        color: #999;
-      }
-      
-      .ant-upload-select-picture-card .ant-upload-text {
-        margin-top: 8px;
-        color: #666;
+      .ant-upload-picture-card-wrapper {
+        display: flex;
+        flex-direction: row-reverse;
       }
     }
   }
-}
+
   
 `;
