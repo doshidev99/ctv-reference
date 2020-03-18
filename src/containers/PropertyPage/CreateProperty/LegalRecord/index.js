@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import { Input, Button, Upload, message, Form } from "antd";
 import { connect } from "react-redux";
-import LegalInfoWrapper from "./styles";
+import LegalRecordWrapper from "./styles";
 
 import {
   uploadFileSuccessAction,
-  addNewLegalInfoSuccessAction,
-  removeOneLegalInfoAction,
+  addNewLegalRecordSuccessAction,
+  removeOneLegalRecordAction,
 } from "../../../../redux/property/actions";
 import { getSignedUrlS3, uploadFile } from "../../../../utils/uploadFile";
 
 const FormItem = Form.Item;
 
-class LegalInfo extends Component {
+class LegalRecord extends Component {
   handleOnChange = async info => {
     if (info.file.status !== "uploading") {
       // console.log(info.file, info.fileList);
@@ -49,7 +49,7 @@ class LegalInfo extends Component {
       );
       uploadFile(file, signedUrlS3.url).then(response => {
         this.props.uploadFileSuccess(response.url);
-        this.props.addNewLegalInfoSuccess(this.props.id, title.legalInfo, response.url);
+        this.props.addNewLegalRecordSuccess(this.props.id, title.legalRecords, response.url);
 
         onSuccess("OK");
       });
@@ -60,15 +60,15 @@ class LegalInfo extends Component {
 
   
   handleRemove = () => {
-    this.props.handleRemoveLegalInfo(this.props.id)
+    this.props.handleRemoveLegalRecord(this.props.id)
   }
 
   render() {
     return (
-      <LegalInfoWrapper>
+      <LegalRecordWrapper>
         <div className="title">
           <FormItem>
-            {this.props.form.getFieldDecorator("legalInfo", {
+            {this.props.form.getFieldDecorator("legalRecords", {
               rules: [
                 {
                   required: true,
@@ -77,7 +77,7 @@ class LegalInfo extends Component {
               ],
             })(
               <div>
-                <Input className="legalInfo" placeholder="Tiêu đề" />
+                <Input className="legalRecords" placeholder="Tiêu đề" />
               </div>,
             )}
           </FormItem>
@@ -97,7 +97,7 @@ class LegalInfo extends Component {
             onClick={this.handleRemove}
           />
         </div>
-      </LegalInfoWrapper>
+      </LegalRecordWrapper>
     );
   }
 }
@@ -110,15 +110,15 @@ const mapDispatchToProps = dispatch => ({
   uploadFileSuccess: fileUrl => {
     dispatch(uploadFileSuccessAction(fileUrl, "create"));
   },
-  addNewLegalInfoSuccess: (id, title, url) => {
-    dispatch(addNewLegalInfoSuccessAction(id, title, url));
+  addNewLegalRecordSuccess: (id, title, url) => {
+    dispatch(addNewLegalRecordSuccessAction(id, title, url));
   },
-  handleRemoveLegalInfo: id => {
-    dispatch(removeOneLegalInfoAction(id));
+  handleRemoveLegalRecord: id => {
+    dispatch(removeOneLegalRecordAction(id));
   },
  
 });
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Form.create()(LegalInfo));
+)(Form.create()(LegalRecord));

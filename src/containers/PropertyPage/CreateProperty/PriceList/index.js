@@ -33,11 +33,12 @@ class PriceList extends Component {
       const signedUrlS3 = await getSignedUrlS3(
         file.name,
         file.type,
-        "policyInformation",
+        "priceList",
       );
 
       uploadFile(file, signedUrlS3.url).then(response => {
         this.props.uploadFileSuccess(response.url);
+        this.props.addPriceList(response.url);
         onSuccess("OK");
       });
     } catch (error) {
