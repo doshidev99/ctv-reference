@@ -3,14 +3,11 @@ import PropTypes from 'prop-types';
 import { Layout } from 'antd';
 import PublicLayoutWrapper from './styles';
 
-const { Content } = Layout;
 
 const PublicLayout = ({ children }) => (
   <PublicLayoutWrapper>
-    <Layout className="layout">
-      <Content className="main-img">
-        <div className="main-content">{children}</div>
-      </Content>
+    <Layout className="layout main-img">
+      <div className="main-content">{children}</div>
     </Layout>
   </PublicLayoutWrapper>
 );

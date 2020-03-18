@@ -21,6 +21,8 @@ class Login extends Component {
 
   render() {
     const { form, isAuthenticated } = this.props;
+    console.log(this.props.isLoading);
+    
     
     if (isAuthenticated) {
       return <Redirect to="/" />;
@@ -78,8 +80,9 @@ class Login extends Component {
               type="primary"
               htmlType="submit"
               className="login-form-button"
+              loading={this.props.isLoading}
             >
-              {i18n.t("login.loginBtn")}
+              {this.props.isLoading ? '' : i18n.t("login.loginBtn")}  
             </Button>
           </div>
         </Form>
@@ -95,6 +98,7 @@ Login.propTypes = {
 };
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
+  isLoading: state.auth.isShowLoading,
 });
 const mapDispatchToProps = dispatch => ({
   login: params => {

@@ -11,7 +11,7 @@ const PublicLayoutWrapper = styled.div`
   }
 
   .main-img {
-    background-image: url(https://res.cloudinary.com/csmenouvo/image/upload/v1550032735/background/login_background.jpg);
+    background-image: url(https://images.unsplash.com/photo-1464082354059-27db6ce50048?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80);
     background-color: transparent;
     background-size: cover;
     background-position: center center;
@@ -23,7 +23,7 @@ const PublicLayoutWrapper = styled.div`
     background-color: white;
     padding: 70px 50px;
     text-align: center;
-    height: 80vh;
+    height: 55vh;
     max-width: 450px;
     min-width: 450px;
     width: auto;

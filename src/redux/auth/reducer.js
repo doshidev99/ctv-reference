@@ -9,6 +9,7 @@ export const initialState = {
     id: localStorage.getItem('id'),
   },
   roles: '',
+  isShowLoading: false,
   loginError: false,
   loginSuccess: false,
 };
@@ -16,6 +17,7 @@ export const initialState = {
 
 const loginSuccess = state => ({
   ...state,
+  isShowLoading: false,
   isAuthenticated: true,
   loginError: false,
   loginSuccess: true,
@@ -33,8 +35,13 @@ const logout = () => ({
   isAuthenticated: false,
 });
 
+const loginLoading = (state) => ({
+  ...state,
+  isShowLoading: true,
+})
 export const auth = makeReducerCreator(initialState, {
   [AuthTypes.LOGIN_AUTH_SUCCESS]: loginSuccess,
   [AuthTypes.LOGIN_AUTH_FAIL]: loginFail,
   [AuthTypes.LOGOUT]: logout,
+  [AuthTypes.LOGIN]: loginLoading,
 });

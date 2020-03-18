@@ -15,7 +15,7 @@ export default styled.div`
   .sub-action-div {
     display: flex;
     justify-content: space-between;
-    margin: 25px 0 10px;
+    margin: 25px 0;
   }
 
   .action-div {
