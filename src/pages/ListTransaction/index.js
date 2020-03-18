@@ -18,7 +18,7 @@ export default function ListProperty() {
         <div className="filterArea">
           <Filter />
         </div>
-        <TransactionTable/>
+        <TransactionTable />
       </Layout>
     </ListPropertyPageWrapper>
   );

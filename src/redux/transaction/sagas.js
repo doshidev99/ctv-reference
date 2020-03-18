@@ -17,7 +17,7 @@ function* getListTransaction () {
       {},
       listTransactionApi,
     );
-    console.log(response.results);
+    // console.log(response.results);
 
     if (response.results){
       yield put(getListTransactionSuccessAction(response.results));

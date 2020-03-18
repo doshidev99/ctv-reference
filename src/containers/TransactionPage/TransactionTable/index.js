@@ -81,14 +81,14 @@ class TransactionTable extends Component {
 
   render() {
     // console.log(this.props.data);
-    var result = this.props.data;
-    var newDate = result.map(e => {
+    const result = this.props.data;
+    const newDate = result.map(e => {
       return new Date(e.createdAt).toISOString().split('T')[0];
     });
-    for (let i = 0; i < result.length; i++) {
+    for (let i = 0; i < result.length; i+=1) {
       result[i].createdAt = newDate[i];
     }
-    for (let i = 0; i < result.length; i++) {
+    for (let i = 0; i < result.length; i+=1) {
       if (result[i].status === 0 ) {
         result[i].status = "Đang xử lý"
       }
