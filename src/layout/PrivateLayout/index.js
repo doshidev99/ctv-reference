@@ -11,7 +11,7 @@ import { Layout, Menu, Icon, Dropdown, Avatar } from 'antd';
 import { Redirect } from 'react-router-dom';
 import PrivateLayoutWrapper from './styles';
 import SideBarMenu from './SideBarMenu/index';
-import { logout as logoutAction } from '../../redux/auth/actions';
+import { logout as logoutAction } from '../../redux/staff/actions';
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -126,7 +126,7 @@ PrivateLayout.propTypes = {
 
 export default connect(
   state => ({
-    isAuthenticated: state.auth.isAuthenticated,
+    isAuthenticated: state.staff.isAuthenticated,
   }),
   {
     logout: logoutAction,

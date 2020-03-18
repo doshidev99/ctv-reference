@@ -6,7 +6,7 @@ import PublicLayoutWrapper from './styles';
 
 const PublicLayout = ({ children }) => (
   <PublicLayoutWrapper>
-    <Layout className="layout">
+    <Layout className="layout main-img">
       <div className="main-content">{children}</div>
     </Layout>
   </PublicLayoutWrapper>
