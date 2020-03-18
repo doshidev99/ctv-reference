@@ -2,9 +2,12 @@ import { makeReducerCreator } from "../../utils/reduxUtils";
 import { PropertyTypes } from "./actions";
 import { mongoObjectId } from "../../utils/textProcessor";
 
-// Setup inintial state for app
+// Setup inintial state for property
 export const initialState = {
   properties: [],
+  offset: 0, // offset = (page - 1) * limit;
+  limit: 10,
+  total: null,
   loading: false,
   listPropertySuccess: undefined,
   listPropertyFailure: undefined,
@@ -49,9 +52,12 @@ const getListProperty = state => ({
   loading: true,
 });
 
-const getListPropertySuccess = (state, { data }) => ({
+const getListPropertySuccess = (state, { data, total, limit, offset }) => ({
   ...state,
   properties: data,
+  limit, 
+  offset,
+  total,
   loading: false,
   listPropertySuccess: true,
   listPropertyFailure: false,
@@ -205,6 +211,7 @@ const removePropertyImage = (state, { link }) => {
   };
 };
 
+// DISCOUNT
 const addNewDiscount = state => {
   const discounts = [...state.discounts];
   discounts.push({
@@ -241,6 +248,8 @@ const onChangeDiscount = (state, { id, title, value }) => {
   };
 };
 
+
+// LOCATION
 const markLocation = (state, { location }) => {
   return {
     ...state,
@@ -255,6 +264,8 @@ const onChangeLocationDescription = (state, { text }) => {
   };
 };
 
+
+// FLOOR 
 const addNewFloor = state => {
   const floors = [...state.productTable];
   floors.push({
@@ -281,6 +292,8 @@ const removeOneFloor = (state, { id }) => {
   };
 };
 
+
+// ROOM
 const openRoomForm = (state, { roomInfo, floorId }) => {
   // const floors = [...state.productTable];
   // Tìm tầng hiện tại
@@ -374,6 +387,7 @@ const deleteOneRoom = (state, {id, floorId}) => {
     productTable: floors,
   };
 }
+
 export const property = makeReducerCreator(initialState, {
   [PropertyTypes.GET_LIST_PROPERTY]: getListProperty,
   [PropertyTypes.GET_LIST_PROPERTY_SUCCESS]: getListPropertySuccess,

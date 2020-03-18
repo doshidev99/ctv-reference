@@ -36,8 +36,8 @@ function* loginSaga({ params }) {
    
     if (response.token) {
       localStorage.setItem("sessionToken", response.token);
-      localStorage.setItem("fullName", response.user.fullName)
-      localStorage.setItem("fullName", response.user.id)
+      localStorage.setItem("fullName", response.fullName)
+      localStorage.setItem("id", response.id)
       yield put(loginSuccessAction(response));
     } else {
       yield put(loginFailureAction(response));
