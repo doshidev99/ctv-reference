@@ -41,8 +41,8 @@ const loginLoading = (state) => ({
   isShowLoading: true,
 })
 export const staff = makeReducerCreator(initialState, {
-  [StaffTypes.LOGIN_AUTH_SUCCESS]: loginSuccess,
-  [StaffTypes.LOGIN_AUTH_FAIL]: loginFail,
+  [StaffTypes.LOGIN_STAFF_SUCCESS]: loginSuccess,
+  [StaffTypes.LOGIN_STAFF_FAIL]: loginFail,
   [StaffTypes.LOGOUT]: logout,
   [StaffTypes.LOGIN]: loginLoading,
 });

@@ -29,7 +29,6 @@ const columns = [
     dataIndex: "status",
     render: tags => (
       <span>
-        {" "}
         {tags.map(tag => {
           let color = tag.length > 5 ? "geekblue" : "green";
           switch (tag.key) {
@@ -48,13 +47,10 @@ const columns = [
           }
           return (
             <Tag color={color} key={tag}>
-              {" "}
               {tag.text.toUpperCase()}
-              {""}
             </Tag>
           );
         })}
-        {""}
       </span>
     ),
   },
