@@ -41,7 +41,7 @@ const routes = [
     path: '/giao-dich',
     component: ListTransaction,
     exact: true,
-    title: i18n.t('dashboard.title'),
+    title: i18n.t('transaction.title'),
   },
 ];
 

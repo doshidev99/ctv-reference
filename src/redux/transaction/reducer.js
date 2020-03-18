@@ -8,8 +8,6 @@ export const initialState = {
   listTransactionSuccess: undefined,
   listTransactionFailure: undefined,
   currentTransaction: {},
-  mode: undefined,
-  fileUrl: undefined,
 };
 // End setup
 
@@ -25,18 +23,6 @@ const getListTransactionSuccess = (state, { data }) => ({
   listTransactionSuccess: true,
   listTransactionFailure: false,
 });
-
-// const getListTransactionSuccess = (state, action) => {
-//   console.log(action.data);
-//   console.log("reducer");
-//   return {
-//     ...state,
-//     transactions: action.data,
-//     loading: false,
-//     listTransactionSuccess: true,
-//     listTransactionFailure: false,
-//   }
-// }
 
 const getListTransactionFailure = state => ({
   ...state,

@@ -97,7 +97,10 @@
     "listPropertyTitle": "Danh sách dự án",
     "newPropertyTitle": "Tạo mới dự án"
   },
-
+  "transaction": {
+    "title": "Giao dịch",
+    "listTransactionTitle": "Danh sách giao dịch"
+  },
   "user": {
     "list":{
       "title":"List User"
@@ -115,7 +118,7 @@
       "save": "Save",
       "cancel":"Cancel"
     }
-    
+
   },
 
   "button": {
