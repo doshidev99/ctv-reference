@@ -8,6 +8,7 @@ import PrivateLayout from '../../layout/PrivateLayout';
 import Dashboard from '../../pages/Dashboard';
 import NewProperty from '../../pages/NewProperty';
 import ListProperty from '../../pages/ListProperty';
+import EmailBox from '../../pages/EmailBox';
 
 const routes = [
   {
@@ -35,6 +36,12 @@ const routes = [
         title: i18n.t('property.title'),
       },
     ],
+  },
+  {
+    path: '/hop-thu',
+    component: EmailBox,
+    exact: true,
+    title: "Hộp thư",
   },
 ];
 
