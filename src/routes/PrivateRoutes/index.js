@@ -8,6 +8,7 @@ import PrivateLayout from '../../layout/PrivateLayout';
 import Dashboard from '../../pages/Dashboard';
 import NewProperty from '../../pages/NewProperty';
 import ListProperty from '../../pages/ListProperty';
+import ListTransaction from '../../pages/ListTransaction';
 
 const routes = [
   {
@@ -35,6 +36,12 @@ const routes = [
         title: i18n.t('property.title'),
       },
     ],
+  },
+  {
+    path: '/giao-dich',
+    component: ListTransaction,
+    exact: true,
+    title: i18n.t('transaction.title'),
   },
 ];
 
