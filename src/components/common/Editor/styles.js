@@ -8,6 +8,8 @@ export default styled.div`
   }
   .quill {
     background: ${({ theme }) => theme.background.content};
-
+    ql-snow {
+      border: 1px solid #d9d9d9;
+    }
   }
 `;
