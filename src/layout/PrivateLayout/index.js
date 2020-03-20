@@ -102,15 +102,15 @@ class PrivateLayout extends Component {
             </Header>
             <Content className="container">
               <div className="content">{children}</div>
-              <Footer className="footer">{I18n.t('appInfo.footer')}</Footer>
-              <Footer className="footerMobile">
-                {mobileTabs.map(tab => (
-                  <a href={tab.url} key={tab.key}>
-                    <Icon type={tab.icon} className="tabIcon" />
-                  </a>
-                ))}
-              </Footer>
             </Content>
+            <Footer className="footer">{I18n.t('appInfo.footer')}</Footer>
+            <Footer className="footerMobile">
+              {mobileTabs.map(tab => (
+                <a href={tab.url} key={tab.key}>
+                  <Icon type={tab.icon} className="tabIcon" />
+                </a>
+                ))}
+            </Footer>
           </Layout>
         </Layout>
       </PrivateLayoutWrapper>

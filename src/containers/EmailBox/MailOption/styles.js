@@ -39,7 +39,7 @@ export default styled.div`
   }
 
   .mailScrollBar {
-    height: 100%;
+    height: calc(100% - 70px);
     .mailBucketList {
       padding: 35px 0 0;
   
@@ -85,6 +85,61 @@ export default styled.div`
   
         span:not(.mailBadge) {
           &:hover {
+            color: #4482FF;
+          }
+        }
+      }
+    }
+
+    .mailTagList {
+      padding: 30px 0;
+      text-align: ${props => (props['data-rtl'] === 'rtl' ? 'right' : 'left')};
+
+      .sectionLabel {
+        font-size: 16px;
+        font-weight: 500;
+        color: #788195;
+        line-height: 1.1;
+        margin-bottom: 20px;
+        padding: 15px 30px;
+        background-color: #F9F9F9;
+      }
+
+      .mailTag {
+        width: 100%;
+        display: flex;
+        margin-bottom: 15px;
+        padding: 0 30px;
+        align-items: center;
+        cursor: pointer;
+
+        .labelIndicatorColor {
+          width: 10px;
+          height: 10px;
+          display: flex;
+          margin: ${props => (props['data-rtl'] === 'rtl' ? '0 5px 0 0' : '0 0 0 5px')};
+          border-radius: 50%;
+        }
+
+        span {
+          font-size: 14px;
+          font-weight: 400;
+          color: #788195;
+          cursor: pointer;
+          line-height: 1.1;
+          margin: ${props => (props['data-rtl'] === 'rtl' ? '0 20px 0 0' : '0 0 0 20px')};
+          transition: all 0.3s cubic-bezier(0.215,0.61,0.355,1)
+        }
+
+        &.active {
+          span {
+            font-weight: 500;
+            color: #4482FF;
+          }
+        }
+
+        &:hover {
+          span {
             color: #4482FF;
           }
         }

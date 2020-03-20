@@ -133,6 +133,7 @@ const PrivateLayoutWrapper = styled.div`
     display: flex;
     justify-content: space-between;
     transition: all 0.5s ease 0.2s;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
     @media only screen and (max-width: 430px) {
       display: inherit;
     }
