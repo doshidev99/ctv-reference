@@ -276,7 +276,7 @@ class CreatePropertyForm extends Component {
                         </Select>
                       </div>,
                     )}
-                    
+
                   </FormItem>
                 </Col>
               </Row>
