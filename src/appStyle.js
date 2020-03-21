@@ -13,7 +13,7 @@ const AppWrapper = styled.div`
     background-image: ${({ theme }) =>
       `linear-gradient(90deg, ${theme.palette.lightPrimary}, ${theme.palette.primary})`};
   }
-  .ant-input:focus, .ant-input:hover  {
+  .ant-input:focus {
     border-color: ${({ theme }) => `${theme.palette.lightPrimary} !important`}
     box-shadow: 0 0 0 0.5px ${({ theme }) => theme.palette.lightPrimary};
   }

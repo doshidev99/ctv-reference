@@ -8,6 +8,7 @@ import PrivateLayout from '../../layout/PrivateLayout';
 import Dashboard from '../../pages/Dashboard';
 import NewProperty from '../../pages/NewProperty';
 import ListProperty from '../../pages/ListProperty';
+import DetailTransactionPage from '../../pages/DetailTransaction'
 
 const routes = [
   {
@@ -17,7 +18,7 @@ const routes = [
     title: i18n.t('dashboard.title'),
   },
   {
-    path: '/du-an',
+    path: '/projects',
     component: ListProperty,
     exact: true,
     title: i18n.t('property.title'),
@@ -29,10 +30,24 @@ const routes = [
         title: i18n.t('property.title'),
       },
       {
-        path: '/tao-moi',
+        path: '/create',
         component: NewProperty,
         exact: true,
         title: i18n.t('property.title'),
+      },
+    ],
+  },
+  {
+    path: '/transactions',
+    component: DetailTransactionPage,
+    exact: true,
+    title: i18n.t('transaction.title'),
+    routes: [
+      {
+        path: '/:id/show',
+        component: DetailTransactionPage,
+        exact: true,
+        title: i18n.t('transaction.detail.title'),
       },
     ],
   },

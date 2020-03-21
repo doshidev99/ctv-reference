@@ -35,7 +35,7 @@ export default styled.div`
     }
 
     &:focus,
-    &:not([value='']),
+    // &:not([value='']),
     &:-webkit-autofill,
     &:-webkit-autofill:hover,
     &:-webkit-autofill:focus {

@@ -7,7 +7,7 @@ const sidebarMenu = [
   {
     key: "property",
     text: "Dự án",
-    url: "/du-an",
+    url: "/projects",
     icon: "project",
   },
   {
