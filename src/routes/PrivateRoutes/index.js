@@ -8,7 +8,9 @@ import PrivateLayout from '../../layout/PrivateLayout';
 import Dashboard from '../../pages/Dashboard';
 import NewProperty from '../../pages/NewProperty';
 import ListProperty from '../../pages/ListProperty';
-import DetailTransactionPage from '../../pages/DetailTransaction'
+import DetailTransaction from '../../pages/DetailTransaction'
+import EmailBox from '../../pages/EmailBox';
+import ListTransaction from '../../pages/ListTransaction';
 
 const routes = [
   {
@@ -39,17 +41,29 @@ const routes = [
   },
   {
     path: '/transactions',
-    component: DetailTransactionPage,
+    component: DetailTransaction,
     exact: true,
     title: i18n.t('transaction.title'),
     routes: [
       {
         path: '/:id/show',
-        component: DetailTransactionPage,
+        component: DetailTransaction,
         exact: true,
         title: i18n.t('transaction.detail.title'),
       },
+      {
+        path: '/giao-dich',
+        component: ListTransaction,
+        exact: true,
+        title: i18n.t('transaction.title'),
+      },
     ],
+  },
+  {
+    path: '/inbox',
+    component: EmailBox,
+    exact: true,
+    title: "Hộp thư",
   },
 ];
 

@@ -99,6 +99,7 @@
   },
   "transaction": {
     "title": "Giao dịch",
+    "listTransactionTitle": "Danh sách giao dịch",
     "detail": {
       "title": "Chi tiết giao dịch",
       "generalInfo": "Thông tin chung",
@@ -141,7 +142,7 @@
       "save": "Save",
       "cancel":"Cancel"
     }
-    
+
   },
 
   "button": {

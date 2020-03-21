@@ -48,10 +48,10 @@ export const PropertyTypes = makeConstantCreator(
 );
 
 // Get list property
-export const getListPropertyAction = params =>
-  makeActionCreator(PropertyTypes.GET_LIST_PROPERTY, { params });
-export const getListPropertySuccessAction = data =>
-  makeActionCreator(PropertyTypes.GET_LIST_PROPERTY_SUCCESS, { data });
+export const getListPropertyAction = (limit, offset, filter) =>
+  makeActionCreator(PropertyTypes.GET_LIST_PROPERTY, { limit, offset, filter });
+export const getListPropertySuccessAction = (data, total, limit, offset) =>
+  makeActionCreator(PropertyTypes.GET_LIST_PROPERTY_SUCCESS, { data, total, limit ,offset });
 export const getListPropertyFailureAction = error =>
   makeActionCreator(PropertyTypes.GET_LIST_PROPERTY_FAILURE, { error });
 

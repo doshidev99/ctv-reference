@@ -8,3 +8,7 @@ export async function getTablePaymentApi(params) {
   const {id} = params;
   return get(`/transactions/${id}/payments`)
 }
+
+export async function listTransactionApi () {
+  return get('/transactions');
+}

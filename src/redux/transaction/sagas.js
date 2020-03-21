@@ -1,15 +1,19 @@
-import { takeEvery, put } from "redux-saga/effects";
+import { takeEvery, put, call } from "redux-saga/effects";
 import {
   TransactionTypes,
   getDetailTransactionSuccessAction,
   getDetailTransactionFailureAction,
   getTablePaymentSuccessAction,
   getTablePaymentFailureAction,
+  getListTransactionSuccessAction,
+  getListTransactionFailureAction,
 } from "./actions";
 import {
   getDetailTransactionApi,
   getTablePaymentApi,
+  listTransactionApi,
 } from "../../api/modules/transaction/index";
+import { apiWrapper } from "../../utils/reduxUtils";
 
 function* getDetailSaga({ id }) {
   try {
@@ -42,8 +46,24 @@ function* getTableSaga({ id }) {
     yield put(getTablePaymentFailureAction(error))
   }
 }
+function* getListTransaction () {
+  try {
+    const response = yield call(
+      apiWrapper,
+      {},
+      listTransactionApi,
+    );
+    if (response.results){
+      yield put(getListTransactionSuccessAction(response.results));
+    }
+  } catch (error) {
+    yield put(getListTransactionFailureAction(error));
+  }
+}
+
 
 export default [
   takeEvery(TransactionTypes.GET_DETAIL_TRANSACTION, getDetailSaga),
   takeEvery(TransactionTypes.GET_TABLE_PAYMENT, getTableSaga),
-]
+  takeEvery(TransactionTypes.GET_LIST_TRANSACTION, getListTransaction),
+];

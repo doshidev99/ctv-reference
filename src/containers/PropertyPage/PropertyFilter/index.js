@@ -1,43 +1,129 @@
-import React, { Component } from "react"
-import { Form, Select, Button, DatePicker } from "antd"
+import React, { Component } from "react";
+import { Form, Select, Button, DatePicker, message } from "antd";
+import { connect } from "react-redux";
+import { getListCityAction } from "../../../redux/city/actions";
+import { getListPropertyTypeAction } from "../../../redux/propertyType/actions";
 
 const { RangePicker } = DatePicker;
-const {Item} = Form
-export default class Filter extends Component {
-  search = () => {
-    // console.log('search');
+const { Item } = Form;
+
+class Filter extends Component {
+  componentDidMount() {
+    Promise.all([this.props.getListCity(), this.props.getListPropertyType()]);
   }
 
+  handleFilter = async () => {
+    const val = await this.props.form.getFieldsValue();
+    // eslint-disable-next-line no-console
+    console.log(val); // đang fix api
+    
+  };
+
+  handleCancel = () => {
+    this.props.form.resetFields();
+  };
+
   render() {
+    const {
+      cities,
+      propertyTypes,
+      cityLoading,
+      propertyTypeLoading,
+      listCityFailure,
+      listPropertyTypeFailure,
+    } = this.props;
+    const { getFieldDecorator } = this.props.form;
+
+    if (listCityFailure || listPropertyTypeFailure) {
+      message.error("Lỗi khi tải thông tin");
+      return <div className="filterForm" />;
+    }
     return (
       <Form className="filterForm">
         <div className="filterGroup">
           <Item className="cityFilter">
-            <Select placeholder="Thành phố">
-              <Select.Option value="1">Thành phố 1</Select.Option>
-              <Select.Option value="2">Thành phố 2</Select.Option>
-              <Select.Option value="3">Thành phố 3</Select.Option>
-              <Select.Option value="4">Thành phố 4</Select.Option>
-            </Select>
+            {getFieldDecorator("city", {
+              valuePropName: 'value',
+            })(
+              <Select allowClear placeholder="Thành phố" loading={cityLoading}>
+                {cities.map(e => (
+                  <Select.Option key={e.id} value={e.id}>
+                    {e.name}
+                  </Select.Option>
+                ))}
+              </Select>,
+            )}
           </Item>
           <Item className="sortFilter">
-            <Select placeholder="Trạng thái">
-              <Select.Option value="1">Chờ phê duyệt</Select.Option>
-              <Select.Option value="2">Đã bàn giao</Select.Option>
-              <Select.Option value="3">Đã hủy</Select.Option>
-              <Select.Option value="4">Tạm ngưng</Select.Option>
-            </Select>
+            {getFieldDecorator("propertyType",{
+              valuePropName: 'value',
+            })(
+              <Select allowClear placeholder="Loại dự án" loading={propertyTypeLoading}>
+                {propertyTypes.map(e => (
+                  <Select.Option key={e.id} value={e.id}>
+                    {e.name}
+                  </Select.Option>
+                ))}
+              </Select>,
+            )}
           </Item>
           <Item className="dateFilter">
-            <RangePicker />
+            {
+              getFieldDecorator("date", {
+                valuePropName: 'value',
+              }) (
+                <RangePicker />,
+              )
+            }
           </Item>
-
         </div>
         <div className="btnGroup">
-          <Button className="filterBtn" shape="round">Lọc</Button>
-          <Button className="cancelFilterBtn" shape="round">Hủy Lọc</Button>
+          <Button
+            className="filterBtn"
+            shape="round"
+            onClick={this.handleFilter}
+          >
+            Lọc
+          </Button>
+          <Button
+            className="cancelFilterBtn"
+            shape="round"
+            onClick={this.handleCancel}
+          >
+            Hủy Lọc
+          </Button>
         </div>
       </Form>
-    )
+    );
   }
 }
+
+const mapStateToProps = state => {
+  const { cities, listCityFailure } = state.city;
+
+  const cityLoading = state.city.loading;
+  const propertyTypeLoading = state.propertyType.loading;
+
+  const { propertyTypes, listPropertyTypeFailure } = state.propertyType;
+  return {
+    propertyTypes,
+    cityLoading,
+    propertyTypeLoading,
+    cities,
+    listCityFailure,
+    listPropertyTypeFailure,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  getListCity: () => {
+    dispatch(getListCityAction());
+  },
+  getListPropertyType: () => {
+    dispatch(getListPropertyTypeAction());
+  },
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Form.create()(Filter));
