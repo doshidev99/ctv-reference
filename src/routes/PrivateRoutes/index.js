@@ -19,7 +19,7 @@ const routes = [
     title: i18n.t('dashboard.title'),
   },
   {
-    path: '/du-an',
+    path: '/projects',
     component: ListProperty,
     exact: true,
     title: i18n.t('property.title'),
@@ -31,7 +31,7 @@ const routes = [
         title: i18n.t('property.title'),
       },
       {
-        path: '/tao-moi',
+        path: '/create',
         component: NewProperty,
         exact: true,
         title: i18n.t('property.title'),
@@ -39,13 +39,13 @@ const routes = [
     ],
   },
   {
-    path: '/giao-dich',
+    path: '/transactions',
     component: ListTransaction,
     exact: true,
     title: i18n.t('transaction.title'),
   },
   {
-    path: '/hop-thu',
+    path: '/inbox',
     component: EmailBox,
     exact: true,
     title: "Hộp thư",

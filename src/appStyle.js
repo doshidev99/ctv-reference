@@ -11,11 +11,10 @@ const AppWrapper = styled.div`
   }
   .gradientBackground {
     background-image: ${({ theme }) =>
-      `linear-gradient(90deg, ${theme.palette.lightPrimary}, ${theme.palette.primary})`};
+    `linear-gradient(90deg, ${theme.palette.lightPrimary}, ${theme.palette.primary})`};
   }
   .ant-input:focus, .ant-input:hover  {
-    border-color: ${({ theme }) => `${theme.palette.lightPrimary} !important`}
-    box-shadow: 0 0 0 0.5px ${({ theme }) => theme.palette.lightPrimary};
+    border-color: ${({ theme }) => `${theme.palette.lightPrimary} !important`};
   }
 
 `;
