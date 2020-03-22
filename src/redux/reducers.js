@@ -5,6 +5,7 @@ import { property } from "./property/reducer";
 import { city } from "./city/reducer";
 import { propertyType } from "./propertyType/reducer";
 import { transaction } from "./transaction/reducer";
+import { mail } from "./mail/reducer";
 
 export default history =>
   combineReducers({
@@ -14,4 +15,5 @@ export default history =>
     city,
     propertyType,
     transaction,
+    mail,
   });

@@ -1,17 +1,20 @@
 import React, { Component } from "react";
 import Scrollbar from "react-smooth-scrollbar";
 import { Button } from "antd";
+import { connect } from 'react-redux'
 import MailOptionWrapper from "./styles";
 import MailBucket from './MailBucket';
-import MailTag from './MailTag';
+// import MailTag from './MailTag';
+import { composeLargeMailAction } from "../../../redux/mail/actions";
 
 
 
-
-export default class MailOption extends Component {
+class MailOption extends Component {
 
   
-  handleClick = () => {};
+  handleExpandComposer = () => {
+    this.props.expandComposer()
+  };
 
   render(){
   
@@ -19,16 +22,35 @@ export default class MailOption extends Component {
       // eslint-disable-next-line no-return-assign
       <MailOptionWrapper>
         <div className="composeBtn">
-          <Button>Soạn thư</Button>
+          <Button onClick={this.handleExpandComposer}>Soạn thư</Button>
         </div>
         <Scrollbar
           className="mailScrollBar"
           continuousScrolling
         >
           <MailBucket />
-          <MailTag />
+          {/* <MailTag /> */}
         </Scrollbar>
       </MailOptionWrapper>
     );
   }
 }
+
+
+// eslint-disable-next-line no-unused-vars
+const mapStateToProps = state => {
+  return {
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  expandComposer: ()=> {
+    dispatch(composeLargeMailAction())
+  },
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(MailOption);
+
+
