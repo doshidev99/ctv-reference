@@ -388,6 +388,16 @@ const deleteOneRoom = (state, {id, floorId}) => {
   };
 }
 
+
+// DELETE PROPERTY
+const deleteOnePropertyError = (state) =>  {
+  return {
+    ...state,
+  }
+}
+
+
+
 export const property = makeReducerCreator(initialState, {
   [PropertyTypes.GET_LIST_PROPERTY]: getListProperty,
   [PropertyTypes.GET_LIST_PROPERTY_SUCCESS]: getListPropertySuccess,
@@ -432,5 +442,5 @@ export const property = makeReducerCreator(initialState, {
   [PropertyTypes.SUBMIT_ROOM_FORM]: submitFormRoom,
   [PropertyTypes.DELETE_ONE_ROOM]: deleteOneRoom,
 
-  
+  [PropertyTypes.DELETE_PROPERTY_FAILURE]: deleteOnePropertyError,
 });

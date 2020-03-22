@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { Form, Select, Button, DatePicker, message } from "antd";
 import { connect } from "react-redux";
+import moment from "moment"
 import { getListCityAction } from "../../../redux/city/actions";
 import { getListPropertyTypeAction } from "../../../redux/propertyType/actions";
+import { getListPropertyAction } from "../../../redux/property/actions";
 
 const { RangePicker } = DatePicker;
 const { Item } = Form;
@@ -13,9 +15,27 @@ class Filter extends Component {
   }
 
   handleFilter = async () => {
-    const val = await this.props.form.getFieldsValue();
+    const {city, propertyType, date} = await this.props.form.getFieldsValue();
     // eslint-disable-next-line no-console
-    console.log(val); // đang fix api
+    const filter = {};
+    
+    if(city) {
+      filter.cityId = city
+    }
+    
+    if(propertyType) {
+      filter.typeId = propertyType;
+    }
+    if(date) {
+      const from = moment(date[0]).format();
+      const to = moment(date[1]).format();
+      const filterDate = {"$lte": to, "$gte":from };
+      filter.updatedAt = filterDate;
+    }
+    
+    if(JSON.stringify(filter) !== JSON.stringify({})) {
+      this.props.applyFilter(10, 0, JSON.stringify(filter))
+    }
     
   };
 
@@ -121,6 +141,9 @@ const mapDispatchToProps = dispatch => ({
   },
   getListPropertyType: () => {
     dispatch(getListPropertyTypeAction());
+  },
+  applyFilter: (limit, offset, filter, orderBy) => {
+    dispatch(getListPropertyAction(limit, offset, filter, orderBy))
   },
 });
 export default connect(
