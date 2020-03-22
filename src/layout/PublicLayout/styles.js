@@ -23,8 +23,6 @@ const PublicLayoutWrapper = styled.div`
     background-color: white;
     padding: 70px 50px;
     text-align: center;
-    height: 55vh;
-    max-width: 450px;
     min-width: 450px;
     width: auto;
     @media only screen and (max-width: 500px) {
