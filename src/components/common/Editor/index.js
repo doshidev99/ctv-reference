@@ -20,7 +20,6 @@ export default class Editor extends Component {
             { indent: '-1' },
             { indent: '+1' },
           ],
-          ['link', 'image', 'video'],
           ['clean'],
         ],
       },

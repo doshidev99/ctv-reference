@@ -6,7 +6,6 @@ export default styled.div`
   height: 100%;
   width: 100%;
   overflow-y: auto;
-
   .inputBox {
     font-size: 14px;
     font-weight: 400;

@@ -48,4 +48,17 @@ export default styled.div`
     background-color: #ffffff;
   }
 
+  .createMailForm {
+    width: 100%;
+    height: 100%;
+    .singleMailScroll {
+      height: 100%;
+    }
+  }
+  .listMailAndSingleMail {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+
 `
