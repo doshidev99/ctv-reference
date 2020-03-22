@@ -45,13 +45,27 @@ export const PropertyTypes = makeConstantCreator(
   "SUBMIT_ROOM_FORM",
 
   "DELETE_ONE_ROOM",
+
+  "DELETE_PROPERTY",
+  "DELETE_PROPERTY_SUCCESS",
+  "DELETE_PROPERTY_FAILURE",
 );
 
 // Get list property
-export const getListPropertyAction = (limit, offset, filter) =>
-  makeActionCreator(PropertyTypes.GET_LIST_PROPERTY, { limit, offset, filter });
+export const getListPropertyAction = (limit, offset, filter, orderBy) =>
+  makeActionCreator(PropertyTypes.GET_LIST_PROPERTY, {
+    limit,
+    offset,
+    filter,
+    orderBy,
+  });
 export const getListPropertySuccessAction = (data, total, limit, offset) =>
-  makeActionCreator(PropertyTypes.GET_LIST_PROPERTY_SUCCESS, { data, total, limit ,offset });
+  makeActionCreator(PropertyTypes.GET_LIST_PROPERTY_SUCCESS, {
+    data,
+    total,
+    limit,
+    offset,
+  });
 export const getListPropertyFailureAction = error =>
   makeActionCreator(PropertyTypes.GET_LIST_PROPERTY_FAILURE, { error });
 
@@ -144,8 +158,21 @@ export const submitRoomFormAction = ({
     price,
   });
 
-export const deleteOneRoomAction = ( id, floorId ) =>
+export const deleteOneRoomAction = (id, floorId) =>
   makeActionCreator(PropertyTypes.DELETE_ONE_ROOM, {
     id,
     floorId,
+  });
+
+export const deleteProperyAtion = id =>
+  makeActionCreator(PropertyTypes.DELETE_PROPERTY, {
+    id,
+  });
+export const deleteProperySuccessAction = id =>
+  makeActionCreator(PropertyTypes.DELETE_PROPERTY_SUCCESS, {
+    id,
+  });
+export const deleteProperyFailureAtion = error =>
+  makeActionCreator(PropertyTypes.DELETE_PROPERTY_FAILURE, {
+    error,
   });
