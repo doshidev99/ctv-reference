@@ -3,7 +3,13 @@ import styled from 'styled-components';
 export default styled.div`
 
   height: 100%;
-
+  .loadingList {
+    height: calc(100% - 110px);
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    justify-content: center;
+  }
  
   .bucketLabel {
     width: 100%;
@@ -195,7 +201,7 @@ export default styled.div`
         }
   
         &.unreadMail {
-          background-color: #F6F8FB;
+          background-color:  #F6F8FB;
         }
   
         &:hover {

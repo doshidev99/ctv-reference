@@ -1,5 +1,9 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { Component } from "react";
 // import { Icon, Button } from "antd";
+import { connect } from "react-redux";
+import moment from 'moment'
 import {
   SingleMailContents,
   SingleMailHeader,
@@ -8,14 +12,15 @@ import {
   SingleMailReply,
 } from "./styles";
 import MailComposer from "./MailComposer";
+import { composeMailAction } from "../../../../redux/mail/actions";
 
-export default class MailContent extends Component {
+class MailContent extends Component {
   handleClick = () => {
     // console.log("OK");
   };
 
   render() {
-    const { mail } = this.props;
+    const { mail, isCompose } = this.props;
     const recpName = mail.name;
     const signature = {
       splitLet: recpName
@@ -23,6 +28,18 @@ export default class MailContent extends Component {
         .join("")
         .split("", 2),
     };
+    const replyArea = isCompose ? (
+      <SingleMailReply className="replyMail">
+        <MailComposer />
+      </SingleMailReply>
+    ) : (
+      <SingleMailReply className="replyMail">
+        <div onClick={this.props.composeMail} className="replyMailBtn">
+          Click here to
+          <span style={{ paddingLeft: 3 }}>Reply</span>
+        </div>
+      </SingleMailReply>
+    );
     return (
       <SingleMailContents>
         <div className="singleMail">
@@ -47,15 +64,16 @@ export default class MailContent extends Component {
                   {mail.name}
                   <span>
                     &lt;
-                    <span style={{padding: 0}}>{mail.email}</span>
+                    <span style={{ padding: 0 }}>{mail.email}</span>
                     &gt;
                   </span>
                 </h3>
-                <span className="mailDate">{mail.date}</span>
+                
+                <span className="mailDate">{moment(mail.date).calendar()}</span>
               </div>
               <p>
-                to 
-                <span style={{paddingLeft: 3}}>me</span>
+                to
+                <span style={{ paddingLeft: 3 }}>me</span>
               </p>
             </div>
           </SingleMailInfo>
@@ -63,21 +81,23 @@ export default class MailContent extends Component {
           <SingleMailBody className="mailBody">
             <p>{mail.body}</p>
           </SingleMailBody>
-
-          {/* <SingleMailReply className="replyMail">
-            <div
-              // onClick={this.handleClick}
-              className="replyMailBtn"
-            >
-              Click here to 
-              <span style={{paddingLeft: 3}}>Reply</span>
-            </div>
-          </SingleMailReply> */}
-          <SingleMailReply className="replyMail">
-            <MailComposer />
-          </SingleMailReply>
+          {replyArea}
         </div>
       </SingleMailContents>
     );
   }
 }
+
+const mapStateToProps = state => {
+  const { isCompose } = state.mail;
+  return {
+    isCompose,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  composeMail: () => {
+    dispatch(composeMailAction());
+  },
+});
+export default connect(mapStateToProps, mapDispatchToProps)(MailContent);

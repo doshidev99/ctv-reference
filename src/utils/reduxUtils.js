@@ -47,7 +47,7 @@ export function* apiWrapper(
     notification.destroy();
     notification.error({
       message: I18n.t('error.title'),
-      description: err.message || I18n.t('error.description'),
+      description: config.errorDescription ||I18n.t('error.description')|| err.message,
     });
     yield fork(checkError, err);
     throw new Error(err);

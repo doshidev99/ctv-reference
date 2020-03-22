@@ -13,7 +13,6 @@ export default styled.div`
     line-height: inherit;
     height: 36px;
     padding: 0 15px;
-    margin-bottom: 10px;
     border: 1px solid #e9e9e9;
     outline: 0 !important;
     overflow: hidden;
@@ -45,7 +44,9 @@ export default styled.div`
   }
 
   .ql-container{
-    height: 400px;
+    min-height: 200px;
+    max-height: 400px;
+    height: 300px;
   }
   .composeMailBtnWrapper {
     margin-top: 10px;
