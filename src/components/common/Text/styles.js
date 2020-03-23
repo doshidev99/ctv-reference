@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const TextWrapper = styled.span`
-  fontfamily: ${({ theme }) => theme.fonts.primary};
+  font-family: ${({ theme }) => theme.fonts.primary};
   color: ${({ theme }) => theme.text.primary};
   line-height: 20px;
   .bigTitle {

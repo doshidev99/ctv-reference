@@ -24,7 +24,6 @@ export default styled.div`
     border-top-right-radius: 0px;
   }
   .ant-table-content {
-    box-shadow: 0px 0px 5px -2px rgba(0,0,0,0.64);
     .ant-table-tbody > tr:hover > td {
       background: #E6FFF7 !important;
     }
@@ -35,7 +34,7 @@ export default styled.div`
   .ant-table-wrapper {
     background: #F5F7FA;
     td > a {
-      color: rgba(0, 0, 0, 0.65)
+      color: rgb(38, 38, 38);
     }
     .ant-table-pagination {
       color: ${({ theme }) => theme.color.black};
