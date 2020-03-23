@@ -45,14 +45,12 @@ class LegalRecord extends Component {
       const signedUrlS3 = await getSignedUrlS3(
         file.name,
         file.type,
-        "policyInformation",
+        "LEGAL_RECORD",
       );
-      uploadFile(file, signedUrlS3.url).then(response => {
-        this.props.uploadFileSuccess(response.url);
-        this.props.addNewLegalRecordSuccess(this.props.id, title.legalRecords, response.url);
-
-        onSuccess("OK");
-      });
+      const response = await uploadFile(file, signedUrlS3.url);
+      this.props.uploadFileSuccess(response.url);
+      this.props.addLegalRecordSuccess(this.props.id, title.legalRecords, response.url, file.type);
+      onSuccess("OK");
     } catch (error) {
       onError("Error cmnr =)))");
     }
@@ -110,8 +108,8 @@ const mapDispatchToProps = dispatch => ({
   uploadFileSuccess: fileUrl => {
     dispatch(uploadFileSuccessAction(fileUrl, "create"));
   },
-  addNewLegalRecordSuccess: (id, title, url) => {
-    dispatch(addNewLegalRecordSuccessAction(id, title, url));
+  addLegalRecordSuccess: (id, title, url, type) => {
+    dispatch(addNewLegalRecordSuccessAction(id, title, url, type));
   },
   handleRemoveLegalRecord: id => {
     dispatch(removeOneLegalRecordAction(id));

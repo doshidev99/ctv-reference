@@ -5,4 +5,10 @@ export default styled.div`
   .floors {
     margin-bottom: 10px;
   }
+  .uploadExcel {
+    width: 200px;
+    .ant-upload-list {
+      width: 200px;
+    }
+  }
 `;

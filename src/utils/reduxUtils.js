@@ -45,6 +45,8 @@ export function* apiWrapper(
     return response;
   } catch (err) {
     notification.destroy();
+    console.log(err);
+    
     notification.error({
       message: I18n.t('error.title'),
       description: config.errorDescription ||I18n.t('error.description')|| err.message,

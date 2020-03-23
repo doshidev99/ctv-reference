@@ -49,8 +49,6 @@ class MailComposer extends Component {
         "mailAttachment",
       );
       uploadFile(file, signedUrlS3.url).then(response => {
-        // this.props.uploadFileSuccess(response.url);
-        // this.props.addNewLegalRecordSuccess(this.props.id, title.legalRecords, response.url);
         this.props.uploadFileSuccess(response.url);
         onSuccess("OK");
       });

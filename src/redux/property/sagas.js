@@ -5,12 +5,13 @@ import {
   getListPropertySuccessAction,
   getListPropertyFailureAction,
   deleteProperyFailureAtion,
+  submitCreatePropertyFormFailureAtion,
 
   // uploadFileSuccessAction,
   // uploadFileFailureAction,
 } from "./actions";
 // import {data} from './tempData'
-import { getProperties, deleteOne } from "../../api/modules/property";
+import { getProperties, deleteOne, createOneProperty } from "../../api/modules/property";
 import { apiWrapper } from "../../utils/reduxUtils";
 
 function* getListProperty({ limit, offset, filter }) {
@@ -40,7 +41,7 @@ function* getListProperty({ limit, offset, filter }) {
   }
 }
 
-function* deleteProprety({ id }) {
+function* deleteProperty({ id }) {
   try {
     yield call(
       apiWrapper,
@@ -56,7 +57,47 @@ function* deleteProprety({ id }) {
     yield put(deleteProperyFailureAtion(error));
   }
 }
+
+function* createProperty({ payload }) {
+  try {
+    const body =JSON.parse(JSON.stringify(payload))
+    body.legalRecords.forEach(e => {
+      delete e.id
+    });
+    body.sitePlans.forEach(e => {
+      delete e.id
+    });
+    body.sections.forEach(e => {
+      delete e.key
+    });
+    const newLegalRecords = body.legalRecords.filter(value => Object.keys(value).length !== 0);
+    const newSitePlans = body.sitePlans.filter(value => Object.keys(value).length !== 1);
+    body.legalRecords = newLegalRecords;
+    body.sitePlans = newSitePlans;
+
+    // console.log(body.legalRecords === payload.legalRecords);
+    // console.log(body);
+    
+    yield call(
+      apiWrapper,
+      {
+        isShowProgress: true,
+        isShowSucceedNoti: true,
+        successDescription: "Thêm thành công",
+        errorDescription: "Có lỗi xảy ra",
+      },
+      createOneProperty,
+      body,
+    );
+  } catch (error) {
+    // console.log(error);
+    yield put(submitCreatePropertyFormFailureAtion(error));
+  }
+}
+
+
 export default [
   takeEvery(PropertyTypes.GET_LIST_PROPERTY, getListProperty),
-  takeEvery(PropertyTypes.DELETE_PROPERTY, deleteProprety),
+  takeEvery(PropertyTypes.DELETE_PROPERTY, deleteProperty),
+  takeEvery(PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM, createProperty),
 ];
