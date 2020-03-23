@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import * as XLSX from "xlsx"
 import { post } from '../api/utils';
 import { dateTimeUnix } from './textProcessor'
 
@@ -44,3 +45,32 @@ export const uploadFile = (file, signedRequest) => {
     console.log(err);
   });
 };
+
+export const handleXLSX = async file => {
+  
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    const df = [];
+    fileReader.onload =  event => {
+      try {
+        const { result } = event.target;
+        const workbook = XLSX.read(result, { type: "binary" });
+        Object.keys(workbook.Sheets).forEach((key) => {
+          // const content = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[key]);
+          const content = XLSX.utils.sheet_to_json(workbook.Sheets[key], { defval: ""});
+          df.push(content)
+        })
+        resolve(df)
+      } catch (e) {
+        reject(e);
+        console.log(e);
+        // throw e;
+      }
+    };
+    // fileReader.onerror = reject
+    fileReader.readAsBinaryString(file);
+  }).catch(e => {
+    console.log(e);
+    // throw e;
+  })
+}

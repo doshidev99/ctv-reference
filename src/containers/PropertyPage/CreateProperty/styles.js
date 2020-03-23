@@ -4,14 +4,24 @@ export default styled.div`
   .propertyNameLabel, .commissionLabel, 
   .discountTitle, .sitePlanTitle, 
   .productTableTitle, .othersTitle, 
-  .legalTitle, .cityLabel, .typeLabel {
+  .legalTitle, .cityLabel, .typeLabel, 
+  .openSaleDateLabel, .paymentMethodLabel {
     font-size: 18px;
     font-weight: 500;
   }
- 
+  
+  .openSaleDate {
+    .ant-calendar-picker {
+      width: 100%
+    }
+  }
   .overview {
     .ql-container{
       height: 350px;
+    }
+    label {
+      font-size: 18px;
+      font-weight: 500;
     }
   }
 
