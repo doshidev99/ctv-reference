@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 // import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Table, Pagination, Row, Col, message } from "antd";
-import {
-  getListRealtorAction,
-} from "../../../redux/realtor/actions";
+import { Link } from "react-router-dom";
+
+import { getListRealtorAction } from "../../../redux/realtor/actions";
 import RealtorTableWrapper from "./styles";
 
 class RealtorTable extends Component {
@@ -15,11 +15,17 @@ class RealtorTable extends Component {
       dataIndex: "id",
       key: "id",
       width: 100,
+      render: (e, record) => (
+        <Link to={`/realtors/${record.id}`}>{record.id}</Link>
+      ),
     },
     {
       title: "Họ và tên",
       key: "fullName",
       dataIndex: "fullName",
+      render: (e, record) => (
+        <Link to={`/realtors/${record.id}`}>{record.fullName}</Link>
+      ),
     },
     {
       title: "Email",
@@ -33,15 +39,20 @@ class RealtorTable extends Component {
     },
   ];
 
-  orderBy = "id"
+  orderBy = "id";
 
   componentDidMount() {
-    this.props.getListRealtor(10, 0, null, this.orderBy);
+    this.props.getListRealtor(5, 0, null, this.orderBy);
   }
 
   handleDelete = e => {
     this.props.deleteOne(e.key);
-    this.props.getListRealtor(this.props.limit, this.props.offset, null, this.orderBy);
+    this.props.getListRealtor(
+      this.props.limit,
+      this.props.offset,
+      null,
+      this.orderBy,
+    );
   };
 
   onChangePage = (page, limit) => {
