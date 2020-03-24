@@ -4,7 +4,7 @@ import {
   PropertyTypes,
   getListPropertySuccessAction,
   getListPropertyFailureAction,
-  deleteProperyFailureAtion,
+  deletePropertyFailureAction,
   submitCreatePropertyFormFailureAtion,
 
   // uploadFileSuccessAction,
@@ -54,7 +54,7 @@ function* deleteProperty({ id }) {
       id,
     );
   } catch (error) {
-    yield put(deleteProperyFailureAtion(error));
+    yield put(deletePropertyFailureAction(error));
   }
 }
 

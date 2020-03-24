@@ -5,6 +5,7 @@ import citySaga from "./city/sagas";
 import propertyTypeSaga from "./propertyType/sagas";
 import transactionSaga from "./transaction/sagas";
 import mailSaga from "./mail/sagas";
+import realtorSaga from "./realtor/sagas";
 
 export default function* root() {
   yield all([
@@ -14,5 +15,6 @@ export default function* root() {
     ...citySaga,
     ...propertyTypeSaga,
     ...mailSaga,
+    ...realtorSaga,
   ]);
 }

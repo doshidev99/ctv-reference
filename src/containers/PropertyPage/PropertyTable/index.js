@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Table, Icon, Pagination, Row, Col, message, Popconfirm } from "antd";
-import { getListPropertyAction, deleteProperyAtion } from "../../../redux/property/actions";
+import { getListPropertyAction, deletePropertyAction } from "../../../redux/property/actions";
 import PropertyTableWrapper from "./styles";
 
 class PropertyTable extends Component {
@@ -161,7 +161,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(getListPropertyAction(limit, offset, filter));
   },
   deleteOne: (id) => {
-    dispatch(deleteProperyAtion(id))
+    dispatch(deletePropertyAction(id))
   },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(PropertyTable);
