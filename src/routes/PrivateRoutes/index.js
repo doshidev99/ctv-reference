@@ -11,6 +11,7 @@ import ListProperty from '../../pages/ListProperty';
 import EmailBox from '../../pages/EmailBox';
 import ListTransaction from '../../pages/ListTransaction';
 import ListRealtor from '../../pages/ListRealtor';
+import DetailRealtor from '../../pages/DetailRealtor';
 
 const routes = [
   {
@@ -50,6 +51,20 @@ const routes = [
     component: ListRealtor,
     exact: true,
     title: i18n.t('realtor.title'),
+    routes: [
+      {
+        path: '/',
+        component: ListRealtor,
+        exact: true,
+        title: i18n.t('realtor.title'),
+      },
+      {
+        path: '/:id',
+        component: DetailRealtor,
+        exact: true,
+        title: i18n.t('realtor.title'),
+      },
+    ],
   },
   {
     path: '/inbox',
