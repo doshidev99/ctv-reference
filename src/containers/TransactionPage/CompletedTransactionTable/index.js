@@ -6,8 +6,12 @@ import { getListTransactionAction } from "../../../redux/transaction/actions";
 import TransactionTableWrapper from './style';
 
 class TransactionTable extends Component {
+  filter = {
+    status: 1,
+  }
+
   componentDidMount() {
-    this.props.getListTransaction();
+    this.props.getListTransaction(10, 0, this.filter);
   }
 
   onChangePage = (page, limit) => {
@@ -31,13 +35,15 @@ class TransactionTable extends Component {
     for (let i = 0; i < result.length; i+=1) {
       result[i].createdAt = newDate[i];
     }
+    console.log(result);
+
     return (
       <TransactionTableWrapper>
         {/* <Table columns={columns} dataSource={this.props.data} rowKey="date"/> */}
         <Table dataSource={transactions} loading={loading} rowKey="id" pagination={false}>
           <columns title="Thời gian" dataIndex="createdAt" key="createdAt" />
           <columns title="Mã giao dịch" dataIndex="code" key="code" />
-          {/* <columns title="Mã hợp đồng" dataIndex="Contractcode" key="contract" /> */}
+          <columns title="Mã hợp đồng" dataIndex="Contractcode" key="contract" />
           <columns title="Dự án" dataIndex="property.name" key="name" />
           <columns title="Tên KH" dataIndex="customerId" key="customer" />
           <columns title="Tên CTV" dataIndex="realtorId" key="collaborator" />

@@ -9,6 +9,9 @@ import Dashboard from '../../pages/Dashboard';
 import NewProperty from '../../pages/NewProperty';
 import ListProperty from '../../pages/ListProperty';
 import ListTransaction from '../../pages/ListTransaction';
+import ProcessingTransaction from '../../pages/ListTransaction/ProcessingTransaction';
+import CompletedTransaction from '../../pages/ListTransaction/CompletedTransaction';
+import CanceledTransaction from '../../pages/ListTransaction/CanceledTransaction';
 
 const routes = [
   {
@@ -42,6 +45,32 @@ const routes = [
     component: ListTransaction,
     exact: true,
     title: i18n.t('transaction.title'),
+    routes: [
+      {
+        path: '/',
+        component: ListTransaction,
+        exact: true,
+        title: i18n.t('transaction.title'),
+      },
+      {
+        path: '/processing',
+        component: ProcessingTransaction,
+        exact: true,
+        title: i18n.t('transaction.title'),
+      },
+      {
+        path: '/completed',
+        component: CompletedTransaction,
+        exact: true,
+        title: i18n.t('transaction.title'),
+      },
+      {
+        path: '/canceled',
+        component: CanceledTransaction,
+        exact: true,
+        title: i18n.t('transaction.title'),
+      },
+    ],
   },
 ];
 

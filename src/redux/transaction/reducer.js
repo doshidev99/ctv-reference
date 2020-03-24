@@ -16,9 +16,12 @@ const getListTransaction = state => ({
   loading: true,
 });
 
-const getListTransactionSuccess = (state, { data }) => ({
+const getListTransactionSuccess = (state, { data, total, limit, offset }) => ({
   ...state,
   transactions: data,
+  limit,
+  offset,
+  total,
   loading: false,
   listTransactionSuccess: true,
   listTransactionFailure: false,

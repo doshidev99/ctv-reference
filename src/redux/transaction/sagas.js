@@ -1,24 +1,31 @@
-import { takeEvery, put, call } from "redux-saga/effects";
+import { takeEvery, put } from "redux-saga/effects";
 import {
   TransactionTypes,
   getListTransactionSuccessAction,
   getListTransactionFailureAction,
 
 } from "./actions";
+import { getTransaction } from "../../api/modules/transaction"
 
-import { listTransactionApi } from "../../api/modules/transaction"
-import { apiWrapper } from "../../utils/reduxUtils";
-
-function* getListTransaction () {
+function* getListTransaction ({ limit, offset, filter }) {
   try {
-    const response = yield call(
-      apiWrapper,
-      {},
-      listTransactionApi,
-    );
-    if (response.results){
-      yield put(getListTransactionSuccessAction(response.results));
+    if (limit === undefined) {
+      limit = 10;
     }
+    if (offset === undefined) {
+      offset = 0;
+    }
+    // let filter = {
+    //   status: 0
+    // }
+    // console.log();
+
+    filter = JSON.stringify(filter)
+    const {results, total} = yield getTransaction({ limit, offset, filter });
+    const data = results;
+    // console.log(data,total);
+
+    yield put(getListTransactionSuccessAction(data, total, limit, offset));
   } catch (error) {
     yield put(getListTransactionFailureAction(error));
   }

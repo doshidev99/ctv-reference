@@ -5,9 +5,6 @@ import TransactionLayoutWrapper from './style';
 const { RangePicker } = DatePicker;
 const {Item} = Form
 export default class Filter extends Component {
-  // search = () => {
-  //   console.log('search');
-  // }
   constructor(props) {
     super(props);
     this.props = props;

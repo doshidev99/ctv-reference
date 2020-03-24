@@ -6,8 +6,12 @@ import { getListTransactionAction } from "../../../redux/transaction/actions";
 import TransactionTableWrapper from './style';
 
 class TransactionTable extends Component {
+  filter = {
+    status: 2,
+  }
+
   componentDidMount() {
-    this.props.getListTransaction();
+    this.props.getListTransaction(10, 0, this.filter);
   }
 
   onChangePage = (page, limit) => {
@@ -37,6 +41,7 @@ class TransactionTable extends Component {
         <Table dataSource={transactions} loading={loading} rowKey="id" pagination={false}>
           <columns title="Thời gian" dataIndex="createdAt" key="createdAt" />
           <columns title="Mã giao dịch" dataIndex="code" key="code" />
+          <columns title="Loại giao dịch" dataIndex="type" key="type" />
           {/* <columns title="Mã hợp đồng" dataIndex="Contractcode" key="contract" /> */}
           <columns title="Dự án" dataIndex="property.name" key="name" />
           <columns title="Tên KH" dataIndex="customerId" key="customer" />
@@ -68,6 +73,7 @@ TransactionTable.propTypes = {
 };
 
 const mapStateToProps = state => {
+  // data: state.transaction.transactions,
   const {
     transactions,
     offset,

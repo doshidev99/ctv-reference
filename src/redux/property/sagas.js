@@ -35,7 +35,7 @@ function* getListProperty({ limit, offset, filter }) {
         date: e.createdAt,
       }
     })
-    
+    // console.log(data);
     yield put(getListPropertySuccessAction(data, total, limit, offset));
   } catch (error) {
     yield put(getListPropertyFailureAction(error));
