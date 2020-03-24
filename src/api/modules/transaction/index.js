@@ -1,5 +1,5 @@
 import { get } from '../../utils';
 
-export async function listTransactionApi () {
-  return get('/transactions');
+export async function getTransaction (params) {
+  return get('/transactions', params);
 }

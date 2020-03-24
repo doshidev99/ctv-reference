@@ -101,6 +101,31 @@ export default class SideBarMenu extends Component {
             <span>Hoạt động</span>
           </Menu.Item>
         </Menu.SubMenu>
+
+        <Menu.SubMenu
+          key="transaction"
+          // onClick={() => history.push("/giao-dich")}
+          title={(
+            <span>
+              <Icon type="apartment" />
+              <span>Giao dịch</span>
+            </span>
+          )}
+        >
+          <Menu.Item key="transaction" onClick={() => history.push("/transactions")}>
+            <span>Tất cả giao dịch</span>
+          </Menu.Item>
+          <Menu.Item key="processing" onClick={() => history.push("/transactions/processing")}>
+            <span>Đang xử lý</span>
+          </Menu.Item>
+          <Menu.Item key="completed" onClick={() => history.push("/transactions/completed")}>
+            <span>Hoàn thành</span>
+          </Menu.Item>
+          <Menu.Item key="canceled" onClick={() => history.push("/transactions/canceled")}>
+            <span>Đã hủy</span>
+          </Menu.Item>
+        </Menu.SubMenu>
+
         {sidebarMenu.map(el => (
           <Menu.Item key={el.key} onClick={() => history.push(el.url)}>
             <span>

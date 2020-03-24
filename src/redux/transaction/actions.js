@@ -7,9 +7,12 @@ export const TransactionTypes = makeConstantCreator(
 );
 
 // Get list transaction
-export const getListTransactionAction = params => makeActionCreator(TransactionTypes.GET_LIST_TRANSACTION, { params });
-export const getListTransactionSuccessAction = data => makeActionCreator(TransactionTypes.GET_LIST_TRANSACTION_SUCCESS, { data });
-export const getListTransactionFailureAction = error => makeActionCreator(TransactionTypes.GET_LIST_TRANSACTION_FAILURE, { error });
+export const getListTransactionAction = (limit, offset, filter) =>
+  makeActionCreator(TransactionTypes.GET_LIST_TRANSACTION, { limit, offset, filter });
+export const getListTransactionSuccessAction = (data, total, limit, offset) =>
+  makeActionCreator(TransactionTypes.GET_LIST_TRANSACTION_SUCCESS, { data, total, limit ,offset });
+export const getListTransactionFailureAction = error =>
+  makeActionCreator(TransactionTypes.GET_LIST_TRANSACTION_FAILURE, { error });
 
 
 

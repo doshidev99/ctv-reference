@@ -22,7 +22,7 @@ function* getListProperty({ limit, offset, filter }) {
     if (offset === undefined) {
       offset = 0;
     }
-    
+
     const { results, total } = yield getProperties({ limit, offset, filter });
 
     const data = results.map(e => {
@@ -77,7 +77,7 @@ function* createProperty({ payload }) {
 
     // console.log(body.legalRecords === payload.legalRecords);
     // console.log(body);
-    
+
     yield call(
       apiWrapper,
       {
