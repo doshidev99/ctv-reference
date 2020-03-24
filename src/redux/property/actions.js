@@ -179,15 +179,15 @@ export const deleteOneRoomAction = (id, floorId) =>
   });
 
 // Delete property
-export const deleteProperyAtion = id =>
+export const deletePropertyAction = id =>
   makeActionCreator(PropertyTypes.DELETE_PROPERTY, {
     id,
   });
-export const deleteProperySuccessAction = id =>
+export const deletePropertySuccessAction = id =>
   makeActionCreator(PropertyTypes.DELETE_PROPERTY_SUCCESS, {
     id,
   });
-export const deleteProperyFailureAtion = error =>
+export const deletePropertyFailureAction = error =>
   makeActionCreator(PropertyTypes.DELETE_PROPERTY_FAILURE, {
     error,
   });

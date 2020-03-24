@@ -10,6 +10,7 @@ import NewProperty from '../../pages/NewProperty';
 import ListProperty from '../../pages/ListProperty';
 import EmailBox from '../../pages/EmailBox';
 import ListTransaction from '../../pages/ListTransaction';
+import ListRealtor from '../../pages/ListRealtor';
 
 const routes = [
   {
@@ -43,6 +44,12 @@ const routes = [
     component: ListTransaction,
     exact: true,
     title: i18n.t('transaction.title'),
+  },
+  {
+    path: '/realtors',
+    component: ListRealtor,
+    exact: true,
+    title: i18n.t('realtor.title'),
   },
   {
     path: '/inbox',

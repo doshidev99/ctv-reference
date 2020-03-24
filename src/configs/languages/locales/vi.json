@@ -101,6 +101,10 @@
     "title": "Giao dịch",
     "listTransactionTitle": "Danh sách giao dịch"
   },
+  "realtor": {
+    "title": "Người môi giới",
+    "listRealtorTitle": "Danh sách người môi giới"
+  },
   "user": {
     "list":{
       "title":"List User"
