@@ -75,11 +75,13 @@ const PrivateLayoutWrapper = styled.div`
     margin: 0 0 0 12px;
   }
   .logo-img  {
-    background: url("/sgroup-home-logo.png") no-repeat center;
-    background-size: contain;
     height: 32px;
-    width: 47px;
+    width: 32px;
     display: inline-block;
+  }
+  .logo h2 {
+    color: ${({ theme }) => theme.palette.lightPrimary};
+    font-weight: 700;
   }
   .sidebar {
     overflow: hidden;
@@ -133,6 +135,7 @@ const PrivateLayoutWrapper = styled.div`
     display: flex;
     justify-content: space-between;
     transition: all 0.5s ease 0.2s;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
     @media only screen and (max-width: 430px) {
       display: inherit;
     }

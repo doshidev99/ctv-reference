@@ -11,6 +11,7 @@ export const initialState = {
   loading: false,
   listPropertySuccess: undefined,
   listPropertyFailure: undefined,
+  createPropertyLoading: false,
   legalRecords: [
     {
       id: mongoObjectId(),
@@ -19,7 +20,7 @@ export const initialState = {
   sitePlans: [
     {
       id: mongoObjectId(),
-      link: [],
+      links: [],
     },
   ],
   salesPolicy: null,
@@ -32,13 +33,14 @@ export const initialState = {
   ],
   location: [],
   locationDescription: "",
-  productTable: [
-    {
-      id: mongoObjectId(),
-      name: "Tầng 1",
-      rooms: [],
-    },
-  ],
+  // productTable: [
+  //   {
+  //     id: mongoObjectId(),
+  //     name: "Tầng 1",
+  //     rooms: [],
+  //   },
+  // ],
+  productTable: [],
   mode: undefined,
   isShowRoom: false,
   roomInfo: {},
@@ -55,7 +57,7 @@ const getListProperty = state => ({
 const getListPropertySuccess = (state, { data, total, limit, offset }) => ({
   ...state,
   properties: data,
-  limit, 
+  limit,
   offset,
   total,
   loading: false,
@@ -83,7 +85,7 @@ const uploadFileFailure = state => ({
   loading: false,
 });
 
-// LEGAL INFO
+// LEGAL RECORD
 const addNewLegalRecord = state => {
   const legalRecords = [...state.legalRecords];
   legalRecords.push({
@@ -95,15 +97,15 @@ const addNewLegalRecord = state => {
   };
 };
 
-const addNewLegalRecordSuccess = (state, { id, title, link }) => {
+const addNewLegalRecordSuccess = (state, { id, title, link, mimeType }) => {
   const legalRecords = [...state.legalRecords];
   const index = legalRecords.findIndex(e => e.id === id);
   legalRecords[index] = {
     id,
     title,
     link,
+    mimeType,
   };
-
   return {
     ...state,
     legalRecords,
@@ -138,7 +140,7 @@ const addNewSitePlanSuccess = (state, { id, title, link }) => {
   sitePlans[index] = {
     id,
     title,
-    link: [...sitePlans[index].link, link],
+    links: [...sitePlans[index].links, link],
   };
 
   return {
@@ -150,10 +152,10 @@ const addNewSitePlanSuccess = (state, { id, title, link }) => {
 const removeSitePlanImage = (state, { id, link }) => {
   const sitePlans = [...state.sitePlans];
   const index = sitePlans.findIndex(e => e.id === id);
-  const links = [...sitePlans[index].link];
+  const links = [...sitePlans[index].links];
   const imgIndex = links.findIndex(e => e === link);
   links.splice(imgIndex, 1);
-  sitePlans[index].link = links;
+  sitePlans[index].links = links;
   return {
     ...state,
     sitePlans,
@@ -169,9 +171,12 @@ const removeOneSitePlan = (state, { id }) => {
 };
 
 // SALE POLICY
-const addSalesPolicy = (state, { link }) => ({
+const addSalesPolicy = (state, { link, mimeType }) => ({
   ...state,
-  salesPolicy: link,
+  salesPolicy: {
+    link,
+    mimeType,
+  },
 });
 
 const removeSalesPolicy = state => ({
@@ -180,9 +185,12 @@ const removeSalesPolicy = state => ({
 });
 
 // PRICE LIST
-const addPriceList = (state, { link }) => ({
+const addPriceList = (state, { link, mimeType }) => ({
   ...state,
-  priceList: link,
+  priceList: {
+    link,
+    mimeType,
+  },
 });
 
 const removePriceList = state => ({
@@ -248,7 +256,6 @@ const onChangeDiscount = (state, { id, title, value }) => {
   };
 };
 
-
 // LOCATION
 const markLocation = (state, { location }) => {
   return {
@@ -264,8 +271,7 @@ const onChangeLocationDescription = (state, { text }) => {
   };
 };
 
-
-// FLOOR 
+// FLOOR
 const addNewFloor = state => {
   const floors = [...state.productTable];
   floors.push({
@@ -283,15 +289,14 @@ const removeOneFloor = (state, { id }) => {
   const floors = [...state.productTable];
   const floorIndex = floors.findIndex(e => e.id === id);
   floors.splice(floorIndex, 1);
-  floors.forEach((e,idx) => {
-    e.name = `Tầng ${idx + 1}`
-  })
+  floors.forEach((e, idx) => {
+    e.name = `Tầng ${idx + 1}`;
+  });
   return {
     ...state,
     productTable: floors,
   };
 };
-
 
 // ROOM
 const openRoomForm = (state, { roomInfo, floorId }) => {
@@ -319,7 +324,8 @@ const openRoomForm = (state, { roomInfo, floorId }) => {
     // productTable: floors,
     isShowRoom: true,
     roomInfo: {
-      ...roomInfo, floorId,
+      ...roomInfo,
+      floorId,
       // ...roomInfo,
     },
   };
@@ -338,7 +344,7 @@ const submitFormRoom = (state, { id, floorId, productCode, area, price }) => {
   // Tìm phòng hiện tại (đang thêm hoặc sửa)
   const roomIndex = currentFloor.findIndex(e => e.id === id);
   // console.log(roomIndex);
-  
+
   // Gán thông tin phòng mới vào tầng thứ 'index' tại phòng 'room index'
   if (roomIndex === -1) {
     // Nếu tạo mới
@@ -373,20 +379,49 @@ const submitFormRoom = (state, { id, floorId, productCode, area, price }) => {
   };
 };
 
-const deleteOneRoom = (state, {id, floorId}) => {
+const deleteOneRoom = (state, { id, floorId }) => {
   const floors = [...state.productTable];
   // Tìm tầng hiện tại
   const index = floors.findIndex(e => e.id === floorId);
   const currentFloor = floors[index].rooms;
   // Tìm chỉ số phòng hiện tại để xóa
   const roomIndex = currentFloor.findIndex(e => e.id === id);
-  currentFloor.splice(roomIndex, 1)
+  currentFloor.splice(roomIndex, 1);
   floors[index].rooms = currentFloor;
   return {
     ...state,
     productTable: floors,
   };
-}
+};
+
+// DELETE PROPERTY
+const deleteOnePropertyError = state => {
+  return {
+    ...state,
+  };
+};
+
+// LOAD EXCEL
+const loadExcelSuccess = (state, { data }) => ({
+  ...state,
+  productTable: data,
+});
+
+
+// CREATE PROPERTY
+
+const creatingProperty = (state) => ({
+  ...state,
+  createPropertyLoading: true,
+})
+const createPropertySuccess = (state) => ({
+  ...state,
+  createPropertyLoading: false,
+})
+const createPropertyFailure = (state) => ({
+  ...state,
+  createPropertyLoading: false,
+})
 
 export const property = makeReducerCreator(initialState, {
   [PropertyTypes.GET_LIST_PROPERTY]: getListProperty,
@@ -432,5 +467,12 @@ export const property = makeReducerCreator(initialState, {
   [PropertyTypes.SUBMIT_ROOM_FORM]: submitFormRoom,
   [PropertyTypes.DELETE_ONE_ROOM]: deleteOneRoom,
 
+  [PropertyTypes.DELETE_PROPERTY_FAILURE]: deleteOnePropertyError,
+
+  [PropertyTypes.LOAD_EXCEL_SUCCESS]: loadExcelSuccess,
+
   
+  [PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM]: creatingProperty,
+  [PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM_SUCCESS]: createPropertySuccess,
+  [PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM_FAILURE]: createPropertyFailure,
 });

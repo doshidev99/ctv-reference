@@ -6,6 +6,7 @@ import { Form, Icon, Button, Checkbox } from "antd";
 import i18n from "i18next";
 import { loginAction } from "../../redux/staff/actions";
 import MaterialInput from "../../components/common/MaterialInput/index";
+import logo from '../../assets/images/logo.png';
 
 const FormItem = Form.Item;
 
@@ -21,7 +22,7 @@ class Login extends Component {
 
   render() {
     const { form, isAuthenticated } = this.props;
-    
+
     if (isAuthenticated) {
       return <Redirect to="/" />;
     }
@@ -29,7 +30,7 @@ class Login extends Component {
     return (
       <div>
         <div className="title">
-          <span>{i18n.t("login.title")}</span>
+          <img alt='#' src={logo} />
         </div>
         <Form layout="vertical" onSubmit={this.handleSubmit}>
           <FormItem>
@@ -69,9 +70,9 @@ class Login extends Component {
           </FormItem>
           <div className="sub-action-div">
             <Checkbox>{i18n.t("login.rememberMe")}</Checkbox>
-            <a className="login-form-forgot" href="/forgot-password">
+            {/* <a className="login-form-forgot" href="/forgot-password">
               {i18n.t("forgotPassword.title")}
-            </a>
+            </a> */}
           </div>
           <div className="action-div">
             <Button
@@ -80,7 +81,7 @@ class Login extends Component {
               className="login-form-button"
               loading={this.props.isLoading}
             >
-              {this.props.isLoading ? '' : i18n.t("login.loginBtn")}  
+              {this.props.isLoading ? '' : i18n.t("login.loginBtn")}
             </Button>
           </div>
         </Form>

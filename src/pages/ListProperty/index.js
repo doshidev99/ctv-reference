@@ -20,7 +20,7 @@ export default function ListProperty() {
         </div>
         <div className="propertyAction">
           <div className="actionBox">
-            <CreateButton source={i18next.t("button.create")} gotoCreatePage={() => history.push("/du-an/tao-moi")} />
+            <CreateButton source={i18next.t("button.create")} gotoCreatePage={() => history.push("/projects/create")} />
           </div>
         </div>
         <PropertyTable />

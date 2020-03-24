@@ -7,67 +7,61 @@ const sidebarMenu = [
   {
     key: "property",
     text: "Dự án",
-    url: "/du-an",
+    url: "/projects",
     icon: "project",
   },
-  // {
-  //   key: "transaction",
-  //   text: "Giao dịch",
-  //   url: "/giao-dich",
-  //   icon: "apartment",
-  //   SubMenu: {
-  //     key: "transaction",
-  //     text: "Giao dịch đang xử lý",
-  //     url: "/giao-dich",
-  //     icon: "apartment",
-  //   },
-  // },
+  {
+    key: "transaction",
+    text: "Giao dịch",
+    url: "/transactions",
+    icon: "apartment",
+  },
   {
     key: "collaborators",
-    text: "Cộng tác viên",
-    url: "/ctv",
+    text: "Người môi giới",
+    url: "/realtors",
     icon: "user",
   },
   {
     key: "mail",
     text: "Hộp thư",
-    url: "/hop-thu",
+    url: "/inbox",
     icon: "inbox",
   },
   {
     key: "events",
     text: "Sự kiện",
-    url: "/su-kien",
+    url: "/events",
     icon: "schedule",
   },
   {
     key: "education",
     text: "Đào tạo",
-    url: "/dao-tao",
+    url: "/trainings",
     icon: "audit",
   },
   {
     key: "online-support",
     text: "Hỗ trợ trực tuyến",
-    url: "/ho-tro-truc-tuyen",
+    url: "/online-supports",
     icon: "solution",
   },
   {
     key: "admin",
     text: "Administrator",
-    url: "/quan-ly",
+    url: "/admins",
     icon: "tool",
   },
   {
     key: "Partner",
-    text: "Partner",
-    url: "/partner",
+    text: "Cộng tác viên",
+    url: "/partners",
     icon: "team",
   },
   {
     key: "role",
     text: "Vai trò",
-    url: "/vai-tro",
+    url: "/roles",
     icon: "safety-certificate",
   },
 ];
@@ -118,16 +112,16 @@ export default class SideBarMenu extends Component {
             </span>
           )}
         >
-          <Menu.Item key="transaction" onClick={() => history.push("/giao-dich")}>
+          <Menu.Item key="transaction" onClick={() => history.push("/transactions")}>
             <span>Tất cả giao dịch</span>
           </Menu.Item>
-          <Menu.Item key="processing" onClick={() => history.push("/giao-dich/processing")}>
+          <Menu.Item key="processing" onClick={() => history.push("/transactions/processing")}>
             <span>Đang xử lý</span>
           </Menu.Item>
-          <Menu.Item key="completed" onClick={() => history.push("/giao-dich/completed")}>
+          <Menu.Item key="completed" onClick={() => history.push("/transactions/completed")}>
             <span>Hoàn thành</span>
           </Menu.Item>
-          <Menu.Item key="canceled" onClick={() => history.push("/giao-dich/canceled")}>
+          <Menu.Item key="canceled" onClick={() => history.push("/transactions/canceled")}>
             <span>Đã hủy</span>
           </Menu.Item>
         </Menu.SubMenu>

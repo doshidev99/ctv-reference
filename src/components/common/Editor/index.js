@@ -20,7 +20,6 @@ export default class Editor extends Component {
             { indent: '-1' },
             { indent: '+1' },
           ],
-          ['link', 'image', 'video'],
           ['clean'],
         ],
       },
@@ -33,12 +32,12 @@ export default class Editor extends Component {
   }
 
   render() {
-    const { label } = this.props;
+    const { label, placeholder } = this.props;
 
     const options = {
       theme: 'snow',
       formats: Editor.formats,
-      placeholder:label,
+      placeholder,
       value: this.state.value,
       onChange: this.handleChange,
       modules: this.quillModules,

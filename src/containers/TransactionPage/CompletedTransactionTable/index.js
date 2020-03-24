@@ -35,8 +35,6 @@ class TransactionTable extends Component {
     for (let i = 0; i < result.length; i+=1) {
       result[i].createdAt = newDate[i];
     }
-    console.log(result);
-
     return (
       <TransactionTableWrapper>
         {/* <Table columns={columns} dataSource={this.props.data} rowKey="date"/> */}

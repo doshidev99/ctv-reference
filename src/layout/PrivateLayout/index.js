@@ -12,6 +12,7 @@ import { Redirect } from 'react-router-dom';
 import PrivateLayoutWrapper from './styles';
 import SideBarMenu from './SideBarMenu/index';
 import { logout as logoutAction } from '../../redux/staff/actions';
+import logo from '../../assets/images/logo2.png';
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -44,7 +45,7 @@ class PrivateLayout extends Component {
       <PrivateLayoutWrapper>
         <Layout className="windowView">
           <input
-            onChange={() => {}}
+            onChange={() => { }}
             id="collapsedTracker"
             type="checkbox"
             checked={!this.state.collapsed}
@@ -62,8 +63,8 @@ class PrivateLayout extends Component {
           >
             <div className="logo">
               <a href="/">
-                <div className="logo-img" />
-                <h2>SGROUP</h2>
+                <img alt='' src={logo} className='logo-img' />
+                <h2>CTV APP</h2>
               </a>
             </div>
             <SideBarMenu />
@@ -75,7 +76,7 @@ class PrivateLayout extends Component {
                   className="trigger"
                   type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
                   onClick={this.toggle}
-                  
+
                 />
                 <div className="title">{I18n.t('appInfo.name')}</div>
               </div>
@@ -103,14 +104,14 @@ class PrivateLayout extends Component {
             <Content className="container">
               <div className="content">{children}</div>
               <Footer className="footer">{I18n.t('appInfo.footer')}</Footer>
-              <Footer className="footerMobile">
-                {mobileTabs.map(tab => (
-                  <a href={tab.url} key={tab.key}>
-                    <Icon type={tab.icon} className="tabIcon" />
-                  </a>
-                ))}
-              </Footer>
             </Content>
+            <Footer className="footerMobile">
+              {mobileTabs.map(tab => (
+                <a href={tab.url} key={tab.key}>
+                  <Icon type={tab.icon} className="tabIcon" />
+                </a>
+              ))}
+            </Footer>
           </Layout>
         </Layout>
       </PrivateLayoutWrapper>

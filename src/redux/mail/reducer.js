@@ -1,0 +1,212 @@
+import { makeReducerCreator } from "../../utils/reduxUtils";
+import { MailTypes } from "./actions";
+
+// Setup inintial state for property types
+export const initialState = {
+  mails: [],
+  offset: 0, // offset = (page - 1) * limit;
+  limit: 10,
+  total: null,
+  loading: false,
+  listMailLoading: false,
+  listMailSuccess: undefined,
+  listMailFailure: undefined,
+  currentMail: null,
+  getOneMailSuccess: undefined,
+  getOneMailFailure: undefined,
+  isCompose: false,
+  isComposeLarge: false,
+  fileUrl:null,
+  commonError: undefined,
+  sendMailLoading: false,
+  unRead: 0,
+};
+// End setup
+
+// LIST MAILS
+const getMailList = state => ({
+  ...state,
+  listMailLoading: true,
+});
+
+const getMailListSuccess = (state, { data, total, limit, offset }) => ({
+  ...state,
+  mails: data,
+  limit,
+  offset,
+  total,
+  listMailLoading: false,
+  listMailSuccess: true,
+  listMailFailure: false,
+});
+
+const getMailListFailure = state => ({
+  ...state,
+  listMailLoading: false,
+  listMailSuccess: false,
+  listMailFailure: true,
+});
+
+// GET ONE MAIL
+const getOneMail = state => ({
+  ...state,
+  loading: true,
+  isCompose: false,
+  isComposeLarge: false,
+});
+
+const getOneMailSuccess = (state, { data }) => ({
+  ...state,
+  loading: false,
+  currentMail: data,
+  getOneMailSuccess: true,
+  getOneMailFailure: false,
+  isCompose: false,
+  isComposeLarge: false,
+});
+
+const getOneMailFailure = state => ({
+  ...state,
+  loading: false,
+  getOneMailSuccess: false,
+  getOneMailFailure: true,
+  isCompose: false,
+  isComposeLarge: false,
+});
+
+
+// MARK AS READ
+const markOneMailReadSuccess = (state, { id }) => {
+  const mailList = [...state.mails];
+  const index = mailList.findIndex(e => e.id === id);
+  mailList[index].isRead = true;
+  return {
+    ...state,
+    mails: mailList,
+    commonError: false,
+  };
+};
+
+const markOneMailReadFailure = state => ({
+  ...state,
+  commonError: true,
+});
+
+// CHANGE STATUS TO COMPOSE
+const composeMail = (state) => ({
+  ...state, 
+  isCompose: true,
+})
+const composeLargeMail = (state) => ({
+  ...state,
+  isComposeLarge: true,
+  currentMail: null,
+})
+const uncomposeMail = (state) => ({
+  ...state,
+  isCompose: false,
+  isComposeLarge: false,
+})
+
+
+// UPLOAD FILE
+const uploadFileSuccess = (state, { fileUrl }) => {
+  return {
+    ...state,
+    fileUrl,
+    loading: false,
+  };
+};
+const uploadFileFailure = state => ({
+  ...state,
+  loading: false,
+});
+const removeFile = (state) => ({
+  ...state, 
+  fileUrl: null,
+})
+
+// Send mail
+const sendMail = (state) => ({
+  ...state,
+  sendMailLoading: true,
+})
+const sendMailSuccess = (state) => ({
+  ...state,
+  sendMailLoading: false,
+  commonError: false,
+})
+const sendMailFailure = (state) => ({
+  ...state,
+  sendMailLoading: false,
+  commonError: true,
+})
+
+// Get unread mail
+const getUnreadMailSuccess = (state, {total}) => ({
+  ...state,
+  unRead: total,
+  commonError: false,
+})
+const getUnreadMailFailure = (state) => ({
+  ...state,
+  unRead: 0,
+  commonError: true,
+})
+
+// Delete mail
+const deleteMailSuccess = (state, {id}) => {
+  const mailList = [...state.mails];
+  const index = mailList.findIndex(e =>  e.id ===id)
+  if(index !== -1) {
+    mailList.splice(index, 1);
+  }
+  return {
+    ...state,
+    mails: mailList,
+    currentMail: null,
+    commonError: false,
+  }
+}
+const deleteMailFailure = (state) => ({
+  ...state,
+  commonError: true,
+})
+
+export const mail = makeReducerCreator(initialState, {
+  [MailTypes.GET_MAIL_LIST]: getMailList,
+  [MailTypes.GET_MAIL_LIST_SUCCESS]: getMailListSuccess,
+  [MailTypes.GET_MAIL_LIST_FAILURE]: getMailListFailure,
+
+  [MailTypes.GET_ONE_MAIL]: getOneMail,
+  [MailTypes.GET_ONE_MAIL_SUCCESS]: getOneMailSuccess,
+  [MailTypes.GET_ONE_MAIL_FAILURE]: getOneMailFailure,
+
+  [MailTypes.MARK_ONE_MAIL_READ_SUCCESS]: markOneMailReadSuccess,
+  [MailTypes.MARK_ONE_MAIL_READ_FAILURE]: markOneMailReadFailure,
+
+  [MailTypes.COMPOSE_MAIL]: composeMail,
+  [MailTypes.COMPOSE_LARGE_MAIL]: composeLargeMail,
+  [MailTypes.UNCOMPOSE_MAIL]: uncomposeMail,
+
+  
+  [MailTypes.UPLOAD_FILE_SUCCESS]: uploadFileSuccess,
+  [MailTypes.UPLOAD_FILE_FAILURE]: uploadFileFailure,
+
+  [MailTypes.REMOVE_FILE]: removeFile,
+
+  [MailTypes.SEND_MAIL]: sendMail,
+  [MailTypes.SEND_MAIL_SUCCESS]: sendMailSuccess,
+  [MailTypes.SEND_MAIL_FAILURE]: sendMailFailure,
+
+  [MailTypes.GET_UNREAD_MAIL_SUCCESS]: getUnreadMailSuccess,
+  [MailTypes.GET_UNREAD_MAIL_FAILURE]: getUnreadMailFailure,
+
+  [MailTypes.DELETE_MAIL_SUCCESS]: deleteMailSuccess,
+  [MailTypes.DELETE_MAIL_FAILURE]: deleteMailFailure,
+  
+});
+
+
+
+

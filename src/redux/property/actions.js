@@ -45,13 +45,33 @@ export const PropertyTypes = makeConstantCreator(
   "SUBMIT_ROOM_FORM",
 
   "DELETE_ONE_ROOM",
+
+  "DELETE_PROPERTY",
+  "DELETE_PROPERTY_SUCCESS",
+  "DELETE_PROPERTY_FAILURE",
+
+  "LOAD_EXCEL_SUCCESS",
+
+  "SUBMIT_CREATE_PROPERTY_FORM",
+  "SUBMIT_CREATE_PROPERTY_FORM_SUCCESS",
+  "SUBMIT_CREATE_PROPERTY_FORM_FAILURE",
 );
 
 // Get list property
-export const getListPropertyAction = (limit, offset, filter) =>
-  makeActionCreator(PropertyTypes.GET_LIST_PROPERTY, { limit, offset, filter });
+export const getListPropertyAction = (limit, offset, filter, orderBy) =>
+  makeActionCreator(PropertyTypes.GET_LIST_PROPERTY, {
+    limit,
+    offset,
+    filter,
+    orderBy,
+  });
 export const getListPropertySuccessAction = (data, total, limit, offset) =>
-  makeActionCreator(PropertyTypes.GET_LIST_PROPERTY_SUCCESS, { data, total, limit ,offset });
+  makeActionCreator(PropertyTypes.GET_LIST_PROPERTY_SUCCESS, {
+    data,
+    total,
+    limit,
+    offset,
+  });
 export const getListPropertyFailureAction = error =>
   makeActionCreator(PropertyTypes.GET_LIST_PROPERTY_FAILURE, { error });
 
@@ -67,18 +87,21 @@ export const uploadSiteImageSuccessAction = (fileUrl, mode) =>
 export const uploadSiteImageFailureAction = error =>
   makeActionCreator(PropertyTypes.UPLOAD_SITE_IMAGE_FAILURE, { error });
 
+// Legal record
 export const addNewLegalRecordAction = () =>
   makeActionCreator(PropertyTypes.ADD_NEW_LEGAL_RECORD);
-export const addNewLegalRecordSuccessAction = (id, title, link) =>
+export const addNewLegalRecordSuccessAction = (id, title, link, mimeType) =>
   makeActionCreator(PropertyTypes.ADD_NEW_LEGAL_RECORD_SUCCESS, {
     id,
     title,
     link,
+    mimeType,
   });
 
 export const removeOneLegalRecordAction = id =>
   makeActionCreator(PropertyTypes.REMOVE_ONE_LEGAL_RECORD, { id });
 
+// Site Plan
 export const addNewSitePlanAction = () =>
   makeActionCreator(PropertyTypes.ADD_NEW_SITE_PLAN);
 export const addNewSitePlanSuccessAction = (id, title, link) =>
@@ -93,21 +116,25 @@ export const removeOneSitePlanAction = id =>
 export const removeSitePlanImageAction = (id, link) =>
   makeActionCreator(PropertyTypes.REMOVE_SITE_PLAN_IMAGE, { id, link });
 
-export const addSalesPolicyAction = link =>
-  makeActionCreator(PropertyTypes.ADD_SALES_POLICY, { link });
+// Sale policy
+export const addSalesPolicyAction = (link, mimeType) =>
+  makeActionCreator(PropertyTypes.ADD_SALES_POLICY, { link, mimeType });
 export const removeSalesPolicyAction = () =>
   makeActionCreator(PropertyTypes.REMOVE_SALES_POLICY);
 
-export const addPriceListAction = link =>
-  makeActionCreator(PropertyTypes.ADD_PRICE_LIST, { link });
+// Price list
+export const addPriceListAction = (link, mimeType) =>
+  makeActionCreator(PropertyTypes.ADD_PRICE_LIST, { link, mimeType });
 export const removePriceListAction = () =>
   makeActionCreator(PropertyTypes.REMOVE_PRICE_LIST);
 
+// Property image
 export const addPropertyImageAction = link =>
   makeActionCreator(PropertyTypes.ADD_PROPERTY_IMAGE, { link });
 export const removePropertyImagetAction = link =>
   makeActionCreator(PropertyTypes.REMOVE_PROPERTY_IMAGE, { link });
 
+// Discount
 export const addNewDiscountAction = () =>
   makeActionCreator(PropertyTypes.ADD_NEW_DISCOUNT);
 export const removeDiscountAction = id =>
@@ -115,20 +142,22 @@ export const removeDiscountAction = id =>
 export const onChangeDiscountAction = (id, title, value) =>
   makeActionCreator(PropertyTypes.ON_CHANGE_DISCOUNT, { id, title, value });
 
+// Location
 export const markLocationAction = location =>
   makeActionCreator(PropertyTypes.MARK_LOCATION, { location });
 export const onChangeLocationDescriptionAction = text =>
   makeActionCreator(PropertyTypes.ON_CHANGE_LOCATION_DESCRIPTION, { text });
 
+// Floor
 export const addNewFloor = () => makeActionCreator(PropertyTypes.ADD_NEW_FLOOR);
 export const removeOneFloorAction = id =>
   makeActionCreator(PropertyTypes.REMOVE_ONE_FLOOR, { id });
 
+// Room
 export const openRoomFormAction = (roomInfo, floorId) =>
   makeActionCreator(PropertyTypes.OPEN_ROOM_FORM, { roomInfo, floorId });
 export const closeRoomFormAction = () =>
   makeActionCreator(PropertyTypes.CLOSE_ROOM_FORM);
-
 export const submitRoomFormAction = ({
   id,
   floorId,
@@ -143,9 +172,40 @@ export const submitRoomFormAction = ({
     area,
     price,
   });
-
-export const deleteOneRoomAction = ( id, floorId ) =>
+export const deleteOneRoomAction = (id, floorId) =>
   makeActionCreator(PropertyTypes.DELETE_ONE_ROOM, {
     id,
     floorId,
+  });
+
+// Delete property
+export const deletePropertyAction = id =>
+  makeActionCreator(PropertyTypes.DELETE_PROPERTY, {
+    id,
+  });
+export const deletePropertySuccessAction = id =>
+  makeActionCreator(PropertyTypes.DELETE_PROPERTY_SUCCESS, {
+    id,
+  });
+export const deletePropertyFailureAction = error =>
+  makeActionCreator(PropertyTypes.DELETE_PROPERTY_FAILURE, {
+    error,
+  });
+
+// Load excel
+export const loadExcelSuccessAtion = data =>
+  makeActionCreator(PropertyTypes.LOAD_EXCEL_SUCCESS, {
+    data,
+  });
+
+// Submit create property form
+export const submitCreatePropertyFormAction = payload =>
+  makeActionCreator(PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM, {
+    payload,
+  });
+export const submitCreatePropertyFormSuccessAction = () =>
+  makeActionCreator(PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM_SUCCESS);
+export const submitCreatePropertyFormFailureAtion = error =>
+  makeActionCreator(PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM_FAILURE, {
+    error,
   });
