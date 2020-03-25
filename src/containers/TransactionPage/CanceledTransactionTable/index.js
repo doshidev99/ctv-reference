@@ -6,8 +6,37 @@ import { getListTransactionAction } from "../../../redux/transaction/actions";
 import TransactionTableWrapper from './style';
 
 class TransactionTable extends Component {
+  columnHeaders = [
+    {
+      title: "Thời gian",
+      dataIndex: "createdAt",
+      key: "createdAt",
+    },
+    {
+      title: "Mã giao dịch",
+      dataIndex: "code",
+      key: "code",
+    },
+    {
+      title: "Dự án",
+      dataIndex: "property.name",
+      key: "property.name",
+      width: 350,
+    },
+    {
+      title: "Tên CTV",
+      dataIndex: "realtorId",
+      key: "realtorId",
+    },
+    {
+      title: "Tên KH",
+      dataIndex: "customerId",
+      key: "customerId",
+    },
+  ];
+
   filter = {
-    status: 2,
+    status: 5,
   }
 
   componentDidMount() {
@@ -16,7 +45,7 @@ class TransactionTable extends Component {
 
   onChangePage = (page, limit) => {
     const offset = (page - 1) * limit;
-    this.props.getListTransaction(limit, offset);
+    this.props.getListTransaction(limit, offset, this.filter);
   };
 
   render() {
@@ -37,17 +66,13 @@ class TransactionTable extends Component {
     }
     return (
       <TransactionTableWrapper>
-        {/* <Table columns={columns} dataSource={this.props.data} rowKey="date"/> */}
-        <Table dataSource={transactions} loading={loading} rowKey="id" pagination={false}>
-          <columns title="Thời gian" dataIndex="createdAt" key="createdAt" />
-          <columns title="Mã giao dịch" dataIndex="code" key="code" />
-          <columns title="Loại giao dịch" dataIndex="type" key="type" />
-          {/* <columns title="Mã hợp đồng" dataIndex="Contractcode" key="contract" /> */}
-          <columns title="Dự án" dataIndex="property.name" key="name" />
-          <columns title="Tên KH" dataIndex="customerId" key="customer" />
-          <columns title="Tên CTV" dataIndex="realtorId" key="collaborator" />
-          <columns title="Tình trạng" dataIndex="status" key="status" />
-        </Table>
+        <Table
+          columns={this.columnHeaders}
+          dataSource={transactions}
+          pagination={false}
+          loading={loading}
+          rowKey="code"
+        />
         <Row type="flex" justify="center">
           <Col xs={24} sm={20} md={12} className="pagination">
             <Pagination

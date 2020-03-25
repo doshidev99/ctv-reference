@@ -61,7 +61,7 @@ class PropertyTable extends Component {
 
   handleDelete = e => {
     // console.log('OK');
-    
+
     this.props.deleteOne(e.key)
     // this.props.getListProperty();
     // const filter = {
