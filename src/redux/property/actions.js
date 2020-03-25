@@ -139,8 +139,8 @@ export const addNewDiscountAction = () =>
   makeActionCreator(PropertyTypes.ADD_NEW_DISCOUNT);
 export const removeDiscountAction = id =>
   makeActionCreator(PropertyTypes.REMOVE_DISCOUNT, { id });
-export const onChangeDiscountAction = (id, title, value) =>
-  makeActionCreator(PropertyTypes.ON_CHANGE_DISCOUNT, { id, title, value });
+export const onChangeDiscountAction = (id, name, value) =>
+  makeActionCreator(PropertyTypes.ON_CHANGE_DISCOUNT, { id, name, value });
 
 // Location
 export const markLocationAction = location =>
