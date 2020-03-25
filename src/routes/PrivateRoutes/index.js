@@ -15,6 +15,7 @@ import CompletedTransaction from '../../pages/ListTransaction/CompletedTransacti
 import CanceledTransaction from '../../pages/ListTransaction/CanceledTransaction';
 import ListRealtor from '../../pages/ListRealtor';
 import DetailRealtor from '../../pages/DetailRealtor';
+import ListAdmin from '../../pages/ListAdmin';
 
 const routes = [
   {
@@ -100,6 +101,12 @@ const routes = [
     component: EmailBox,
     exact: true,
     title: "Hộp thư",
+  },
+  {
+    path: '/admins',
+    component: ListAdmin,
+    exact: true,
+    title: "Quản trị viên",
   },
 ];
 

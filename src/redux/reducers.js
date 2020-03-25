@@ -7,6 +7,7 @@ import { propertyType } from "./propertyType/reducer";
 import { transaction } from "./transaction/reducer";
 import { mail } from "./mail/reducer";
 import { realtor } from "./realtor/reducer";
+import { admin } from "./admin/reducer";
 
 export default history =>
   combineReducers({
@@ -18,4 +19,6 @@ export default history =>
     transaction,
     mail,
     realtor,
+    admin,
+
   });
