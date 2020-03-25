@@ -6,6 +6,45 @@ import { getListTransactionAction } from "../../../redux/transaction/actions";
 import TransactionTableWrapper from './style';
 
 class TransactionTable extends Component {
+  columnHeaders = [
+  {
+    title: "Thời gian",
+    dataIndex: "createdAt",
+    key: "createdAt",
+  },
+  {
+    title: "Mã giao dịch",
+    dataIndex: "code",
+    key: "code",
+  },
+  {
+    title: "Mã hợp đồng",
+    dataIndex: "Contractcode",
+    key: "contContractcoderact",
+  },
+  {
+    title: "Dự án",
+    dataIndex: "property.name",
+    key: "property.name",
+    width: 350,
+  },
+  {
+    title: "Tên KH",
+    dataIndex: "customerId",
+    key: "customerId",
+  },
+  {
+    title: "Tên CTV",
+    dataIndex: "realtorId",
+    key: "realtorId",
+  },
+  {
+    title: 'Tình trạng',
+    key: 'status',
+    dataIndex: 'status',
+  },
+];
+
   componentDidMount() {
     this.props.getListTransaction();
   }
@@ -33,16 +72,13 @@ class TransactionTable extends Component {
     }
     return (
       <TransactionTableWrapper>
-        {/* <Table columns={columns} dataSource={this.props.data} rowKey="date"/> */}
-        <Table dataSource={transactions} loading={loading} rowKey="id" pagination={false}>
-          <columns title="Thời gian" dataIndex="createdAt" key="createdAt" />
-          <columns title="Mã giao dịch" dataIndex="code" key="code" />
-          {/* <columns title="Mã hợp đồng" dataIndex="Contractcode" key="contract" /> */}
-          <columns title="Dự án" dataIndex="property.name" key="name" />
-          <columns title="Tên KH" dataIndex="customerId" key="customer" />
-          <columns title="Tên CTV" dataIndex="realtorId" key="collaborator" />
-          <columns title="Tình trạng" dataIndex="status" key="status" />
-        </Table>
+        <Table
+          columns={this.columnHeaders}
+          dataSource={transactions}
+          pagination={false}
+          loading={loading}
+          rowKey="code"
+        />
         <Row type="flex" justify="center">
           <Col xs={24} sm={20} md={12} className="pagination">
             <Pagination
