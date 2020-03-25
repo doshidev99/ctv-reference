@@ -240,13 +240,14 @@ const removeDiscount = (state, { id }) => {
   };
 };
 
-const onChangeDiscount = (state, { id, title, value }) => {
+const onChangeDiscount = (state, { id, name, value }) => {
   const discounts = [...state.discounts];
   const index = discounts.findIndex(e => e.id === id);
   let currentDiscount = discounts.filter(e => e.id === id);
+  
   currentDiscount = {
     id,
-    title,
+    name,
     value,
   };
   discounts[index] = currentDiscount;
