@@ -65,7 +65,7 @@ class CreatePropertyForm extends Component {
         const {
           legalRecords,
           sitePlans,
-          // discounts,
+          discounts,
           salesPolicy,
           priceList,
           propertyImage,
@@ -85,11 +85,9 @@ class CreatePropertyForm extends Component {
           ...values,
           legalRecords,
           sitePlans,
-          // discounts,
-          salesPolicy: salesPolicy === null ? salesPolicy.link: null,
-            
-          priceList:priceList === null ? priceList.link: null,
-         
+          discounts,
+          salesPolicy: salesPolicy === null ? salesPolicy.link : null,
+          priceList: priceList === null ? priceList.link : null,
           medias,
           sections: productTable,
           location: {
@@ -100,8 +98,8 @@ class CreatePropertyForm extends Component {
         };
         // eslint-disable-next-line no-console
         console.log(values);
-        
-        this.props.submitForm(values)
+
+        this.props.submitForm(values);
       } else {
         message.error("Có lỗi xảy ra");
       }
@@ -133,7 +131,13 @@ class CreatePropertyForm extends Component {
   };
 
   render() {
-    const { form, legalRecords, sitePlans, discounts } = this.props;
+    const {
+      form,
+      legalRecords,
+      sitePlans,
+      discounts,
+      createPropertyLoading,
+    } = this.props;
 
     const { getFieldDecorator } = form;
 
@@ -236,11 +240,14 @@ class CreatePropertyForm extends Component {
               </Col>
               <Col xs={6}>
                 <FormItem>
-                  {getFieldDecorator("paymentMethod", {
-                    
-                  })(
+                  {getFieldDecorator(
+                    "paymentMethod",
+                    {},
+                  )(
                     <div>
-                      <label className="paymentMethodLabel">Phương thức thanh toán</label>
+                      <label className="paymentMethodLabel">
+                        Phương thức thanh toán
+                      </label>
                       <Input />
                     </div>,
                   )}
@@ -312,7 +319,7 @@ class CreatePropertyForm extends Component {
                 </FormItem>
               </Col>
             </Row>
-            
+
             <Row>
               <Col xs={24} lg={20} xl={12}>
                 <div className="discountArea">
@@ -377,8 +384,12 @@ class CreatePropertyForm extends Component {
             </div>
 
             <div className="submitButton">
-              <Button type="primary" onClick={this.handleSubmit}>
-                Thêm dự án
+              <Button
+                type="primary"
+                onClick={this.handleSubmit}
+                loading={createPropertyLoading}
+              >
+                {createPropertyLoading ? "" : "Thêm dự án"}
               </Button>
             </div>
           </Form>
@@ -403,6 +414,8 @@ const mapStateToProps = state => {
     productTable,
     location,
     locationDescription,
+    //------------------------
+    createPropertyLoading,
   } = state.property;
   const { propertyTypes, listPropertyTypeFailure } = state.propertyType;
   const { cities, listCityFailure } = state.city;
@@ -425,6 +438,8 @@ const mapStateToProps = state => {
     cities,
     listCityFailure,
     listPropertyTypeFailure,
+    //---------------------
+    createPropertyLoading,
   };
 };
 
@@ -448,8 +463,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(getListPropertyTypeAction());
   },
 
-  submitForm: (payload) => {
-    dispatch(submitCreatePropertyFormAction(payload))
+  submitForm: payload => {
+    dispatch(submitCreatePropertyFormAction(payload));
   },
 });
 
