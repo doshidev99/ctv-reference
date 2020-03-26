@@ -60,21 +60,12 @@ class PropertyTable extends Component {
   }
 
   handleDelete = e => {
-    // console.log('OK');
-
     this.props.deleteOne(e.key)
-    // this.props.getListProperty();
-    // const filter = {
-    //   "properties.deletedAt": {"$exists":false},
-    // }
     this.props.getListProperty(10 );
   };
 
   onChangePage = (page, limit) => {
     const offset = (page - 1) * limit;
-    // const filter = {
-    //   "properties.deletedAt": {"$exists":false},
-    // }
     this.props.getListProperty(limit, offset);
   };
 
