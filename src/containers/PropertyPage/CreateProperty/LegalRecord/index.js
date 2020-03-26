@@ -52,6 +52,7 @@ class LegalRecord extends Component {
       this.props.addLegalRecordSuccess(this.props.id, title.legalRecords, response.url, file.type);
       onSuccess("OK");
     } catch (error) {
+      message.error("Xảy ra lỗi, vui lòng thử lại");
       onError("Error cmnr =)))");
     }
   };

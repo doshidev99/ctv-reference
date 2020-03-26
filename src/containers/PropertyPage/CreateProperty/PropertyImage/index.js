@@ -53,15 +53,14 @@ class PropertyImage extends Component {
       const signedUrlS3 = await getSignedUrlS3(
         file.name,
         file.type,
-        "sitePlanImage",
+        "PROPERTY_IMAGE",
       );
-
-      uploadFile(file, signedUrlS3.url).then(response => {
-        this.props.uploadImageSuccess(response.url);
-        this.props.addPropertyImage(response.url);
-        onSuccess("OK");
-      });
+      const response = await uploadFile(file, signedUrlS3.url);
+      this.props.uploadImageSuccess(response.url);
+      this.props.addPropertyImage(response.url);
+      onSuccess("OK");
     } catch (error) {
+      message.error("Xảy ra lỗi, vui lòng thử lại");
       onError("Error cmnr =)))");
     }
   };
@@ -94,7 +93,6 @@ class PropertyImage extends Component {
           </span>
         </div>
         <Upload
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
           listType="picture-card"
           fileList={fileList}
           onPreview={this.handlePreview}
