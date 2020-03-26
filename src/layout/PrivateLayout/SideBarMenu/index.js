@@ -59,10 +59,10 @@ const sidebarMenu = [
     icon: "team",
   },
   {
-    key: "role",
-    text: "Vai trò",
-    url: "/roles",
-    icon: "safety-certificate",
+    key: "option",
+    text: "Cài đặt",
+    url: "/options",
+    icon: "setting",
   },
 ];
 

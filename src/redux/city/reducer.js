@@ -11,6 +11,13 @@ export const initialState = {
   loading: false,
   listCitySuccess: undefined,
   listCityFailure: undefined,
+
+  createCitySuccess: undefined,
+  createCityFailure: undefined,
+
+  updateCitySuccess: undefined,
+  updateCityFailure: undefined,
+
 };
 // End setup
 
@@ -38,8 +45,46 @@ const getListCityFailure = state => ({
   listCityFailure: true,
 });
 
+// ---------------------------------------
+const createOneCitySuccess = state => {
+
+  return {
+    ...state,
+    loading:false,
+    createCityFailure: false,
+    createCitySuccess: true,
+  }
+} 
+
+const createOneCityFailure = state => ({
+  ...state,
+  loading:false,
+  createCityFailure: false,
+  createCitySuccess: true,
+})
+// -----------------------------------------
+const updateOneCitySuccess = state => ({
+  ...state,
+  loading:false,
+  updateCityFailure: false,
+  updateCitySuccess: true,
+})
+const updateOneCityFailure = state => ({
+  ...state,
+  loading:false,
+  updateCityFailure: false,
+  updateCitySuccess: true,
+})
+// -----------------------------------------
 export const city = makeReducerCreator(initialState, {
   [CityTypes.GET_LIST_CITY]: getListCity,
   [CityTypes.GET_LIST_CITY_SUCCESS]: getListCitySuccess,
   [CityTypes.GET_LIST_CITY_FAILURE]: getListCityFailure,
+
+  [CityTypes.CREATE_ONE_CITY_SUCCESS]: createOneCitySuccess,
+  [CityTypes.CREATE_ONE_CITY_FAILURE]: createOneCityFailure,
+
+  [CityTypes.UPDATE_ONE_CITY_SUCCESS]: updateOneCitySuccess,
+  [CityTypes.UPDATE_ONE_CITY_FAILURE]: updateOneCityFailure,
+
 })
