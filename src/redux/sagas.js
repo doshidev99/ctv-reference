@@ -7,6 +7,7 @@ import transactionSaga from "./transaction/sagas";
 import mailSaga from "./mail/sagas";
 import realtorSaga from "./realtor/sagas";
 import roleSaga from "./role/sagas";
+import adminSaga from "./admin/sagas";
 
 export default function* root() {
   yield all([
@@ -18,5 +19,6 @@ export default function* root() {
     ...mailSaga,
     ...realtorSaga,
     ...roleSaga,
+    ...adminSaga,
   ]);
 }

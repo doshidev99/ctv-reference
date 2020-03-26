@@ -6,6 +6,7 @@ import {
   getListPropertyFailureAction,
   deletePropertyFailureAction,
   submitCreatePropertyFormFailureAtion,
+  submitCreatePropertyFormSuccessAction,
 
   // uploadFileSuccessAction,
   // uploadFileFailureAction,
@@ -22,19 +23,16 @@ function* getListProperty({ limit, offset, filter }) {
     if (offset === undefined) {
       offset = 0;
     }
-
     const { results, total } = yield getProperties({ limit, offset, filter });
-
     const data = results.map(e => {
       return {
         key: e.id,
         name: e.name,
-        city: e.cityName,
-        type: e.typeName,
+        city: e.city.name,
+        type: e.type.name,
         date: moment(e.createdAt).format("L"),
       };
     });
-
     yield put(getListPropertySuccessAction(data, total, limit, offset));
   } catch (error) {
     yield put(getListPropertyFailureAction(error));
@@ -67,17 +65,18 @@ function* createProperty({ payload }) {
     body.sitePlans.forEach(e => {
       delete e.id
     });
+    body.discounts.forEach(e => {
+      delete e.id
+    });
     body.sections.forEach(e => {
       delete e.key
     });
     const newLegalRecords = body.legalRecords.filter(value => Object.keys(value).length !== 0);
     const newSitePlans = body.sitePlans.filter(value => Object.keys(value).length !== 1);
+    const newDiscounts = body.discounts.filter(value => Object.keys(value).length !== 0);
     body.legalRecords = newLegalRecords;
     body.sitePlans = newSitePlans;
-
-    // console.log(body.legalRecords === payload.legalRecords);
-    // console.log(body);
-
+    body.discounts = newDiscounts
     yield call(
       apiWrapper,
       {
@@ -89,8 +88,8 @@ function* createProperty({ payload }) {
       createOneProperty,
       body,
     );
+    yield put(submitCreatePropertyFormSuccessAction());
   } catch (error) {
-    // console.log(error);
     yield put(submitCreatePropertyFormFailureAtion(error));
   }
 }

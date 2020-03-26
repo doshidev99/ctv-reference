@@ -11,12 +11,6 @@ const sidebarMenu = [
     icon: "project",
   },
   {
-    key: "transaction",
-    text: "Giao dịch",
-    url: "/transactions",
-    icon: "apartment",
-  },
-  {
     key: "collaborators",
     text: "Người môi giới",
     url: "/realtors",
