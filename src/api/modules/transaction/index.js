@@ -1,4 +1,4 @@
-import { get } from '../../utils';
+import { get, put } from '../../utils';
 
 export async function getDetailTransactionApi(id) {
   return get(`/transactions/${id}`);
@@ -11,4 +11,16 @@ export async function getTablePaymentApi(params) {
 
 export async function listTransactionApi () {
   return get('/transactions');
+}
+
+export async function confirmOrderApi (id) {
+  return put(`/transactions/${id}/confirmation`)
+}
+
+export async function resendRequestApi (id) {
+  return put(`/transactions/${id}/standing-order`)
+}
+
+export async function cancelTransApi (id) {
+  return put(`/transactions/${id}/cancel`)
 }

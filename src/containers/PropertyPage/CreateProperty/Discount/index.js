@@ -41,8 +41,6 @@ class Discount extends Component {
               )}
         </FormItem>
         <Button icon="minus" shape="circle" onClick={this.handleRemove} />
-
-       
       </DiscountWrapper>
     );
   }

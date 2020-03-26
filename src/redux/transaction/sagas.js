@@ -1,4 +1,5 @@
 import { takeEvery, put, call } from "redux-saga/effects";
+import moment from 'moment'
 import {
   TransactionTypes,
   getDetailTransactionSuccessAction,
@@ -7,11 +8,20 @@ import {
   getTablePaymentFailureAction,
   getListTransactionSuccessAction,
   getListTransactionFailureAction,
+  confirmOrderSuccessAction,
+  confirmOrderFailureAction,
+  resendRequestSuccessAction,
+  resendRequestFailureAction,
+  cancelTransactionSuccessAction,
+  cancelTransactionFailureAction,
 } from "./actions";
 import {
   getDetailTransactionApi,
   getTablePaymentApi,
   listTransactionApi,
+  confirmOrderApi,
+  resendRequestApi,
+  cancelTransApi,
 } from "../../api/modules/transaction/index";
 import { apiWrapper } from "../../utils/reduxUtils";
 
@@ -32,13 +42,12 @@ function* getDetailSaga({ id }) {
 function* getTableSaga({ id }) {
   try {
     const {results, total} = yield getTablePaymentApi({ id });
-    const data = results.map((e,i) => {
+    const data = results.map(e => {
       return {
-        phase: i+1,
         key: e.id,
+        date: moment(e.createdAt).format('DD/MM/YYYY'),
         amount: e.amount,
-        available: e.isAvailable,
-        withdraw: e.realtorReceived,
+        realtorReceived: e.realtorReceived === true ? 'Đã rút': 'Chưa rút',
       }
     })
     yield put(getTablePaymentSuccessAction(data,total))
@@ -46,6 +55,7 @@ function* getTableSaga({ id }) {
     yield put(getTablePaymentFailureAction(error))
   }
 }
+
 function* getListTransaction () {
   try {
     const response = yield call(
@@ -61,9 +71,39 @@ function* getListTransaction () {
   }
 }
 
+function* confirmOder ({id}) {
+  try {
+    const { status, standingOrder} = yield confirmOrderApi(id);
+    yield put(confirmOrderSuccessAction(status, standingOrder))
+  } catch (error) {
+    yield put(confirmOrderFailureAction(error));
+  }
+}
+
+function* resendRequest ({id}) {
+  try {
+    const { status } = yield resendRequestApi(id);
+    yield put(resendRequestSuccessAction(status))
+  } catch (error) {
+    yield put(resendRequestFailureAction(error));
+  }
+}
+
+function* cancelTransaction ({id}) {
+  try {
+    const { status } = yield cancelTransApi(id);
+    yield put(cancelTransactionSuccessAction(status))
+  } catch (error) {
+    yield put(cancelTransactionFailureAction(error));
+  }
+}
+
 
 export default [
   takeEvery(TransactionTypes.GET_DETAIL_TRANSACTION, getDetailSaga),
   takeEvery(TransactionTypes.GET_TABLE_PAYMENT, getTableSaga),
   takeEvery(TransactionTypes.GET_LIST_TRANSACTION, getListTransaction),
+  takeEvery(TransactionTypes.CONFIRM_ORDER, confirmOder),
+  takeEvery(TransactionTypes.RESEND_REQUEST, resendRequest),
+  takeEvery(TransactionTypes.CANCEL_TRANSACTION, cancelTransaction),
 ];

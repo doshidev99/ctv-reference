@@ -41,21 +41,21 @@ const routes = [
   },
   {
     path: '/transactions',
-    component: DetailTransaction,
+    component: ListTransaction,
     exact: true,
     title: i18n.t('transaction.title'),
     routes: [
+      {
+        path: '/',
+        component: ListTransaction,
+        exact: true,
+        title: i18n.t('transaction.title'),
+      },
       {
         path: '/:id/show',
         component: DetailTransaction,
         exact: true,
         title: i18n.t('transaction.detail.title'),
-      },
-      {
-        path: '/giao-dich',
-        component: ListTransaction,
-        exact: true,
-        title: i18n.t('transaction.title'),
       },
     ],
   },

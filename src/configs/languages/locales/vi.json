@@ -121,7 +121,11 @@
       "floor": "Tầng",
       "area": "Diện tích",
       "commission": "Tiền hoa hồng",
-      "allCommission": "Tổng tiền hoa hồng"
+      "allCommission": "Tổng tiền hoa hồng",
+      "depositConfirm": "Xác nhận đặt cọc",
+      "sendRequest": "Yêu cầu gửi lại",
+      "cancelTrans": "Hủy bỏ giao dịch",
+      "successTransConfirm": "Xác nhận giao dịch thành công"
     }
   },
 

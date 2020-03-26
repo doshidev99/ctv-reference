@@ -1,11 +1,19 @@
 import styled from 'styled-components';
 
 export default styled.div`
-  .info-box{
+  .info-box, .upload, .confirm-box, .table-box{
     padding: 15px;
+    font-size: 15px
   }
-  .confirmButton{
-    margin: 20px;
-    float: right;
+  .button{
+    padding: 15px;
+    font-size: 25px
+  }
+  .image img{
+    width: 100%
+    padding:30px
+  }
+  .button-group button{
+    margin: 30px 0
   }
 `;

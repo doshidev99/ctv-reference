@@ -12,6 +12,25 @@ export const TransactionTypes = makeConstantCreator(
   "GET_LIST_TRANSACTION",
   "GET_LIST_TRANSACTION_SUCCESS",
   "GET_LIST_TRANSACTION_FAILURE",
+
+  "ADD_NEW_BONUS",
+  "REMOVE_BONUS",
+  "ON_CHANGE_BONUS",
+
+  "CONFIRM_ORDER",
+  "CONFIRM_ORDER_SUCCESS",
+  "CONFIRM_ORDER_FAIL",
+
+  "RESEND_REQUEST",
+  "RESEND_REQUEST_SUCCESS",
+  "RESEND_REQUEST_FAIL",
+
+  "CANCEL_TRANSACTION",
+  "CANCEL_TRANSACTION_SUCCESS",
+  "CANCEL_TRANSACTION_FAIL",
+
+  "UPLOAD_IMAGE_SUCCESS",
+  "UPLOAD_IMAGE_FAILURE",
 );
 
 // Get detail transaction by id
@@ -34,6 +53,44 @@ export const getTablePaymentFailureAction = error =>
 export const getListTransactionAction = params => makeActionCreator(TransactionTypes.GET_LIST_TRANSACTION, { params });
 export const getListTransactionSuccessAction = data => makeActionCreator(TransactionTypes.GET_LIST_TRANSACTION_SUCCESS, { data });
 export const getListTransactionFailureAction = error => makeActionCreator(TransactionTypes.GET_LIST_TRANSACTION_FAILURE, { error });
+
+// Add new bonus on success transaction
+export const addNewBonusAction = () =>
+  makeActionCreator(TransactionTypes.ADD_NEW_BONUS);
+export const removeBonusAction = id =>
+  makeActionCreator(TransactionTypes.REMOVE_BONUS, { id });
+export const onChangeBonusAction = (id, title, value) =>
+  makeActionCreator(TransactionTypes.ON_CHANGE_BONUS, { id, title, value });
+
+// Confirm uy nhiem chi order :3
+export const confirmOrderAction = id =>
+  makeActionCreator(TransactionTypes.CONFIRM_ORDER, {id});
+export const confirmOrderSuccessAction = (status, standingOrder) =>
+  makeActionCreator(TransactionTypes.CONFIRM_ORDER_SUCCESS, {status, standingOrder});
+export const confirmOrderFailureAction = error =>
+  makeActionCreator(TransactionTypes.CONFIRM_ORDER_FAIL, {error});
+
+  // Request resend, return status = 0
+export const resendRequestAction = id =>
+  makeActionCreator(TransactionTypes.RESEND_REQUEST, {id});
+export const resendRequestSuccessAction = (status) =>
+  makeActionCreator(TransactionTypes.RESEND_REQUEST_SUCCESS, {status});
+export const resendRequestFailureAction = error =>
+  makeActionCreator(TransactionTypes.RESEND_REQUEST_FAIL, {error});
+
+// Cancel transaction, return status = 5
+export const cancelTransactionAction = id =>
+makeActionCreator(TransactionTypes.CANCEL_TRANSACTION, {id});
+export const cancelTransactionSuccessAction = (status) =>
+makeActionCreator(TransactionTypes.CANCEL_TRANSACTION_SUCCESS, {status});
+export const cancelTransactionFailureAction = error =>
+makeActionCreator(TransactionTypes.CANCEL_TRANSACTION_FAIL, {error});
+
+// Upload up nhiem chi Image
+export const uploadImageSuccessAction = (fileUrl, mode) =>
+  makeActionCreator(TransactionTypes.UPLOAD_IMAGE_SUCCESS, { fileUrl, mode });
+export const uploadImageImageFailureAction = error =>
+  makeActionCreator(TransactionTypes.UPLOAD_IMAGE_FAILURE, { error });
 
 
 
