@@ -7,8 +7,10 @@ import QuillEditorWrapper from './styles';
 export default class Editor extends Component {
   constructor(props) {
     super(props);
+    this.isChangeState = false;
     this.handleChange = this.handleChange.bind(this);
-    this.state = { value: '' };
+    this.state = { value: ' ' };
+    
     this.quillModules = {
       toolbar: {
         container: [
@@ -26,19 +28,31 @@ export default class Editor extends Component {
     };
   }
 
+
   handleChange(value) {
+    this.isChangeState=true;
     this.setState({ value });
     this.props.onChange(value)
   }
 
   render() {
-    const { label, placeholder } = this.props;
-
+    const { label, placeholder, content } = this.props;
+    
+    let value;
+    if(this.isChangeState) {
+      value = this.state.value
+    } 
+    else if (content) {
+        value = content
+      } else {
+        value = ''
+      }
+   
     const options = {
       theme: 'snow',
       formats: Editor.formats,
       placeholder,
-      value: this.state.value,
+      value,
       onChange: this.handleChange,
       modules: this.quillModules,
       

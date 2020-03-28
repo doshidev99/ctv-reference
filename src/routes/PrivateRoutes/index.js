@@ -20,6 +20,7 @@ import ListAdmin from '../../pages/ListAdmin';
 import ListEvent from '../../pages/ListEvent';
 import NewEvent from '../../pages/NewEvent';
 import DetailEvent from '../../pages/DetailEvent';
+import Training from '../../pages/Training';
 
 const routes = [
   {
@@ -143,6 +144,12 @@ const routes = [
     component: Option,
     exact: true,
     title: "Cấu hình",
+  },
+  {
+    path: '/trainings',
+    component: Training,
+    exact: true,
+    title: "Đào tạo",
   },
   
 ];

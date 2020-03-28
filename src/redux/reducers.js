@@ -10,6 +10,7 @@ import { realtor } from "./realtor/reducer";
 import { role } from "./role/reducer";
 import { admin } from "./admin/reducer";
 import { event } from "./event/reducer";
+import { training } from "./training/reducer";
 
 export default history =>
   combineReducers({
@@ -24,4 +25,5 @@ export default history =>
     role,
     admin,
     event,
+    training,
   });
