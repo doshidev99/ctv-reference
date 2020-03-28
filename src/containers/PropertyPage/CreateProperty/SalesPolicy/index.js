@@ -33,15 +33,14 @@ class SalesPolicy extends Component {
       const signedUrlS3 = await getSignedUrlS3(
         file.name,
         file.type,
-        "salesPolicy",
+        "SALES_POLICY",
       );
-
-      uploadFile(file, signedUrlS3.url).then(response => {
-        this.props.uploadFileSuccess(response.url);
-        this.props.addSalesPolicy(response.url);
-        onSuccess("OK");
-      });
+      const response = await uploadFile(file, signedUrlS3.url);
+      this.props.uploadFileSuccess(response.url);
+      this.props.addSalesPolicy(response.url, file.type);
+      onSuccess("OK");
     } catch (error) {
+      message.error("Xảy ra lỗi, vui lòng thử lại");
       onError("Error cmnr =)))");
     }
   };
@@ -78,8 +77,8 @@ const mapDispatchToProps = dispatch => ({
   uploadFileSuccess: fileUrl => {
     dispatch(uploadFileSuccessAction(fileUrl, "create"));
   },
-  addSalesPolicy: fileUrl => {
-    dispatch(addSalesPolicyAction(fileUrl));
+  addSalesPolicy: (fileUrl, type) => {
+    dispatch(addSalesPolicyAction(fileUrl, type));
   },
   removePolicy: () => {
     dispatch(removeSalesPolicyAction());

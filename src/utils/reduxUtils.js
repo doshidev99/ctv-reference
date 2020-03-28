@@ -45,9 +45,11 @@ export function* apiWrapper(
     return response;
   } catch (err) {
     notification.destroy();
+    console.log(err);
+    
     notification.error({
       message: I18n.t('error.title'),
-      description: err.message || I18n.t('error.description'),
+      description: config.errorDescription ||I18n.t('error.description')|| err.message,
     });
     yield fork(checkError, err);
     throw new Error(err);

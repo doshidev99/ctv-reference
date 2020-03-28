@@ -2,54 +2,67 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { Table, Icon, Pagination, Row, Col, message } from "antd";
-import { getListPropertyAction } from "../../../redux/property/actions";
-
+import { Table, Icon, Pagination, Row, Col, message, Popconfirm } from "antd";
+import { getListPropertyAction, deletePropertyAction } from "../../../redux/property/actions";
 import PropertyTableWrapper from "./styles";
 
-const columnHeaders = [
-  {
-    title: "Tên dự án",
-    dataIndex: "name",
-    key: "name",
-    width: 400,
-    render: text => <Link to={text}>{text}</Link>,
-  },
-  {
-    title: "Loại dự án",
-    key: "type",
-    dataIndex: "type",
-  },
-  {
-    title: "Tỉnh thành",
-    dataIndex: "city",
-    key: "city",
-  },
-  {
-    title: "Ngày đăng",
-    dataIndex: "date",
-    key: "date",
-  },
-  {
-    title: "Tùy chọn",
-    key: "option",
-    render: () => (
-      <div className="option">
-        <span className="btnOption">
-          <Icon type="edit" />
-        </span>
-        <span className="btnOption">
-          <Icon type="delete" />
-        </span>
-      </div>
-    ),
-  },
-];
-
 class PropertyTable extends Component {
+  columnHeaders = [
+    {
+      title: "Tên dự án",
+      dataIndex: "name",
+      key: "name",
+      width: 400,
+      render: text => <Link to={text}>{text}</Link>,
+    },
+    {
+      title: "Loại dự án",
+      key: "type",
+      dataIndex: "type",
+    },
+    {
+      title: "Tỉnh thành",
+      dataIndex: "city",
+      key: "city",
+    },
+    {
+      title: "Ngày đăng",
+      dataIndex: "date",
+      key: "date",
+    },
+    {
+      title: "Tùy chọn",
+      key: "option",
+      render: (e, record) => (
+        <div className="option">
+          <span className="btnOption">
+            <Icon type="edit" />
+          </span>
+          <span className="btnOption">
+            <Popconfirm
+              title="Xóa dự án?"
+              onConfirm={() => this.handleDelete(record)}
+            //  onCancel={cancel}
+              okText="Yes"
+              cancelText="No"
+             >
+              <Icon type="delete" />
+
+            </Popconfirm>
+          </span>
+        </div>
+      ),
+    },
+  ];
+
   componentDidMount() {
-    this.props.getListProperty();
+    this.props.getListProperty(10, 0);
   }
+
+  handleDelete = e => {
+    this.props.deleteOne(e.key)
+    this.props.getListProperty(10 );
+  };
 
   onChangePage = (page, limit) => {
     const offset = (page - 1) * limit;
@@ -70,7 +83,11 @@ class PropertyTable extends Component {
       message.error("Lỗi khi tải thông tin");
       return (
         <PropertyTableWrapper>
-          <Table columns={columnHeaders} dataSource={[]} pagination={false} />
+          <Table
+            columns={this.columnHeaders}
+            dataSource={[]}
+            pagination={false}
+          />
           <Row type="flex" justify="center">
             <Col xs={24} sm={20} md={12} className="pagination">
               <Pagination defaultCurrent={1} />
@@ -82,7 +99,7 @@ class PropertyTable extends Component {
     return (
       <PropertyTableWrapper>
         <Table
-          columns={columnHeaders}
+          columns={this.columnHeaders}
           dataSource={properties}
           loading={loading}
           pagination={false}
@@ -90,7 +107,7 @@ class PropertyTable extends Component {
         <Row type="flex" justify="center">
           <Col xs={24} sm={20} md={12} className="pagination">
             <Pagination
-              showTotal={(totalItem, range) => 
+              showTotal={(totalItem, range) =>
                 `${range[0]}-${range[1]} of ${totalItem} items`}
               onChange={this.onChangePage}
               defaultCurrent={1}
@@ -130,10 +147,12 @@ const mapStateToProps = state => {
     listPropertyFailure,
   };
 };
-
 const mapDispatchToProps = dispatch => ({
-  getListProperty: (limit, offset) => {
-    dispatch(getListPropertyAction(limit, offset));
+  getListProperty: (limit, offset, filter) => {
+    dispatch(getListPropertyAction(limit, offset, filter));
+  },
+  deleteOne: (id) => {
+    dispatch(deletePropertyAction(id))
   },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(PropertyTable);

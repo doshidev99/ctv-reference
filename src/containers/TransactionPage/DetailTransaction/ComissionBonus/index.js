@@ -36,7 +36,11 @@ class Bonus extends Component {
           </Col>
           <Col span={8}>
             <FormItem>
-              {this.props.form.getFieldDecorator("amount")(
+              {this.props.form.getFieldDecorator("amount", {
+                rules: [
+                  // { type: 'number', message: 'Vui lòng nhập số tiền!' },
+                ],
+              })(
                 <div className="amount">
                   <label>Số tiền</label>
                   <Input onChange={this.handleChange}  />

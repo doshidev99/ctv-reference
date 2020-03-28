@@ -5,6 +5,14 @@ export default styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+
+  .loadingCurrentMail {
+    height: calc(100% - 110px);
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    justify-content: center;
+  }
   .noMailMsg {
     margin: 0;
     font-size: 28px;

@@ -33,15 +33,14 @@ class PriceList extends Component {
       const signedUrlS3 = await getSignedUrlS3(
         file.name,
         file.type,
-        "priceList",
+        "PRICE_LIST",
       );
-
-      uploadFile(file, signedUrlS3.url).then(response => {
-        this.props.uploadFileSuccess(response.url);
-        this.props.addPriceList(response.url);
-        onSuccess("OK");
-      });
+      const response = await uploadFile(file, signedUrlS3.url);
+      this.props.uploadFileSuccess(response.url);
+      this.props.addPriceList(response.url, file.type);
+      onSuccess("OK");
     } catch (error) {
+      message.error("Xảy ra lỗi, vui lòng thử lại");
       onError("Error cmnr =)))");
     }
   };
@@ -79,8 +78,8 @@ const mapDispatchToProps = dispatch => ({
   uploadFileSuccess: fileUrl => {
     dispatch(uploadFileSuccessAction(fileUrl, "create"));
   },
-  addPriceList: fileUrl => {
-    dispatch(addPriceListAction(fileUrl));
+  addPriceList: (fileUrl, type) => {
+    dispatch(addPriceListAction(fileUrl, type));
   },
   removePriceList: () => {
     dispatch(removePriceListAction());

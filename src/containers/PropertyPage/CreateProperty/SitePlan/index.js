@@ -92,8 +92,8 @@ class SitePlan extends Component {
 
   render() {
     const { previewVisible, previewImage } = this.state;
-    const {link} = this.props;
-    let fileList = link || []
+    const {links} = this.props;
+    let fileList = links || []
 
     fileList = fileList.map((e, index) => ({
       url: e,

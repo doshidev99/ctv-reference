@@ -1,6 +1,6 @@
 {
   "appInfo": {
-    "footer": "Sgroup ©2019 Created by Sgroup developers",
+    "footer": "Sgroup 2020 Created by Sgroup developers",
     "name": "Sgroup Admin page"
   },
   "input": {
@@ -128,7 +128,10 @@
       "successTransConfirm": "Xác nhận giao dịch thành công"
     }
   },
-
+  "realtor": {
+    "title": "Người môi giới",
+    "listRealtorTitle": "Danh sách người môi giới"
+  },
   "user": {
     "list":{
       "title":"List User"

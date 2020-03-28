@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { Table, Tag } from "antd";
+import { Table, Pagination, Row, Col } from "antd";
 import { getListTransactionAction } from "../../../redux/transaction/actions";
+import TransactionTableWrapper from './style';
 
-
-const columns = [
+class TransactionTable extends Component {
+  columnHeaders = [
   {
     title: "Thời gian",
-    dataIndex: "date",
-    key: "date",
+    dataIndex: "createdAt",
+    key: "createdAt",
   },
   {
     title: "Mã giao dịch",
@@ -19,117 +19,112 @@ const columns = [
   },
   {
     title: "Mã hợp đồng",
-    dataIndex: "contract",
-    key: "contract",
+    dataIndex: "Contractcode",
+    key: "contContractcoderact",
   },
   {
     title: "Dự án",
-    dataIndex: "name",
-    key: "name",
+    dataIndex: "property.name",
+    key: "property.name",
     width: 350,
-    render: text => <Link to={text}>{text}</Link>,
   },
   {
     title: "Tên KH",
-    dataIndex: "customer",
-    key: "customer",
+    dataIndex: "customerId",
+    key: "customerId",
   },
   {
     title: "Tên CTV",
-    dataIndex: "collaborator",
-    key: "collaborator",
+    dataIndex: "realtorId",
+    key: "realtorId",
   },
   {
     title: 'Tình trạng',
     key: 'status',
     dataIndex: 'status',
-    render: tags => (
-      <span>
-        {tags.map(tag => {
-          let color = tag.length > 5 ? "geekblue" : "green";
-          switch (tag.key) {
-            case "done":
-              color = "green";
-              break;
-            case "terminated":
-              color ="volcano";
-              break;
-            case "postpond":
-              color ="gold";
-              break;
-            default:
-              color ="geekblue";
-              break;
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.text.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </span>
-    ),
   },
 ];
 
-
-
-class TransactionTable extends Component {
   componentDidMount() {
     this.props.getListTransaction();
   }
 
+  onChangePage = (page, limit) => {
+    const offset = (page - 1) * limit;
+    this.props.getListTransaction(limit, offset);
+  };
+
   render() {
-    // console.log(this.props.data);
-    const result = this.props.data;
+    const {
+      transactions,
+      offset,
+      limit,
+      total,
+      loading,
+    } = this.props;
+    const page = offset / limit + 1;
+    const result = this.props.transactions;
     const newDate = result.map(e => {
-      return new Date(e.createdAt).toISOString().split('T')[0];
+      return new Date(e.createdAt).toLocaleDateString();
     });
     for (let i = 0; i < result.length; i+=1) {
       result[i].createdAt = newDate[i];
     }
-    for (let i = 0; i < result.length; i+=1) {
-      if (result[i].status === 0 ) {
-        result[i].status = "Đang xử lý"
-      }
-      else if (result[i].status === 1 ) {
-        result[i].status = "Đã cọc"
-      }
-      else if (result[i].status === 2 ) {
-        result[i].status = "Hoàn Thành"
-      }
-      else if (result[i].status === 3 ) {
-        result[i].status = "Hủy bỏ"
-      }
-      // result[i].status = newDate[i];
-    }
     return (
-      <div>
-        {/* <Table columns={columns} dataSource={this.props.data} rowKey="date"/> */}
-        <Table dataSource={this.props.data} colums={columns} rowKey="id">
-          <columns title="Thời gian" dataIndex="createdAt" key="createdAt" />
-          <columns title="Mã giao dịch" dataIndex="code" key="code" />
-          <columns title="Mã hợp đồng" dataIndex="code" key="contract" />
-          <columns title="Dự án" dataIndex="propertyName" key="name" />
-          <columns title="Tên KH" dataIndex="customerId" key="customer" />
-          <columns title="Tên CTV" dataIndex="realtorId" key="collaborator" />
-          <columns title="Tình trạng" dataIndex="status" key="status" />
-        </Table>
-      </div>
+      <TransactionTableWrapper>
+        <Table
+          columns={this.columnHeaders}
+          dataSource={transactions}
+          pagination={false}
+          loading={loading}
+          rowKey="code"
+        />
+        <Row type="flex" justify="center">
+          <Col xs={24} sm={20} md={12} className="pagination">
+            <Pagination
+              showTotal={(totalItem, range) =>
+                `${range[0]}-${range[1]} of ${totalItem} items`}
+              onChange={this.onChangePage}
+              defaultCurrent={1}
+              current={page}
+              total={total}
+            />
+          </Col>
+        </Row>
+      </TransactionTableWrapper>
     )
   }
 }
 TransactionTable.propTypes = {
-  data: PropTypes.array,
+  transactions: PropTypes.array,
+  offset: PropTypes.number, // offset = (page - 1) * limit;
+  limit: PropTypes.number,
+  total: PropTypes.number,
+  loading: PropTypes.bool,
 };
 
-const mapStateToProps = state => ({
-  data: state.transaction.transactions,
-})
+const mapStateToProps = state => {
+  const {
+    transactions,
+    offset,
+    limit,
+    total,
+    loading,
+    listTransactionFailure,
+  } = state.transaction;
+  return {
+    transactions,
+    offset,
+    limit,
+    total,
+    loading,
+    listTransactionFailure,
+  }
+}
 
 const mapDispatchToProps = dispatch => ({
-  getListTransaction: () => {
-    dispatch(getListTransactionAction())
+  getListTransaction: (limit, offset, filter) => {
+    dispatch(getListTransactionAction(limit, offset, filter))
   },
 })
 export default connect(mapStateToProps, mapDispatchToProps)(TransactionTable)

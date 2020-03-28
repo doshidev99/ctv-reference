@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export default styled.div`
   width: 100%;
   display: flex;
-  margin-bottom: 24px;
   align-items: center;
   transition: padding-left 0.3s ease 0.1s, padding-right 0.3s ease 0.1s,
     position 0 ease 0.3s;
@@ -12,8 +11,8 @@ export default styled.div`
     margin-left: 15px;
   }
   h1 {
-    font-size: 19px;
-    font-weight: 500;
+    font-size: 24px;
+    font-weight: 600;
     color: ${({ theme }) => theme.palette.color[0]};
     flex: 1;
     display: flex;
