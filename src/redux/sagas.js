@@ -8,6 +8,7 @@ import mailSaga from "./mail/sagas";
 import realtorSaga from "./realtor/sagas";
 import roleSaga from "./role/sagas";
 import adminSaga from "./admin/sagas";
+import eventSaga from "./event/sagas";
 
 export default function* root() {
   yield all([
@@ -20,5 +21,6 @@ export default function* root() {
     ...realtorSaga,
     ...roleSaga,
     ...adminSaga,
+    ...eventSaga,
   ]);
 }
