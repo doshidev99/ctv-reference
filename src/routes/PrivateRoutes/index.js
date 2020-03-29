@@ -18,6 +18,10 @@ import DetailRealtor from '../../pages/DetailRealtor';
 import Option from '../../pages/Option';
 import ListAdmin from '../../pages/ListAdmin';
 import ListPartner from '../../pages/ListPartner';
+import ListEvent from '../../pages/ListEvent';
+import NewEvent from '../../pages/NewEvent';
+import DetailEvent from '../../pages/DetailEvent';
+import Training from '../../pages/Training';
 
 const routes = [
   {
@@ -105,10 +109,30 @@ const routes = [
     title: "Hộp thư",
   },
   {
-    path: '/options',
-    component: Option,
+    path: '/events',
+    component: ListEvent,
     exact: true,
-    title: "Cấu hình",
+    title: "Sự kiện",
+    routes: [
+      {
+        path: '/',
+        component: ListEvent,
+        exact: true,
+        title: "Danh sách sự kiện",
+      },
+      {
+        path: '/create',
+        component: NewEvent,
+        exact: true,
+        title: "Tạo mới sự kiện",
+      },
+      {
+        path: '/:id',
+        component: DetailEvent,
+        exact: true,
+        title: i18n.t('realtor.title'),
+      },
+    ],
   },
   {
     path: '/admins',
@@ -122,6 +146,18 @@ const routes = [
     exact: true,
     title: "Partner",
   },
+  path: '/options',
+  component: Option,
+  exact: true,
+  title: "Cấu hình",
+  },
+{
+  path: '/trainings',
+    component: Training,
+      exact: true,
+        title: "Đào tạo",
+  },
+  
 ];
 
 const PrivateRoutes = () => (
