@@ -56,10 +56,9 @@ docker-deploy:
     - ssh-keyscan -H $DEPLOYMENT_SERVER_IP >> ~/.ssh/known_hosts
   script:
     - >
-      ssh ${DEPLOYMENT_SERVER_USER}@${DEPLOYMENT_SERVER_IP} "
-      docker stop $(docker ps --filter 'name=ctv-web' -aq);
-      docker rm $(docker ps --filter 'name=ctv-web' -aq);
+      ssh ${DEPLOYMENT_SERVER_USER}@${DEPLOYMENT_SERVER_IP} "docker stop $$(docker ps --filter 'name=ctv-web' -aq);
+      docker rm $$(docker ps --filter 'name=ctv-web' -aq);
       docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY};
       docker pull ${CI_REGISTRY}/${CI_PROJECT_PATH}:${CI_COMMIT_SHORT_SHA};
       docker tag ${CI_REGISTRY}/${CI_PROJECT_PATH}:${CI_COMMIT_SHORT_SHA} ${CI_REGISTRY_IMAGE}:latest;
-      docker run -d -tip 3000:3000 --name ctv-web ${CI_REGISTRY_IMAGE}:latest; docker logout ${CI_REGISTRY}"
+      docker run -d -tip 3000:3000 --name ctv-web ${CI_REGISTRY_IMAGE}:latest; docker logout ${CI_REGISTRY};"
