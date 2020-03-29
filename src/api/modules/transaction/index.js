@@ -53,8 +53,6 @@ export async function createRewardApi (id, bonus) {
 
 export async function addPaymentApi (id, payload) {
   const {payAmount, payAdvance, type} = payload;
-  console.log(payload);
-  
   return post(`/transaction-payments`, {
     transactionId: id,
     amount: payAmount || payAdvance,

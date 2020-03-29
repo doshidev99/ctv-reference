@@ -128,8 +128,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(uploadImageSuccessAction(fileUrl, "create"));
   },
   confirmOrder: (id, file) => {
-    console.log(id);
-    
     dispatch(confirmOrderImageAction(id, file))
   },
 });

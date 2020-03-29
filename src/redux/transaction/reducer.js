@@ -201,7 +201,7 @@ const cacelTransactionSuccess = (state, {status}) => {
     isLoadingStatus: false,
   }
 };
-const cancelTransactionFailure = (state, {error}) => ({
+const cancelTransactionFailure = (state) => ({
   ...state,
   isLoadingStatus: false,
 })
@@ -256,7 +256,7 @@ const addPaymentSuccess = (state, {data, total, detail}) => ({
   addPaymentSuccess: true,
   addPaymentFailure: false,
 });
-const addPaymentFailure = (state, {error}) => ({
+const addPaymentFailure = (state) => ({
   ...state,
   isLoadingConfirm: false,
   addPaymentSuccess: false,
