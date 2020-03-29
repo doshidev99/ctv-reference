@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { Table, Pagination, Row, Col } from "antd";
 import { getListTransactionAction } from "../../../redux/transaction/actions";
 import TransactionTableWrapper from './style';
@@ -16,6 +17,9 @@ class TransactionTable extends Component {
     title: "Mã giao dịch",
     dataIndex: "code",
     key: "code",
+    render: (e, record) => (
+      <Link to={`/transactions/${record.id}/show`}>{record.code}</Link>
+    ),
   },
   {
     title: "Mã hợp đồng",
