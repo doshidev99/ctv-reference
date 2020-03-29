@@ -35,7 +35,7 @@ const getListTransactionFailure = state => ({
 });
 
 export const transaction = makeReducerCreator(initialState, {
-  [TransactionTypes.TRANSACTION]: getListTransaction,
+  [TransactionTypes.GET_LIST_TRANSACTION]: getListTransaction,
   [TransactionTypes.GET_LIST_TRANSACTION_SUCCESS]: getListTransactionSuccess,
   [TransactionTypes.GET_LIST_TRANSACTION_FAILURE]: getListTransactionFailure,
 });

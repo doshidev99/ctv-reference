@@ -15,17 +15,13 @@ function* getListTransaction ({ limit, offset, filter }) {
     if (offset === undefined) {
       offset = 0;
     }
-    // let filter = {
-    //   status: 0
-    // }
-    // console.log();
 
     filter = JSON.stringify(filter)
     const {results, total} = yield getTransaction({ limit, offset, filter });
-    const data = results;
-    // console.log(data,total);
+    // const data = results;
+    // // console.log(data,total);
 
-    yield put(getListTransactionSuccessAction(data, total, limit, offset));
+    yield put(getListTransactionSuccessAction(results, total, limit, offset));
   } catch (error) {
     yield put(getListTransactionFailureAction(error));
   }

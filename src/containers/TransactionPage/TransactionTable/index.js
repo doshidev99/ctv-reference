@@ -26,17 +26,19 @@ class TransactionTable extends Component {
     title: "Dự án",
     dataIndex: "property.name",
     key: "property.name",
-    width: 350,
-  },
-  {
-    title: "Tên KH",
-    dataIndex: "customerId",
-    key: "customerId",
+    width: 250,
   },
   {
     title: "Tên CTV",
-    dataIndex: "realtorId",
-    key: "realtorId",
+    dataIndex: "realtor.fullName",
+    key: "realtor.fullName",
+    width: 170,
+  },
+  {
+    title: "Tên KH",
+    dataIndex: "customer.fullName",
+    key: "customer.fullName",
+    width: 170,
   },
   {
     title: 'Tình trạng',

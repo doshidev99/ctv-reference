@@ -18,11 +18,11 @@ class Filter extends Component {
     const {city, propertyType, date} = await this.props.form.getFieldsValue();
     // eslint-disable-next-line no-console
     const filter = {};
-    
+
     if(city) {
       filter.cityId = city
     }
-    
+
     if(propertyType) {
       filter.typeId = propertyType;
     }
@@ -32,11 +32,11 @@ class Filter extends Component {
       const filterDate = {"$lte": to, "$gte":from };
       filter.updatedAt = filterDate;
     }
-    
+
     if(JSON.stringify(filter) !== JSON.stringify({})) {
       this.props.applyFilter(10, 0, JSON.stringify(filter))
     }
-    
+
   };
 
   handleCancel = () => {
