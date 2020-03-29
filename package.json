@@ -10,6 +10,7 @@
         "lint": "eslint . --fix"
     },
     "dependencies": {
+        "@ant-design/icons": "^4.0.5",
         "antd": "^3.26.13",
         "babel-plugin-import": "^1.12.2",
         "connected-react-router": "^6.5.2",

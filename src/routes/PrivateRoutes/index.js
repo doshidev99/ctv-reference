@@ -17,9 +17,11 @@ import ListRealtor from '../../pages/ListRealtor';
 import DetailRealtor from '../../pages/DetailRealtor';
 import Option from '../../pages/Option';
 import ListAdmin from '../../pages/ListAdmin';
+import ListPartner from '../../pages/ListPartner';
 import ListEvent from '../../pages/ListEvent';
 import NewEvent from '../../pages/NewEvent';
 import DetailEvent from '../../pages/DetailEvent';
+import Training from '../../pages/Training';
 
 const routes = [
   {
@@ -139,12 +141,23 @@ const routes = [
     title: "Quản trị viên",
   },
   {
+    path: '/partners',
+    component: ListPartner,
+    exact: true,
+    title: "Partner",
+  },
+  {
     path: '/options',
     component: Option,
     exact: true,
     title: "Cấu hình",
   },
-  
+  {
+    path: '/trainings',
+    component: Training,
+    exact: true,
+    title: "Đào tạo",
+  },
 ];
 
 const PrivateRoutes = () => (

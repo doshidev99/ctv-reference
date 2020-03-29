@@ -9,7 +9,9 @@ import { mail } from "./mail/reducer";
 import { realtor } from "./realtor/reducer";
 import { role } from "./role/reducer";
 import { admin } from "./admin/reducer";
+import { partner } from "./partner/reducer";
 import { event } from "./event/reducer";
+import { training } from "./training/reducer";
 
 export default history =>
   combineReducers({
@@ -23,5 +25,7 @@ export default history =>
     realtor,
     role,
     admin,
+    partner,
     event,
+    training,
   });

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Table, Icon, Pagination, Row, Col, message, Popconfirm } from "antd";
 import { getListPropertyAction, deletePropertyAction } from "../../../redux/property/actions";
@@ -13,7 +13,7 @@ class PropertyTable extends Component {
       dataIndex: "name",
       key: "name",
       width: 400,
-      render: text => <Link to={text}>{text}</Link>,
+      // render: text => <Link to={text}>{text}</Link>,
     },
     {
       title: "Loại dự án",
