@@ -146,18 +146,18 @@ const routes = [
     exact: true,
     title: "Partner",
   },
-  path: '/options',
-  component: Option,
-  exact: true,
-  title: "Cấu hình",
+  {
+    path: '/options',
+    component: Option,
+    exact: true,
+    title: "Cấu hình",
   },
-{
-  path: '/trainings',
+  {
+    path: '/trainings',
     component: Training,
-      exact: true,
-        title: "Đào tạo",
+    exact: true,
+    title: "Đào tạo",
   },
-  
 ];
 
 const PrivateRoutes = () => (
