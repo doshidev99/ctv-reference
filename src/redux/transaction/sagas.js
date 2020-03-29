@@ -102,8 +102,9 @@ function* confirmOder ({id}) {
 function* confirmOderImage ({id, imageUrl}) {
   try {
     const { status, standingOrder } = yield confirmOrderImageApi({id, imageUrl});
-    
-    yield put(confirmOrderImageSuccessAction(status, standingOrder))
+    if( status && standingOrder) {
+      yield put(confirmOrderImageSuccessAction(status, standingOrder))
+    }    
   } catch (error) {
     yield put(confirmOrderImageFailureAction(error));
   }

@@ -167,7 +167,8 @@ const confirmOrderImageSuccess = (state, {status, standingOrder}) => {
 }
 const confirmOrderImageFailure = state => ({
   ...state,
-  isLoadingStatus: true,
+  isLoadingStatus: false,
+  
 })
 
 const onResendRequest = (state) => ({
