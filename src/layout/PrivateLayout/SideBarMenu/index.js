@@ -42,13 +42,13 @@ const sidebarMenu = [
   },
   {
     key: "admin",
-    text: "Administrator",
+    text: "Quản trị viên",
     url: "/admins",
     icon: "tool",
   },
   {
     key: "Partner",
-    text: "Cộng tác viên",
+    text: "Partner",
     url: "/partners",
     icon: "team",
   },
@@ -68,7 +68,7 @@ export default class SideBarMenu extends Component {
         findLast(
           sidebarMenu,
           menu => window.location.pathname.indexOf(menu.url) === 0,
-        ) || {key: 'dashboard'},
+        ) || { key: 'dashboard' },
     };
   }
 
@@ -78,24 +78,12 @@ export default class SideBarMenu extends Component {
         mode="inline"
         defaultSelectedKeys={[this.state.defaultSelectedKeys.key]}
       >
-        <Menu.SubMenu
-          key="dashboard"
-          onClick={() => history.push("/")}
-          title={(
-            <span>
-              <Icon type="dashboard" />
-              <span>Dashboard</span>
-            </span>
-          )}
-        >
-          <Menu.Item key="finance" onClick={() => history.push("/")}>
-            <span>Tài chính</span>
-          </Menu.Item>
-          <Menu.Item key="activities" onClick={() => history.push("/")}>
-            <span>Hoạt động</span>
-          </Menu.Item>
-        </Menu.SubMenu>
-
+        <Menu.Item key="dashboard" onClick={() => history.push("/")}>
+          <span>
+            <Icon type="dashboard" />
+            <span>Dashboard</span>
+          </span>
+        </Menu.Item>
         <Menu.SubMenu
           key="transaction"
           // onClick={() => history.push("/giao-dich")}

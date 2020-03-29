@@ -17,6 +17,7 @@ import ListRealtor from '../../pages/ListRealtor';
 import DetailRealtor from '../../pages/DetailRealtor';
 import Option from '../../pages/Option';
 import ListAdmin from '../../pages/ListAdmin';
+import ListPartner from '../../pages/ListPartner';
 
 const routes = [
   {
@@ -114,6 +115,12 @@ const routes = [
     component: ListAdmin,
     exact: true,
     title: "Quản trị viên",
+  },
+  {
+    path: '/partners',
+    component: ListPartner,
+    exact: true,
+    title: "Partner",
   },
 ];
 
