@@ -11,6 +11,7 @@ import {
   Col,
   DatePicker,
   message,
+  Radio,
 } from "antd";
 // import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -44,6 +45,7 @@ class CreatePropertyForm extends Component {
     status: 0,
     city: 1,
     type: 1,
+    transactionType: 1,
   };
 
   componentDidMount() {
@@ -81,13 +83,14 @@ class CreatePropertyForm extends Component {
             link: el,
           });
         });
+        values.transactionType = Number(values.transactionType)
         values = {
           ...values,
           legalRecords,
           sitePlans,
           discounts,
-          salesPolicy: salesPolicy === null ? salesPolicy.link : null,
-          priceList: priceList === null ? priceList.link : null,
+          salesPolicy: salesPolicy !== null ? salesPolicy.link : null,
+          priceList: priceList !== null ? priceList.link : null,
           medias,
           sections: productTable,
           location: {
@@ -347,7 +350,7 @@ class CreatePropertyForm extends Component {
                 <span>Khác</span>
               </div>
               <Row>
-                <Col offset={8} xs={3}>
+                <Col offset={2} xs={3}>
                   <FormItem>
                     {getFieldDecorator("isActive", {
                       valuePropName: "checked",
@@ -356,6 +359,21 @@ class CreatePropertyForm extends Component {
                       <div className="display">
                         <label>Hiển thị</label>
                         <Switch defaultChecked onChange={this.onChangeSwitch} />
+                      </div>,
+                    )}
+                  </FormItem>
+                </Col>
+                <Col offset={2} xs={3}>
+                  <FormItem>
+                    {getFieldDecorator("transactionType", {
+                      initialValue: 1,
+                    })(
+                      <div className="transactionType">
+                        <label>Loại giao dịch</label>
+                        <Radio.Group name="radiogroup" defaultValue={1}>
+                          <Radio value={1}>Đặt cọc</Radio>
+                          <Radio value={2}>Đặt chỗ</Radio>
+                        </Radio.Group>
                       </div>,
                     )}
                   </FormItem>
