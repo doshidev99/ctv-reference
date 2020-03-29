@@ -64,23 +64,23 @@ const subMenuTransaction = [
   {
     key: 'all',
     text: 'Tất cả giao dịch',
-    url: '/transactions'
+    url: '/transactions',
   },
   {
     key: 'processing',
     text: 'Đang xử lý',
-    url: '/transactions/processing'
+    url: '/transactions/processing',
   },
   {
     key: 'completed',
     text: 'Hoàn thành',
-    url: '/transactions/completed'
+    url: '/transactions/completed',
   },
   {
     key: 'canceled',
     text: 'Đã hủy',
-    url: '/transactions/canceled'
-  }
+    url: '/transactions/canceled',
+  },
 ]
 
 export default class SideBarMenu extends Component {
@@ -121,8 +121,8 @@ export default class SideBarMenu extends Component {
         >
           {subMenuTransaction.map(subMenu => (
             <Menu.Item key={subMenu.key} onClick={() => history.push(subMenu.url)}>
-            <span>{subMenu.text}</span>
-          </Menu.Item>
+              <span>{subMenu.text}</span>
+            </Menu.Item>
           ))}
         </Menu.SubMenu>
 

@@ -21,8 +21,6 @@ class Filter extends Component {
         filter.fullName = {
           "$like":fullName,
         }
-        console.log(fullName);
-
       }
 
       if(email) {

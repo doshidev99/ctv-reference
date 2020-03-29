@@ -9,6 +9,7 @@ const { RangePicker } = DatePicker;
 const {Item} = Form;
 class Filter extends Component {
   orderBy="id"
+
   handleFilter = async () => {
     try {
       const { date, code, fullName, status } = await this.props.form.getFieldsValue();
@@ -35,12 +36,9 @@ class Filter extends Component {
         const filterDate = {"$gte": from, "$lte":to };
         filter.updatedAt = filterDate;
       }
-      console.log(filter);
       this.props.applyFilter(10, 0, filter, this.orderBy);
     } catch (error) {
       message.error("Có lỗi xảy ra")
-      console.log(error);
-
     }
   }
 
@@ -75,13 +73,13 @@ class Filter extends Component {
                 <Item className="status">
                   {getFieldDecorator("status")(
                     <Select placeholder="Tình trạng" allowClear>
-                    <Select.Option value="1">Đang xử lý</Select.Option>
-                    <Select.Option value="2">Chờ xác nhận đặt cọc</Select.Option>
-                    <Select.Option value="3">Đã cọc</Select.Option>
-                    <Select.Option value="4">Thanh toán hoa hồng</Select.Option>
-                    <Select.Option value="5">Thanh toán xong</Select.Option>
-                    <Select.Option value="6">Hủy bỏ</Select.Option>
-                  </Select>
+                      <Select.Option value="1">Đang xử lý</Select.Option>
+                      <Select.Option value="2">Chờ xác nhận đặt cọc</Select.Option>
+                      <Select.Option value="3">Đã cọc</Select.Option>
+                      <Select.Option value="4">Thanh toán hoa hồng</Select.Option>
+                      <Select.Option value="5">Thanh toán xong</Select.Option>
+                      <Select.Option value="6">Hủy bỏ</Select.Option>
+                    </Select>,
                   )}
                 </Item>
               </Col>
@@ -103,7 +101,8 @@ class Filter extends Component {
                     shape="round"
                     onClick={this.handleCancel}
                   >
-                    Hủy Lọc</Button>
+                    Hủy Lọc
+                  </Button>
                 </div>
               </Col>
             </Row>
@@ -114,7 +113,7 @@ class Filter extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = () => {
   return {};
 };
 
