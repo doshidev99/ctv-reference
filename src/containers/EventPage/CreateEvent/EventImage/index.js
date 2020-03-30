@@ -82,7 +82,7 @@ class EventImage extends Component {
 
     const uploadButton = (
       <div>
-        <Button type="primary">
+        <Button icon="plus" className="buttonUpload">
           Upload
         </Button>
       </div>

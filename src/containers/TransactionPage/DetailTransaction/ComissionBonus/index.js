@@ -24,12 +24,11 @@ class Bonus extends Component {
     return (
       <BonusWrapper>
         <Row>
-          <Col span={10}>
+          <Col span={14}>
             <FormItem className="formItem">
               {this.props.form.getFieldDecorator("title")(
                 <div className="title">
-                  <label>Tên khoảng thưởng:</label>
-                  <Input onChange={this.handleChange}  />
+                  <Input onChange={this.handleChange} placeholder="Tên khoảng thưởng" />
                 </div>,
               )}
             </FormItem>
@@ -42,13 +41,12 @@ class Bonus extends Component {
                 ],
               })(
                 <div className="amount">
-                  <label>Số tiền</label>
-                  <Input onChange={this.handleChange}  />
+                  <Input onChange={this.handleChange} placeholder="Số tiền"  />
                 </div>,
               )}
             </FormItem>
           </Col>
-          <Col span={4}>
+          <Col span={2}>
             <Button className="minusButton" icon="minus" type="dashed" shape="circle" onClick={this.handleRemove} />
           </Col>
         </Row>

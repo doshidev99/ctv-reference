@@ -21,17 +21,17 @@ function* loginSaga({
       staffLoginApi,
       params,
     );
-   
     if (response.token) {
       localStorage.setItem("sessionToken", response.token);
       localStorage.setItem("fullName", response.fullName)
-      localStorage.setItem("id", response.id)
+      localStorage.setItem("id", response.id);
+      localStorage.setItem("avatar", response.avatar);
       yield put(loginSuccessAction(response));
     } else {
       yield put(loginFailureAction(response));
     }
   } catch (error) {
-    yield put(loginFailureAction(error));
+    yield put(loginFailureAction(error));    
   }
 }
 

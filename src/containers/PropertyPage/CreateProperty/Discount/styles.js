@@ -19,7 +19,6 @@ export default styled.div`
   }
 
   .ant-btn {
-    margin-top: 20.8px;
     margin-left: 10px;
   }
  

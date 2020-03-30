@@ -3,7 +3,7 @@ import { Upload, Icon, Modal, Button, message } from 'antd';
 import { connect } from "react-redux";
 import i18n from "i18next";
 import OrderImageWrapper from './styles'
-import { uploadImageAction, uploadImageSuccessAction, confirmOrderImageAction} from "../../../../redux/transaction/actions";
+import { uploadImageAction, uploadImageSuccessAction, confirmOrderImageAction, removeOrderImageAction} from "../../../../redux/transaction/actions";
 import { getSignedUrlS3, uploadFile } from "../../../../utils/uploadFile";
 
 function getBase64(file) {
@@ -19,6 +19,7 @@ class StandingOrderImage extends Component {
   state = {
     previewVisible: false,
     previewImage: '',
+    showButton: true,
   };
 
   handleCancel = () => this.setState({ previewVisible: false });
@@ -34,6 +35,13 @@ class StandingOrderImage extends Component {
     });
   };
 
+  removeImage = (e) => {
+    this.props.removeImage(this.props.id, e.url)
+    this.setState({
+      showButton: true,
+    })
+  }
+
   handleOnChange = async info => {
     if (info.file.status !== "uploading") {
       // console.log(info.file, info.fileList);
@@ -43,6 +51,9 @@ class StandingOrderImage extends Component {
       newFileName = newFileName.substring(newFileName.lastIndexOf("/") + 1);
       info.file.name = newFileName;
       message.success(`${info.file.name} file uploaded successfully`);
+      this.setState({
+        showButton: false,
+      })
     } else if (info.file.status === "error") {
       message.error(`${info.file.name} file upload failed.`);
     }
@@ -67,15 +78,8 @@ class StandingOrderImage extends Component {
   };
 
   render() {
-    const { previewVisible, previewImage } = this.state;
+    const { previewVisible, previewImage, showButton } = this.state;
     const { isLoadingUpload, file } = this.props;
-    
-
-    // fileList = fileList.map((e, index) => ({
-    //   url: e,
-    //   status: 'done',
-    //   uid: index,
-    // }))
     const uploadButton = (
       <div>
         <Icon type={isLoadingUpload ? 'loading' : 'plus'} />
@@ -85,23 +89,22 @@ class StandingOrderImage extends Component {
     return (
       <OrderImageWrapper>
         <div className="title">
-          <span>
+          <p>
             Upload ủy nhiệm chi
-          </span>
+          </p>
         </div>
         <Upload
-          // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
           listType="picture-card"
-          showUploadList={false}
           onPreview={this.handlePreview}
           onChange={this.handleOnChange}
           customRequest={this.handleUpload}
-          onRemove={this.handleRemove}
+          onRemove={this.removeImage}
         >
-          {file ? <img src={file} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+          {(file && showButton === false)  ? "" : (uploadButton)}
         </Upload>
         <Button
           type="primary"
+          size="large"
           onClick={() => this.props.confirmOrder(this.props.id, file)}>
           {i18n.t("transaction.detail.depositConfirm")}
         </Button>
@@ -129,6 +132,9 @@ const mapDispatchToProps = dispatch => ({
   },
   confirmOrder: (id, file) => {
     dispatch(confirmOrderImageAction(id, file))
+  },
+  removeImage: (id, url) => {
+    dispatch(removeOrderImageAction(id, url))
   },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(StandingOrderImage);

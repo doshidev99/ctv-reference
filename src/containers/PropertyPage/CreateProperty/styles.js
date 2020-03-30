@@ -41,16 +41,6 @@ export default styled.div`
     }
   }
 
-  .commission {
-    display:flex;
-
-    .commissionLabel {
-      margin-right: 20px;
-    }
-    .ant-input{
-      width: 100px;
-    }
-  }
 
   .discountArea {
     margin-bottom: 10px;
@@ -75,13 +65,16 @@ export default styled.div`
         line-height: 25px
       }
     }
-    
-    
   }
-
   .submitButton {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
+    button {
+      width: 200px
+    }
 
+  }
+  .ant-table {
+    color:  #F2F3F5
   }
 `

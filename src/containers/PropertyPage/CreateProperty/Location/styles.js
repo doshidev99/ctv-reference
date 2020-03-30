@@ -8,10 +8,8 @@ export default styled.div`
   }
   .locationDescription {
     .ql-container{
-      height: 200px;
+      height: 270px;
     }
-    width: 95%;
-    margin-right: 20px
     
     .locationLabel {
       font-size: 18px;
@@ -23,8 +21,8 @@ export default styled.div`
     width: 100%;
     .leaflet-container {
       width: 100%;
-      height: 300px;
-      margin-top: 30px;
+      height: 312px;
+      margin-top: 27px;
     }
   }
 `

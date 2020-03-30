@@ -37,7 +37,7 @@ class CreateEventForm extends Component {
                   message: "Vui lòng nhập tên sự kiện",
                 },
               ],
-            })(<Input />)}
+            })(<Input placeholder="Tên sự kiện" />)}
           </Item>
           <Row gutter={8}>
             <Col xs={24} md={8}>
@@ -67,7 +67,7 @@ class CreateEventForm extends Component {
                       message: "Vui lòng nhập địa điểm",
                     },
                   ],
-                })(<Input />)}
+                })(<Input placeholder="Địa điểm" />)}
               </Item>
             </Col>
             <Col xs={4}>
@@ -95,6 +95,7 @@ class CreateEventForm extends Component {
               ],
             })(<Editor label="Mô tả sự kiên" />)}
           </Item>
+          <hr style={{marginTop:'20px', marginBottom: '20px'}} />
           <div className="submitButton">
             <Button
               type="primary"

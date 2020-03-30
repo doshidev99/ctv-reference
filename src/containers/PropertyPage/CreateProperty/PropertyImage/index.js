@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Upload, Icon, Modal, message } from 'antd';
+import { Upload, Icon,Button, Modal, message, Row, Col } from 'antd';
 import { connect } from "react-redux";
 import PropertyImageWrapper from './styles'
 
@@ -80,31 +80,40 @@ class PropertyImage extends Component {
       uid: index,
     }))
     const uploadButton = (
-      <div>
-        <Icon type="plus" />
-        <div className="ant-upload-text">Upload</div>
-      </div>
+      <Button>
+        <Icon type="upload" />
+        {' '}
+        Upload
+      </Button>
     );
     return (
       <PropertyImageWrapper>
-        <div className="title">
-          <span>
+        <Row>
+          <div className="title">
+            <p>
             Hình ảnh dự án
-          </span>
-        </div>
-        <Upload
-          listType="picture-card"
-          fileList={fileList}
-          onPreview={this.handlePreview}
-          onChange={this.handleOnChange}
-          customRequest={this.handleUpload}
-          onRemove={this.handleRemove}
+            </p>
+          </div>
+        </Row>
+        <Row>
+          <Col>
+            <Upload
+              listType="picture"
+              fileList={fileList}
+              onPreview={this.handlePreview}
+              onChange={this.handleOnChange}
+              customRequest={this.handleUpload}
+              onRemove={this.handleRemove}
+              className="upload-list-inline"
         >
-          {fileList.length >= 8 ? null : uploadButton}
-        </Upload>
-        <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-          <img alt="example" style={{ width: '100%' }} src={previewImage} />
-        </Modal>
+              {fileList.length >= 8 ? null : uploadButton}
+            </Upload>
+            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+              <img alt="example" style={{ width: '100%' }} src={previewImage} />
+            </Modal>
+          </Col>
+        </Row>
+        
       </PropertyImageWrapper>
     );
   }

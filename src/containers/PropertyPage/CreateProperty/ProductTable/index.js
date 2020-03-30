@@ -146,6 +146,7 @@ class ProductTable extends Component {
         </Upload>
         <Table
           columns={this.columnHeaders}
+          className="tableProduct"
           dataSource={this.props.productTable}
           pagination
         />

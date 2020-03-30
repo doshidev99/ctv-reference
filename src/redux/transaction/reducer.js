@@ -222,6 +222,14 @@ const uploadImageFailure = state => ({
   ...state,
   isLoadingUpload: false,
 });
+const removeOrderImage = (state) => {
+  const { transaction } = state;
+  transaction.fileUrl = '';
+  return {
+    ...state,
+    transaction,
+  };
+};
 
 const confirmTransaction = state => ({
   ...state,
@@ -300,6 +308,7 @@ export const transaction = makeReducerCreator(initialState, {
   [TransactionTypes.UPLOAD_IMAGE]: uploadImage,
   [TransactionTypes.UPLOAD_IMAGE_SUCCESS]: uploadImageSuccess,
   [TransactionTypes.UPLOAD_IMAGE_FAILURE]: uploadImageFailure,
+  [TransactionTypes.REMOVE_ORDER_IMAGE]: removeOrderImage,
 
   [TransactionTypes.CONFIRM_TRANSACTION]: confirmTransaction,
   [TransactionTypes.CONFIRM_TRANSACTION_SUCCESS]: confirmTransactionSuccess,

@@ -10,7 +10,7 @@ export const StaffTypes = makeConstantCreator(
 
 // Login
 export const loginAction = params => makeActionCreator(StaffTypes.LOGIN, { params });
-export const loginSuccessAction = data => makeActionCreator(StaffTypes.LOGIN_STAFF_SUCCESS, { data });
+export const loginSuccessAction = respone => makeActionCreator(StaffTypes.LOGIN_STAFF_SUCCESS, { respone });
 export const loginFailureAction = error => makeActionCreator(StaffTypes.LOGIN_STAFF_FAIL, { error });
 
 // Logout

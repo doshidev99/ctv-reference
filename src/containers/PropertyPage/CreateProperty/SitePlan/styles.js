@@ -4,10 +4,6 @@ export default styled.div`
   margin-top: 10px
   display: flex;
   justify-content: space-between;
-  .sitePlanLabel {
-    width: 300px;
-    display: block;
-  }
 
   .ant-form-item{
     margin-bottom: 0;
@@ -24,6 +20,27 @@ export default styled.div`
       }
     }
   }
-
+  .site-row{
+    width: 100%
+    .sitePlanLabel {
+      padding-right: 10px
+    }
+    .deleteSiteButton {
+      width: 100px;
+      max-height: 30px;
+      border-radius: 10%;
+      border: solid 1px;
+      margin-left: 10px;
+    }
+  }
+  .uploadImage{
+    border: 1px solid #d9d9d9;
+    background-color: #fff;
+    padding: 5px 5px 0 5px;
+    margin-bottom: 10px
+    .ant-upload.ant-upload-select-picture-card {
+      margin: 0
+    }
+  }
   
 `;

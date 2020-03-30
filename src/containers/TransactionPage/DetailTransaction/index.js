@@ -78,6 +78,10 @@ class DetailTransaction extends Component {
         values.type = 1;
         await this.props.addPayment(this.props.match.params.id,values);
         this.handleCancelModalCommission();
+        console.log(this.props.form.values);
+        
+        this.props.form.payAmount = '';
+        this.props.form.advanceAmount = '';
       }
     })
   }
@@ -370,7 +374,7 @@ class DetailTransaction extends Component {
                         })(
                           <div className="totalCommission">
                             <label className="totalCommissionLabel">
-                            Tổng tiền hoa hồng thực tế
+                            Tổng tiền hoa hồng thực tế:
                             </label>
                             <Input />
                           </div>,
@@ -384,7 +388,7 @@ class DetailTransaction extends Component {
                         })(
                           <div className="contractCode">
                             <label className="contractCodeLabel">
-                            Mã hợp đồng
+                            Mã hợp đồng:
                             </label>
                             <Input />
                           </div>,
@@ -419,12 +423,12 @@ class DetailTransaction extends Component {
                   </p>
                   <Title level={4}>Các đợt thanh toán và tạm ứng</Title>
                   { (transaction.status === 4 || transaction.commissionAmount - transaction.totalReceivedCommissionAmount < 0) ? '': (
-                    <Row>
+                    <Row style={{marginBottom: "10px"}}>
                       <Col span={6}>
-                        <Button type="primary" onClick={this.showModalCommission}>Thêm đợt thanh toán</Button>
+                        <Button type="primary" icon="plus" onClick={this.showModalCommission}>Thêm đợt thanh toán</Button>
                       </Col>
                       <Col span={6}>
-                        <Button type="primary" onClick={this.showModalAdvance}>Thêm đợt tạm ứng</Button>
+                        <Button type="primary" icon="plus" onClick={this.showModalAdvance}>Thêm đợt tạm ứng</Button>
                       </Col>
                     </Row>
                   )}

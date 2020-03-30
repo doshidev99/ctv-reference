@@ -39,4 +39,10 @@ export default styled.div`
   .upload-list-inline .ant-upload-animate-leave {
     animation-name: uploadAnimateInlineOut;
   }
+  .buttonUpload {
+    border: 1px dashed transparent;
+  }
+  .ant-upload-list-item-card-actions .anticon:hover {
+    color: red;
+  }
 `;

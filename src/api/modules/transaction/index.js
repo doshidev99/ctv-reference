@@ -52,10 +52,10 @@ export async function createRewardApi (id, bonus) {
 }
 
 export async function addPaymentApi (id, payload) {
-  const {payAmount, payAdvance, type} = payload;
+  const {payAmount, advanceAmount, type} = payload;
   return post(`/transaction-payments`, {
     transactionId: id,
-    amount: payAmount || payAdvance,
+    amount: payAmount || advanceAmount,
     type,
   })
 }
