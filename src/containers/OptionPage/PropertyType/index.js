@@ -245,7 +245,7 @@ class PropertyTypesTable extends Component {
         <EditableContext.Provider value={this.props.form}>
           <Row type="flex" justify="end">
             <Col xs={6} className="createButton">
-              <Button type="primary" onClick={this.showModal}>
+              <Button type="primary" icon="plus" onClick={this.showModal}>
                 Thêm
               </Button>
             </Col>

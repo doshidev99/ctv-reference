@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { Upload, Modal, message, Button } from 'antd';
+import { Upload, Icon, Modal, Button, message } from 'antd';
 import { connect } from "react-redux";
-import EventImageWrapper from './styles'
-
-import { uploadImageSuccessAction, removeImageAction } from "../../../../redux/event/actions";
+import i18n from "i18next";
+import OrderImageWrapper from './styles'
+import { uploadImageAction, uploadImageSuccessAction, confirmOrderImageAction, removeOrderImageAction} from "../../../../redux/transaction/actions";
 import { getSignedUrlS3, uploadFile } from "../../../../utils/uploadFile";
 
 function getBase64(file) {
@@ -15,10 +15,11 @@ function getBase64(file) {
   });
 }
 
-class EventImage extends Component {
+class StandingOrderImage extends Component {
   state = {
     previewVisible: false,
     previewImage: '',
+    showButton: true,
   };
 
   handleCancel = () => this.setState({ previewVisible: false });
@@ -34,6 +35,13 @@ class EventImage extends Component {
     });
   };
 
+  removeImage = (e) => {
+    this.props.removeImage(this.props.id, e.url)
+    this.setState({
+      showButton: true,
+    })
+  }
+
   handleOnChange = async info => {
     if (info.file.status !== "uploading") {
       // console.log(info.file, info.fileList);
@@ -43,6 +51,9 @@ class EventImage extends Component {
       newFileName = newFileName.substring(newFileName.lastIndexOf("/") + 1);
       info.file.name = newFileName;
       message.success(`${info.file.name} file uploaded successfully`);
+      this.setState({
+        showButton: false,
+      })
     } else if (info.file.status === "error") {
       message.error(`${info.file.name} file upload failed.`);
     }
@@ -50,80 +61,80 @@ class EventImage extends Component {
 
   handleUpload = async ({ file, onSuccess, onError }) => {
     try {
+      this.props.uploadImage();
       const signedUrlS3 = await getSignedUrlS3(
         file.name,
         file.type,
-        "EVENT_IMAGE",
+        "standingOrderImage",
       );
-      const response = await uploadFile(file, signedUrlS3.url);
-      this.props.uploadImageSuccess(response.url);
-      onSuccess("OK");
+
+      uploadFile(file, signedUrlS3.url).then(response => {
+        this.props.uploadImageSuccess(response.url);
+        onSuccess("OK");
+      });
     } catch (error) {
-      message.error("Xảy ra lỗi, vui lòng thử lại");
       onError("Error cmnr =)))");
     }
   };
 
-  handleRemove = (e) => {
-    this.props.removeImage(e.url)
-  }
-
   render() {
-    const { previewVisible, previewImage } = this.state;
-    const {image} = this.props;
-    let fileList =[];
-    if(image) {
-      fileList = [{
-        url: image,
-        status: 'done',
-        uid: "1",
-      }]
-    }
-
+    const { previewVisible, previewImage, showButton } = this.state;
+    const { isLoadingUpload, file } = this.props;
     const uploadButton = (
       <div>
-        <Button icon="plus" className="buttonUpload">
-          Upload
-        </Button>
+        <Icon type={isLoadingUpload ? 'loading' : 'plus'} />
+        <div className="ant-upload-text">Upload</div>
       </div>
     );
     return (
-      <EventImageWrapper>
+      <OrderImageWrapper>
         <div className="title">
-          <span>
-           Hình ảnh sự kiện
-          </span>
+          <p>
+            Upload ủy nhiệm chi
+          </p>
         </div>
         <Upload
-          listType="picture"
-          fileList={fileList}
+          listType="picture-card"
           onPreview={this.handlePreview}
           onChange={this.handleOnChange}
           customRequest={this.handleUpload}
-          onRemove={this.handleRemove}
+          onRemove={this.removeImage}
         >
-          {fileList.length >= 8 ? null : uploadButton}
+          {(file && showButton === false)  ? "" : (uploadButton)}
         </Upload>
+        <Button
+          type="primary"
+          size="large"
+          onClick={() => this.props.confirmOrder(this.props.id, file)}>
+          {i18n.t("transaction.detail.depositConfirm")}
+        </Button>
         <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
           <img alt="example" style={{ width: '100%' }} src={previewImage} />
         </Modal>
-      </EventImageWrapper>
+      </OrderImageWrapper>
     );
   }
 }
 
+
 const mapStateToProps = state => ({
-  image: state.event.eventImage,
+  file: state.transaction.fileUrl,
+  image: state.transaction.standingOrderImage,
+  isLoadingUpload: state.transaction.isLoadingUpload,
 });
 
 const mapDispatchToProps = dispatch => ({
+  uploadImage: () => {
+    dispatch(uploadImageAction())
+  },
   uploadImageSuccess: fileUrl => {
     dispatch(uploadImageSuccessAction(fileUrl, "create"));
   },
-
-  removeImage: url => {
-    dispatch(removeImageAction(url));
+  confirmOrder: (id, file) => {
+    dispatch(confirmOrderImageAction(id, file))
   },
-
+  removeImage: (id, url) => {
+    dispatch(removeOrderImageAction(id, url))
+  },
 });
-export default connect(mapStateToProps, mapDispatchToProps)(EventImage);
+export default connect(mapStateToProps, mapDispatchToProps)(StandingOrderImage);

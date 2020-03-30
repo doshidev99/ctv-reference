@@ -12,7 +12,8 @@ import { Redirect } from 'react-router-dom';
 import PrivateLayoutWrapper from './styles';
 import SideBarMenu from './SideBarMenu/index';
 import { logout as logoutAction } from '../../redux/staff/actions';
-import logo from '../../assets/images/logo2.png';
+import logo from '../../assets/images/logo.png';
+import logoFull from '../../assets/images/Group 29@2x - white 1.png'
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -39,7 +40,7 @@ class PrivateLayout extends Component {
   };
 
   render() {
-    const { children, logout, isAuthenticated } = this.props;
+    const { children, logout, isAuthenticated, fullName, avatar } = this.props;
     if (!isAuthenticated) return <Redirect to="/login" />;
     return (
       <PrivateLayoutWrapper>
@@ -62,10 +63,11 @@ class PrivateLayout extends Component {
             className="sidebar"
           >
             <div className="logo">
-              <a href="/">
-                <img alt='' src={logo} className='logo-img' />
-                <h2>CTV APP</h2>
-              </a>
+              <div className={this.state.collapsed === true ? "logo-image": "logo-image-full"}>
+                <a href="/">
+                  <img alt='' src={this.state.collapsed === true ? logo: logoFull} className="logo-img" />
+                </a>
+              </div>
             </div>
             <SideBarMenu />
           </Sider>
@@ -91,13 +93,21 @@ class PrivateLayout extends Component {
                       ))}
                       <Menu.Divider />
                       <Menu.Item onClick={logout} key="logout">
-                        Logout
+                        Đăng xuất
                       </Menu.Item>
                     </Menu>
                   )}
                   trigger={['click']}
                 >
-                  <Avatar size="large" icon="user" />
+                  <div>
+                    <Avatar size="large" src={avatar} />
+                    {'   '}
+                    <span>
+                      Hi,
+                      {' '}
+                      {fullName}
+                    </span>
+                  </div>
                 </Dropdown>
               </div>
             </Header>
@@ -128,6 +138,8 @@ PrivateLayout.propTypes = {
 export default connect(
   state => ({
     isAuthenticated: state.staff.isAuthenticated,
+    fullName: state.staff.data.fullName,
+    avatar: state.staff.data.avatar,
   }),
   {
     logout: logoutAction,

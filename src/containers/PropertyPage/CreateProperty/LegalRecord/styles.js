@@ -4,7 +4,7 @@ export default styled.div`
   display: flex;
   justify-content: space-between;
   .title {
-    width: 300px;
+    width: 150%;
     display: block;
   }
 

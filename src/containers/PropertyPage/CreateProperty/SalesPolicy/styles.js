@@ -1,12 +1,20 @@
 import styled from "styled-components";
 
 export default styled.div`
-  display:flex
   .title {
-    margin-right: 40px
+    width: 100%
     font-size: 18px;
     font-weight: 500;
   }
-
-  margin: 15px 0;
+  .uploadPolicyButton {
+    width: 100px;
+    font-weight: 500;
+  }
+  .ant-upload-list-item-name {
+    font-size: 16px
+  }
+  .ant-upload-list-item-card-actions .anticon{
+    color: red
+  }
+  margin: 20px 0;
 `;

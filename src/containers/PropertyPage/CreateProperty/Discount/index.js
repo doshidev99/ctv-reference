@@ -29,7 +29,7 @@ class Discount extends Component {
   render() {
     return (
       <DiscountWrapper>
-        <FormItem className="formItem">
+        <FormItem className="formItem" style={{width: '75%'}}>
           {this.props.form.getFieldDecorator("name", {
             rules: [
               {
@@ -38,8 +38,7 @@ class Discount extends Component {
             ],
           })(
             <div className="title">
-              <label>Tiêu đề</label>
-              <Input name="name" onChange={this.handleChange} />
+              <Input name="name" placeholder="Tiêu đề" onChange={this.handleChange} />
             </div>,
           )}
         </FormItem>
@@ -49,8 +48,8 @@ class Discount extends Component {
             {},
           )(
             <div className="proportion">
-              <label>Tỷ lệ (%)</label>
               <InputNumber
+                placeholder="Tỷ lệ (%)"
                 name="proportion"
                 min={0}
                 max={100}
@@ -59,7 +58,7 @@ class Discount extends Component {
             </div>,
           )}
         </FormItem>
-        <Button icon="minus" shape="circle" onClick={this.handleRemove} />
+        <Button icon="delete" onClick={this.handleRemove} />
       </DiscountWrapper>
     );
   }

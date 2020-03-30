@@ -88,11 +88,11 @@ class LegalRecord extends Component {
             onChange={this.handleOnChange}
             customRequest={this.handleUpload}
           >
-            <Button shape="circle" icon="upload" />
+            <Button shape="round" icon="upload" />
           </Upload>
           <Button
             icon="minus"
-            shape="circle"
+            shape="round"
             onClick={this.handleRemove}
           />
         </div>
