@@ -77,12 +77,9 @@ export default class SideBarMenu extends Component {
       <Menu
         mode="inline"
         defaultSelectedKeys={[this.state.defaultSelectedKeys.key]}
-<<<<<<< HEAD
-=======
         defaultOpenKeys={this.state.defaultSelectedKeys.key === 'transaction' ? ['transaction'] : []}
         location={this.props.children}
         className="sidebarMenu"
->>>>>>> 8a0e3459cd3c9ddb252b52d585c249cfe46f4b32
       >
         <Menu.Item key="dashboard" onClick={() => history.push("/")}>
           <span>
@@ -100,9 +97,9 @@ export default class SideBarMenu extends Component {
             </span>
           )}
         >
-          {/* <Menu.Item key="transaction" onClick={() => history.push("/transactions")}>
+          <Menu.Item key="transaction" onClick={() => history.push("/transactions")}>
             <span>Tất cả giao dịch</span>
-          </Menu.Item> */}
+          </Menu.Item>
           <Menu.Item key="processing" onClick={() => history.push("/transactions/processing")}>
             <span>Đang xử lý</span>
           </Menu.Item>
