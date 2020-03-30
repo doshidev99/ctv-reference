@@ -78,8 +78,6 @@ class DetailTransaction extends Component {
         values.type = 1;
         await this.props.addPayment(this.props.match.params.id,values);
         this.handleCancelModalCommission();
-        console.log(this.props.form.values);
-        
         this.props.form.payAmount = '';
         this.props.form.advanceAmount = '';
       }
