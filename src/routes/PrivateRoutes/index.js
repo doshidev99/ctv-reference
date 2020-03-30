@@ -8,6 +8,7 @@ import PrivateLayout from '../../layout/PrivateLayout';
 import Dashboard from '../../pages/Dashboard';
 import NewProperty from '../../pages/NewProperty';
 import ListProperty from '../../pages/ListProperty';
+import DetailTransaction from '../../pages/DetailTransaction'
 import EmailBox from '../../pages/EmailBox';
 import ListTransaction from '../../pages/ListTransaction';
 import ProcessingTransaction from '../../pages/ListTransaction/ProcessingTransaction';
@@ -61,6 +62,12 @@ const routes = [
         component: ListTransaction,
         exact: true,
         title: i18n.t('transaction.title'),
+      },
+      {
+        path: '/:id/show',
+        component: DetailTransaction,
+        exact: true,
+        title: i18n.t('transaction.detail.title'),
       },
       {
         path: '/processing',

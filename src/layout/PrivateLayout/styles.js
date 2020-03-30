@@ -31,7 +31,7 @@ const PrivateLayoutWrapper = styled.div`
     transition: color 0.3s;
 
     &:hover {
-      color: ${({ theme }) => theme.palette.primary};
+      color: ${({ theme }) => theme.palette.lightPrimary};
     }
     @media only screen and (max-width: 430px) {
       color: ${({ theme }) => theme.palette.primary};
@@ -56,11 +56,32 @@ const PrivateLayoutWrapper = styled.div`
       display: block;
     }
   }
-
+  
   .logo {
-    height: 32px;
+    position: absolute;
+    width: 200px;
+    height: 64px;
+    left: 0px;
+    top: 0px;
+    background: #0051FF;
+    border-radius: 0px;
+  }
+  .logo-image {
+    position: absolute;
+    width: auto;
+    height: auto;
+    left: 20px;
+    top: 14px;
     //background: rgba(0, 0, 0, 0.2);
-    margin: 16px;
+    overflow: hidden;
+  }
+  .logo-image-full {
+    position: absolute;
+    width: auto;
+    height: auto;
+    left: 45px;
+    top: 14px;
+    //background: rgba(0, 0, 0, 0.2);
     overflow: hidden;
   }
   .logo a {
@@ -76,7 +97,7 @@ const PrivateLayoutWrapper = styled.div`
   }
   .logo-img  {
     height: 32px;
-    width: 32px;
+    // width: 32px;
     display: inline-block;
   }
   .logo h2 {
@@ -91,6 +112,9 @@ const PrivateLayoutWrapper = styled.div`
     background: #fff;
     border-right: 1px solid #e8e8e8;
 
+    .sidebarMenu{
+      margin-top: 74px
+    }
     .ant-menu {
       border-right: 1px solid #fff;
       .ant-menu-submenu-title:hover {
@@ -114,6 +138,7 @@ const PrivateLayoutWrapper = styled.div`
       &.ant-menu-item-selected {
         color: ${({ theme }) => theme.palette.lightPrimary};
         background: ${({ theme }) => theme.background.light};
+        border-left: solid;
         & > span {
           color: ${({ theme }) => theme.text.lightPrimary};
           font-weight: ${({ theme }) => theme.fontWeight.bold};

@@ -6,7 +6,7 @@ import { Form, Icon, Button, Checkbox } from "antd";
 import i18n from "i18next";
 import { loginAction } from "../../redux/staff/actions";
 import MaterialInput from "../../components/common/MaterialInput/index";
-import logo from '../../assets/images/logo.png';
+import logo from '../../assets/images/logo1.png';
 
 const FormItem = Form.Item;
 

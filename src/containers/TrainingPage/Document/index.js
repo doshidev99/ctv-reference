@@ -267,7 +267,7 @@ class DocumentTable extends Component {
       <Wrapper>
         <Row gutter={[16, 16]}>
           <Col xs={6} className="createButton">
-            <Button type="primary" onClick={this.showModal}>
+            <Button type="primary" icon="plus" onClick={this.showModal}>
               Thêm Document
             </Button>
           </Col>

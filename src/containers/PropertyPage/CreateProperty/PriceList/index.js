@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Upload, Button, message } from 'antd'
+import { Upload, Button, message, Row, Col } from 'antd'
 import { connect } from "react-redux";
 import PriceListWrapper from './styles'
 import { getSignedUrlS3, uploadFile } from '../../../../utils/uploadFile';
@@ -48,21 +48,25 @@ class PriceList extends Component {
   render() {
     return (
       <PriceListWrapper>
-        <div className="title">
-          <span>
+        <Row>
+          <div className="title">
+            <p>
             Bảng giá
-          </span>
-        </div>
-        <div className="files">
-          <Upload
-            className="upload"
-            onChange={this.handleOnChange}
-            onRemove={this.handleRemove}
-            customRequest={this.handleUpload}
+            </p>
+          </div>
+        </Row>
+        <Row>
+          <Col>
+            <Upload
+              className="upload"
+              onChange={this.handleOnChange}
+              onRemove={this.handleRemove}
+              customRequest={this.handleUpload}
             >
-            <Button shape="circle" icon="upload" />
-          </Upload>
-        </div>
+              <Button icon="upload" className="uploadPriceButton" />
+            </Upload>
+          </Col>
+        </Row>
       </PriceListWrapper>
     )
   }

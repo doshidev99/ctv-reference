@@ -35,17 +35,17 @@ class Location extends Component {
     return (
       <LocationWrapper>
         <Row>
-          <Col xs={16} lg={12}>
+          <Col xs={24} lg={16} xl={12}>
             {this.props.form.getFieldDecorator("locationDescription")(
               <div className="locationDescription">
                 <label className="locationLabel">Vị trí</label>
                 <FormItem>
-                  <Editor label="Mô tả" onChange={this.handleChange} />
+                  <Editor onChange={this.handleChange} />
                 </FormItem>
               </div>,
             )}
           </Col>
-          <Col xs={8} lg={12}>
+          <Col xs={24} lg={16} xl={12}>
             <div className="locationMap">
               <Map center={centerLocation} zoom={13} onClick={this.addMarker}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />

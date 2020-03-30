@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Button, Upload, message, Form, Icon, Modal } from "antd";
+import { Input, Button, Upload, message, Form, Icon, Modal, Row, Col } from "antd";
 import { connect } from "react-redux";
 import SitePlanWrapper from "./styles";
 
@@ -109,9 +109,11 @@ class SitePlan extends Component {
     // const {imageUrl} = this.props
     return (
       <SitePlanWrapper>
-        <div className="title">
-          <FormItem>
-            {this.props.form.getFieldDecorator("sitePlanTitle", {
+        <Row className="site-row">
+          <Col span={22}>
+            <div className="title">
+              <FormItem>
+                {this.props.form.getFieldDecorator("sitePlanTitle", {
               rules: [
                 {
                   required: true,
@@ -127,28 +129,28 @@ class SitePlan extends Component {
                 />
               </div>,
             )}
-          </FormItem>
-           
-        </div>
-        <div className="files">
-          <div className="upload">
-            <Upload
-              onChange={this.handleOnChange}
-              listType="picture-card"
-              fileList={fileList}
-              customRequest={this.handleUpload}
-              onPreview={this.handlePreview}
-              onRemove={this.removeImage}
-            >
-              {fileList.length >= 8 ? null : uploadButton}
-            </Upload>
-          </div>
-         
-          <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-            <img alt="example" style={{ width: '100%' }} src={previewImage} />
-          </Modal>
-          <Button icon="minus" shape="circle" onClick={this.handleRemove} />
-        </div>
+              </FormItem>
+            </div>
+            <div className="uploadImage">
+              <Upload
+                onChange={this.handleOnChange}
+                listType="picture-card"
+                fileList={fileList}
+                customRequest={this.handleUpload}
+                onPreview={this.handlePreview}
+                onRemove={this.removeImage}
+                >
+                {fileList.length >= 8 ? null : uploadButton}
+              </Upload>
+              <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+                <img alt="example" style={{ width: '100%' }} src={previewImage} />
+              </Modal>
+            </div>
+          </Col>
+          <Col span={2}>
+            <Button icon="delete" className="deleteSiteButton" onClick={this.handleRemove} />
+          </Col>
+        </Row>
       </SitePlanWrapper>
     );
   }

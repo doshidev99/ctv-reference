@@ -99,7 +99,34 @@
   },
   "transaction": {
     "title": "Giao dịch",
-    "listTransactionTitle": "Danh sách giao dịch"
+    "listTransactionTitle": "Danh sách giao dịch",
+    "detail": {
+      "title": "Chi tiết giao dịch",
+      "generalInfo": "Thông tin chung",
+      "transCode": "Mã giao dịch",
+      "contractCode": "Mã hợp đồng",
+      "transDate": "Ngày giao dịch",
+      "transStatus": "Tình trạng giao dịch",
+      "infoRealtor": "Thông tin cộng tác viên",
+      "fullName": "Họ và tên",
+      "birthday": "Ngày sinh",
+      "phoneNumber": "Số điện thoại",
+      "address": "Địa chỉ",
+      "customerInfo": "Thông tin khách hàng",
+      "idCard": "CMT/Thẻ căng cước",
+      "job": "Nghề nghiệp",
+      "productInfo": "Thông tin sản phẩm",
+      "productCode": "Mã sản phảm",
+      "property": "Dự án",
+      "floor": "Tầng",
+      "area": "Diện tích",
+      "commission": "Tiền hoa hồng",
+      "allCommission": "Tổng tiền hoa hồng",
+      "depositConfirm": "Xác nhận đặt cọc",
+      "sendRequest": "Yêu cầu gửi lại",
+      "cancelTrans": "Hủy bỏ giao dịch",
+      "successTransConfirm": "Xác nhận giao dịch thành công"
+    }
   },
   "realtor": {
     "title": "Người môi giới",

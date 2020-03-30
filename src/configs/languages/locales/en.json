@@ -80,6 +80,18 @@
   "dashboard": {
     "title": "Dashboard"
   },
+  "property": {
+    "title": "Property",
+    "listPropertyTitle": "Property list",
+    "newPropertyTitle": "Create new property"
+  },
+  "transaction": {
+    "title": "Transaction",
+    "detail": {
+      "title": "Transaction detail",
+      "generalInfo": "General infomation"
+    }
+  },
 
   "user": {
     "list":{

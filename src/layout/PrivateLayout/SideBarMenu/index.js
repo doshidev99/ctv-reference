@@ -102,6 +102,7 @@ export default class SideBarMenu extends Component {
         defaultSelectedKeys={[this.state.defaultSelectedKeys.key]}
         defaultOpenKeys={this.state.defaultSelectedKeys.key === 'transaction' ? ['transaction'] : []}
         location={this.props.children}
+        className="sidebarMenu"
       >
         <Menu.Item key="dashboard" onClick={() => history.push("/")}>
           <span>
