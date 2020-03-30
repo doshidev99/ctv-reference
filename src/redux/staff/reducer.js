@@ -7,6 +7,7 @@ export const initialState = {
   data: {
     fullName: localStorage.getItem('fullName') || '',
     id: localStorage.getItem('id'),
+    avatar: localStorage.getItem('avatar') || '',
   },
   roles: '',
   isShowLoading: false,
@@ -15,13 +16,20 @@ export const initialState = {
 };
 // End setup
 
-const loginSuccess = state => ({
-  ...state,
-  isShowLoading: false,
-  isAuthenticated: true,
-  loginError: false,
-  loginSuccess: true,
-});
+const loginSuccess = (state, {respone}) => {
+  const {data} = state;
+  data.fullName = respone.fullName;
+  data.id = respone.id;
+  data.avatar = respone.avatar;
+  return {
+    ...state,
+    data,
+    roles: respone.role.name,
+    isShowLoading: false,
+    isAuthenticated: true,
+    loginError: false,
+    loginSuccess: true,
+}};
 
 const loginFail = (state, {error}) => ({
   ...state,
@@ -33,6 +41,7 @@ const loginFail = (state, {error}) => ({
 
 const logout = () => ({
   ...initialState,
+  data: {},
   isAuthenticated: false,
 });
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Upload, Button, message } from 'antd'
+import { Upload, Button, message, Row, Col } from 'antd'
 import { connect } from "react-redux";
 import SalesPolicyWrapper from './styles'
 import { getSignedUrlS3, uploadFile } from '../../../../utils/uploadFile';
@@ -48,21 +48,26 @@ class SalesPolicy extends Component {
   render() {
     return (
       <SalesPolicyWrapper>
-        <div className="title">
-          <span>
+        <Row>
+          <div className="title">
+            <p>
             Chính sách bán hàng
-          </span>
-        </div>
-        <div className="files">
-          <Upload
-            className="upload"
-            onChange={this.handleOnChange}
-            onRemove={this.handleRemove}
-            customRequest={this.handleUpload}
+            </p>
+          </div>
+        </Row>
+        <Row>
+          <Col>
+            <Upload
+              className="upload"
+              onChange={this.handleOnChange}
+              onRemove={this.handleRemove}
+              customRequest={this.handleUpload}
             >
-            <Button shape="circle" icon="upload" />
-          </Upload>
-        </div>
+              <Button icon="upload" className="uploadPolicyButton" />
+            </Upload>
+          </Col>
+        </Row>
+        
       </SalesPolicyWrapper>
     )
   }

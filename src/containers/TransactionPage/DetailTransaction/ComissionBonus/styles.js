@@ -11,7 +11,6 @@ export default styled.div`
   }
   .minusButton{
     position: absolute;
-    top: 20px;
-    left: 35px;
+    left: 15px;
   }
 `;

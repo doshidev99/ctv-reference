@@ -45,6 +45,7 @@ class CreatePropertyForm extends Component {
     status: 0,
     city: 1,
     type: 1,
+    paymentMethod: 1,
     transactionType: 1,
   };
 
@@ -181,7 +182,7 @@ class CreatePropertyForm extends Component {
                     <div className="city">
                       <label className="cityLabel">Thành phố</label>
                       <Select
-                        defaultValue={this.state.city}
+                        initialValue={this.state.city}
                         onChange={this.onChangeCity}
                       >
                         {this.props.cities.map(e => (
@@ -203,7 +204,7 @@ class CreatePropertyForm extends Component {
                     <div className="type">
                       <label className="typeLabel">Loại dự án</label>
                       <Select
-                        defaultValue={this.state.type}
+                        initialValue={this.state.type}
                         onChange={this.onChangeType}
                       >
                         {this.props.propertyTypes.map(e => (
@@ -243,33 +244,34 @@ class CreatePropertyForm extends Component {
               </Col>
               <Col xs={6}>
                 <FormItem>
+                  <label className="openSaleDateLabel">
+                      Phương án thanh toán
+                  </label>
                   {getFieldDecorator(
                     "paymentMethod",
                     {},
                   )(
-                    <div>
-                      <label className="paymentMethodLabel">
-                        Phương thức thanh toán
-                      </label>
-                      <Input />
-                    </div>,
+                    <Select initialValue="Chuyển khoản">
+                      <Option value="Chuyển khoản">Chuyển khoản</Option>
+                    </Select>,
                   )}
                 </FormItem>
               </Col>
             </Row>
-            <FormItem className="overview">
-              {getFieldDecorator("overview", {
-                rules: [
-                  {
-                    required: true,
-                    message: "Vui lòng nhập thông tin tổng quan dự án",
-                  },
-                ],
-              })(<Editor label="Tổng quan dự án" />)}
-            </FormItem>
-
             <Row>
-              <Col xs={24} lg={16} xl={12}>
+              <Col xs={24} lg={16} xl={12} style={{ paddingRight: '8px'}}>
+                <FormItem className="overview">
+                  {getFieldDecorator("overview", {
+                    rules: [
+                      {
+                        required: true,
+                        message: "Vui lòng nhập thông tin tổng quan dự án",
+                      },
+                    ],
+                  })(<Editor label="Tổng quan dự án" />)}
+                </FormItem>
+              </Col>
+              <Col xs={24} lg={16} xl={12} style={{paddingLeft: '8px', paddingRight: '8px'}}>
                 <div className="legalArea">
                   <div className="legalTitle">
                     <span>Hồ sơ pháp lý</span>
@@ -278,14 +280,16 @@ class CreatePropertyForm extends Component {
                   <div className="actionGroup">
                     <Button
                       type="primary"
+                      icon="plus"
                       onClick={this.props.expandLegalRecord}
                     >
-                      Thêm
+                      Thêm hồ sơ
                     </Button>
                   </div>
                 </div>
               </Col>
             </Row>
+            
             <Location />
 
             {/*  Chưa validate */}
@@ -293,49 +297,53 @@ class CreatePropertyForm extends Component {
               <Col xs={24}>
                 <div className="sitePlanArea">
                   <div className="sitePlanTitle">
-                    <span>Mặt bằng</span>
+                    <span>Mặt bằng dự án</span>
                   </div>
                   {sitePlanArea}
                   <div className="actionGroup">
-                    <Button type="primary" onClick={this.props.expandSitePlan}>
-                      Thêm
+                    <Button type="primary" icon="plus" onClick={this.props.expandSitePlan}>
+                      Thêm mặt bằng dự án
                     </Button>
                   </div>
                 </div>
               </Col>
             </Row>
-
-            <SalesPolicy />
-            <PriceList />
-            <PropertyImage />
             <Row>
-              <Col>
-                <FormItem>
-                  {getFieldDecorator("commissionRate")(
-                    <div className="commission">
-                      <label className="commissionLabel">
-                        Tỉ lệ hoa hồng (%)
-                      </label>
-                      <Input />
-                    </div>,
-                  )}
-                </FormItem>
+              <Col span={8}>
+                <SalesPolicy />
+              </Col>
+              <Col span={8}>
+                <PriceList />
+              </Col>
+              <Col span={8}>
+                <PropertyImage />
               </Col>
             </Row>
-
             <Row>
-              <Col xs={24} lg={20} xl={12}>
+              <Col span={16}>
                 <div className="discountArea">
                   <div className="discountTitle">
-                    <span>Tỷ lệ chiết khấu</span>
+                    <p>Tỷ lệ chiết khấu</p>
                   </div>
                   {discountArea}
                   <div className="actionGroup">
-                    <Button type="primary" onClick={this.props.expandDiscount}>
-                      Thêm
+                    <Button type="primary" icon="plus" onClick={this.props.expandDiscount}>
+                      Thêm tỷ lệ chiết khấu
                     </Button>
                   </div>
                 </div>
+              </Col>
+              <Col span={8}>
+                <FormItem>
+                  {getFieldDecorator("commissionRate")(
+                    <div className="commission">
+                      <div className="commissionLabel">
+                        <p>Tỉ lệ hoa hồng (%)</p>
+                      </div>
+                      <Input placeholder="Tỷ lệ" />
+                    </div>,
+                  )}
+                </FormItem>
               </Col>
             </Row>
 
@@ -370,7 +378,7 @@ class CreatePropertyForm extends Component {
                     })(
                       <div className="transactionType">
                         <label>Loại giao dịch</label>
-                        <Radio.Group name="radiogroup" defaultValue={1}>
+                        <Radio.Group name="radiogroup" initialValue={1}>
                           <Radio value={1}>Đặt cọc</Radio>
                           <Radio value={2}>Đặt chỗ</Radio>
                         </Radio.Group>
@@ -387,7 +395,7 @@ class CreatePropertyForm extends Component {
                       <div className="status">
                         <label>Tình trạng</label>
                         <Select
-                          defaultValue={this.state.status}
+                          initialValue={this.state.status}
                           onChange={this.onChangeStatus}
                         >
                           <Option value={0}>Bình thường</Option>
@@ -400,10 +408,11 @@ class CreatePropertyForm extends Component {
                 </Col>
               </Row>
             </div>
-
+            <hr />
             <div className="submitButton">
               <Button
                 type="primary"
+                size="large"
                 onClick={this.handleSubmit}
                 loading={createPropertyLoading}
               >

@@ -36,6 +36,7 @@ export const TransactionTypes = makeConstantCreator(
   "UPLOAD_IMAGE",
   "UPLOAD_IMAGE_SUCCESS",
   "UPLOAD_IMAGE_FAILURE",
+  "REMOVE_ORDER_IMAGE",
 
   "CONFIRM_TRANSACTION",
   "CONFIRM_TRANSACTION_SUCCESS",
@@ -116,6 +117,9 @@ export const uploadImageSuccessAction = (fileUrl, mode) =>
   makeActionCreator(TransactionTypes.UPLOAD_IMAGE_SUCCESS, { fileUrl, mode });
 export const uploadImageImageFailureAction = error =>
   makeActionCreator(TransactionTypes.UPLOAD_IMAGE_FAILURE, { error });
+
+export const removeOrderImageAction = (id, link) =>
+  makeActionCreator(TransactionTypes.REMOVE_ORDER_IMAGE, { id, link });
 
 // Confirm transaction with comission amount
 export const confirmTransactionAction = (id, payload) =>
