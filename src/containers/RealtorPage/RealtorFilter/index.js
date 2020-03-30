@@ -14,15 +14,15 @@ class Filter extends Component {
 
   handleFilter = async () => {
     try {
-      const {fullName, email, phone} = await this.props.form.getFieldsValue();
+      const { fullName, email, phone} = await this.props.form.getFieldsValue();
       const filter = {};
-    
+
       if(fullName) {
         filter.fullName = {
           "$like":fullName,
         }
       }
-      
+
       if(email) {
         filter.email = {
           "$like": email,
@@ -34,7 +34,7 @@ class Filter extends Component {
         }
       }
       this.props.applyFilter(10, 0, JSON.stringify(filter), this.orderBy);
-      
+
     } catch (error) {
       message.error("Có lỗi xảy ra")
     }

@@ -64,8 +64,8 @@ export const getTablePaymentFailureAction = error =>
   makeActionCreator(TransactionTypes.GET_TABLE_PAYMENT_FAIL, {error});
 
 // Get list transaction
-export const getListTransactionAction = (limit, offset, filter) =>
-  makeActionCreator(TransactionTypes.GET_LIST_TRANSACTION, { limit, offset, filter });
+export const getListTransactionAction = (limit, offset, filter, orderBy, fields) =>
+  makeActionCreator(TransactionTypes.GET_LIST_TRANSACTION, { limit, offset, filter,orderBy, fields });
 export const getListTransactionSuccessAction = (data, total, limit, offset) =>
   makeActionCreator(TransactionTypes.GET_LIST_TRANSACTION_SUCCESS, { data, total, limit ,offset });
 export const getListTransactionFailureAction = error =>

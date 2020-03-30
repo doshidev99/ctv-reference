@@ -60,6 +60,29 @@ const sidebarMenu = [
   },
 ];
 
+const subMenuTransaction = [
+  {
+    key: 'all',
+    text: 'Tất cả giao dịch',
+    url: '/transactions',
+  },
+  {
+    key: 'processing',
+    text: 'Đang xử lý',
+    url: '/transactions/processing',
+  },
+  {
+    key: 'completed',
+    text: 'Hoàn thành',
+    url: '/transactions/completed',
+  },
+  {
+    key: 'canceled',
+    text: 'Đã hủy',
+    url: '/transactions/canceled',
+  },
+]
+
 export default class SideBarMenu extends Component {
   constructor(props) {
     super(props);
@@ -77,6 +100,8 @@ export default class SideBarMenu extends Component {
       <Menu
         mode="inline"
         defaultSelectedKeys={[this.state.defaultSelectedKeys.key]}
+        defaultOpenKeys={this.state.defaultSelectedKeys.key === 'transaction' ? ['transaction'] : []}
+        location={this.props.children}
         className="sidebarMenu"
       >
         <Menu.Item key="dashboard" onClick={() => history.push("/")}>
@@ -87,7 +112,7 @@ export default class SideBarMenu extends Component {
         </Menu.Item>
         <Menu.SubMenu
           key="transaction"
-          // onClick={() => history.push("/giao-dich")}
+          defaultSelectedKeys="all"
           title={(
             <span>
               <Icon type="apartment" />
@@ -95,18 +120,11 @@ export default class SideBarMenu extends Component {
             </span>
           )}
         >
-          <Menu.Item key="transaction" onClick={() => history.push("/transactions")}>
-            <span>Tất cả giao dịch</span>
-          </Menu.Item>
-          <Menu.Item key="processing" onClick={() => history.push("/transactions/processing")}>
-            <span>Đang xử lý</span>
-          </Menu.Item>
-          <Menu.Item key="completed" onClick={() => history.push("/transactions/completed")}>
-            <span>Hoàn thành</span>
-          </Menu.Item>
-          <Menu.Item key="canceled" onClick={() => history.push("/transactions/canceled")}>
-            <span>Đã hủy</span>
-          </Menu.Item>
+          {subMenuTransaction.map(subMenu => (
+            <Menu.Item key={subMenu.key} onClick={() => history.push(subMenu.url)}>
+              <span>{subMenu.text}</span>
+            </Menu.Item>
+          ))}
         </Menu.SubMenu>
 
         {sidebarMenu.map(el => (
@@ -117,6 +135,7 @@ export default class SideBarMenu extends Component {
             </span>
           </Menu.Item>
         ))}
+
       </Menu>
     );
   }

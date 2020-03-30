@@ -14,7 +14,7 @@ export const initialState = {
   isLoadingConfirm: false,
   detailTransactionSuccess: undefined,
   detailTransactionFailure: undefined,
-  tablePaymentSuccess:undefined,
+  tablePaymentSuccess: undefined,
   tablePaymentFailure: undefined,
   confirmTransSuccess: undefined,
   confirmTransError: undefined,
@@ -36,7 +36,7 @@ export const initialState = {
 }
 // End setup
 
-const getDetailTransactionSuccess = (state, {data}) => ({
+const getDetailTransactionSuccess = (state, { data }) => ({
   ...state,
   transaction: data,
   isLoadingDetail: false,
@@ -57,7 +57,7 @@ const getTablePayment = (state) => ({
   ...state,
   isLoadingTable: true,
 })
-const getTablePaymentSuccess = (state, {data, total}) => ({
+const getTablePaymentSuccess = (state, { data, total }) => ({
   ...state,
   payment: data,
   total,
@@ -136,8 +136,8 @@ const onConfirmOder = (state) => ({
   ...state,
   isLoadingStatus: true,
 })
-const confirmOrderSuccess = (state, {status, standingOrder}) => {
-  const {transaction} =  state;
+const confirmOrderSuccess = (state, { status, standingOrder }) => {
+  const { transaction } = state;
   transaction.status = status;
   transaction.standingOrder = standingOrder;
   return {
@@ -155,8 +155,8 @@ const onConfirmImageOrder = (state) => ({
   ...state,
   isLoadingStatus: true,
 })
-const confirmOrderImageSuccess = (state, {status, standingOrder}) => {
-  const {transaction} =  state;
+const confirmOrderImageSuccess = (state, { status, standingOrder }) => {
+  const { transaction } = state;
   transaction.status = status;
   transaction.standingOrder = standingOrder;
   return {
@@ -168,15 +168,15 @@ const confirmOrderImageSuccess = (state, {status, standingOrder}) => {
 const confirmOrderImageFailure = state => ({
   ...state,
   isLoadingStatus: false,
-  
+
 })
 
 const onResendRequest = (state) => ({
   ...state,
   isLoadingStatus: true,
 })
-const resendRequestSuccess = (state, {status}) => {
-  const {transaction} =  state;
+const resendRequestSuccess = (state, { status }) => {
+  const { transaction } = state;
   transaction.status = status;
   return {
     ...state,
@@ -193,8 +193,8 @@ const cacelTransaction = state => ({
   ...state,
   isLoadingStatus: true,
 });
-const cacelTransactionSuccess = (state, {status}) => {
-  const {transaction} =  state;
+const cacelTransactionSuccess = (state, { status }) => {
+  const { transaction } = state;
   transaction.status = status;
   return {
     ...state,
@@ -235,8 +235,8 @@ const confirmTransaction = state => ({
   ...state,
   isLoadingConfirm: true,
 });
-const confirmTransactionSuccess = (state, {status}) => {
-  const {transaction} =  state;
+const confirmTransactionSuccess = (state, { status }) => {
+  const { transaction } = state;
   transaction.status = status;
   return {
     ...state,
@@ -244,7 +244,7 @@ const confirmTransactionSuccess = (state, {status}) => {
     isLoadingConfirm: false,
   }
 }
-const confirmTransactionFailure = (state, {error}) => ({
+const confirmTransactionFailure = (state, { error }) => ({
   ...state,
   isLoadingConfirm: false,
   confirmTransactionError: error,
@@ -255,7 +255,7 @@ const addPayment = state => ({
   isLoadingConfirm: true,
   isLoadingTable: true,
 });
-const addPaymentSuccess = (state, {data, total, detail}) => ({
+const addPaymentSuccess = (state, { data, total, detail }) => ({
   ...state,
   isLoadingConfirm: false,
   isLoadingTable: false,
@@ -273,7 +273,8 @@ const addPaymentFailure = (state) => ({
 })
 
 export const transaction = makeReducerCreator(initialState, {
-  
+  [TransactionTypes.GET_LIST_TRANSACTION]: getListTransaction,
+
   [TransactionTypes.GET_DETAIL_TRANSACTION_SUCCESS]: getDetailTransactionSuccess,
   [TransactionTypes.GET_DETAIL_TRANSACTION_FAIL]: getDetailTransactionFail,
 
