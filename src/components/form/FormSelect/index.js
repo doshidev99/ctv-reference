@@ -47,6 +47,7 @@ class FormSelect extends Component {
       formatText,
       // onEnter,
     } = this.props;
+    
     return (
       <FormItem
         ruleType={Array.isArray(defaultValue) ? 'array' : 'number'}

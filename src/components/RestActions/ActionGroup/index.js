@@ -10,23 +10,25 @@ const ActionGroup = ({
   gotoShowPage,
   deleteItem,
   record,
-}) => (
-  <GroupWrapper {...elementProps}>
-    <Popover
-      content={React.Children.map(children, element =>
-        React.cloneElement(element, {
-          gotoEditPage: element.props.gotoEditPage || gotoEditPage,
-          gotoShowPage: element.props.gotoShowPage || gotoShowPage,
-          deleteItem: element.props.deleteItem || deleteItem,
-          record,
-        }),
-      )}
-      trigger="hover"
-    >
-      <Icon className="iconSetting" type="setting" />
-    </Popover>
-  </GroupWrapper>
-);
+}) => {
+  return (
+    <GroupWrapper {...elementProps}>
+      <Popover
+        content={React.Children.map(children, element =>
+          React.cloneElement(element, {
+            gotoEditPage: element.props.gotoEditPage || gotoEditPage,
+            gotoShowPage: element.props.gotoShowPage || gotoShowPage,
+            deleteItem: element.props.deleteItem || deleteItem,
+            record,
+          }),
+        )}
+        trigger="click"
+      >
+        <Icon className="iconSetting" type="setting" />
+      </Popover>
+    </GroupWrapper>
+  );
+};
 
 ActionGroup.propTypes = {
   children: PropTypes.node,
@@ -35,15 +37,12 @@ ActionGroup.propTypes = {
   gotoEditPage: PropTypes.func,
   gotoShowPage: PropTypes.func,
   deleteItem: PropTypes.func,
-  source: PropTypes.string,
-  fixed: PropTypes.string,
-  width: PropTypes.number,
 };
 
 ActionGroup.defaultProps = {
-  source: 'actionGroup',
+  source: 'group',
   fixed: 'right',
-  width: 50,
+  title: 'Tùy chọn',
+  width: 90,
 };
-
 export default ActionGroup;

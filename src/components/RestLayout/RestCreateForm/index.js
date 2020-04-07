@@ -2,17 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Row, Col } from 'antd';
 import ButtonRow from '../FooterButtonRow';
-import { RestInputContext } from '../../RestInput/RestInputContext';
 
 class FormComponent extends Component {
-  componentDidUpdate(prevProps) {
-    if (prevProps.loading && !this.props.loading && !this.props.error) {
-      this.props.form.resetFields();
-    }
-  }
-
-  getData = () =>
-    new Promise(resolve => {
+  getData = () => {
+    return new Promise(resolve => {
       this.props.form.validateFields((err, values) => {
         if (!err) {
           const submitData = this.props.formatOnSubmit ? this.props.formatOnSubmit(values) : values;
@@ -21,9 +14,10 @@ class FormComponent extends Component {
         resolve({});
       });
     });
+  };
 
-  handleSubmit = () =>
-    new Promise((resolve, reject) => {
+  handleSubmit = () => {
+    return new Promise((resolve, reject) => {
       this.props.form.validateFields((err, values) => {
         if (!err) {
           const submitData = this.props.formatOnSubmit ? this.props.formatOnSubmit(values) : values;
@@ -34,6 +28,7 @@ class FormComponent extends Component {
         }
       });
     });
+  };
 
   render() {
     const {
@@ -45,15 +40,16 @@ class FormComponent extends Component {
       customSubmitButton,
       record,
       showModal,
+      resultSearch,
     } = this.props;
-
+    const components = React.Children.map(children, element => {
+      return React.cloneElement(element, { form, record, resultSearch });
+    });
     return (
       <Form>
         <Row gutter={16}>
           <Col md={positionOfSubmitButton === 'left' ? 20 : 24} xs={24}>
-            <RestInputContext.Provider value={{ form, record }}>
-              {children}
-            </RestInputContext.Provider>
+            {components}
           </Col>
           <Col md={positionOfSubmitButton === 'left' ? 4 : 24} xs={24}>
             {customSubmitButton ? (
@@ -79,7 +75,11 @@ class FormComponent extends Component {
 }
 
 const CreateForm = Form.create()(FormComponent);
-const RestCreateForm = props => <CreateForm {...props} />;
+const RestCreateForm = props => (
+  <div>
+    <CreateForm {...props} />
+  </div>
+);
 
 FormComponent.propTypes = {
   loading: PropTypes.bool,
@@ -92,7 +92,7 @@ FormComponent.propTypes = {
   record: PropTypes.object,
   showModal: PropTypes.bool,
   formatOnSubmit: PropTypes.func,
-  error: PropTypes.any,
+  resultSearch: PropTypes.bool,
 };
 
 FormComponent.defaultProps = {

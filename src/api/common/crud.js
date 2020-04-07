@@ -1,4 +1,4 @@
-import { get, post, put, del, patch } from '../utils';
+import { get, post, put, del, patch } from "../utils";
 
 export async function getAllApi(resource, data) {
   return get(`/${resource}`, data);
@@ -29,6 +29,7 @@ export async function patchApi(resource, id, data) {
 
 export async function exportExcel(resource, data) {
   return {
-    resource, data,
+    resource,
+    data,
   };
 }

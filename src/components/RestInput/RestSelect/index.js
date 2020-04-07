@@ -4,17 +4,21 @@ import FormSelect from '../../form/FormSelect';
 import { getRecordData } from '../../../utils/tools';
 import { RestInputContext } from '../RestInputContext';
 
-const RestSelect = props => (
-  <RestInputContext.Consumer>
-    {({ record, form }) => (
-      <FormSelect
-        {...props}
-        form={form}
-        defaultValue={getRecordData(record, props.source) || props.defaultValue}
-      />
-      )}
-  </RestInputContext.Consumer>
-);
+const RestSelect = props => {
+  const {record, form} = props
+  return (
+    <RestInputContext.Consumer>
+      {() => (
+        <FormSelect
+          {...props}
+          form={form}
+          defaultValue={getRecordData(record, props.source) || props.defaultValue}
+        />
+        )}
+    </RestInputContext.Consumer>
+  );
+}
+
 
 RestSelect.propTypes = {
   source: PropTypes.string,

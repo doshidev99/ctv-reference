@@ -40,12 +40,18 @@ export const TrainingTypes = makeConstantCreator(
   "REMOVE_FILE",
 
   "DELETE_ONE",
+  "DELETE_ONE_SUCCESS",
+  "DELETE_ONE_FAILURE",
 );
 
 
 // Delete One
 export const deleteOneAction = id =>
   makeActionCreator(TrainingTypes.DELETE_ONE, { id });
+export const deleteOneSuccessAction = id =>
+  makeActionCreator(TrainingTypes.DELETE_ONE_SUCCESS, { id });
+export const deleteOneFailureAction = error =>
+  makeActionCreator(TrainingTypes.DELETE_ONE_FAILURE, { error });
 
 // List document
 export const getListDocumentAction = (limit, offset, filter, orderBy, fields) =>

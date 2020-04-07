@@ -19,7 +19,11 @@ import {
   getOneVideoSuccessAction, 
   getOneVideoFailureAction,
 
+  //-----------------------------------
   uploadFileSuccessAction,
+  //-----------------------------------
+  deleteOneSuccessAction,
+  deleteOneFailureAction,
 } from "./actions";
 // import {data} from './tempData'
 import { patchApi, postApi, getAllApi, getDataByIdApi, delApi } from "../../api/common/crud";
@@ -83,6 +87,7 @@ function* createOneDocument({ payload }) {
       payload,
     );
     yield put(createOneDocumentSuccessAction());
+   
   } catch (error) {
     yield put(createOneDocumentFailureAction());
   }
@@ -108,6 +113,7 @@ function* getOneDocument({id}) {
       link: response.link,
       status: response.isVisible,
     }
+    
     yield put(getOneDocumentSuccessAction(data))
     yield put(uploadFileSuccessAction(response.link))
   } catch (error) {
@@ -294,10 +300,9 @@ function* deleteOneTrainingStuff({id}) {
       "trainings",
       id,
     );
+    yield put(deleteOneSuccessAction())
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error);
-    throw error;
+    yield put(deleteOneFailureAction(error))
   }
 }
 export default [

@@ -221,8 +221,8 @@ class DocumentTable extends Component {
     });
   };
 
-  handleDelete = e => {
-    this.props.deleteOne(e.key);
+  handleDelete = async e => {
+    await this.props.deleteOne(e.key);
     const limit = this.props.limit || 5;
     const offset = (this.currentPage - 1) * limit;
     this.props.getListDocument(

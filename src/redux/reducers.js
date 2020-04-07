@@ -12,6 +12,10 @@ import { admin } from "./admin/reducer";
 import { partner } from "./partner/reducer";
 import { event } from "./event/reducer";
 import { training } from "./training/reducer";
+import rest from './rest/reducer';
+import restFilter from './restFilter/reducer';
+import modal from './modal/reducer';
+import { loading } from './loading/reducer';
 
 export default history =>
   combineReducers({
@@ -28,4 +32,8 @@ export default history =>
     partner,
     event,
     training,
+    rest,
+    restFilter,
+    modal,
+    loading,
   });

@@ -122,7 +122,7 @@ export const ModalWrapper = styled(Modal)`
     line-height: 2;
   }
   .txtTitle {
-    font-size: 12px;
+    font-size: 14px;
   }
   .ant-form-item-label {
     line-height: 1.5em;

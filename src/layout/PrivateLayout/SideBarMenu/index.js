@@ -41,9 +41,9 @@ const sidebarMenu = [
     icon: "solution",
   },
   {
-    key: "admin",
+    key: "staff",
     text: "Quản trị viên",
-    url: "/admins",
+    url: "/staffs",
     icon: "tool",
   },
   {
