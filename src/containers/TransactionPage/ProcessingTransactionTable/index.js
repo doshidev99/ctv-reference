@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Table, Pagination, Row, Col } from "antd";
+import { Table, Pagination, Row, Col, Tag } from "antd";
 import { getListTransactionAction } from "../../../redux/transaction/actions";
 import TransactionTableWrapper from './style';
 
@@ -48,6 +48,13 @@ class TransactionTable extends Component {
       title: 'Tình trạng',
       key: 'status',
       dataIndex: 'status',
+      render: status => (
+        <span>
+          <Tag color="geekblue" key={status}>
+            {status}
+          </Tag>
+        </span>
+      ),
     },
   ];
 
@@ -89,7 +96,7 @@ class TransactionTable extends Component {
         result[i].status = "Chờ xác nhận đặt cọc"
       }
       else if (result[i].status === 2 ) {
-        result[i].status = "Đã cọc"
+        result[i].status = "Đã xác nhận đặt cọc"
       }
     }
     for (let i = 0; i < result.length; i+=1){
