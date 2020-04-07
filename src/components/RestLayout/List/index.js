@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Pagination } from 'antd';
-import I18n from 'i18next';
+import _ from 'lodash';
 import CustomBreadcrumb from '../../common/Breadcrumb';
 import CreateButton from '../../RestActions/CreateButton';
 import ExportExcelButton from '../../RestActions/ExportExcelButton';
-import RestTableLayout, { getAction, showTotal } from '../TableLayout';
-import Box from '../../common/Box';
+import RestTableLayout, {
+  getAction,
+  currentPage,
+  showTotal,
+} from '../TableLayout';
+import LayoutContent from '../../utility/LayoutWrapper';
+import Box from '../../utility/Box';
+import PageHeader from '../../utility/PageHeader';
 import RestFilterForm from '../FilterLayout';
 import RestListLayout from '../ListLayout';
 import { ListWrapper } from './styles';
+// import IntlMessages from '../../utility/IntlMessages';
 import SearchInput from '../../RestActions/SearchInput';
-import PageTitle from '../../common/PageTitle';
 
 class RestListComponent extends Component {
   state = {};
@@ -19,29 +25,38 @@ class RestListComponent extends Component {
   onTextSearch = text => {
     const { retrieveList } = this.props;
     retrieveList({
-      q: text,
+      filter: {
+        q: text,
+      },
     });
   };
 
   onChangePagination = (page, pageSize) => {
-    const { resourceFilter, retrieveList } = this.props;
-    retrieveList({
-      page,
-      limit: pageSize,
-      filter: resourceFilter.filter,
-    });
+   
+    
+    const { resourceData } = this.props;
+    const order = resourceData.order ? { order: resourceData.order } : {};
+    this.props.retrieveList(
+      _.assign(
+        {
+          skip: (page - 1) * pageSize,
+          limit: pageSize,
+          filter: resourceData.filter,
+        },
+        order,
+      ),
+    );
   };
 
   renderListItem = record => {
     const { children } = this.props;
-    return React.Children.map(children, item =>
-      React.cloneElement(item, {
-        key: item.source,
+    return React.Children.map(children, item => {
+      return React.cloneElement(item, {
         record,
         onChange: () => this.onChangeRecord(record, item),
         ...getAction(this.props, item),
-      }),
-    );
+      });
+    });
   };
 
   render() {
@@ -51,47 +66,69 @@ class RestListComponent extends Component {
       resourceData,
       resource,
       hasCreate,
-      layoutButtonCreate,
       gotoCreatePage,
+      exportExcel,
       filter,
-      header,
+      title,
       isList,
       location,
       hasSearch,
       hasExport,
-      createHeader,
-      resourceFilter,
-      customActions,
-      customLayout,
+      createTitle,
+      className,
+      hasPaging,
+      loadingExport,
     } = this.props;
     const BREADCRUMB_LIST = [];
     location.pathname.split('/').forEach((data, index) => {
       if (data === '') return;
       BREADCRUMB_LIST.push({
-        key: data,
         title: data,
-        path: `${BREADCRUMB_LIST[index - 1] ? BREADCRUMB_LIST[index - 1].path : ''}/${data}`,
+        path: `${
+          BREADCRUMB_LIST[index - 1] ? BREADCRUMB_LIST[index - 1].path : ''
+        }/${data}`,
       });
     });
     if (BREADCRUMB_LIST.length > 0) {
       BREADCRUMB_LIST[BREADCRUMB_LIST.length - 1].title =
-        typeof header === 'string'
-          ? I18n.t(header)
-          : header || BREADCRUMB_LIST[BREADCRUMB_LIST.length - 1].title;
+        typeof title === 'string' ? title : BREADCRUMB_LIST[BREADCRUMB_LIST.length - 1].title
+        
+        // typeof title === 'string' ? (
+        //   <IntlMessages id={title} />
+        // ) : (
+        //   title || BREADCRUMB_LIST[BREADCRUMB_LIST.length - 1].title
+        // );
+    } else {
+      BREADCRUMB_LIST[0] = {
+        title:
+          typeof title === 'string' ? title : BREADCRUMB_LIST[BREADCRUMB_LIST.length - 1].title,
+          
+        path: '/',
+      };
     }
     const actions = (
       <div className="vActions">
         {hasSearch && (
           <SearchInput
-            defaultValue={resourceFilter && resourceFilter.filter && resourceFilter.filter.q}
+            defaultValue={
+              resourceData && resourceData.filter && resourceData.filter.q
+            }
             onTextSearch={this.onTextSearch}
           />
         )}
-        {customActions}
-        {hasCreate && layoutButtonCreate !== 'inline' && (
-          <CreateButton header={createHeader} resource={resource} gotoCreatePage={gotoCreatePage} />
+        {hasCreate && (
+          <CreateButton
+            title={createTitle}
+            resource={resource}
+            gotoCreatePage={gotoCreatePage}
+          />
         )}
-        {hasExport && <ExportExcelButton resource={resource} resourceFilter={resourceFilter} />}
+        {hasExport && (
+          <ExportExcelButton
+            loadingExport={loadingExport}
+            exportExcel={exportExcel}
+          />
+        )}
       </div>
     );
 
@@ -99,7 +136,7 @@ class RestListComponent extends Component {
     const filterForm = filter ? (
       <RestFilterForm
         format={filter.props.format}
-        resourceFilter={resourceFilter}
+        resourceData={resourceData}
         retrieveList={retrieveList}
       >
         {filter}
@@ -109,11 +146,11 @@ class RestListComponent extends Component {
       <Pagination
         showSizeChanger
         // showQuickJumper
-        total={resourceFilter.count}
-        defaultCurrent={resourceFilter.page || 1}
-        current={resourceFilter.page || 1}
+        total={resourceData.count}
+        defaultCurrent={currentPage(resourceData) || 1}
+        current={currentPage(resourceData) || 1}
         showTotal={showTotal}
-        pageSize={resourceFilter.limit || 10}
+        pageSize={resourceData.limit || 10}
         onChange={this.onChangePagination}
         onShowSizeChange={this.onChangePagination}
       />
@@ -137,9 +174,8 @@ class RestListComponent extends Component {
     //   </Row>
     // );
 
-    const paginationBottomView = (
+    const paginationBottomView = hasPaging ? (
       <Row
-        key="paginationBottom"
         className="paginationRow"
         justify="center"
         align="middle"
@@ -147,61 +183,53 @@ class RestListComponent extends Component {
       >
         <Col xs={24}>{pagimationView}</Col>
       </Row>
-    );
-
-    const tableContent = [
-      <Box key="table" className="box">
-        <RestTableLayout {...this.props} />
-      </Box>,
-      paginationBottomView,
-    ];
-    const listCotent = customLayout ? (
-      React.cloneElement(customLayout, {
-        retrieveList,
-        resource,
-        resourceData,
-        resourceFilter,
-      })
     ) : (
-      <RestListLayout {...this.props} />
+      <span />
     );
-    const content =
-      isList || customLayout ? (
-        listCotent
-      ) : (
-        <Row className="viewContent">
-          <Col md={0} xs={24}>
-            {listCotent}
-          </Col>
-          <Col md={24} xs={0}>
-            {tableContent}
-          </Col>
-        </Row>
-      );
 
-    return (
-      <ListWrapper>
-        <div className="viewContent">
-          {!noCardWrapper && (
-            <PageTitle
-              extraAction={
-                hasCreate &&
-                layoutButtonCreate === 'inline' && (
-                  <CreateButton
-                    header={createHeader}
-                    resource={resource}
-                    gotoCreatePage={gotoCreatePage}
-                  />
-                )
-              }
-            >
-              <CustomBreadcrumb data={BREADCRUMB_LIST} />
-            </PageTitle>
-          )}
-          {filterForm}
-          {actions}
+    const tableContent = (
+      <div className="viewContent">
+        {filterForm}
+        {actions}
+        <Box className="box">
+          <RestTableLayout {...this.props} />
+        </Box>
+        {paginationBottomView}
+      </div>
+    );
+    const listCotent = (
+      <div className="viewContent">
+        {filterForm}
+        {actions}
+        <RestListLayout {...this.props} />
+      </div>
+    );
+    const content = isList ? (
+      listCotent
+    ) : (
+      <Row className="viewContent">
+        <Col md={0} xs={24}>
+          {listCotent}
+        </Col>
+        <Col md={24} xs={0}>
+          {tableContent}
+        </Col>
+      </Row>
+    );
+    return noCardWrapper ? (
+      <ListWrapper className={className}>{content}</ListWrapper>
+    ) : (
+      <ListWrapper className={className}>
+        <LayoutContent
+          bordered={false}
+          title={<CustomBreadcrumb data={BREADCRUMB_LIST} />}
+          extra={actions}
+        >
+          <PageHeader>
+            <CustomBreadcrumb data={BREADCRUMB_LIST} />
+          </PageHeader>
           {content}
-        </div>
+        </LayoutContent>
       </ListWrapper>
     );
   }
@@ -211,30 +239,28 @@ RestListComponent.propTypes = {
   resource: PropTypes.string,
   noCardWrapper: PropTypes.bool,
   retrieveList: PropTypes.func,
-  resourceData: PropTypes.array,
+  resourceData: PropTypes.object,
   hasCreate: PropTypes.bool,
   gotoCreatePage: PropTypes.func,
   filter: PropTypes.object,
-  header: PropTypes.any,
+  title: PropTypes.any,
   children: PropTypes.any,
   isList: PropTypes.bool,
   hasSearch: PropTypes.bool,
   hasExport: PropTypes.bool,
   location: PropTypes.object,
-  createHeader: PropTypes.string,
-  resourceFilter: PropTypes.object,
-  layoutButtonCreate: PropTypes.string,
+  createTitle: PropTypes.string,
+  className: PropTypes.string,
+  hasPaging: PropTypes.bool,
   exportExcel: PropTypes.func,
-  customActions: PropTypes.any,
-  customLayout: PropTypes.any,
+  loadingExport: PropTypes.bool,
 };
-
 RestListComponent.defaultProps = {
   noCardWrapper: false,
   isList: false,
-  hasExport: true,
-  hasSearch: true,
+  hasExport: false,
+  hasSearch: false,
   hasCreate: true,
-  layoutButtonCreate: 'non-inline',
+  hasPaging: true,
 };
 export default RestListComponent;

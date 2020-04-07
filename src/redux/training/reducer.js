@@ -207,6 +207,21 @@ const removeFile = state => ({
   fileUrl: null,
 })
 // -----------------------------------------------
+
+const deleteOneSuccess = state => {
+  return {
+    ...state,
+    loading: false,
+  }
+}
+
+const deleteOneFailure = state => ({
+  ...state,
+  loading: false,
+})
+
+
+// ---------------------------------------------------
 export const training = makeReducerCreator(initialState, {
   [TrainingTypes.GET_LIST_DOCUMENT]: getListDocument,
   [TrainingTypes.GET_LIST_DOCUMENT_SUCCESS]: getListDocumentSuccess,
@@ -239,4 +254,8 @@ export const training = makeReducerCreator(initialState, {
   [TrainingTypes.UPLOAD_FILE_SUCCESS]: uploadFileSuccess,
   [TrainingTypes.UPLOAD_FILE_FAILURE]: uploadFileFailure,
   [TrainingTypes.REMOVE_FILE]: removeFile,
+
+  //------------------------------------------------------
+  [TrainingTypes.DELETE_ONE_SUCCESS]: deleteOneSuccess,
+  [TrainingTypes.DELETE_ONE_FAILURE]: deleteOneFailure,
 });

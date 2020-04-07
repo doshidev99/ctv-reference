@@ -7,7 +7,7 @@ export const FormItemWrapper = styled(FormItem)`
   .ant-form-item-label {
     label {
       color: ${({ theme }) => theme.palette.primary};
-      font-size: 12px;
+      font-size: 14px;
       &:after {
         content: '';
       }

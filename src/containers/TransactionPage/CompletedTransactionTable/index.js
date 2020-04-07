@@ -50,11 +50,9 @@ class TransactionTable extends Component {
       dataIndex: 'status',
       render: status => (
         <span>
-          {
-            <Tag color={"geekblue"} key={status}>
-              {status}
-            </Tag>
-          }
+          <Tag color="geekblue" key={status}>
+            {status}
+          </Tag>
         </span>
       ),
     },

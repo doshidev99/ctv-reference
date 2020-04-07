@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {Component, lazy, Suspense} from 'react';
+
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import i18n from 'i18next';
-
 import { flatMap, map } from 'lodash';
+import ModalRoute from '../ModalRoute';
+
+import Loading from '../../components/common/LoadingScreen';
 import PrivateLayout from '../../layout/PrivateLayout';
 import Dashboard from '../../pages/Dashboard';
 import NewProperty from '../../pages/NewProperty';
@@ -17,7 +20,6 @@ import CanceledTransaction from '../../pages/ListTransaction/CanceledTransaction
 import ListRealtor from '../../pages/ListRealtor';
 import DetailRealtor from '../../pages/DetailRealtor';
 import Option from '../../pages/Option';
-import ListAdmin from '../../pages/ListAdmin';
 import ListPartner from '../../pages/ListPartner';
 import ListEvent from '../../pages/ListEvent';
 import NewEvent from '../../pages/NewEvent';
@@ -142,8 +144,8 @@ const routes = [
     ],
   },
   {
-    path: '/admins',
-    component: ListAdmin,
+    path: '/staffs',
+    component: lazy(() => import('../../pages/Admin/index')),
     exact: true,
     title: "Quản trị viên",
   },
@@ -167,33 +169,50 @@ const routes = [
   },
 ];
 
-const PrivateRoutes = () => (
-  <Switch>
-    {map(
-      flatMap(routes, route => {
-        if (route.routes) {
-          return map(route.routes, subRoute => ({
-            ...subRoute,
-            path: route.path + subRoute.path,
-            exact: subRoute.path === '/',
-          }));
-        }
-        return route;
-      }),
-      route => (
-        <Route
-          {...route}
-          component={e => (
-            <PrivateLayout>
-              <route.component {...e} />
-            </PrivateLayout>
-          )}
-          key={route.path}
-        />
-      ),
-    )}
-  </Switch>
-);
+
+
+
+
+
+
+class PrivateRoutes extends Component {
+
+  render() {
+    return (
+      <Switch>
+        {map(
+          flatMap(routes, route => {
+            if (route.routes) {
+              return map(route.routes, subRoute => ({
+                ...subRoute,
+                path: route.path + subRoute.path,
+                exact: subRoute.path === '/',
+              }));
+            }
+            return route;
+          }),
+          route => (
+            <Route
+              {...route}
+              component={e => {
+                // console.log(e);
+                
+                return(
+                  <PrivateLayout>
+                    <Suspense fallback={<Loading />}>
+                      <route.component {...e} />
+                    </Suspense>
+                    <ModalRoute location={e.location} match={e.match} />
+                  </PrivateLayout>
+                )}} 
+              key={route.path}
+            />
+          ),
+        )}
+      </Switch>
+    );
+  }
+}
 
 PrivateRoutes.propTypes = {};
 

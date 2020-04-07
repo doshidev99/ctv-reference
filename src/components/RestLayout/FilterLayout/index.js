@@ -21,11 +21,13 @@ class FormComponent extends Component {
   };
 
   render() {
-    const { form, children, retrieveList, resourceFilter } = this.props;
+    
+    const { form, children, retrieveList, resourceData } = this.props;
+
     const components = React.Children.map(children, element =>
       React.cloneElement(element, {
         form,
-        record: resourceFilter.filter || {},
+        record: resourceData.filter || {},
         retrieveList,
         required: false,
       }),
@@ -62,7 +64,7 @@ const RestFilterForm = props => <FilterForm {...props} />;
 FormComponent.propTypes = {
   children: PropTypes.node,
   retrieveList: PropTypes.func,
-  resourceFilter: PropTypes.any,
+  resourceData: PropTypes.any,
   form: PropTypes.object,
   format: PropTypes.func,
 };
