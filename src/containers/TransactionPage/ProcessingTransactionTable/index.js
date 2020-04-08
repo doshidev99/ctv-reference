@@ -48,15 +48,25 @@ class TransactionTable extends Component {
       title: 'Tình trạng',
       key: 'status',
       dataIndex: 'status',
-      render: status => (
-        <span>
-          {
-            <Tag color={"geekblue"} key={status}>
+      render: status => {
+        let color = "";
+        if (status === "Đang xử lý"){
+          color = "geekblue";
+        }
+        else if (status === "Chờ xác nhận đặt cọc"){
+          color = "gold";
+        }
+        else if (status === "Đã xác nhận đặt cọc"){
+          color = "green";
+        }
+        return (
+          <span>
+            <Tag color={color} key={status}>
               {status}
             </Tag>
-          }
-        </span>
-      ),
+          </span>
+        )
+      },
     },
   ];
 

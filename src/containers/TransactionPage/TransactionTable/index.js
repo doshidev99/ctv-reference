@@ -23,8 +23,8 @@ class TransactionTable extends Component {
   },
   {
     title: "Mã hợp đồng",
-    dataIndex: "Contractcode",
-    key: "contContractcoderact",
+    dataIndex: "contractCode",
+    key: "contractCode",
   },
   {
     title: "Dự án",
@@ -48,15 +48,28 @@ class TransactionTable extends Component {
     title: 'Tình trạng',
     key: 'status',
     dataIndex: 'status',
-    render: status => (
-      <span>
-        {
-          <Tag color={"geekblue"} key={status}>
+    render: status => {
+      let color = "geekblue";
+      if (status === "Hoàn thành"){
+        color = "green";
+      }
+      else if (status === "Hủy bỏ"){
+        color = "red";
+      }
+      else if (status === "Thanh toán hoa hồng"){
+        color = "gold";
+      }
+      else if (status === "Đã xác nhận đặt cọc"){
+        color = "lime";
+      }
+      return (
+        <span>
+          <Tag color={color} key={status}>
             {status}
           </Tag>
-        }
-      </span>
-    ),
+        </span>
+      )
+    },
   },
 ];
 

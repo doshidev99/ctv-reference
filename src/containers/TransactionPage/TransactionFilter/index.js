@@ -21,8 +21,11 @@ class Filter extends Component {
         }
       }
       if(fullName) {
+        // filter["realtor.fullName"] = {
+        //   "$ilike": `%${fullName}%`,
+        // }
         filter["realtor.fullName"] = {
-          "$ilike": `%${fullName}%`,
+          "$equals": fullName,
         }
       }
       if(status) {
@@ -36,6 +39,7 @@ class Filter extends Component {
         const filterDate = {"$gte": from, "$lte":to };
         filter.updatedAt = filterDate;
       }
+      // console.log(filter);
       this.props.applyFilter(10, 0, filter, this.orderBy);
     } catch (error) {
       message.error("Có lỗi xảy ra")
@@ -73,12 +77,12 @@ class Filter extends Component {
                 <Item className="status">
                   {getFieldDecorator("status")(
                     <Select placeholder="Tình trạng" allowClear>
-                      <Select.Option value="1">Đang xử lý</Select.Option>
-                      <Select.Option value="2">Chờ xác nhận đặt cọc</Select.Option>
-                      <Select.Option value="3">Đã cọc</Select.Option>
-                      <Select.Option value="4">Thanh toán hoa hồng</Select.Option>
-                      <Select.Option value="5">Thanh toán xong</Select.Option>
-                      <Select.Option value="6">Hủy bỏ</Select.Option>
+                      <Select.Option value="0">Đang xử lý</Select.Option>
+                      <Select.Option value="1">Chờ xác nhận đặt cọc</Select.Option>
+                      <Select.Option value="2">Đã xác nhận đặt cọc</Select.Option>
+                      <Select.Option value="3">Thanh toán hoa hồng</Select.Option>
+                      <Select.Option value="4">Hoàn thành</Select.Option>
+                      <Select.Option value="5">Hủy bỏ</Select.Option>
                     </Select>,
                   )}
                 </Item>
