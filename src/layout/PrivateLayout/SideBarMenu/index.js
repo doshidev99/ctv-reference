@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { Menu, Icon } from "antd";
-import { findLast } from "lodash";
-import SubMenu from "antd/lib/menu/SubMenu";
-import MenuItem from "antd/lib/menu/MenuItem";
-import * as _ from 'lodash'
+import _ , { findLast } from "lodash";
+
 import { history } from "../../../redux/store";
 
 const sidebarMenu = [
@@ -13,56 +11,33 @@ const sidebarMenu = [
     url: "/projects",
     icon: "project",
   },
-  // {
-  //   key: "transaction",
-  //   text: "Giao dịch",
-  //   url: "/transactions",
-  //   icon: "apartment",
-  // },
-  // {
-  //   // key: "processing",
-  //   key: "processing",
-  //   text: "Đang xử lý",
-  //   url: "/transactions/processing",
-  //   icon: "project",
-  // },
-  // {
-  //   // key: "completed",
-  //   key: "completed",
-  //   text: "Hoàn thành",
-  //   url: "/transactions/completed",
-  //   icon: "project",
-  // },
-  // {
-  //   // key: "canceled",
-  //   key: "canceled",
-  //   text: "Đã hủy",
-  //   url: "/transactions/canceled",
-  //   icon: "project",
-  // },
   {
     key: "transactions",
-    text: "Giao dịchv2",
-    url: "/transactions",
-    icon: "apartment",
+    text: "Giao dịch",
     subMenu: [
+      {
+        key: "transactions",
+        text: "Tất cả giao dịch",
+        url: "/transactions",
+        icon: "transaction",
+      },
       {
         key: "processing",
         text: "Đang xử lý",
         url: "/transactions/processing",
-        icon: "project",
+        icon: "transaction",
       },
       {
         key: "completed",
         text: "Hoàn thành",
         url: "/transactions/completed",
-        icon: "project",
+        icon: "transaction",
       },
       {
         key: "canceled",
         text: "Đã hủy",
         url: "/transactions/canceled",
-        icon: "project",
+        icon: "transaction",
       },
     ],
   },
@@ -168,7 +143,7 @@ export default class SideBarMenu extends Component {
                 key={el.key}
                 title={(
                   <span>
-                    <Icon type="apartment" />
+                    <Icon type="transaction" />
                     <span>{el.text}</span>
                   </span>
                 )}

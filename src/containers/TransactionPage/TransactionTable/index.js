@@ -149,7 +149,6 @@ TransactionTable.propTypes = {
   limit: PropTypes.number,
   total: PropTypes.number,
   loading: PropTypes.bool,
-  filter: PropTypes.string,
 };
 
 const mapStateToProps = state => {
@@ -159,7 +158,6 @@ const mapStateToProps = state => {
     limit,
     total,
     loading,
-    filter,
     listTransactionFailure,
   } = state.transaction;
   return {
@@ -168,7 +166,6 @@ const mapStateToProps = state => {
     limit,
     total,
     loading,
-    filter,
     listTransactionFailure,
   }
 }
