@@ -167,7 +167,10 @@
     "call": "Call",
     "loadMore": "Load More...",
     "sentInvite": "Sent Invite",
-    "resendInvite": "Resend Invite"
+    "resendInvite": "Resend Invite",
+    "filter": "Lọc",
+    "clearFilter": "Hủy lọc"
+    
   },
   "popup": {
     "alertDelete": "Delete Data",

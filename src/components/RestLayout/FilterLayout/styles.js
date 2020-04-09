@@ -19,10 +19,16 @@ export const FilterFormWrapper = styled(Form)`
   }
   .filterActions {
     width: 200px;
+    display: flex;
+    align-items: center;
     @media only screen and (max-width: 576px) {
       display: block;
       width: 100%;
       margin-top: 15px;
+    }
+
+    .ant-row {
+      width: 100%;
     }
   }
   .border {

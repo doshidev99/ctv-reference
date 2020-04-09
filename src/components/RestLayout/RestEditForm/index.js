@@ -9,12 +9,15 @@ const EDIT_BLACKLIST = ['createdAt', 'updatedAt'];
 
 class FormComponent extends Component {
   componentDidUpdate(prevProps) {
+    // console.log(this.props);
+
     if (
       this.props.showModal &&
       prevProps.record &&
       this.props.record &&
       prevProps.record.id !== this.props.record.id
     ) {
+      
       this.props.form.setFieldsValue(this.props.record);
     }
   }
@@ -89,6 +92,9 @@ class FormComponent extends Component {
         </Form>
       );
     }
+    const components = React.Children.map(children, element => {
+      return React.cloneElement(element, { form, record });
+    });
     return (
       <Form style={{ width: '100%' }}>
         <Row gutter={16}>
@@ -96,7 +102,7 @@ class FormComponent extends Component {
             <RestInputContext.Provider
               value={{ form, record, getData: this.getData, handleSubmit: this.handleSubmit }}
             >
-              {children}
+              {components}
             </RestInputContext.Provider>
           </Col>
           <Col md={positionOfSubmitButton === 'left' ? 4 : 24} xs={24}>

@@ -77,9 +77,9 @@ class TransactionTable extends Component {
     this.props.getListTransaction();
   }
 
-  onChangePage = (page, limit) => {
+  onChangePage = (page, limit, filter) => {
     const offset = (page - 1) * limit;
-    this.props.getListTransaction(limit, offset);
+    this.props.getListTransaction(limit, offset, filter);
   };
 
   render() {
@@ -149,6 +149,7 @@ TransactionTable.propTypes = {
   limit: PropTypes.number,
   total: PropTypes.number,
   loading: PropTypes.bool,
+  filter: PropTypes.string,
 };
 
 const mapStateToProps = state => {
@@ -158,6 +159,7 @@ const mapStateToProps = state => {
     limit,
     total,
     loading,
+    filter,
     listTransactionFailure,
   } = state.transaction;
   return {
@@ -166,6 +168,7 @@ const mapStateToProps = state => {
     limit,
     total,
     loading,
+    filter,
     listTransactionFailure,
   }
 }

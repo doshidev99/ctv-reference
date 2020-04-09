@@ -67,8 +67,8 @@ export const ListWrapper = styled.div`
       & > th {
         ${'' /* text-transform: uppercase; */}
         ${'' /* line-height: 17px; */}
-        background: ${({ theme }) => theme.background.content};
-        color: ${({ theme }) => theme.text.secondary};
+        background: ${({ theme }) => theme.palette.lightPrimary};
+        color: ${({ theme }) => theme.text.white};
         font-size: 12px;
         font-weight: ${({ theme }) => theme.fontWeight.medium};
         & > div {

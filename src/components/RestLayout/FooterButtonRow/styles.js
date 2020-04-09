@@ -14,6 +14,6 @@ export const FooterButtonRowWrapper = styled.div`
   margin-bottom: 10px;
   .ant-btn {
     width: 140px;
-    border-color: ${({ theme }) => theme.palette.primary};
+    border-color: ${({ theme }) => theme.palette.lightPrimary};
   }
 `;

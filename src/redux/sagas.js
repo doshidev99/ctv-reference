@@ -11,6 +11,8 @@ import adminSaga from "./admin/sagas";
 import partnerSaga from "./partner/sagas";
 import eventSaga from "./event/sagas";
 import trainingSaga from "./training/sagas";
+import restSaga from './rest/sagas';
+import restFilterSaga from './restFilter/sagas';
 
 export default function* root() {
   yield all([
@@ -26,5 +28,7 @@ export default function* root() {
     ...partnerSaga,
     ...eventSaga,
     ...trainingSaga,
+    ...restSaga,
+    ...restFilterSaga,
   ]);
 }

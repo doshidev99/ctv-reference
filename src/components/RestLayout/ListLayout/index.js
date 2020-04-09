@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import I18n from 'i18next';
-import { List, Col, Row, Card } from 'antd';
+import { List } from 'antd';
 import { getAction } from '../TableLayout';
 
+const currentPage = resourceData => {
+  return Number(resourceData.skip) / Number(resourceData.limit) + 1;
+};
 class RestListLayout extends Component {
-  onChangePagination = ({ current, pageSize }) => {
-    const { resourceFilter } = this.props;
+  state = {
+    current: currentPage(this.props.resourceData),
+  };
+
+  onChangePagination = e => {
+    const { resourceData } = this.props;
+    this.setState({ current: e.current });
     this.props.retrieveList({
-      page: current,
-      limit: pageSize,
-      filter: resourceFilter.filter,
+      skip: (e.current - 1) * e.pageSize,
+      limit: e.pageSize,
+      filter: resourceData.filter,
     });
   };
 
@@ -31,59 +38,29 @@ class RestListLayout extends Component {
   }
 
   onChangePage = page => {
-    const { resourceFilter } = this.props;
+    const { resourceData } = this.props;
     this.props.retrieveList({
-      page,
-      limit: resourceFilter.limit || 10,
-      filter: resourceFilter.filter,
+      skip: (page - 1) * (resourceData.limit || 20),
+      limit: resourceData.limit || 20,
+      filter: resourceData.filter,
     });
   };
 
   renderListItem = record => {
     const { children } = this.props;
-    const actionGroup =
-      Array.isArray(children) && children.find(element => element.props.source === 'actionGroup');
-    const actions =
-      Array.isArray(children) && actionGroup
-        ? React.Children.map(actionGroup.props.children, item =>
-            React.cloneElement(item, {
-              record,
-              table: true,
-              list: true,
-              onChange: () => this.onChangeRecord(record, item),
-              ...getAction(this.props, item),
-            }),
-          )
-        : [];
-    return Array.isArray(children) ? (
-      <Card className="item" actions={actions}>
-        <Row>
-          {React.Children.map(children, item => {
-            if (item.props.source === 'actionGroup') return null;
-            return (
-              <Col span={24} key={item.props.header}>
-                <div className="title">{I18n.t(item.props.header)}</div>
-                {React.cloneElement(item, {
-                  record,
-                  table: true,
-                  list: true,
-                  onChange: () => this.onChangeRecord(record, item),
-                  ...getAction(this.props, item),
-                })}
-              </Col>
-            );
+    return React.Children.map(children, item => {
+      return (
+        <div key={item.props.title}>
+          {React.cloneElement(item, {
+            record,
+            table: true,
+            list: true,
+            onChange: () => this.onChangeRecord(record, item),
+            ...getAction(this.props, item),
           })}
-        </Row>
-      </Card>
-    ) : (
-      React.cloneElement(children, {
-        record,
-        table: true,
-        list: true,
-        onChange: () => this.onChangeRecord(record),
-        ...getAction(this.props, { props: {} }),
-      })
-    );
+        </div>
+      );
+    });
   };
 
   render() {
@@ -94,21 +71,19 @@ class RestListLayout extends Component {
       gotoShowPage,
       responseRender,
       isList,
-      resourceFilter,
-      grid,
     } = this.props;
     return (
       <List
-        grid={grid || { gutter: 16 }}
+        grid={{ gutter: 16 }}
         pagination={{
           position: 'none',
           onChange: this.onChangePage,
-          pageSize: resourceFilter.limit || 10,
+          pageSize: resourceData.limit || 20,
         }}
         style={{ marginTop: 20 }}
-        dataSource={resourceData || []}
+        dataSource={(resourceData && resourceData.list) || []}
         renderItem={record => (
-          <List.Item key={record.id}>
+          <List.Item className="item" key={record.id}>
             {responseRender && !isList
               ? responseRender(record, {
                   gotoShowPage,
@@ -123,10 +98,11 @@ class RestListLayout extends Component {
   }
 }
 
+
+
 RestListLayout.propTypes = {
   retrieveList: PropTypes.func,
-  resourceData: PropTypes.array,
-  resourceFilter: PropTypes.object,
+  resourceData: PropTypes.object,
   updateRecord: PropTypes.func,
   responseRender: PropTypes.func,
   gotoEditPage: PropTypes.func,
@@ -134,7 +110,6 @@ RestListLayout.propTypes = {
   deleteItem: PropTypes.func,
   children: PropTypes.any,
   isList: PropTypes.bool,
-  grid: PropTypes.object,
 };
 
 export default RestListLayout;

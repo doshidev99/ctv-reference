@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { Menu, Icon } from "antd";
 import { findLast } from "lodash";
-import { history } from "../../../redux/store";
 import SubMenu from "antd/lib/menu/SubMenu";
 import MenuItem from "antd/lib/menu/MenuItem";
+import * as _ from 'lodash'
+import { history } from "../../../redux/store";
 
 const sidebarMenu = [
   {
@@ -13,58 +14,58 @@ const sidebarMenu = [
     icon: "project",
   },
   // {
-  //   key: "transactions",
+  //   key: "transaction",
   //   text: "Giao dịch",
   //   url: "/transactions",
   //   icon: "apartment",
   // },
   // {
+  //   // key: "processing",
   //   key: "processing",
-  //   subkey: "processing",
-  //   subtext: "Đang xử lý",
-  //   suburl: "/transactions/processing",
-  //   subicon: "project",
+  //   text: "Đang xử lý",
+  //   url: "/transactions/processing",
+  //   icon: "project",
   // },
   // {
+  //   // key: "completed",
   //   key: "completed",
-  //   subkey: "completed",
-  //   subtext: "Hoàn thành",
-  //   suburl: "/transactions/completed",
-  //   subicon: "project",
+  //   text: "Hoàn thành",
+  //   url: "/transactions/completed",
+  //   icon: "project",
   // },
   // {
+  //   // key: "canceled",
   //   key: "canceled",
-  //   subkey: "canceled",
-  //   subtext: "Đã hủy",
-  //   suburl: "/transactions/canceled",
-  //   subicon: "project",
+  //   text: "Đã hủy",
+  //   url: "/transactions/canceled",
+  //   icon: "project",
   // },
-  // {
-  //   key: "transactions",
-  //   text: "Giao dịchv2",
-  //   url: "/transactions",
-  //   icon: "apartment",
-  //   subMenu: [
-  //     {
-  //       key: "processing",
-  //       text: "Đang xử lý",
-  //       url: "/transactions/processing",
-  //       icon: "project",
-  //     },
-  //     {
-  //       key: "completed",
-  //       text: "Hoàn thành",
-  //       url: "/transactions/completed",
-  //       icon: "project",
-  //     },
-  //     {
-  //       key: "canceled",
-  //       text: "Đã hủy",
-  //       url: "/transactions/canceled",
-  //       icon: "project",
-  //     },
-  //   ],
-  // },
+  {
+    key: "transactions",
+    text: "Giao dịchv2",
+    url: "/transactions",
+    icon: "apartment",
+    subMenu: [
+      {
+        key: "processing",
+        text: "Đang xử lý",
+        url: "/transactions/processing",
+        icon: "project",
+      },
+      {
+        key: "completed",
+        text: "Hoàn thành",
+        url: "/transactions/completed",
+        icon: "project",
+      },
+      {
+        key: "canceled",
+        text: "Đã hủy",
+        url: "/transactions/canceled",
+        icon: "project",
+      },
+    ],
+  },
   {
     key: "collaborators",
     text: "Người môi giới",
@@ -96,9 +97,9 @@ const sidebarMenu = [
     icon: "solution",
   },
   {
-    key: "admin",
+    key: "staff",
     text: "Quản trị viên",
-    url: "/admins",
+    url: "/staffs",
     icon: "tool",
   },
   {
@@ -115,25 +116,42 @@ const sidebarMenu = [
   },
 ];
 
+// Flatten sidebar menu
+const sidebarMenuFlatten = _.map(
+  _.flatMap(sidebarMenu, item => {
+    if (item.subMenu) {
+      return _.map(item.subMenu, subMenuItem => ({
+        ...subMenuItem,
+        parent: item.key, // gán parent của submenu
+      }));
+    }
+    return item;
+  }))
+
 export default class SideBarMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      defaultSelectedKeys:
-        findLast(
-          sidebarMenu,
-          menu => window.location.pathname.indexOf(menu.url) === 0,
-        ) || { key: 'dashboard'},
+      // current : "dashboard",
+      defaultSelectedKeys: findLast(
+        sidebarMenuFlatten,
+        (menu) => window.location.pathname.indexOf(menu.url) === 0,
+      ) || { key: "dashboard" },
+
     };
-    console.log(this.state);
   }
+
 
   render() {
     return (
       <Menu
         mode="inline"
         defaultSelectedKeys={this.state.defaultSelectedKeys.key}
-        // defaultOpenKeys={this.state.defaultSelectedKeys.key === 'transactions' ? ['transactions'] : []}
+        defaultOpenKeys={
+          this.state.defaultSelectedKeys.parent === "transactions"
+            ? ["transactions"]
+            : []
+        }
         location={this.props.children}
         className="sidebarMenu"
       >
@@ -143,46 +161,41 @@ export default class SideBarMenu extends Component {
             <span>Dashboard</span>
           </span>
         </Menu.Item>
-        <Menu.SubMenu
-          key="transaction"
-          title={(
-            <span>
-              <Icon type="apartment" />
-              <span>Giao dịch</span>
-            </span>
-          )}
-        >
-          <Menu.Item key="transaction" onClick={() => history.push("/transactions")}>
-            <span>Tất cả giao dịch</span>
-          </Menu.Item>
-          <Menu.Item key="processing" onClick={() => history.push("/transactions/processing")}>
-            <span>Đang xử lý</span>
-          </Menu.Item>
-          <Menu.Item key="completed" onClick={() => history.push("/transactions/completed")}>
-            <span>Hoàn thành</span>
-          </Menu.Item>
-          <Menu.Item key="canceled" onClick={() => history.push("/transactions/canceled")}>
-            <span>Đã hủy</span>
-          </Menu.Item>
-        </Menu.SubMenu>
-        {sidebarMenu.map(el =>(
-          <Menu>
+        {sidebarMenu.map((el) => {
+          if (el.subMenu && el.subMenu.length > 0) {
+            return (
+              <Menu.SubMenu
+                key={el.key}
+                title={(
+                  <span>
+                    <Icon type="apartment" />
+                    <span>{el.text}</span>
+                  </span>
+                )}
+              >
+                {el.subMenu.map((sube) => (
+                  <Menu.Item
+                    key={sube.key}
+                    onClick={() => history.push(sube.url)}
+                  >
+                    <span>
+                      <Icon type={sube.icon} />
+                      <span>{sube.text}</span>
+                    </span>
+                  </Menu.Item>
+                ))}
+              </Menu.SubMenu>
+            );
+          }
+          return (
             <Menu.Item key={el.key} onClick={() => history.push(el.url)}>
-            <span>
-              <Icon type={el.icon} />
-              <span>{el.text}</span>
-            </span>
-            {/* <SubMenu>
-              <Menu.Item key={el.subkey} onClick={() => history.push(el.suburl)}>
-                <span>
-                  <Icon type={el.subicon} />
-                  <span>{el.subtext}</span>
-                </span>
-              </Menu.Item>
-            </SubMenu> */}
+              <span>
+                <Icon type={el.icon} />
+                <span>{el.text}</span>
+              </span>
             </Menu.Item>
-          </Menu>
-        ))}
+          );
+        })}
       </Menu>
     );
   }
