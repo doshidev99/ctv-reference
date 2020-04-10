@@ -53,8 +53,17 @@ class TransactionTable extends Component {
         if (status === "Hoàn thành"){
           color = "green";
         }
+        else if (status === "Hủy bỏ"){
+          color = "red";
+        }
         else if (status === "Thanh toán hoa hồng"){
+          color = "gold";
+        }
+        else if (status === "Đã xác nhận đặt cọc"){
           color = "lime";
+        }
+        else if (status === "Chờ xác nhận đặt cọc"){
+          color = "purple";
         }
         return (
           <span>
@@ -97,11 +106,23 @@ class TransactionTable extends Component {
       result[i].createdAt = newDate[i];
     }
     for (let i = 0; i < result.length; i+=1) {
-      if (result[i].status === 3 ) {
+      if (result[i].status === 0 ) {
+        result[i].status = "Đang xử lý"
+      }
+      else if (result[i].status === 1 ) {
+        result[i].status = "Chờ xác nhận đặt cọc"
+      }
+      else if (result[i].status === 2 ) {
+        result[i].status = "Đã xác nhận đặt cọc"
+      }
+      else if (result[i].status === 3 ) {
         result[i].status = "Thanh toán hoa hồng"
       }
       else if (result[i].status === 4 ) {
         result[i].status = "Hoàn thành"
+      }
+      else if (result[i].status === 5 ) {
+        result[i].status = "Hủy bỏ"
       }
     }
     return (

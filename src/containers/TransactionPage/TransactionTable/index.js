@@ -62,6 +62,9 @@ class TransactionTable extends Component {
       else if (status === "Đã xác nhận đặt cọc"){
         color = "lime";
       }
+      else if (status === "Chờ xác nhận đặt cọc"){
+        color = "purple";
+      }
       return (
         <span>
           <Tag color={color} key={status}>
