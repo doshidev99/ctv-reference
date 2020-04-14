@@ -3,7 +3,7 @@ import { Input, Button, Form, message, InputNumber } from "antd";
 import { connect } from "react-redux";
 import DiscountWrapper from "./styles";
 import {
-  onChangeDiscountAction,
+  // onChangeDiscountAction,
   removeDiscountAction,
 } from "../../../../redux/property/actions";
 
@@ -71,9 +71,9 @@ const mapDispatchToProps = dispatch => ({
   handleRemove: id => {
     dispatch(removeDiscountAction(id));
   },
-  onChange: (id, name, value) => {
-    dispatch(onChangeDiscountAction(id, name, value));
-  },
+  // onChange: (id, name, value) => {
+  //   dispatch(onChangeDiscountAction(id, name, value));
+  // },
 });
 export default connect(
   mapStateToProps,

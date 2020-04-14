@@ -1,5 +1,6 @@
 import { takeEvery, put, call } from "redux-saga/effects";
 import moment from "moment";
+import { object } from "prop-types";
 import {
   PropertyTypes,
   getListPropertySuccessAction,
@@ -12,7 +13,11 @@ import {
   // uploadFileFailureAction,
 } from "./actions";
 // import {data} from './tempData'
-import { getProperties, deleteOne, createOneProperty } from "../../api/modules/property";
+import {
+  getProperties,
+  deleteOne,
+  createOneProperty,
+} from "../../api/modules/property";
 import { apiWrapper } from "../../utils/reduxUtils";
 
 function* getListProperty({ limit, offset, filter }) {
@@ -24,7 +29,7 @@ function* getListProperty({ limit, offset, filter }) {
       offset = 0;
     }
     const { results, total } = yield getProperties({ limit, offset, filter });
-    const data = results.map(e => {
+    const data = results.map((e) => {
       return {
         key: e.id,
         name: e.name,
@@ -55,28 +60,83 @@ function* deleteProperty({ id }) {
     yield put(deletePropertyFailureAction(error));
   }
 }
-
+const clean = (obj) => {
+  Object.keys(obj).forEach(
+    (key) => (obj[key] == null || object[key] === "") && delete obj[key],
+  );
+};
 function* createProperty({ payload }) {
   try {
-    const body =JSON.parse(JSON.stringify(payload))
-    body.legalRecords.forEach(e => {
+    const body = JSON.parse(JSON.stringify(payload));
+    body.legalRecords.forEach((e) => {
+      delete e.id;
+    });
+    body.sitePlans.forEach((e) => {
+      delete e.id;
+    });
+
+    body.sections.forEach((e) => {
+      delete e.key;
+    });
+
+    body.discounts.forEach((e) => {
+      delete e.id;
+      clean(e);
+      if (e.time && e.time.length === 2) {
+        const { time } = e;
+        [e.beganAt, e.endedAt] = time;
+        delete e.time
+      } else {
+        e.beganAt = null;
+        e.endedAt = null;
+        delete e.time
+      }
+
+    });
+
+    body.paymentMethods.forEach((e) => {
+      delete e.id;
+      e.discounts.forEach((sube) => {
+        delete sube.id;
+        sube.groupId = 1;
+        clean(sube);
+        if (sube.time && sube.time.length === 2) {
+          const { time } = sube;
+          [sube.beganAt, sube.endedAt] = time;
+          delete e.time
+        } else {
+          sube.beganAt = null;
+          sube.endedAt = null;
+          delete sube.time
+        }
+      });
+      const newDiscounts = [...e.discounts].filter(
+        (value) => Object.keys(value).length >= 6,
+      );
+      e.discounts = newDiscounts;
+    });
+
+    body.salesPolicies.forEach((e) => {
+      delete e.id;
+    });
+    body.paymentProgress.forEach(e => {
       delete e.id
-    });
-    body.sitePlans.forEach(e => {
-      delete e.id
-    });
-    body.discounts.forEach(e => {
-      delete e.id
-    });
-    body.sections.forEach(e => {
-      delete e.key
-    });
-    const newLegalRecords = body.legalRecords.filter(value => Object.keys(value).length !== 0);
-    const newSitePlans = body.sitePlans.filter(value => Object.keys(value).length !== 1);
-    const newDiscounts = body.discounts.filter(value => Object.keys(value).length !== 0);
+    })
+
+    const newDiscounts = body.discounts.filter(
+      (value) => Object.keys(value).length >= 6,
+    );
+    const newLegalRecords = body.legalRecords.filter(
+      (value) => Object.keys(value).length !== 0,
+    );
+    const newSitePlans = body.sitePlans.filter(
+      (value) => Object.keys(value).length !== 1,
+    );
+
     body.legalRecords = newLegalRecords;
     body.sitePlans = newSitePlans;
-    body.discounts = newDiscounts
+    body.discounts = newDiscounts;
+    
     yield call(
       apiWrapper,
       {
@@ -93,7 +153,6 @@ function* createProperty({ payload }) {
     yield put(submitCreatePropertyFormFailureAtion(error));
   }
 }
-
 
 export default [
   takeEvery(PropertyTypes.GET_LIST_PROPERTY, getListProperty),

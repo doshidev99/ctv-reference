@@ -12,11 +12,13 @@ import {
   DatePicker,
   message,
   Radio,
+  InputNumber,
 } from "antd";
 // import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import moment from "moment";
+// import RestSelect from "../../../components/RestInput/RestSelect";
 import Editor from "../../../components/common/Editor/index";
 import StyleWrapper from "./styles";
 import LegalRecord from "./LegalRecord";
@@ -27,49 +29,66 @@ import PriceList from "./PriceList";
 import PropertyImage from "./PropertyImage";
 import Discount from "./Discount";
 import ProductTable from "./ProductTable";
-import {
-  addNewLegalRecordAction,
-  addNewSitePlanAction,
-  addNewDiscountAction,
-  submitCreatePropertyFormAction,
-} from "../../../redux/property/actions";
+// import { PROPERTY_TAGS } from "../../../configs/constants";
+
+// import {
+//   addNewLegalRecordAction,
+//   addNewSitePlanAction,
+//   addNewDiscountAction,
+//   submitCreatePropertyFormAction,
+// } from "../../../redux/property/actions";
+import * as propertyActions from "../../../redux/property/actions";
 import Room from "./Room";
 import { getListCityAction } from "../../../redux/city/actions";
 import { getListPropertyTypeAction } from "../../../redux/propertyType/actions";
+import { retrieveList } from "../../../redux/rest/actions";
+import Payment from "./Payment";
+import PropertyDiscount from "./PropertyDiscount";
+import RestSelect from "../../../components/RestInput/RestSelect";
+import { getResources } from "../../../redux/rest/selectors";
+import PaymentProgress from "./PaymentProgress";
 
 const FormItem = Form.Item;
 const { Option } = Select;
 class CreatePropertyForm extends Component {
-  state = {
-    isActive: true,
-    status: 0,
-    city: 1,
-    type: 1,
-    paymentMethod: 1,
-    transactionType: 1,
-  };
-
-  componentDidMount() {
-    if (this.props.cities.length === 0) {
-      this.props.getListCity();
-    }
-    if (this.props.propertyTypes.length === 0) {
-      this.props.getListPropertyType();
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      isVisible: true,
+      tags: null,
+      city: 1,
+      type: 1,
+      paymentMethod: 1,
+      transactionType: 1,
+    };
+    const initialFilter = { limit: 50, skip: 0, order: "id", filter: {} };
+    this.props.retrieveRefferences(
+      "cities",
+      initialFilter || { limit: 20, skip: 0, filter: {} },
+      true,
+    );
+    this.props.retrieveRefferences(
+      "property-types",
+      initialFilter || { limit: 20, skip: 0, filter: {} },
+      true,
+    );
   }
 
-  handleSubmit = e => {
+  handleSubmit = async (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         values.openSaleDate = values.openSaleDate
           ? values.openSaleDate.format()
           : null;
+
         const {
           legalRecords,
           sitePlans,
           discounts,
-          salesPolicy,
+          salesPolicies,
+          paymentProgress,
+          paymentMethods,
           priceList,
           propertyImage,
           productTable,
@@ -78,19 +97,23 @@ class CreatePropertyForm extends Component {
         } = this.props;
 
         const medias = [];
-        propertyImage.forEach(el => {
+        propertyImage.forEach((el) => {
           medias.push({
             type: 2,
             link: el,
           });
         });
-        values.transactionType = Number(values.transactionType)
+
+        values.transactionType = Number(values.transactionType);
         values = {
           ...values,
           legalRecords,
+          paymentMethods,
           sitePlans,
           discounts,
-          salesPolicy: salesPolicy !== null ? salesPolicy.link : null,
+          salesPolicies,
+          paymentProgress,
+
           priceList: priceList !== null ? priceList.link : null,
           medias,
           sections: productTable,
@@ -101,7 +124,6 @@ class CreatePropertyForm extends Component {
           locationDescription,
         };
         // eslint-disable-next-line no-console
-        console.log(values);
 
         this.props.submitForm(values);
       } else {
@@ -110,25 +132,25 @@ class CreatePropertyForm extends Component {
     });
   };
 
-  onChangeSwitch = checked => {
+  onChangeSwitch = (checked) => {
     this.setState({
-      isActive: checked,
+      isVisible: checked,
     });
   };
 
-  onChangeStatus = status => {
+  onChangeTags = (tags) => {
     this.setState({
-      status: Number(status),
+      tags,
     });
   };
 
-  onChangeCity = city => {
+  onChangeCity = (city) => {
     this.setState({
       city: Number(city),
     });
   };
 
-  onChangeType = type => {
+  onChangeType = (type) => {
     this.setState({
       type: Number(type),
     });
@@ -141,18 +163,30 @@ class CreatePropertyForm extends Component {
       sitePlans,
       discounts,
       createPropertyLoading,
+      salesPolicies,
+      paymentProgress,
     } = this.props;
 
     const { getFieldDecorator } = form;
 
-    const legalArea = legalRecords.map(e => (
+    const legalArea = legalRecords.map((e) => (
       <LegalRecord key={e.id} id={e.id} />
     ));
-    const sitePlanArea = sitePlans.map(e => (
+    const sitePlanArea = sitePlans.map((e) => (
       <SitePlan key={e.id} id={e.id} links={e.links} />
     ));
     // eslint-disable-next-line no-unused-vars
-    const discountArea = discounts.map(e => <Discount key={e.id} id={e.id} />);
+    const discountArea = discounts.map((e) => (
+      <Discount key={e.id} id={e.id} />
+    ));
+
+    const salesPoliciesArea = salesPolicies.map((e) => (
+      <SalesPolicy key={e.id} id={e.id} />
+    ));
+
+    const paymentProgressArea = paymentProgress.map(e =>(
+      <PaymentProgress key={e.id} id={e.id} />
+    ))
     return (
       <StyleWrapper>
         <Layout>
@@ -174,50 +208,35 @@ class CreatePropertyForm extends Component {
             </FormItem>
             <Row gutter={16}>
               <Col xs={6}>
-                <FormItem>
-                  {getFieldDecorator("cityId", {
-                    initialValue: this.state.city,
-                    valuePropName: "option",
-                  })(
-                    <div className="city">
-                      <label className="cityLabel">Thành phố</label>
-                      <Select
-                        initialValue={this.state.city}
-                        onChange={this.onChangeCity}
-                      >
-                        {this.props.cities.map(e => (
-                          <Option value={e.id} key={e.id}>
-                            {e.name}
-                          </Option>
-                        ))}
-                      </Select>
-                    </div>,
-                  )}
-                </FormItem>
+                {/* CITY */}
+                <span className="form-group-title">Thành phố</span>
+                {this.props.cities ? (
+                  <RestSelect
+                    form={this.props.form}
+                    source="cityId"
+                    valueProp="id"
+                    titleProp="name"
+                    placeholder="Thành phố"
+                    resourceData={this.props.cities.list}
+                  />
+                ) : null}
               </Col>
               <Col xs={6}>
-                <FormItem>
-                  {getFieldDecorator("typeId", {
-                    initialValue: this.state.type,
-                    valuePropName: "option",
-                  })(
-                    <div className="type">
-                      <label className="typeLabel">Loại dự án</label>
-                      <Select
-                        initialValue={this.state.type}
-                        onChange={this.onChangeType}
-                      >
-                        {this.props.propertyTypes.map(e => (
-                          <Option value={e.id} key={e.id}>
-                            {e.name}
-                          </Option>
-                        ))}
-                      </Select>
-                    </div>,
-                  )}
-                </FormItem>
+                {/* PROPERTY TYPE */}
+                <span className="form-group-title">Loại dự án</span>
+                {this.props.propertyTypes ? (
+                  <RestSelect
+                    form={this.props.form}
+                    source="typeId"
+                    valueProp="id"
+                    titleProp="name"
+                    placeholder="Thành phố"
+                    resourceData={this.props.propertyTypes.list}
+                  />
+                ) : null}
               </Col>
               <Col xs={6}>
+                {/* OPEN SALES DATE */}
                 <FormItem>
                   <div className="openSaleDate">
                     <label className="openSaleDateLabel">
@@ -243,23 +262,29 @@ class CreatePropertyForm extends Component {
                 </FormItem>
               </Col>
               <Col xs={6}>
+                {/*  COMMISSION RATE */}
                 <FormItem>
-                  <label className="openSaleDateLabel">
-                      Phương án thanh toán
-                  </label>
-                  {getFieldDecorator(
-                    "paymentMethod",
-                    {},
-                  )(
-                    <Select initialValue="Chuyển khoản">
-                      <Option value="Chuyển khoản">Chuyển khoản</Option>
-                    </Select>,
+                  {getFieldDecorator("commissionRate")(
+                    <div className="commission">
+                      <div className="commissionLabel">
+                        <span>Tỉ lệ hoa hồng (%)</span>
+                      </div>
+                      {/* <Input placeholder="Tỷ lệ" type="number" /> */}
+                      <InputNumber
+                        placeholder="Tỷ lệ (%)"
+                        name="commissionRate"
+                        min={0}
+                        max={100}
+                        // onChange={this.handleChange}
+                      />
+                    </div>,
                   )}
                 </FormItem>
               </Col>
             </Row>
             <Row>
-              <Col xs={24} lg={16} xl={12} style={{ paddingRight: '8px'}}>
+              <Col xs={24} lg={16} xl={12} style={{ paddingRight: "8px" }}>
+                {/* OVERVIEW */}
                 <FormItem className="overview">
                   {getFieldDecorator("overview", {
                     rules: [
@@ -271,7 +296,13 @@ class CreatePropertyForm extends Component {
                   })(<Editor label="Tổng quan dự án" />)}
                 </FormItem>
               </Col>
-              <Col xs={24} lg={16} xl={12} style={{paddingLeft: '8px', paddingRight: '8px'}}>
+              <Col
+                xs={24}
+                lg={16}
+                xl={12}
+                style={{ paddingLeft: "8px", paddingRight: "8px" }}
+              >
+                {/* LEGAL RECORD */}
                 <div className="legalArea">
                   <div className="legalTitle">
                     <span>Hồ sơ pháp lý</span>
@@ -289,11 +320,13 @@ class CreatePropertyForm extends Component {
                 </div>
               </Col>
             </Row>
-            
+
+            {/* LOCATION  */}
             <Location />
 
             {/*  Chưa validate */}
             <Row>
+              {/* SITE PLAN */}
               <Col xs={24}>
                 <div className="sitePlanArea">
                   <div className="sitePlanTitle">
@@ -301,58 +334,113 @@ class CreatePropertyForm extends Component {
                   </div>
                   {sitePlanArea}
                   <div className="actionGroup">
-                    <Button type="primary" icon="plus" onClick={this.props.expandSitePlan}>
+                    <Button
+                      type="primary"
+                      icon="plus"
+                      onClick={this.props.expandSitePlan}
+                    >
                       Thêm mặt bằng dự án
                     </Button>
                   </div>
                 </div>
               </Col>
             </Row>
-            <Row>
-              <Col span={8}>
-                <SalesPolicy />
-              </Col>
-              <Col span={8}>
-                <PriceList />
-              </Col>
-              <Col span={8}>
-                <PropertyImage />
-              </Col>
-            </Row>
-            <Row>
-              <Col span={16}>
-                <div className="discountArea">
-                  <div className="discountTitle">
-                    <p>Tỷ lệ chiết khấu</p>
-                  </div>
-                  {discountArea}
+
+            <Row gutter={[8, 24]}>
+              {/* SALES POLICIES */}
+              <Col span={12}>
+                <div className="salesPolicyArea">
+                  <Row>
+                    <div className="salesPolicyTitle">
+                      <p>Chính sách bán hàng</p>
+                    </div>
+                  </Row>
+                  <Row>{salesPoliciesArea}</Row>
                   <div className="actionGroup">
-                    <Button type="primary" icon="plus" onClick={this.props.expandDiscount}>
-                      Thêm tỷ lệ chiết khấu
+                    <Button
+                      type="primary"
+                      icon="plus"
+                      onClick={this.props.expandSalesPolicy}
+                    >
+                      Thêm hồ sơ
                     </Button>
                   </div>
                 </div>
               </Col>
+              <Col span={4}>
+                {/* PRICE LIST */}
+                <PriceList />
+              </Col>
               <Col span={8}>
-                <FormItem>
-                  {getFieldDecorator("commissionRate")(
-                    <div className="commission">
-                      <div className="commissionLabel">
-                        <p>Tỉ lệ hoa hồng (%)</p>
-                      </div>
-                      <Input placeholder="Tỷ lệ" />
-                    </div>,
-                  )}
-                </FormItem>
+                {/* PROPERTY IMAGE */}
+                <PropertyImage />
+              </Col>
+            </Row>
+            <Row gutter={[8, 24]}>
+              <Col span={12}>
+                <div className="paymentProgress">
+                  <Row>
+                    <div className="form-group-title">
+                      <p>Tiến độ thanh toán</p>
+                    </div>
+                  </Row>
+                  <Row>{paymentProgressArea}</Row>
+                  <div className="actionGroup">
+                    <Button
+                      type="primary"
+                      icon="plus"
+                      onClick={this.props.expandPaymentProgress}
+                    >
+                      Thêm hồ sơ
+                    </Button>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+            
+            <Row gutter={[16, 24]}>
+              {/* DISCOUNT */}
+              <Col xs={20}>
+                <Row>
+                  <Col xs={24}>
+                    <div className="salesPolicyTitle">
+                      <span>Chiết khấu</span>
+                    </div>
+                  </Col>
+                  <Col xs={24}>
+                    <PropertyDiscount
+                      retrieveRefferences={this.props.retrieveRefferences}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+              <Col xs={20}>
+                <Row>
+                  <Col xs={24}>
+                    <div className="form-group-title">
+                      <span>Phương thức thanh toán</span>
+                    </div>
+                  </Col>
+                  <Col xs={24}>
+                    <Payment />
+                  </Col>
+                </Row>
               </Col>
             </Row>
 
-            <div className="productTable">
-              <div className="productTableTitle">
-                <span>Bảng hàng</span>
-              </div>
-              <ProductTable />
-            </div>
+            {/* PRODUCT TABLE */}
+            <Row>
+              <Col xs={24}>
+                <div className="productTable">
+                  <div className="productTableTitle">
+                    <span>Bảng hàng</span>
+                  </div>
+                  <ProductTable />
+                </div>
+              </Col>
+            </Row>
+
+            {/* OTHERS */}
             <div className="others">
               <div className="othersTitle">
                 <span>Khác</span>
@@ -360,9 +448,9 @@ class CreatePropertyForm extends Component {
               <Row>
                 <Col offset={2} xs={3}>
                   <FormItem>
-                    {getFieldDecorator("isActive", {
+                    {getFieldDecorator("isVisible", {
                       valuePropName: "checked",
-                      initialValue: this.state.isActive,
+                      initialValue: this.state.isVisible,
                     })(
                       <div className="display">
                         <label>Hiển thị</label>
@@ -388,17 +476,17 @@ class CreatePropertyForm extends Component {
                 </Col>
                 <Col offset={3} xs={6}>
                   <FormItem valuepropname="option">
-                    {getFieldDecorator("tag", {
-                      initialValue: this.state.status,
+                    {getFieldDecorator("tags", {
+                      initialValue: this.state.tags,
                       valuePropName: "option",
                     })(
                       <div className="status">
                         <label>Tình trạng</label>
                         <Select
-                          initialValue={this.state.status}
-                          onChange={this.onChangeStatus}
+                          mode="multiple"
+                          initialValue={this.state.tags}
+                          onChange={this.onChangeTags}
                         >
-                          <Option value={0}>Bình thường</Option>
                           <Option value={1}>Hot</Option>
                           <Option value={2}>New</Option>
                         </Select>
@@ -430,12 +518,14 @@ class CreatePropertyForm extends Component {
 CreatePropertyForm.propTypes = {
   form: PropTypes.object,
 };
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const {
     legalRecords,
     sitePlans,
     discounts,
-    salesPolicy,
+    paymentMethods,
+    salesPolicies,
+    paymentProgress,
     priceList,
     propertyImage,
     productTable,
@@ -444,54 +534,76 @@ const mapStateToProps = state => {
     //------------------------
     createPropertyLoading,
   } = state.property;
-  const { propertyTypes, listPropertyTypeFailure } = state.propertyType;
-  const { cities, listCityFailure } = state.city;
-  const cityLoading = state.city.loading;
-  const propertyTypeLoading = state.propertyType.loading;
+  // const { propertyTypes, listPropertyTypeFailure } = state.propertyType;
+
+  const { listCityFailure } = state.city;
+
   return {
     legalRecords,
     sitePlans,
     discounts,
-    salesPolicy,
+    salesPolicies,
+    paymentProgress,
     priceList,
+    paymentMethods,
     propertyImage,
     productTable,
     location,
     locationDescription,
     //---------------------
-    propertyTypes,
-    cityLoading,
-    propertyTypeLoading,
-    cities,
+    propertyTypes: getResources(state, "property-types"),
+    cities: getResources(state, "cities"),
     listCityFailure,
-    listPropertyTypeFailure,
     //---------------------
     createPropertyLoading,
+
+    // --Discount group--
   };
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch, props) => ({
   expandLegalRecord: () => {
-    dispatch(addNewLegalRecordAction());
+    dispatch(propertyActions.addNewLegalRecordAction());
+  },
+
+  expandSalesPolicy: () => {
+    dispatch(propertyActions.addSalesPolicyAction());
+  },
+  expandPaymentProgress: () => {
+    dispatch(propertyActions.addPaymentProgressAction());
   },
 
   expandSitePlan: () => {
-    dispatch(addNewSitePlanAction());
+    dispatch(propertyActions.addNewSitePlanAction());
   },
 
   expandDiscount: () => {
-    dispatch(addNewDiscountAction());
+    dispatch(propertyActions.addNewDiscountAction());
+  },
+
+  submitForm: (payload) => {
+    dispatch(propertyActions.submitCreatePropertyFormAction(payload));
   },
 
   getListCity: () => {
     dispatch(getListCityAction());
   },
+
   getListPropertyType: () => {
     dispatch(getListPropertyTypeAction());
   },
 
-  submitForm: payload => {
-    dispatch(submitCreatePropertyFormAction(payload));
+  retrieveRefferences: (resource, filter, isRefresh) => {
+    return dispatch(
+      retrieveList(
+        resource,
+        {
+          ...props.initialFilter,
+          ...filter,
+        },
+        isRefresh,
+      ),
+    );
   },
 });
 

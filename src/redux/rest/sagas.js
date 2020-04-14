@@ -35,6 +35,8 @@ export function* retrieveList({ resource }) {
       include,
       order,
     });
+
+    //  console.log("Saga: Resource: ", resource, " >>", params)
     const response = yield call(
       apiWrapper,
       {

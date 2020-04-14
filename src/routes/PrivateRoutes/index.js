@@ -5,12 +5,9 @@ import { Switch, Route } from 'react-router-dom';
 import i18n from 'i18next';
 import { flatMap, map } from 'lodash';
 import ModalRoute from '../ModalRoute';
-
 import Loading from '../../components/common/LoadingScreen';
 import PrivateLayout from '../../layout/PrivateLayout';
 import Dashboard from '../../pages/Dashboard';
-import NewProperty from '../../pages/NewProperty';
-import ListProperty from '../../pages/ListProperty';
 import DetailTransaction from '../../pages/DetailTransaction'
 import EmailBox from '../../pages/EmailBox';
 import ListTransaction from '../../pages/ListTransaction';
@@ -34,20 +31,20 @@ const routes = [
     title: i18n.t('dashboard.title'),
   },
   {
-    path: '/projects',
-    component: ListProperty,
+    path: '/properties',
+    component: lazy(() => import('../../pages/Property/List')),
     exact: true,
     title: i18n.t('property.title'),
     routes: [
       {
         path: '/',
-        component: ListProperty,
+        component: lazy(() => import('../../pages/Property/List')),
         exact: true,
         title: i18n.t('property.title'),
       },
       {
         path: '/create',
-        component: NewProperty,
+        component:lazy(() => import('../../pages/Property/Create')),
         exact: true,
         title: i18n.t('property.title'),
       },
