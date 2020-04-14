@@ -23,14 +23,20 @@ export const initialState = {
       links: [],
     },
   ],
-  salesPolicy: null,
-  priceList: null,
-  propertyImage: [],
-  discounts: [
+  salesPolicies: [
     {
       id: mongoObjectId(),
     },
   ],
+  paymentProgress: [
+    {
+      id: mongoObjectId(),
+    },
+  ],
+  priceList: null,
+  propertyImage: [],
+  discounts: [],
+  paymentMethods: [],
   location: [],
   locationDescription: "",
   // productTable: [
@@ -49,7 +55,7 @@ export const initialState = {
 // End setup
 
 // LIST PROPERTY
-const getListProperty = state => ({
+const getListProperty = (state) => ({
   ...state,
   loading: true,
 });
@@ -65,7 +71,7 @@ const getListPropertySuccess = (state, { data, total, limit, offset }) => ({
   listPropertyFailure: false,
 });
 
-const getListPropertyFailure = state => ({
+const getListPropertyFailure = (state) => ({
   ...state,
   loading: false,
   listPropertySuccess: false,
@@ -80,13 +86,14 @@ const uploadFileSuccess = (state, { fileUrl }) => {
   };
 };
 
-const uploadFileFailure = state => ({
+const uploadFileFailure = (state) => ({
   ...state,
   loading: false,
 });
 
 // LEGAL RECORD
-const addNewLegalRecord = state => {
+
+const addNewLegalRecord = (state) => {
   const legalRecords = [...state.legalRecords];
   legalRecords.push({
     id: mongoObjectId(),
@@ -96,10 +103,9 @@ const addNewLegalRecord = state => {
     legalRecords,
   };
 };
-
 const addNewLegalRecordSuccess = (state, { id, title, link, mimeType }) => {
   const legalRecords = [...state.legalRecords];
-  const index = legalRecords.findIndex(e => e.id === id);
+  const index = legalRecords.findIndex((e) => e.id === id);
   legalRecords[index] = {
     id,
     title,
@@ -114,7 +120,7 @@ const addNewLegalRecordSuccess = (state, { id, title, link, mimeType }) => {
 
 const removeOneLegalRecord = (state, { id }) => {
   let legalRecords = [...state.legalRecords];
-  legalRecords = legalRecords.filter(e => e.id !== id);
+  legalRecords = legalRecords.filter((e) => e.id !== id);
   return {
     ...state,
     legalRecords,
@@ -122,7 +128,7 @@ const removeOneLegalRecord = (state, { id }) => {
 };
 
 // SITE PLAN
-const addSitePlan = state => {
+const addSitePlan = (state) => {
   const sitePlans = [...state.sitePlans];
   sitePlans.push({
     id: mongoObjectId(),
@@ -136,7 +142,7 @@ const addSitePlan = state => {
 
 const addNewSitePlanSuccess = (state, { id, title, link }) => {
   const sitePlans = [...state.sitePlans];
-  const index = sitePlans.findIndex(e => e.id === id);
+  const index = sitePlans.findIndex((e) => e.id === id);
   sitePlans[index] = {
     id,
     title,
@@ -151,9 +157,9 @@ const addNewSitePlanSuccess = (state, { id, title, link }) => {
 
 const removeSitePlanImage = (state, { id, link }) => {
   const sitePlans = [...state.sitePlans];
-  const index = sitePlans.findIndex(e => e.id === id);
+  const index = sitePlans.findIndex((e) => e.id === id);
   const links = [...sitePlans[index].links];
-  const imgIndex = links.findIndex(e => e === link);
+  const imgIndex = links.findIndex((e) => e === link);
   links.splice(imgIndex, 1);
   sitePlans[index].links = links;
   return {
@@ -163,7 +169,7 @@ const removeSitePlanImage = (state, { id, link }) => {
 };
 const removeOneSitePlan = (state, { id }) => {
   let sitePlans = [...state.sitePlans];
-  sitePlans = sitePlans.filter(e => e.id !== id);
+  sitePlans = sitePlans.filter((e) => e.id !== id);
   return {
     ...state,
     sitePlans,
@@ -171,18 +177,39 @@ const removeOneSitePlan = (state, { id }) => {
 };
 
 // SALE POLICY
-const addSalesPolicy = (state, { link, mimeType }) => ({
-  ...state,
-  salesPolicy: {
-    link,
-    mimeType,
-  },
-});
+const addSalesPolicy = (state) => {
+  const salesPolicies = [...state.salesPolicies];
+  salesPolicies.push({
+    id: mongoObjectId(),
+  });
+  return {
+    ...state,
+    salesPolicies,
+  };
+};
 
-const removeSalesPolicy = state => ({
-  ...state,
-  salesPolicy: null,
-});
+const addSalesPoliciesSuccess = (state, { id, payload}) => {
+  const salesPolicies = [...state.salesPolicies];
+  const index = salesPolicies.findIndex((e) => e.id === id);
+  salesPolicies[index] = {
+    id,
+    ...payload,
+  };
+
+  return {
+    ...state,
+    salesPolicies,
+  };
+};
+
+const removeOneSalesPolicy = (state, { id }) => {
+  let salesPolicies = [...state.salesPolicies];
+  salesPolicies = salesPolicies.filter((e) => e.id !== id);
+  return {
+    ...state,
+    salesPolicies,
+  };
+};
 
 // PRICE LIST
 const addPriceList = (state, { link, mimeType }) => ({
@@ -193,7 +220,7 @@ const addPriceList = (state, { link, mimeType }) => ({
   },
 });
 
-const removePriceList = state => ({
+const removePriceList = (state) => ({
   ...state,
   priceList: null,
 });
@@ -210,7 +237,7 @@ const addPropertyImage = (state, { link }) => {
 
 const removePropertyImage = (state, { link }) => {
   const propertyImage = [...state.propertyImage];
-  const index = propertyImage.findIndex(e => e === link);
+  const index = propertyImage.findIndex((e) => e === link);
   propertyImage.splice(index, 1);
 
   return {
@@ -220,37 +247,86 @@ const removePropertyImage = (state, { link }) => {
 };
 
 // DISCOUNT
-const addNewDiscount = state => {
+const addNewDiscount = (state, { groupId, mode }) => {
+  if (mode === 'payment') {
+    const paymentMethods = [...state.paymentMethods]
+    const index = paymentMethods.findIndex(e => e.id === groupId); // index cua nhom payment method
+    const {discounts} = paymentMethods[index]
+    discounts.push({
+      id: mongoObjectId(),
+      groupId,
+    });
+    paymentMethods[index].discounts = discounts;
+    return {
+      ...state,
+      paymentMethods,
+    };
+  }
   const discounts = [...state.discounts];
   discounts.push({
     id: mongoObjectId(),
+    groupId,
   });
-  return {
-    ...state,
-    discounts,
-  };
-};
-
-const removeDiscount = (state, { id }) => {
-  let discounts = [...state.discounts];
-  discounts = discounts.filter(e => e.id !== id);
-  return {
-    ...state,
-    discounts,
-  };
-};
-
-const onChangeDiscount = (state, { id, name, value }) => {
-  const discounts = [...state.discounts];
-  const index = discounts.findIndex(e => e.id === id);
-  let currentDiscount = discounts.filter(e => e.id === id);
   
-  currentDiscount = {
-    id,
-    name,
-    value,
+  return {
+    ...state,
+    discounts,
   };
-  discounts[index] = currentDiscount;
+};
+
+const removeDiscount = (state, { id, groupId, mode }) => {
+  if (mode === 'payment') {
+    const paymentMethods = [...state.paymentMethods]
+    const index = paymentMethods.findIndex(e => e.id === groupId); // index cua nhom payment method
+    let {discounts} = paymentMethods[index]
+    discounts = discounts.filter(e => e.id !== id)
+    paymentMethods[index].discounts = discounts;
+    return {
+      ...state,
+      paymentMethods,
+    };
+  }
+  let discounts = [...state.discounts];
+  discounts = discounts.filter((e) => e.id !== id);
+  return {
+    ...state,
+    discounts,
+  };
+};
+
+const onChangeDiscount = (state, {id, payload, mode}) => {
+  if(mode === 'payment') {
+    const {groupId} = payload
+    const paymentMethods = [...state.paymentMethods]
+    const paymentIndex = paymentMethods.findIndex(e => e.id === groupId); // index cua nhom payment method
+    const {discounts} = paymentMethods[paymentIndex]
+    const currentDiscountIndex = discounts.findIndex((e) => e.id === id);
+    discounts[currentDiscountIndex] = {
+      id, ...payload,
+    };
+    paymentMethods[paymentIndex].discounts = discounts;
+    return {
+      ...state,
+      paymentMethods,
+    };
+  }
+  const discounts = [...state.discounts];
+  const index = discounts.findIndex((e) => e.id === id);
+  discounts[index] = {
+    id, ...payload,
+  };
+  return {
+    ...state,
+    discounts,
+  };
+}
+
+const addNewDiscountSuccess = (state, {id,  payload }) => {
+  const discounts = [...state.discounts];
+  const index = discounts.findIndex((e) => e.id === id);
+  discounts[index] = {
+    id, ...payload,
+  };
   return {
     ...state,
     discounts,
@@ -273,7 +349,7 @@ const onChangeLocationDescription = (state, { text }) => {
 };
 
 // FLOOR
-const addNewFloor = state => {
+const addNewFloor = (state) => {
   const floors = [...state.productTable];
   floors.push({
     id: mongoObjectId(),
@@ -288,7 +364,7 @@ const addNewFloor = state => {
 
 const removeOneFloor = (state, { id }) => {
   const floors = [...state.productTable];
-  const floorIndex = floors.findIndex(e => e.id === id);
+  const floorIndex = floors.findIndex((e) => e.id === id);
   floors.splice(floorIndex, 1);
   floors.forEach((e, idx) => {
     e.name = `Tầng ${idx + 1}`;
@@ -332,7 +408,7 @@ const openRoomForm = (state, { roomInfo, floorId }) => {
   };
 };
 
-const closeRoomForm = state => ({
+const closeRoomForm = (state) => ({
   ...state,
   isShowRoom: false,
 });
@@ -340,10 +416,10 @@ const closeRoomForm = state => ({
 const submitFormRoom = (state, { id, floorId, productCode, area, price }) => {
   const floors = [...state.productTable];
   // Tìm tầng hiện tại
-  const index = floors.findIndex(e => e.id === floorId);
+  const index = floors.findIndex((e) => e.id === floorId);
   const currentFloor = floors[index].rooms;
   // Tìm phòng hiện tại (đang thêm hoặc sửa)
-  const roomIndex = currentFloor.findIndex(e => e.id === id);
+  const roomIndex = currentFloor.findIndex((e) => e.id === id);
   // console.log(roomIndex);
 
   // Gán thông tin phòng mới vào tầng thứ 'index' tại phòng 'room index'
@@ -383,10 +459,10 @@ const submitFormRoom = (state, { id, floorId, productCode, area, price }) => {
 const deleteOneRoom = (state, { id, floorId }) => {
   const floors = [...state.productTable];
   // Tìm tầng hiện tại
-  const index = floors.findIndex(e => e.id === floorId);
+  const index = floors.findIndex((e) => e.id === floorId);
   const currentFloor = floors[index].rooms;
   // Tìm chỉ số phòng hiện tại để xóa
-  const roomIndex = currentFloor.findIndex(e => e.id === id);
+  const roomIndex = currentFloor.findIndex((e) => e.id === id);
   currentFloor.splice(roomIndex, 1);
   floors[index].rooms = currentFloor;
   return {
@@ -396,7 +472,7 @@ const deleteOneRoom = (state, { id, floorId }) => {
 };
 
 // DELETE PROPERTY
-const deleteOnePropertyError = state => {
+const deleteOnePropertyError = (state) => {
   return {
     ...state,
   };
@@ -408,21 +484,84 @@ const loadExcelSuccess = (state, { data }) => ({
   productTable: data,
 });
 
-
 // CREATE PROPERTY
 
 const creatingProperty = (state) => ({
   ...state,
   createPropertyLoading: true,
-})
+});
 const createPropertySuccess = (state) => ({
   ...state,
   createPropertyLoading: false,
-})
+});
 const createPropertyFailure = (state) => ({
   ...state,
   createPropertyLoading: false,
-})
+});
+
+// ADD NEW PAYMENT SUCCESS
+
+const addNewPaymentMethodSuccess = (state, { name }) => {
+  const payments = [...state.paymentMethods];
+  payments.push({
+    id: mongoObjectId(),
+    name,
+    discounts: [],
+  });
+  return {
+    ...state,
+    paymentMethods: payments,
+  };
+};
+
+// REMOVE ONE PAYMENT
+const removeOnePaymentMethod = (state, { id }) => {
+  const payments = [...state.paymentMethods];
+  const removedPayments = payments.filter((e) => e.id !== id);
+
+  return {
+    ...state,
+    paymentMethods: removedPayments,
+  };
+};
+
+
+
+// PAYMENT PROGRESS
+const addPaymentProgress = (state) => {
+  const paymentProgress = [...state.paymentProgress];
+  paymentProgress.push({
+    id: mongoObjectId(),
+  });
+  return {
+    ...state,
+    paymentProgress,
+  };
+};
+
+const addPaymentProgressSuccess = (state, { id, payload}) => {
+  const paymentProgress = [...state.paymentProgress];
+  const index = paymentProgress.findIndex((e) => e.id === id);
+  paymentProgress[index] = {
+    id,
+    ...payload,
+  };
+
+  return {
+    ...state,
+    paymentProgress,
+  };
+};
+
+const removeOnePaymentProgress = (state, { id }) => {
+  let paymentProgress = [...state.paymentProgress];
+  paymentProgress = paymentProgress.filter((e) => e.id !== id);
+  return {
+    ...state,
+    paymentProgress,
+  };
+};
+
 
 export const property = makeReducerCreator(initialState, {
   [PropertyTypes.GET_LIST_PROPERTY]: getListProperty,
@@ -444,7 +583,8 @@ export const property = makeReducerCreator(initialState, {
   [PropertyTypes.REMOVE_SITE_PLAN_IMAGE]: removeSitePlanImage,
 
   [PropertyTypes.ADD_SALES_POLICY]: addSalesPolicy,
-  [PropertyTypes.REMOVE_SALES_POLICY]: removeSalesPolicy,
+  [PropertyTypes.ADD_SALES_POLICY_SUCCESS]: addSalesPoliciesSuccess,
+  [PropertyTypes.REMOVE_SALES_POLICY]: removeOneSalesPolicy,
 
   [PropertyTypes.ADD_PRICE_LIST]: addPriceList,
   [PropertyTypes.REMOVE_PRICE_LIST]: removePriceList,
@@ -455,6 +595,7 @@ export const property = makeReducerCreator(initialState, {
   [PropertyTypes.ADD_NEW_DISCOUNT]: addNewDiscount,
   [PropertyTypes.REMOVE_DISCOUNT]: removeDiscount,
   [PropertyTypes.ON_CHANGE_DISCOUNT]: onChangeDiscount,
+  [PropertyTypes.ADD_NEW_DISCOUNT_SUCCESS]: addNewDiscountSuccess,
 
   [PropertyTypes.MARK_LOCATION]: markLocation,
   [PropertyTypes.ON_CHANGE_LOCATION_DESCRIPTION]: onChangeLocationDescription,
@@ -472,8 +613,25 @@ export const property = makeReducerCreator(initialState, {
 
   [PropertyTypes.LOAD_EXCEL_SUCCESS]: loadExcelSuccess,
 
-  
   [PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM]: creatingProperty,
   [PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM_SUCCESS]: createPropertySuccess,
   [PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM_FAILURE]: createPropertyFailure,
+
+  [PropertyTypes.ADD_NEW_PAYMENT_METHOD_SUCCESS]: addNewPaymentMethodSuccess,
+  [PropertyTypes.REMOVE_PAYMENT_METHOD]: removeOnePaymentMethod,
+
+
+
+
+
+  [PropertyTypes.ADD_PAYMENT_PROGRESS]: addPaymentProgress,
+  [PropertyTypes.ADD_PAYMENT_PROGRESS_SUCCESS]: addPaymentProgressSuccess,
+  [PropertyTypes.REMOVE_PAYMENT_PROGRESS]: removeOnePaymentProgress,
 });
+
+
+
+
+// "",
+// "",
+// "",

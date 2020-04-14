@@ -21,6 +21,7 @@ export const PropertyTypes = makeConstantCreator(
   "REMOVE_SITE_PLAN_IMAGE",
 
   "ADD_SALES_POLICY",
+  "ADD_SALES_POLICY_SUCCESS",
   "REMOVE_SALES_POLICY",
 
   "ADD_PRICE_LIST",
@@ -32,7 +33,8 @@ export const PropertyTypes = makeConstantCreator(
   "ADD_NEW_DISCOUNT",
   "REMOVE_DISCOUNT",
   "ON_CHANGE_DISCOUNT",
-
+  "ADD_NEW_DISCOUNT_SUCCESS",
+ 
   "MARK_LOCATION",
   "ON_CHANGE_LOCATION_DESCRIPTION",
 
@@ -55,6 +57,14 @@ export const PropertyTypes = makeConstantCreator(
   "SUBMIT_CREATE_PROPERTY_FORM",
   "SUBMIT_CREATE_PROPERTY_FORM_SUCCESS",
   "SUBMIT_CREATE_PROPERTY_FORM_FAILURE",
+
+  "ADD_NEW_PAYMENT_METHOD",
+  "ADD_NEW_PAYMENT_METHOD_SUCCESS",
+  "REMOVE_PAYMENT_METHOD",
+
+  "ADD_PAYMENT_PROGRESS",
+  "ADD_PAYMENT_PROGRESS_SUCCESS",
+  "REMOVE_PAYMENT_PROGRESS",
 );
 
 // Get list property
@@ -72,19 +82,19 @@ export const getListPropertySuccessAction = (data, total, limit, offset) =>
     limit,
     offset,
   });
-export const getListPropertyFailureAction = error =>
+export const getListPropertyFailureAction = (error) =>
   makeActionCreator(PropertyTypes.GET_LIST_PROPERTY_FAILURE, { error });
 
 // Upload file
 export const uploadFileSuccessAction = (fileUrl, mode) =>
   makeActionCreator(PropertyTypes.UPLOAD_FILE_SUCCESS, { fileUrl, mode });
-export const uploadFileFailureAction = error =>
+export const uploadFileFailureAction = (error) =>
   makeActionCreator(PropertyTypes.UPLOAD_FILE_FAILURE, { error });
 
 // Upload image
 export const uploadSiteImageSuccessAction = (fileUrl, mode) =>
   makeActionCreator(PropertyTypes.UPLOAD_SITE_IMAGE_SUCCESS, { fileUrl, mode });
-export const uploadSiteImageFailureAction = error =>
+export const uploadSiteImageFailureAction = (error) =>
   makeActionCreator(PropertyTypes.UPLOAD_SITE_IMAGE_FAILURE, { error });
 
 // Legal record
@@ -98,7 +108,7 @@ export const addNewLegalRecordSuccessAction = (id, title, link, mimeType) =>
     mimeType,
   });
 
-export const removeOneLegalRecordAction = id =>
+export const removeOneLegalRecordAction = (id) =>
   makeActionCreator(PropertyTypes.REMOVE_ONE_LEGAL_RECORD, { id });
 
 // Site Plan
@@ -111,16 +121,21 @@ export const addNewSitePlanSuccessAction = (id, title, link) =>
     link,
   });
 
-export const removeOneSitePlanAction = id =>
+export const removeOneSitePlanAction = (id) =>
   makeActionCreator(PropertyTypes.REMOVE_ONE_SITE_PLAN, { id });
 export const removeSitePlanImageAction = (id, link) =>
   makeActionCreator(PropertyTypes.REMOVE_SITE_PLAN_IMAGE, { id, link });
 
 // Sale policy
-export const addSalesPolicyAction = (link, mimeType) =>
-  makeActionCreator(PropertyTypes.ADD_SALES_POLICY, { link, mimeType });
-export const removeSalesPolicyAction = () =>
-  makeActionCreator(PropertyTypes.REMOVE_SALES_POLICY);
+export const addSalesPolicyAction = () =>
+  makeActionCreator(PropertyTypes.ADD_SALES_POLICY);
+export const addSalesPolicySuccessAction = (id, payload) =>
+  makeActionCreator(PropertyTypes.ADD_SALES_POLICY_SUCCESS, {
+    id,
+    payload,
+  });
+export const removeSalesPolicyAction = (id) =>
+  makeActionCreator(PropertyTypes.REMOVE_SALES_POLICY, { id });
 
 // Price list
 export const addPriceListAction = (link, mimeType) =>
@@ -129,28 +144,30 @@ export const removePriceListAction = () =>
   makeActionCreator(PropertyTypes.REMOVE_PRICE_LIST);
 
 // Property image
-export const addPropertyImageAction = link =>
+export const addPropertyImageAction = (link) =>
   makeActionCreator(PropertyTypes.ADD_PROPERTY_IMAGE, { link });
-export const removePropertyImagetAction = link =>
+export const removePropertyImagetAction = (link) =>
   makeActionCreator(PropertyTypes.REMOVE_PROPERTY_IMAGE, { link });
 
 // Discount
-export const addNewDiscountAction = () =>
-  makeActionCreator(PropertyTypes.ADD_NEW_DISCOUNT);
-export const removeDiscountAction = id =>
-  makeActionCreator(PropertyTypes.REMOVE_DISCOUNT, { id });
-export const onChangeDiscountAction = (id, name, value) =>
-  makeActionCreator(PropertyTypes.ON_CHANGE_DISCOUNT, { id, name, value });
+export const addNewDiscountAction = (groupId, mode) =>
+  makeActionCreator(PropertyTypes.ADD_NEW_DISCOUNT, {groupId, mode});
+export const removeDiscountAction = (id, groupId, mode) =>
+  makeActionCreator(PropertyTypes.REMOVE_DISCOUNT, { id, groupId, mode });
+export const onChangeDiscountAction = (id, payload, mode) =>
+  makeActionCreator(PropertyTypes.ON_CHANGE_DISCOUNT, { id, payload, mode });
+export const addNewDiscountSuccessAction = (id, payload, mode) =>
+  makeActionCreator(PropertyTypes.ADD_NEW_DISCOUNT_SUCCESS, { id, payload, mode });
 
 // Location
-export const markLocationAction = location =>
+export const markLocationAction = (location) =>
   makeActionCreator(PropertyTypes.MARK_LOCATION, { location });
-export const onChangeLocationDescriptionAction = text =>
+export const onChangeLocationDescriptionAction = (text) =>
   makeActionCreator(PropertyTypes.ON_CHANGE_LOCATION_DESCRIPTION, { text });
 
 // Floor
 export const addNewFloor = () => makeActionCreator(PropertyTypes.ADD_NEW_FLOOR);
-export const removeOneFloorAction = id =>
+export const removeOneFloorAction = (id) =>
   makeActionCreator(PropertyTypes.REMOVE_ONE_FLOOR, { id });
 
 // Room
@@ -179,33 +196,61 @@ export const deleteOneRoomAction = (id, floorId) =>
   });
 
 // Delete property
-export const deletePropertyAction = id =>
+export const deletePropertyAction = (id) =>
   makeActionCreator(PropertyTypes.DELETE_PROPERTY, {
     id,
   });
-export const deletePropertySuccessAction = id =>
+export const deletePropertySuccessAction = (id) =>
   makeActionCreator(PropertyTypes.DELETE_PROPERTY_SUCCESS, {
     id,
   });
-export const deletePropertyFailureAction = error =>
+export const deletePropertyFailureAction = (error) =>
   makeActionCreator(PropertyTypes.DELETE_PROPERTY_FAILURE, {
     error,
   });
 
 // Load excel
-export const loadExcelSuccessAtion = data =>
+export const loadExcelSuccessAtion = (data) =>
   makeActionCreator(PropertyTypes.LOAD_EXCEL_SUCCESS, {
     data,
   });
 
 // Submit create property form
-export const submitCreatePropertyFormAction = payload =>
+export const submitCreatePropertyFormAction = (payload) =>
   makeActionCreator(PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM, {
     payload,
   });
 export const submitCreatePropertyFormSuccessAction = () =>
   makeActionCreator(PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM_SUCCESS);
-export const submitCreatePropertyFormFailureAtion = error =>
+export const submitCreatePropertyFormFailureAtion = (error) =>
   makeActionCreator(PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM_FAILURE, {
     error,
   });
+
+// Payment method
+
+export const addNewPaymentMethodSuccessAction = (name) =>
+  makeActionCreator(PropertyTypes.ADD_NEW_PAYMENT_METHOD_SUCCESS, {name});
+export const removePaymentMethodAction = (id) =>
+  makeActionCreator(PropertyTypes.REMOVE_PAYMENT_METHOD, {id});
+
+
+// Payment proogress
+
+
+
+export const addPaymentProgressAction = () =>
+  makeActionCreator(PropertyTypes.ADD_PAYMENT_PROGRESS);
+export const addPaymentProgressSuccessAction = (id, payload) =>
+  makeActionCreator(PropertyTypes.ADD_PAYMENT_PROGRESS_SUCCESS, {
+    id,
+    payload,
+  });
+export const removePaymentProgressAction = (id) =>
+  makeActionCreator(PropertyTypes.REMOVE_PAYMENT_PROGRESS, { id });
+
+
+
+// "ADD_PAYMENT_PROGRESS",
+// "ADD_PAYMENT_PROGRESS_SUCCESS",
+// "REMOVE_PAYMENT_PROGRESS",

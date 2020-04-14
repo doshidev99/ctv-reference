@@ -26,11 +26,11 @@ export const makeActionName = text => {
 };
 
 export const formatDateTime = text => {
-  return moment(text).format('DD/MM/YY, hh:mma');
+  return moment(text).format('DD/MM/YYYY, hh:mma');
 };
 
 export const formatDate = text => {
-  return moment(text).format('DD/MM/YY');
+  return moment(text).format('DD/MM/YYYY');
 };
 
 export const formatTime = text => {
