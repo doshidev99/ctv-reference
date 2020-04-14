@@ -34,11 +34,11 @@ export default styled.div`
   .ant-table-wrapper {
     background: #F5F7FA;
     td > a {
-      color: rgb(38, 38, 38);
+      color: rgb(54, 112, 212);
     }
     .ant-table-pagination {
       color: ${({ theme }) => theme.color.black};
-      
+
       .ant-pagination-item-active, .ant-pagination-item-active a {
         color: ${({ theme }) => theme.palette.lightPrimary};
         border-color: ${({ theme }) => theme.palette.lightPrimary};
@@ -77,7 +77,7 @@ export default styled.div`
     .filterForm {
       display:flex;
       justify-content: space-between;
-  
+
       .filterGroup {
         display:flex;
         justify-content: space-evenly;
@@ -85,7 +85,7 @@ export default styled.div`
           width: 300px;
           margin-right: 40px;
         }
-        
+
         .ant-select-selection:active, .ant-select-selection:focus {
           border-color: ${({ theme }) => theme.palette.lightPrimary};
           box-shadow: 0 0 0 0.5px ${({ theme }) => theme.palette.lightPrimary};
@@ -96,9 +96,9 @@ export default styled.div`
         .ant-calendar-picker-input:hover  {
           border-color: ${({ theme }) => theme.palette.lightPrimary};
         }
-       
+
       }
-  
+
       .btnGroup {
         display: flex;
         justify-content: space-evenly;
@@ -117,13 +117,13 @@ export default styled.div`
         }
       }
     }
-  
-  
+
+
     @media (max-width: 1200px) {
       .cityFilter, .sortFilter {
         max-width: 200px;
         margin-right: 10px;
       }
-    } 
+    }
   }
 `;

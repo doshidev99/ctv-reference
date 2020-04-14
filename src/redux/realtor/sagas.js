@@ -65,6 +65,7 @@ function* getOneRealtorInfo({ id }) {
       address: result.address,
       birthday: moment(result.birthday).format("L"),
       digitalContract: result.digitalContract,
+      digitalContractStatus: result.digitalContractStatus,
     };
 
     yield put(getOneRealtorSuccessAction(data));

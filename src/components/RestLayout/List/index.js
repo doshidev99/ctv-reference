@@ -222,11 +222,12 @@ class RestListComponent extends Component {
       <ListWrapper className={className}>
         <LayoutContent
           bordered={false}
-          title={<CustomBreadcrumb data={BREADCRUMB_LIST} />}
+          title={title ? (<CustomBreadcrumb data={BREADCRUMB_LIST} />) : ''}
           extra={actions}
         >
           <PageHeader>
-            <CustomBreadcrumb data={BREADCRUMB_LIST} />
+            {title ? (<CustomBreadcrumb data={BREADCRUMB_LIST} />): '' }
+            
           </PageHeader>
           {content}
         </LayoutContent>

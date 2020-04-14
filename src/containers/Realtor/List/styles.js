@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const AdminFormWrapper = styled.div`
+const RealtorWrapper = styled.div`
   width: 100%;
   .filterContainer .filterContent {
     margin-right: 100px;
@@ -20,4 +20,4 @@ const AdminFormWrapper = styled.div`
   }
 `;
 
-export default AdminFormWrapper;
+export default RealtorWrapper;

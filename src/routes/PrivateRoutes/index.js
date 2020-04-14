@@ -14,8 +14,6 @@ import ListTransaction from '../../pages/ListTransaction';
 import ProcessingTransaction from '../../pages/ListTransaction/ProcessingTransaction';
 import CompletedTransaction from '../../pages/ListTransaction/CompletedTransaction';
 import CanceledTransaction from '../../pages/ListTransaction/CanceledTransaction';
-import ListRealtor from '../../pages/ListRealtor';
-import DetailRealtor from '../../pages/DetailRealtor';
 import Option from '../../pages/Option';
 import ListPartner from '../../pages/ListPartner';
 import ListEvent from '../../pages/ListEvent';
@@ -90,24 +88,30 @@ const routes = [
   },
   {
     path: '/realtors',
-    component: ListRealtor,
+    component: lazy(() => import('../../pages/Realtor/index')),
     exact: true,
     title: i18n.t('realtor.title'),
     routes: [
       {
         path: '/',
-        component: ListRealtor,
+        component: lazy(() => import('../../pages/Realtor/index')),
         exact: true,
         title: i18n.t('realtor.title'),
       },
       {
         path: '/:id',
-        component: DetailRealtor,
+        component: lazy(() => import('../../pages/DetailRealtor/index')),
         exact: true,
         title: i18n.t('realtor.title'),
       },
     ],
   },
+  // {
+  //   path: '/realtors',
+  //   component: ListReator,
+  //   exact: true,
+  //   title: i18n.t('realtor.title'),
+  // },
   {
     path: '/inbox',
     component: EmailBox,
@@ -133,7 +137,7 @@ const routes = [
         title: "Tạo mới sự kiện",
       },
       {
-        path: '/:id',
+        path: '/:id/show',
         component: DetailEvent,
         exact: true,
         title: i18n.t('realtor.title'),

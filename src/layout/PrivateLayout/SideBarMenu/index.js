@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Menu, Icon } from "antd";
-import * as _ from "lodash";
+import _ , { findLast } from "lodash";
+
 import { history } from "../../../redux/store";
 
 const sidebarMenu = [
@@ -13,26 +14,30 @@ const sidebarMenu = [
   {
     key: "transactions",
     text: "Giao dịch",
-    url: "/transactions",
-    icon: "apartment",
     subMenu: [
+      {
+        key: "transactions",
+        text: "Tất cả giao dịch",
+        url: "/transactions",
+        icon: "transaction",
+      },
       {
         key: "processing",
         text: "Đang xử lý",
         url: "/transactions/processing",
-        icon: "project",
+        icon: "transaction",
       },
       {
         key: "completed",
         text: "Hoàn thành",
         url: "/transactions/completed",
-        icon: "project",
+        icon: "transaction",
       },
       {
         key: "canceled",
         text: "Đã hủy",
         url: "/transactions/canceled",
-        icon: "project",
+        icon: "transaction",
       },
     ],
   },
@@ -88,28 +93,29 @@ const sidebarMenu = [
 
 // Flatten sidebar menu
 const sidebarMenuFlatten = _.map(
-  _.flatMap(sidebarMenu, (item) => {
+  _.flatMap(sidebarMenu, item => {
     if (item.subMenu) {
-      return _.map(item.subMenu, (subMenuItem) => ({
+      return _.map(item.subMenu, subMenuItem => ({
         ...subMenuItem,
         parent: item.key, // gán parent của submenu
       }));
     }
     return item;
-  }),
-);
+  }))
 
 export default class SideBarMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
       // current : "dashboard",
-      defaultSelectedKeys: _.findLast(
+      defaultSelectedKeys: findLast(
         sidebarMenuFlatten,
         (menu) => window.location.pathname.indexOf(menu.url) === 0,
       ) || { key: "dashboard" },
+
     };
   }
+
 
   render() {
     return (
@@ -137,7 +143,7 @@ export default class SideBarMenu extends Component {
                 key={el.key}
                 title={(
                   <span>
-                    <Icon type="apartment" />
+                    <Icon type="transaction" />
                     <span>{el.text}</span>
                   </span>
                 )}
