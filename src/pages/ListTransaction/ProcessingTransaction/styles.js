@@ -35,7 +35,7 @@ export default styled.div`
   .ant-table-wrapper {
     background: #F5F7FA;
     td > a {
-      color: rgba(0, 0, 0, 0.65)
+      color: rgb(54, 112, 212);
     }
     .ant-table-pagination {
       color: ${({ theme }) => theme.color.black};
@@ -118,7 +118,7 @@ export default styled.div`
         }
       }
     }
-  
+
 
     @media (max-width: 1200px) {
       .cityFilter, .sortFilter {

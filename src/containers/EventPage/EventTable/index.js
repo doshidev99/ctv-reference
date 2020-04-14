@@ -10,8 +10,8 @@ class EventTable extends Component {
   columnHeaders = [
     {
       title: "Thời gian",
-      dataIndex: "happenAt",
-      key: "happenAt",
+      dataIndex: "beganAt",
+      key: "beganAt",
       width: "110px",
     },
     {
@@ -42,7 +42,7 @@ class EventTable extends Component {
               okText="Yes"
               cancelText="No">
               <Switch
-                checked={record.status} 
+                checked={record.status}
                 />
 
             </Popconfirm>
@@ -52,9 +52,9 @@ class EventTable extends Component {
     },
   ];
 
-  orderBy="happenAt";
+  orderBy="beganAt";
 
-  fields=["id", "name","happenAt","locationDescription"]
+  fields=["id", "name","beganAt","locationDescription"]
 
   componentDidMount() {
     this.props.getListEvent(10, 0, null, this.orderBy, JSON.stringify(this.fields));
@@ -159,6 +159,6 @@ const mapDispatchToProps = dispatch => ({
   updateEvent: (id, payload) => {
     dispatch(updateOneEventAction(id, payload));
   },
- 
+
 });
 export default connect(mapStateToProps, mapDispatchToProps)(EventTable);
