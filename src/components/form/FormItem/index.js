@@ -20,6 +20,7 @@ const FormItemUI = props => {
     formOptions,
     disabled,
   } = props;
+  // console.log(props);
   return (
     <FormItemWrapper className={className} label={I18n.t(header)}>
       {form.getFieldDecorator(source, {

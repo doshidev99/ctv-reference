@@ -4,10 +4,17 @@ import { getValidData } from '../../utils/tools';
 const formatFilterParams = params => {
   const formattedParams = {};
   Object.keys(params).forEach(key => {
-    formattedParams[key] =
-      params[key] && params[key].$likeLower
-        ? { $likeLower: `%${params[key].$likeLower}%` }
-        : params[key];
+    if(params[key] && params[key].$range && params[key].$range.length === 2) {
+      formattedParams[key] = 
+      { 
+        $gte: params[key].$range[0],
+        $lte: params[key].$range[1],
+      }
+    } else if(params[key] && params[key].$isLike) {
+      formattedParams[key] = { $isLike: `%${params[key].$isLike}%` }
+    } else {
+      formattedParams[key] = params[key];
+    }
   });
   return formattedParams;
 };
@@ -19,9 +26,8 @@ export const convertRequestParams = (type, params, resource, mappedBy) => {
     offset: requestParams.skip,
   };
   if (params.filter) {
-    query.filter = JSON.stringify(formatFilterParams(getValidData(params.filter)));
+    query.filter = JSON.stringify(getValidData(formatFilterParams(params.filter)));
   }
-
   if (params.order) {
     query.orderBy = params.order;
   }

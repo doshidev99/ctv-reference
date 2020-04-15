@@ -23,8 +23,8 @@ class TransactionTable extends Component {
   },
   {
     title: "Mã hợp đồng",
-    dataIndex: "Contractcode",
-    key: "contContractcoderact",
+    dataIndex: "contractCode",
+    key: "contractCode",
   },
   {
     title: "Dự án",
@@ -48,13 +48,31 @@ class TransactionTable extends Component {
     title: 'Tình trạng',
     key: 'status',
     dataIndex: 'status',
-    render: status => (
-      <span>
-        <Tag color="geekblue" key={status}>
-          {status}
-        </Tag>
-      </span>
-    ),
+    render: status => {
+      let color = "geekblue";
+      if (status === "Hoàn thành"){
+        color = "green";
+      }
+      else if (status === "Hủy bỏ"){
+        color = "red";
+      }
+      else if (status === "Thanh toán hoa hồng"){
+        color = "gold";
+      }
+      else if (status === "Đã xác nhận đặt cọc"){
+        color = "lime";
+      }
+      else if (status === "Chờ xác nhận đặt cọc"){
+        color = "purple";
+      }
+      return (
+        <span>
+          <Tag color={color} key={status}>
+            {status}
+          </Tag>
+        </span>
+      )
+    },
   },
 ];
 
@@ -62,9 +80,9 @@ class TransactionTable extends Component {
     this.props.getListTransaction();
   }
 
-  onChangePage = (page, limit) => {
+  onChangePage = (page, limit, filter) => {
     const offset = (page - 1) * limit;
-    this.props.getListTransaction(limit, offset);
+    this.props.getListTransaction(limit, offset, filter);
   };
 
   render() {

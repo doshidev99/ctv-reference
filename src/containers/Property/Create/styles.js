@@ -4,8 +4,13 @@ export default styled.div`
   .propertyNameLabel, .commissionLabel, 
   .discountTitle, .sitePlanTitle, 
   .productTableTitle, .othersTitle, 
-  .legalTitle, .cityLabel, .typeLabel, 
+  .legalTitle, .salesPolicyTitle, 
+  .cityLabel, .typeLabel, 
   .openSaleDateLabel, .paymentMethodLabel {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  .form-group-title {
     font-size: 18px;
     font-weight: 500;
   }
@@ -27,6 +32,11 @@ export default styled.div`
 
   .legalArea {
     margin-bottom: 10px;
+  }
+  
+  .salesPolicyArea {
+    margin: 20px 0;
+    margin-right: 10px;
   }
 
   .locationDescription {

@@ -37,7 +37,7 @@ import {
 function* getDetailSaga({ id }) {
   try {
     const response = yield getDetailTransactionApi(id);
-    
+
     if(response && response !== {}){
       yield put(getDetailTransactionSuccessAction(response))
     } else {
@@ -100,7 +100,7 @@ function* confirmOderImage ({id, imageUrl}) {
     const { status, standingOrder } = yield confirmOrderImageApi({id, imageUrl});
     if( status && standingOrder) {
       yield put(confirmOrderImageSuccessAction(status, standingOrder))
-    }    
+    }
   } catch (error) {
     yield put(confirmOrderImageFailureAction(error));
   }
@@ -121,7 +121,7 @@ function* cancelTransaction ({id}) {
     yield put(cancelTransactionSuccessAction(status))
   } catch (error) {
     yield put(cancelTransactionFailureAction(error));
-    
+
   }
 }
 

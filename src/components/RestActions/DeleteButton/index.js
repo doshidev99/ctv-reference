@@ -17,7 +17,7 @@ class DeleteButton extends Component {
     
     confirm({
       title: I18n.t('popup.alertDelete'),
-      content: I18n.t('popup.alertDeleteDes', { customMessage: `(#${record.id})` }),
+      content: this.props.customMessage || I18n.t('popup.alertDeleteDes', { customMessage: `(#${record.id})` }),
       okText: I18n.t('button.ok'),
       cancelText: I18n.t('button.cancel'),
       onOk: () => {

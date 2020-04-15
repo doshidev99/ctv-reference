@@ -21,9 +21,10 @@ class RestList extends Component {
   constructor(props) {
     super(props);
     const paramFromUrl = getFilterFromUrl(this.props.location.search);
-    const filter = (this.props.location && paramFromUrl) || this.props.initialFilter;
-
+    const filter = (this.props.location && paramFromUrl) || this.props.initialFilter;    
     this.props.retrieveList(filter || { limit: 20, skip: 0, filter: {} }, true);
+    // console.log("HERE " ,filter);
+
   }
 
   retrieveList = filter => {
@@ -79,6 +80,7 @@ class RestList extends Component {
         exportExcel={this.exportExcel}
         retrieveList={this.retrieveList}
         loadingExport={this.props.loadingExport}
+      
       />
     );
   }
