@@ -5,7 +5,7 @@ import { DatePicker } from 'antd';
 import FormItem from '../FormItem';
 import { DateTimePickerWrapper } from './styles';
 
-const FormDateTimePicker = props => {
+const FormDatePicker = props => {
   const { required, defaultValue, initialValue } = props;
   return (
     <DateTimePickerWrapper>
@@ -20,13 +20,13 @@ const FormDateTimePicker = props => {
         className="title"
         required={required}
       >
-        <DatePicker showTime format="ddd - MMM DD YYYY - HH:mm" className="viewDatePicker" />
+        <DatePicker format="ddd - MMM DD YYYY" className="viewDatePicker" />
       </FormItem>
     </DateTimePickerWrapper>
   );
 };
 
-FormDateTimePicker.propTypes = {
+FormDatePicker.propTypes = {
   source: PropTypes.string,
   header: PropTypes.any,
   required: PropTypes.bool,
@@ -38,8 +38,8 @@ FormDateTimePicker.propTypes = {
   formOptions: PropTypes.object,
 };
 
-FormDateTimePicker.defaultProps = {
+FormDatePicker.defaultProps = {
   formOptions: {},
 };
 
-export default FormDateTimePicker;
+export default FormDatePicker;

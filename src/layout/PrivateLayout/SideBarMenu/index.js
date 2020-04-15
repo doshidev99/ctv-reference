@@ -47,6 +47,12 @@ const sidebarMenu = [
     icon: "tool",
   },
   {
+    key: "service-registrations",
+    text: "Dịch vụ đăng kí",
+    url: "/service-registrations",
+    icon: "diff",
+  },
+  {
     key: "Partner",
     text: "Partner",
     url: "/partners",

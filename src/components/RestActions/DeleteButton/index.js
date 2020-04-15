@@ -14,6 +14,7 @@ class DeleteButton extends Component {
 
   handleDelete = () => {
     const { record, source } = this.props;
+    
     confirm({
       title: I18n.t('popup.alertDelete'),
       content: I18n.t('popup.alertDeleteDes', { customMessage: `(#${record.id})` }),

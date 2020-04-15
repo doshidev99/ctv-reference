@@ -109,12 +109,6 @@ const routes = [
       },
     ],
   },
-  // {
-  //   path: '/realtors',
-  //   component: ListReator,
-  //   exact: true,
-  //   title: i18n.t('realtor.title'),
-  // },
   {
     path: '/inbox',
     component: EmailBox,
@@ -171,13 +165,13 @@ const routes = [
     exact: true,
     title: "Đào tạo",
   },
+  {
+    path: '/service-registrations',
+    component: lazy(() => import('../../pages/ServiceRegistration/index')),
+    exact: true,
+    title: "Đăng kí dịch vụ",
+  },
 ];
-
-
-
-
-
-
 
 class PrivateRoutes extends Component {
 

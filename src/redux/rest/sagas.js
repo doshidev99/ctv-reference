@@ -6,6 +6,7 @@ import {
   getOneRecord,
   putRecord,
   deleteRecord,
+  cancelRecord,
   postRecord,
   batch,
   customQuery,
@@ -222,6 +223,47 @@ export function* delRecord({ resource, id }) {
   }
 }
 
+export function* canlRecord({ resource, id }) {
+  try {
+   yield call(
+      apiWrapper,
+      {
+        isShowLoading: true,
+        isShowSucceedNoti: false,
+        successDescription: "Hủy thành công",
+        errorDescription: "Lỗi !!",
+      },
+      cancelRecord,
+      resource,
+      id,
+    );
+    yield put(actions.retrieveList(resource));
+  } catch (error) {
+    yield put(actions.cancelRecordFailed(error));
+  }
+}
+
+export function* doneRecord({ resource, id, data }) {
+  try {
+   yield call(
+      apiWrapper,
+      {
+        isShowLoading: true,
+        isShowSucceedNoti: false,
+        successDescription: "Hoàn tất thành công",
+        errorDescription: "Lỗi !!",
+      },
+      putRecord,
+      resource,
+      id,
+      data,
+    );
+    yield put(actions.retrieveList(resource));
+  } catch (error) {
+    yield put(actions.confirmRecordFailed(error));
+  }
+}
+
 export function* customQuerySaga({ resource, id, data = {}, queryUrl }) {
   try {
     const response = yield call(apiWrapper, customQuery, true, false, resource, id, queryUrl, data);
@@ -264,6 +306,8 @@ function restSagas() {
     takeLatest(REST_ACTION_TYPES.EDIT_MULTI_RECORD, editMultiRecord),
     takeLatest(REST_ACTION_TYPES.EDIT_RECORD, editRecord),
     takeLatest(REST_ACTION_TYPES.DELETE_RECORD, delRecord),
+    takeLatest(REST_ACTION_TYPES.CANCEL_RECORD, canlRecord),
+    takeLatest(REST_ACTION_TYPES.CONFIRM_RECORD, doneRecord),
     takeLatest(REST_ACTION_TYPES.CREATE_RECORD, createRecord),
     takeEvery(REST_ACTION_TYPES.RETRIEVE_REFERENCE, retrieveReference),
     takeEvery(REST_ACTION_TYPES.CUSTOM_QUERY_ONE_RECORD, customQuerySaga),

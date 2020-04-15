@@ -1,6 +1,6 @@
 import { get, put, post, del } from '../utils';
 
-export const getList = (resource, filter) => {
+export const getList = (resource, filter) => {  
   return get(`/${resource}`, filter);
 };
 
@@ -22,6 +22,10 @@ export const postRecord = (resource, data) => {
 
 export const putRecord = (resource, id, data) => {
   return put(`/${resource}/${id}`, data);
+};
+
+export const cancelRecord = (resource, id) => {
+  return put(`/${resource}/${id}/cancel`);
 };
 
 export const batch = data => {

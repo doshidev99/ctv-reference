@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Modal } from "antd";
-import { retrieveOneRecord, deleteRecord } from "../../../redux/rest/actions";
+import { retrieveOneRecord, deleteRecord, cancelRecord, confirmRecord } from "../../../redux/rest/actions";
 import RestShowComponent from "../../../components/RestLayout/Show";
 import { getOneRecord } from "../../../redux/rest/selectors";
 
@@ -46,6 +46,14 @@ const mapDispatchToProps = (dispatch, props) => {
       ),
     deleteItem: (id) => {
       dispatch(deleteRecord(props.resource, id));
+      props.history.push(props.match.path.replace("/:id/show", ""));
+    },
+    cancelItem: (id) => {
+      dispatch(cancelRecord(props.resource, id));
+      props.history.push(props.match.path.replace("/:id/show", ""));
+    },
+    confirmItem: (id, data) => {
+      dispatch(confirmRecord(props.resource, id, data));
       props.history.push(props.match.path.replace("/:id/show", ""));
     },
   };

@@ -12,6 +12,7 @@ import { admin } from "./admin/reducer";
 import { partner } from "./partner/reducer";
 import { event } from "./event/reducer";
 import { training } from "./training/reducer";
+import { service } from "./service/reducer";
 import rest from './rest/reducer';
 import restFilter from './restFilter/reducer';
 import modal from './modal/reducer';
@@ -32,6 +33,7 @@ export default history =>
     partner,
     event,
     training,
+    service,
     rest,
     restFilter,
     modal,
