@@ -10,6 +10,24 @@ export const ADMIN_ROLES = [
   },
 ];
 
+export const REGISTRATION_STATUS =[
+  {
+    id: 0,
+    text: "Chưa xử lý",
+  },
+  {
+    id: 1,
+    text: "Đang xử lý",
+  },
+  {
+    id: 2,
+    text: "Hoàn thành",
+  },
+  {
+    id: 3,
+    text: "Hủy bỏ",
+  },
+]
 export const PROPERTY_TAGS = [
   {
     id: 1,
@@ -29,5 +47,18 @@ export const TRAINING_TYPES = [
   {
     id: 2,
     name: "Document",
+  },
+]
+
+export const EVENT_TAGS = [
+  {
+    id: 1,
+    name: 'NEW',
+    color: 'green',
+  },
+  {
+    id: 2,
+    name: 'HOT',
+    color: 'red',
   },
 ]

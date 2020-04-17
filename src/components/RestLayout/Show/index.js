@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import CustomBreadcrumb from '../../common/Breadcrumb';
 import ButtonEdit from '../../RestActions/EditButton';
 import DeleteButton from '../../RestActions/DeleteButton';
+import CancelButton from '../../RestActions/CancelButton';
 import Layout from '../../common/Layout';
 import Box from '../../common/Box';
 import ActionView from '../ActionLayout';
@@ -18,11 +19,14 @@ class RestShowComponent extends Component {
       noActions,
       deleteItem,
       gotoEditPage,
+      cancelItem,
+      confirmItem,
       record,
       resource,
       children,
       hasEdit,
       hasDel,
+      hasCancel,
       header,
       location,
     } = this.props;
@@ -44,6 +48,14 @@ class RestShowComponent extends Component {
             resource={resource}
             record={record}
             deleteItem={deleteItem}
+          />
+        )}
+        {hasCancel && (
+          <CancelButton
+            resource={resource}
+            record={record}
+            cancelItem={cancelItem}
+            confirmItem={confirmItem}
           />
         )}
       </div>
@@ -83,6 +95,7 @@ RestShowComponent.propTypes = {
   resource: PropTypes.string,
   hasEdit: PropTypes.bool,
   hasDel: PropTypes.bool,
+  hasCancel: PropTypes.bool,
   header: PropTypes.any,
   noActions: PropTypes.bool,
   location: PropTypes.object,

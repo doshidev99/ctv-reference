@@ -113,6 +113,38 @@ const deleteRecordFailed = (state, { error }) => {
   };
 };
 
+const cancelRecordSuccess = (state, action) => {
+  return {
+    ...state,
+    [action.resource]: { ...state[action.resource], ...action.data },
+    errorRequest: false,
+  };
+};
+
+const cancelRecordFailed = (state, { error }) => {
+  return {
+    ...state,
+    errorRequest: true,
+    error,
+  };
+};
+
+const confirmRecordSuccess = (state, action) => {
+  return {
+    ...state,
+    [action.resource]: { ...state[action.resource], ...action.data },
+    errorRequest: false,
+  };
+};
+
+const confirmRecordFailed = (state, { error }) => {
+  return {
+    ...state,
+    errorRequest: true,
+    error,
+  };
+};
+
 const editRecord = (state, action) => {
   return {
     ...state,
@@ -328,6 +360,12 @@ export default makeReducerCreator(initialState, {
 
   [REST_ACTION_TYPES.DELETE_RECORD_SUCCESS]: deleteRecordSuccess,
   [REST_ACTION_TYPES.DELETE_RECORD_FAILED]: deleteRecordFailed,
+
+  [REST_ACTION_TYPES.CANCEL_RECORD_SUCCESS]: cancelRecordSuccess,
+  [REST_ACTION_TYPES.CANCEL_RECORD_FAILED]: cancelRecordFailed,
+
+  [REST_ACTION_TYPES.CONFIRM_RECORD_SUCCESS]: confirmRecordSuccess,
+  [REST_ACTION_TYPES.CONFIRM_RECORD_FAILED]: confirmRecordFailed,
 
   [REST_ACTION_TYPES.EDIT_RECORD]: editRecord,
   [REST_ACTION_TYPES.EDIT_RECORD_SUCCESS]: editRecordSuccess,

@@ -68,6 +68,8 @@ class RestListLayout extends Component {
       resourceData,
       gotoEditPage,
       deleteItem,
+      cancelItem,
+      confirmItem,
       gotoShowPage,
       responseRender,
       isList,
@@ -89,6 +91,8 @@ class RestListLayout extends Component {
                   gotoShowPage,
                   deleteItem,
                   gotoEditPage,
+                  cancelItem,
+                  confirmItem,
                 })
               : this.renderListItem(record)}
           </List.Item>
@@ -108,6 +112,8 @@ RestListLayout.propTypes = {
   gotoEditPage: PropTypes.func,
   gotoShowPage: PropTypes.func,
   deleteItem: PropTypes.func,
+  cancelItem: PropTypes.func,
+  confirmItem: PropTypes.func,
   children: PropTypes.any,
   isList: PropTypes.bool,
 };
