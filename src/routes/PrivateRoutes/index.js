@@ -139,6 +139,12 @@ const routes = [
     ],
   },
   {
+    path: '/event',
+    component: lazy(() => import('../../pages/Event/index')),
+    exact: true,
+    title: "Sự kiện",
+  },
+  {
     path: '/staffs',
     component: lazy(() => import('../../pages/Admin/index')),
     exact: true,

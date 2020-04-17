@@ -49,3 +49,16 @@ export const TRAINING_TYPES = [
     name: "Document",
   },
 ]
+
+export const EVENT_TAGS = [
+  {
+    id: 1,
+    name: 'NEW',
+    color: 'green',
+  },
+  {
+    id: 2,
+    name: 'HOT',
+    color: 'red',
+  },
+]
