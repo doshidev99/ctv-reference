@@ -12,8 +12,12 @@ import AdminWrapper from './style';
 class ListAdmin extends Component {
   componentDidMount() {}
 
+  // filter = {
+  //   roleId: {"$in": [1,2]},
+  // }
+
   render() {
-    
+
     return (
       <AdminWrapper>
         <RestList

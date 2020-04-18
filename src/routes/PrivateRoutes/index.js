@@ -1,5 +1,4 @@
 import React, {Component, lazy, Suspense} from 'react';
-
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import i18n from 'i18next';
@@ -10,10 +9,10 @@ import PrivateLayout from '../../layout/PrivateLayout';
 import Dashboard from '../../pages/Dashboard';
 import DetailTransaction from '../../pages/DetailTransaction'
 import EmailBox from '../../pages/EmailBox';
-import ListTransaction from '../../pages/ListTransaction';
-import ProcessingTransaction from '../../pages/ListTransaction/ProcessingTransaction';
-import CompletedTransaction from '../../pages/ListTransaction/CompletedTransaction';
-import CanceledTransaction from '../../pages/ListTransaction/CanceledTransaction';
+// import ListTransaction from '../../pages/ListTransaction';
+// import ProcessingTransaction from '../../pages/ListTransaction/ProcessingTransaction';
+// import CompletedTransaction from '../../pages/ListTransaction/CompletedTransaction';
+// import CanceledTransaction from '../../pages/ListTransaction/CanceledTransaction';
 import Option from '../../pages/Option';
 import ListPartner from '../../pages/ListPartner';
 import ListEvent from '../../pages/ListEvent';
@@ -50,13 +49,15 @@ const routes = [
   },
   {
     path: '/transactions',
-    component: ListTransaction,
+    // component: ListTransaction,
+    component: lazy(() => import('../../pages/Transaction/Transactions')),
     exact: true,
     title: i18n.t('transaction.title'),
     routes: [
       {
         path: '/',
-        component: ListTransaction,
+        // component: ListTransaction,
+        component: lazy(() => import('../../pages/Transaction/Transactions')),
         exact: true,
         title: i18n.t('transaction.title'),
       },
@@ -68,19 +69,22 @@ const routes = [
       },
       {
         path: '/processing',
-        component: ProcessingTransaction,
+        component: lazy(() => import('../../pages/Transaction/Processing')),
+        // component: ProcessingTransaction,
         exact: true,
         title: i18n.t('transaction.title'),
       },
       {
         path: '/completed',
-        component: CompletedTransaction,
+        component: lazy(() => import('../../pages/Transaction/Completed')),
+        // component: CompletedTransaction,
         exact: true,
         title: i18n.t('transaction.title'),
       },
       {
         path: '/canceled',
-        component: CanceledTransaction,
+        component: lazy(() => import('../../pages/Transaction/Canceled')),
+        // component: CanceledTransaction,
         exact: true,
         title: i18n.t('transaction.title'),
       },
@@ -197,7 +201,7 @@ class PrivateRoutes extends Component {
               {...route}
               component={e => {
                 // console.log(e);
-                
+
                 return(
                   <PrivateLayout>
                     <Suspense fallback={<Loading />}>
@@ -205,7 +209,7 @@ class PrivateRoutes extends Component {
                     </Suspense>
                     <ModalRoute location={e.location} match={e.match} />
                   </PrivateLayout>
-                )}} 
+                )}}
               key={route.path}
             />
           ),
