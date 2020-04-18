@@ -9,6 +9,8 @@ import {
 } from "../../../redux/rest/actions";
 
 class Filter extends Component {
+  componentDidMount(){}
+
   render() {
     const elementPropsRow = { gutter: 10, align: "middle", justify: "start" };
     const elementPropsCol = {
@@ -36,7 +38,7 @@ class Filter extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = () => {
   return {};
 };
 

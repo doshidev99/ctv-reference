@@ -27,7 +27,7 @@ export function* retrieveList({ resource }) {
     const { limit, skip, filter, include, order } = yield select(state => {
       return state.rest[resource];
     });
-    console.log("Saga: Resource: ", resource, " >>" ,{ limit, skip, filter, include, order });
+    // console.log("Saga: Resource: ", resource, " >>" ,{ limit, skip, filter, include, order });
 
     const params = convertRequestParams('getAll', {
       limit: limit < 1000 && limit,
@@ -37,7 +37,7 @@ export function* retrieveList({ resource }) {
       order,
     });
 
-    console.log("Saga: Params: ", resource, " >>", params)
+    // console.log("Saga: Params: ", resource, " >>", params)
     const response = yield call(
       apiWrapper,
       {
@@ -49,7 +49,7 @@ export function* retrieveList({ resource }) {
       resource,
       params,
     );
-    console.log("Saga: Response: ",response);
+    // console.log("Saga: Response: ",response);
 
     const convertData = convertResponseData('getAll', response);
     yield put(
@@ -60,7 +60,7 @@ export function* retrieveList({ resource }) {
       }),
     );
   } catch (error) {
-    console.log("Error: ",error);
+    // console.log("Error: ",error);
 
     yield put(actions.retrieveListFailed(resource, error));
   }

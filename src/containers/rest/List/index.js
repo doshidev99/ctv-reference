@@ -21,17 +21,10 @@ class RestList extends Component {
   constructor(props) {
     super(props);
     const paramFromUrl = getFilterFromUrl(this.props.location.search);
-<<<<<<< HEAD
     const filter = (this.props.location && paramFromUrl) || this.props.initialFilter;
-    // console.log(filter);
-    this.props.retrieveList(filter || { limit: 20, offset: 0, filter: {} }, true);
-    // console.log("");
-=======
-    const filter = (this.props.location && paramFromUrl) || this.props.initialFilter;    
     this.props.retrieveList(filter || { limit: 20, skip: 0, filter: {} }, true);
     // console.log("HERE " ,filter);
 
->>>>>>> 36693d39d3b345458c18d599a667416fedba7c1a
   }
 
   retrieveList = filter => {
@@ -107,22 +100,16 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch, props) => {
   return {
     retrieveList: async (filter, isRefresh) => {
-      try {
-        await dispatch(
-          retrieveList(
-            props.resource,
-            {
-              ...props.initialFilter,
-              ...filter,
-            },
-            isRefresh,
-          ),
-        );
-        console.log(filter);
-
-      } catch (error) {
-        console.log(error);
-      }
+      await dispatch(
+        retrieveList(
+          props.resource,
+          {
+            ...props.initialFilter,
+            ...filter,
+          },
+          isRefresh,
+        ),
+      );
       // return dispatch(
       //   retrieveList(
       //     props.resource,

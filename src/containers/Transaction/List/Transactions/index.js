@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import Label from "../../../../components/RestField/Label";
 import { Tag } from "antd";
+import Label from "../../../../components/RestField/Label";
 import RestList from "../../../rest/List";
 import Filter from "../../Components/Filter";
 import PropertyWrapper from "./styles";
@@ -11,6 +11,7 @@ import { formatDate } from "../../../../utils/textProcessor";
 
 class ListTransaction extends Component {
   componentDidMount() {}
+
   render() {
     return (
       <PropertyWrapper>
@@ -19,7 +20,7 @@ class ListTransaction extends Component {
           filter={<Filter />}
           resource="transactions"
           initialFilter={{ limit: 10, skip: 0, filter: {} }}
-          hasCreate = {false}
+          hasCreate={false}
           {...this.props}
           redirects={{
             create: 'newPage',
@@ -43,8 +44,7 @@ class ListTransaction extends Component {
           <Label
             source="type"
             title="Loại giao dịch"
-            render={ (type) => {
-              console.log(type);
+            render={(type) => {
               if (type === 1){
                 type = "Đặt cọc";
               }
@@ -74,6 +74,18 @@ class ListTransaction extends Component {
               else if (status === 2){
                 status = "Đã xác nhận đặt cọc";
                 color = "lime";
+              }
+              else if (status === 3){
+                status = "Thanh toán hoa hồng";
+                color = "gold";
+              }
+              else if (status === 4){
+                status = "Hoàn thành";
+                color = "green";
+              }
+              else if (status === 5){
+                status = "Đã hủy";
+                color = "volcano";
               }
               return (
                 <span>

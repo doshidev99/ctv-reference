@@ -20,7 +20,7 @@ class ListTransaction extends Component {
           filter={<Filter />}
           resource="transactions"
           initialFilter={{ limit: 10, skip: 0, order: "id", filter: {status: 5} }}
-          hasCreate = {false}
+          hasCreate={false}
           {...this.props}
           redirects={{
             create: 'newPage',

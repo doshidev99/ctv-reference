@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import Label from "../../../../components/RestField/Label";
 import { Tag } from "antd";
+import Label from "../../../../components/RestField/Label";
 import RestList from "../../../rest/List";
 import Filter from "../../Components/CompletedFilter";
 import PropertyWrapper from "./styles";
@@ -20,7 +20,7 @@ class ListTransaction extends Component {
           filter={<Filter />}
           resource="transactions"
           initialFilter={{ limit: 10, skip: 0, filter: {status: {"$in": [3,4]}}}}
-          hasCreate = {false}
+          hasCreate={false}
           {...this.props}
           redirects={{
             create: 'newPage',
@@ -44,8 +44,7 @@ class ListTransaction extends Component {
           <Label
             source="type"
             title="Loại giao dịch"
-            render={ (type) => {
-              console.log(type);
+            render={(type) => {
               if (type === 1){
                 type = "Đặt cọc";
               }
