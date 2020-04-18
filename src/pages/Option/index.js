@@ -5,6 +5,7 @@ import Wrapper from "./styles";
 import PageTitle from "../../components/common/PageTitle/index";
 import City from "../../containers/OptionPage/City";
 import PropertyType from "../../containers/OptionPage/PropertyType";
+import Service from "../../containers/OptionPage/Service";
 
 
 export default function Option() {
@@ -18,6 +19,11 @@ export default function Option() {
           </Col>
           <Col xs={24} md={12}>
             <City />
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col xs={24} md={12}>
+            <Service />
           </Col>
         </Row>
       </Layout>

@@ -144,6 +144,10 @@ export const getAction = (props, item) => {
       return { gotoEditPage: item.props.gotoEditPage || props.gotoEditPage };
     case 'delete':
       return { deleteItem: item.props.deleteItem || props.deleteItem };
+    case 'cancel':
+      return { cancelItem: item.props.cancelItem || props.cancelItem };
+    case 'confirm':
+      return { confirmItem: item.props.confirmItem || props.confirmItem };
     case 'show':
       return { gotoShowPage: item.props.gotoShowPage || props.gotoShowPage };
     case 'group':
@@ -151,6 +155,8 @@ export const getAction = (props, item) => {
         gotoShowPage: props.gotoShowPage,
         deleteItem: props.deleteItem,
         gotoEditPage: props.gotoEditPage,
+        cancelItem: props.cancelItem,
+        confirmItem: props.confirmItem,
       };
 
     default:

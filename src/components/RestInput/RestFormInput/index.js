@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import FormInput from '../../form/FormInput';
 import { getRecordData } from '../../../utils/tools';
 
-const RestFormInput = props => {
+const RestFormInput = props => {  
   return (
     <FormInput
       {...props}

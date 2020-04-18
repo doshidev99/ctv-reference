@@ -26,9 +26,8 @@ export const convertRequestParams = (type, params, resource, mappedBy) => {
     offset: requestParams.skip,
   };
   if (params.filter) {
-    query.filter = JSON.stringify(formatFilterParams(getValidData(params.filter)));
+    query.filter = JSON.stringify(getValidData(formatFilterParams(params.filter)));
   }
-
   if (params.order) {
     query.orderBy = params.order;
   }

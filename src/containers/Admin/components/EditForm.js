@@ -21,7 +21,7 @@ class AdminForm extends Component{
           title="Họ và tên"
           placeholder="Họ và tên"
           requiredMessage="Please input fullname"
-      />
+        />
         {roleData ? (
           <RestSelect
             required

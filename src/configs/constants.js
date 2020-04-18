@@ -10,6 +10,7 @@ export const ADMIN_ROLES = [
   },
 ];
 
+<<<<<<< HEAD
 export const PROCESSING_STATUS = [
   {
     id: 0,
@@ -63,6 +64,26 @@ export const COMPLETED_STATUS = [
   },
 ];
 
+=======
+export const REGISTRATION_STATUS =[
+  {
+    id: 0,
+    text: "Chưa xử lý",
+  },
+  {
+    id: 1,
+    text: "Đang xử lý",
+  },
+  {
+    id: 2,
+    text: "Hoàn thành",
+  },
+  {
+    id: 3,
+    text: "Hủy bỏ",
+  },
+]
+>>>>>>> 36693d39d3b345458c18d599a667416fedba7c1a
 export const PROPERTY_TAGS = [
   {
     id: 1,
@@ -84,3 +105,19 @@ export const TRAINING_TYPES = [
     name: "Document",
   },
 ]
+<<<<<<< HEAD
+=======
+
+export const EVENT_TAGS = [
+  {
+    id: 1,
+    name: 'NEW',
+    color: 'green',
+  },
+  {
+    id: 2,
+    name: 'HOT',
+    color: 'red',
+  },
+]
+>>>>>>> 36693d39d3b345458c18d599a667416fedba7c1a
