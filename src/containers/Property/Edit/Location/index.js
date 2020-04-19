@@ -11,7 +11,6 @@ import LocationWrapper from "./styles";
 import Editor from "../../../../components/common/Editor/index";
 import {
   markLocationAction,
-  onChangeLocationDescriptionAction,
 } from "../../../../redux/property/actions";
 
 const FormItem = Form.Item;
@@ -30,10 +29,6 @@ class Location extends Component {
     this.props.markLocation([e.latlng.lat, e.latlng.lng]);
   };
 
-  handleChange = (e) => {
-    this.props.onChangeText(e);
-  };
-
   render() {
     return (
       <LocationWrapper>
@@ -43,7 +38,7 @@ class Location extends Component {
               <label className="locationLabel">Vị trí</label>
               <FormItem>
                 {this.props.form.getFieldDecorator("locationDescription")(
-                  <Editor onChange={this.handleChange} content={this.props.description} />,
+                  <Editor content={this.props.description} />,
                 )}
               </FormItem>
             </div>
@@ -71,9 +66,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   markLocation: (latlg) => {
     dispatch(markLocationAction(latlg));
-  },
-  onChangeText: (text) => {
-    dispatch(onChangeLocationDescriptionAction(text));
   },
 });
 

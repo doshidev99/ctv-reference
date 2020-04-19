@@ -355,8 +355,8 @@ class EditPropertyForm extends Component {
               description={
                 currentProperty && currentProperty.locationDescription
               }
+              form={this.props.form}
             />
-
             {/*  Chưa validate */}
             <Row>
               {/* SITE PLAN */}

@@ -42,7 +42,7 @@ import Room from "./Room";
 import { getListCityAction } from "../../../redux/city/actions";
 import { getListPropertyTypeAction } from "../../../redux/propertyType/actions";
 import { retrieveList } from "../../../redux/rest/actions";
-import Payment from "./Payment";
+// import Payment from "./Payment";
 import PropertyDiscount from "./PropertyDiscount";
 import RestSelect from "../../../components/RestInput/RestSelect";
 import { getResources } from "../../../redux/rest/selectors";
@@ -62,21 +62,38 @@ class CreatePropertyForm extends Component {
       transactionType: 1,
     };
     const initialFilter = { limit: 50, skip: 0, order: "id", filter: {} };
-    this.props.retrieveRefferences(
-      "cities",
-      initialFilter || { limit: 20, skip: 0, filter: {} },
-      true,
-    );
-    this.props.retrieveRefferences(
-      "property-types",
-      initialFilter || { limit: 20, skip: 0, filter: {} },
-      true,
-    );
+    if (!this.props.cities) {
+      this.props.retrieveRefferences(
+        "cities",
+        initialFilter || { limit: 20, skip: 0, filter: {} },
+        true,
+      );
+    }
+    if (!this.props.propertyTypes) {
+      this.props.retrieveRefferences(
+        "property-types",
+        initialFilter || { limit: 20, skip: 0, filter: {} },
+        true,
+      );
+    }  
+    if (!this.props.paymentMethods) {
+      this.props.retrieveRefferences(
+        "payment-methods",
+        initialFilter || { limit: 20, skip: 0, filter: {} },
+        true,
+      );
+    }  
+
+
     this.props.clearFields();
   }
 
   handleSubmit = async (e) => {
     e.preventDefault();
+    const test = await this.props.form.getFieldsValue();
+    // eslint-disable-next-line no-console
+    console.log(test);
+    
     this.props.form.validateFields((err, values) => {
       if (!err) {
         values.openSaleDate = values.openSaleDate
@@ -89,7 +106,7 @@ class CreatePropertyForm extends Component {
           discounts,
           salesPolicies,
           paymentProgress,
-          paymentMethods,
+          // paymentMethods,
           priceList,
           propertyImage,
           productTable,
@@ -109,7 +126,7 @@ class CreatePropertyForm extends Component {
         values = {
           ...values,
           legalRecords,
-          paymentMethods,
+          // paymentMethods,
           sitePlans,
           discounts,
           salesPolicies,
@@ -323,7 +340,7 @@ class CreatePropertyForm extends Component {
             </Row>
 
             {/* LOCATION  */}
-            <Location />
+            <Location form={this.props.form} />
 
             {/*  Chưa validate */}
             <Row>
@@ -412,18 +429,6 @@ class CreatePropertyForm extends Component {
                     <PropertyDiscount
                       retrieveRefferences={this.props.retrieveRefferences}
                     />
-                  </Col>
-                </Row>
-              </Col>
-              <Col xs={20}>
-                <Row>
-                  <Col xs={24}>
-                    <div className="form-group-title">
-                      <span>Phương thức thanh toán</span>
-                    </div>
-                  </Col>
-                  <Col xs={24}>
-                    <Payment />
                   </Col>
                 </Row>
               </Col>
@@ -524,7 +529,7 @@ const mapStateToProps = (state) => {
     legalRecords,
     sitePlans,
     discounts,
-    paymentMethods,
+    // paymentMethods,
     salesPolicies,
     paymentProgress,
     priceList,
@@ -546,7 +551,7 @@ const mapStateToProps = (state) => {
     salesPolicies,
     paymentProgress,
     priceList,
-    paymentMethods,
+    paymentMethods: getResources(state, 'payment-methods'),
     propertyImage,
     productTable,
     location,
