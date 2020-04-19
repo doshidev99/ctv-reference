@@ -8,7 +8,8 @@ import {
   deletePropertyFailureAction,
   submitCreatePropertyFormFailureAtion,
   submitCreatePropertyFormSuccessAction,
-
+  getOnePropertySuccessAction,
+  getProductTableSuccessAction,
   // uploadFileSuccessAction,
   // uploadFileFailureAction,
 } from "./actions";
@@ -18,6 +19,8 @@ import {
   deleteOne,
   createOneProperty,
 } from "../../api/modules/property";
+
+import { getDataByIdApi, getAllApi } from "../../api/common/crud";
 import { apiWrapper } from "../../utils/reduxUtils";
 
 function* getListProperty({ limit, offset, filter }) {
@@ -85,13 +88,12 @@ function* createProperty({ payload }) {
       if (e.time && e.time.length === 2) {
         const { time } = e;
         [e.beganAt, e.endedAt] = time;
-        delete e.time
+        delete e.time;
       } else {
         e.beganAt = null;
         e.endedAt = null;
-        delete e.time
+        delete e.time;
       }
-
     });
 
     body.paymentMethods.forEach((e) => {
@@ -103,11 +105,11 @@ function* createProperty({ payload }) {
         if (sube.time && sube.time.length === 2) {
           const { time } = sube;
           [sube.beganAt, sube.endedAt] = time;
-          delete e.time
+          delete e.time;
         } else {
           sube.beganAt = null;
           sube.endedAt = null;
-          delete sube.time
+          delete sube.time;
         }
       });
       const newDiscounts = [...e.discounts].filter(
@@ -119,9 +121,9 @@ function* createProperty({ payload }) {
     body.salesPolicies.forEach((e) => {
       delete e.id;
     });
-    body.paymentProgress.forEach(e => {
-      delete e.id
-    })
+    body.paymentProgress.forEach((e) => {
+      delete e.id;
+    });
 
     const newDiscounts = body.discounts.filter(
       (value) => Object.keys(value).length >= 6,
@@ -154,8 +156,55 @@ function* createProperty({ payload }) {
   }
 }
 
+function* getOneProperty({ id }) {
+  try {
+    const response = yield call(
+      apiWrapper,
+      {
+        isShowProgress: true,
+        isShowSucceedNoti: false,
+        errorDescription: "Có lỗi xảy ra",
+      },
+      getDataByIdApi,
+      "properties",
+      Number(id),
+    );
+    yield put(getOnePropertySuccessAction(response))
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(error);
+  }
+}
+
+
+function * getProductTable({id, filterParams}) {
+  try {
+    const limit = filterParams.limit || 10;
+    const { offset } = filterParams
+    const response = yield call(
+      apiWrapper,
+      {
+        isShowProgress: true,
+        isShowSucceedNoti: false,
+        errorDescription: "Có lỗi xảy ra",
+      },
+      getAllApi,
+      `properties/${id}/sections`,
+      filterParams,
+    );
+    response.limit = limit;
+    response.offset = offset;
+    yield put(getProductTableSuccessAction(response))
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(error);
+  }
+}
 export default [
   takeEvery(PropertyTypes.GET_LIST_PROPERTY, getListProperty),
   takeEvery(PropertyTypes.DELETE_PROPERTY, deleteProperty),
   takeEvery(PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM, createProperty),
+
+  takeEvery(PropertyTypes.GET_ONE_PROPERTY, getOneProperty),
+  takeEvery(PropertyTypes.RETRIEVE_PRODUCT_TABLE, getProductTable),
 ];

@@ -65,6 +65,18 @@ export const PropertyTypes = makeConstantCreator(
   "ADD_PAYMENT_PROGRESS",
   "ADD_PAYMENT_PROGRESS_SUCCESS",
   "REMOVE_PAYMENT_PROGRESS",
+
+  "CLEAR",
+
+
+  "GET_ONE_PROPERTY",
+  "GET_ONE_PROPERTY_SUCCESS",
+
+
+  "SUBMIT_EDIT_ONE_PROPERTY",
+
+  "RETRIEVE_PRODUCT_TABLE",
+  "RETRIEVE_PRODUCT_TABLE_SUCCESS",
 );
 
 // Get list property
@@ -251,6 +263,28 @@ export const removePaymentProgressAction = (id) =>
 
 
 
-// "ADD_PAYMENT_PROGRESS",
-// "ADD_PAYMENT_PROGRESS_SUCCESS",
-// "REMOVE_PAYMENT_PROGRESS",
+export const clearAction = () => makeActionCreator(PropertyTypes.CLEAR)
+
+
+// -------------------GET ONE PROPERTY------------------------------
+export const getOnePropertyAction = (id) =>
+  makeActionCreator(PropertyTypes.GET_ONE_PROPERTY, {id});
+export const getOnePropertySuccessAction = ( data) =>
+  makeActionCreator(PropertyTypes.GET_ONE_PROPERTY_SUCCESS, {
+    data,
+  });
+
+
+  // SUBMIT EDIT PROPERTY
+export const submitEditPropertyFormAction = (id, payload) =>
+  makeActionCreator(PropertyTypes.SUBMIT_EDIT_ONE_PROPERTY, { id, payload });
+
+
+// GET PRODUCT TABLE
+export const getProductTableAction = (id, filterParams ) =>
+  makeActionCreator(PropertyTypes.RETRIEVE_PRODUCT_TABLE, { id, filterParams });
+
+export const getProductTableSuccessAction = (data) =>
+  makeActionCreator(PropertyTypes.RETRIEVE_PRODUCT_TABLE_SUCCESS, { data});
+
+

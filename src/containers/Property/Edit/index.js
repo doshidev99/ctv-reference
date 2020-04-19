@@ -18,7 +18,7 @@ import {
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import moment from "moment";
-// import RestSelect from "../../../components/RestInput/RestSelect";
+
 import Editor from "../../../components/common/Editor/index";
 import StyleWrapper from "./styles";
 import LegalRecord from "./LegalRecord";
@@ -29,18 +29,9 @@ import PriceList from "./PriceList";
 import PropertyImage from "./PropertyImage";
 import Discount from "./Discount";
 import ProductTable from "./ProductTable";
-// import { PROPERTY_TAGS } from "../../../configs/constants";
 
-// import {
-//   addNewLegalRecordAction,
-//   addNewSitePlanAction,
-//   addNewDiscountAction,
-//   submitCreatePropertyFormAction,
-// } from "../../../redux/property/actions";
 import * as propertyActions from "../../../redux/property/actions";
 import Room from "./Room";
-import { getListCityAction } from "../../../redux/city/actions";
-import { getListPropertyTypeAction } from "../../../redux/propertyType/actions";
 import { retrieveList } from "../../../redux/rest/actions";
 import Payment from "./Payment";
 import PropertyDiscount from "./PropertyDiscount";
@@ -50,7 +41,7 @@ import PaymentProgress from "./PaymentProgress";
 
 const FormItem = Form.Item;
 const { Option } = Select;
-class CreatePropertyForm extends Component {
+class EditPropertyForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -61,18 +52,23 @@ class CreatePropertyForm extends Component {
       paymentMethod: 1,
       transactionType: 1,
     };
+    const { id } = this.props.match.params;
+    this.props.getOneProperty(id);
     const initialFilter = { limit: 50, skip: 0, order: "id", filter: {} };
-    this.props.retrieveRefferences(
-      "cities",
-      initialFilter || { limit: 20, skip: 0, filter: {} },
-      true,
-    );
-    this.props.retrieveRefferences(
-      "property-types",
-      initialFilter || { limit: 20, skip: 0, filter: {} },
-      true,
-    );
-    this.props.clearFields();
+    if (!this.props.cities) {
+      this.props.retrieveRefferences(
+        "cities",
+        initialFilter || { limit: 20, skip: 0, filter: {} },
+        true,
+      );
+    }
+    if (!this.props.propertyTypes) {
+      this.props.retrieveRefferences(
+        "property-types",
+        initialFilter || { limit: 20, skip: 0, filter: {} },
+        true,
+      );
+    }
   }
 
   handleSubmit = async (e) => {
@@ -171,10 +167,25 @@ class CreatePropertyForm extends Component {
     const { getFieldDecorator } = form;
 
     const legalArea = legalRecords.map((e) => (
-      <LegalRecord key={e.id} id={e.id} />
+      <LegalRecord
+        key={e.id}
+        id={e.id}
+        data={{
+          id: e.id, 
+          title: e.title, 
+          mimeType: e.mimeType, 
+          link:  e.link}}
+      />
     ));
     const sitePlanArea = sitePlans.map((e) => (
-      <SitePlan key={e.id} id={e.id} links={e.links} />
+      <SitePlan
+        key={e.id}
+        id={e.id}
+        data={{
+        id: e.id, 
+        title: e.title, 
+        links:  e.links,
+      }} />
     ));
     // eslint-disable-next-line no-unused-vars
     const discountArea = discounts.map((e) => (
@@ -182,30 +193,40 @@ class CreatePropertyForm extends Component {
     ));
 
     const salesPoliciesArea = salesPolicies.map((e) => (
-      <SalesPolicy key={e.id} id={e.id} />
+      <SalesPolicy
+        key={e.id}
+        id={e.id}
+        data={{
+        id: e.id, 
+        title: e.title, 
+        link:  e.link,
+        updatedAt: e.updatedAt,
+      }} />
     ));
 
-    const paymentProgressArea = paymentProgress.map(e =>(
+    const paymentProgressArea = paymentProgress.map((e) => (
       <PaymentProgress key={e.id} id={e.id} />
-    ))
+    ));
+    const { currentProperty } = this.props;
     return (
       <StyleWrapper>
         <Layout>
           <Form layout="vertical" onSubmit={this.handleSubmit}>
             <FormItem>
-              {getFieldDecorator("name", {
-                rules: [
-                  {
-                    required: true,
-                    message: i18n.t("input.propertyName.validateMsg.required"),
-                  },
-                ],
-              })(
-                <div>
-                  <label className="propertyNameLabel">Tên dự án</label>
-                  <Input />
-                </div>,
-              )}
+              <div>
+                <label className="propertyNameLabel">Tên dự án</label>
+                {getFieldDecorator("name", {
+                  initialValue: currentProperty && currentProperty.name,
+                  rules: [
+                    {
+                      required: true,
+                      message: i18n.t(
+                        "input.propertyName.validateMsg.required",
+                      ),
+                    },
+                  ],
+                })(<Input />)}
+              </div>
             </FormItem>
             <Row gutter={16}>
               <Col xs={6}>
@@ -219,6 +240,7 @@ class CreatePropertyForm extends Component {
                     titleProp="name"
                     placeholder="Thành phố"
                     resourceData={this.props.cities.list}
+                    defaultValue={currentProperty && currentProperty.cityId}
                   />
                 ) : null}
               </Col>
@@ -233,6 +255,7 @@ class CreatePropertyForm extends Component {
                     titleProp="name"
                     placeholder="Thành phố"
                     resourceData={this.props.propertyTypes.list}
+                    defaultValue={currentProperty && currentProperty.typeId}
                   />
                 ) : null}
               </Col>
@@ -244,7 +267,10 @@ class CreatePropertyForm extends Component {
                       Thời gian mở bán
                     </label>
                     {getFieldDecorator("openSaleDate", {
-                      initialValue: moment(),
+                      initialValue:
+                        currentProperty &&
+                        currentProperty.openSaleDate &&
+                        moment(currentProperty.openSaleDate),
                       rules: [
                         {
                           type: "object",
@@ -253,33 +279,30 @@ class CreatePropertyForm extends Component {
                           whitespace: true,
                         },
                       ],
-                    })(
-                      <DatePicker
-                        defaultPickerValue={moment()}
-                        // onChange={this.onChangeDatePicker}
-                      />,
-                    )}
+                    })(<DatePicker />)}
                   </div>
                 </FormItem>
               </Col>
               <Col xs={6}>
                 {/*  COMMISSION RATE */}
                 <FormItem>
-                  {getFieldDecorator("commissionRate")(
-                    <div className="commission">
-                      <div className="commissionLabel">
-                        <span>Tỉ lệ hoa hồng (%)</span>
-                      </div>
-                      {/* <Input placeholder="Tỷ lệ" type="number" /> */}
+                  <div className="commission">
+                    <div className="commissionLabel">
+                      <span>Tỉ lệ hoa hồng (%)</span>
+                    </div>
+                    {getFieldDecorator("commissionRate", {
+                      initialValue:
+                        currentProperty &&
+                        Number(currentProperty.commissionRate),
+                    })(
                       <InputNumber
                         placeholder="Tỷ lệ (%)"
                         name="commissionRate"
                         min={0}
                         max={100}
-                        // onChange={this.handleChange}
-                      />
-                    </div>,
-                  )}
+                      />,
+                    )}
+                  </div>
                 </FormItem>
               </Col>
             </Row>
@@ -294,7 +317,12 @@ class CreatePropertyForm extends Component {
                         message: "Vui lòng nhập thông tin tổng quan dự án",
                       },
                     ],
-                  })(<Editor label="Tổng quan dự án" />)}
+                  })(
+                    <Editor
+                      content={currentProperty && currentProperty.overview}
+                      label="Tổng quan dự án"
+                    />,
+                  )}
                 </FormItem>
               </Col>
               <Col
@@ -323,7 +351,11 @@ class CreatePropertyForm extends Component {
             </Row>
 
             {/* LOCATION  */}
-            <Location />
+            <Location
+              description={
+                currentProperty && currentProperty.locationDescription
+              }
+            />
 
             {/*  Chưa validate */}
             <Row>
@@ -398,7 +430,7 @@ class CreatePropertyForm extends Component {
                 </div>
               </Col>
             </Row>
-            
+
             <Row gutter={[16, 24]}>
               {/* DISCOUNT */}
               <Col xs={20}>
@@ -436,7 +468,7 @@ class CreatePropertyForm extends Component {
                   <div className="productTableTitle">
                     <span>Bảng hàng</span>
                   </div>
-                  <ProductTable />
+                  <ProductTable retrieveData={this.props.getProductTable} id={this.props.match.params.id} />
                 </div>
               </Col>
             </Row>
@@ -516,7 +548,7 @@ class CreatePropertyForm extends Component {
   }
 }
 
-CreatePropertyForm.propTypes = {
+EditPropertyForm.propTypes = {
   form: PropTypes.object,
 };
 const mapStateToProps = (state) => {
@@ -533,9 +565,8 @@ const mapStateToProps = (state) => {
     location,
     locationDescription,
     //------------------------
-    createPropertyLoading,
+    currentProperty,
   } = state.property;
-  // const { propertyTypes, listPropertyTypeFailure } = state.propertyType;
 
   const { listCityFailure } = state.city;
 
@@ -556,9 +587,7 @@ const mapStateToProps = (state) => {
     cities: getResources(state, "cities"),
     listCityFailure,
     //---------------------
-    createPropertyLoading,
-
-    // --Discount group--
+    currentProperty,
   };
 };
 
@@ -583,17 +612,16 @@ const mapDispatchToProps = (dispatch, props) => ({
   },
 
   submitForm: (payload) => {
-    dispatch(propertyActions.submitCreatePropertyFormAction(payload));
+    dispatch(propertyActions.submitEditPropertyFormAction(payload));
   },
 
-  getListCity: () => {
-    dispatch(getListCityAction());
+  getOneProperty: (id) => {
+    dispatch(propertyActions.getOnePropertyAction(id));
   },
 
-  getListPropertyType: () => {
-    dispatch(getListPropertyTypeAction());
+  getProductTable: (id, filterParams) => {
+    dispatch(propertyActions.getProductTableAction(id, filterParams));
   },
-
   retrieveRefferences: (resource, filter, isRefresh) => {
     return dispatch(
       retrieveList(
@@ -606,13 +634,9 @@ const mapDispatchToProps = (dispatch, props) => ({
       ),
     );
   },
-
-  clearFields: () => {
-    dispatch(propertyActions.clearAction())
-  },
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Form.create()(CreatePropertyForm));
+)(Form.create()(EditPropertyForm));
