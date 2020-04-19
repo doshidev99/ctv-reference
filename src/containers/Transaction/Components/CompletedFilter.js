@@ -42,9 +42,9 @@ class Filter extends Component {
         </ColLayout>
         <ColLayout elementProps={elementPropsCol}>
           <RestSelect
-            source="transaction.status"
-            // valueProp="id"
-            // titleProp="titleProp"
+            source="status.$equals"
+            valueProp="id"
+            titleProp="titleProp"
             placeholder="Tình trạng"
             resourceData={COMPLETED_STATUS}
           />
