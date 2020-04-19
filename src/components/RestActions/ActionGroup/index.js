@@ -9,6 +9,8 @@ const ActionGroup = ({
   gotoEditPage,
   gotoShowPage,
   deleteItem,
+  cancelItem,
+  confirmItem,
   record,
 }) => {
   return (
@@ -19,6 +21,8 @@ const ActionGroup = ({
             gotoEditPage: element.props.gotoEditPage || gotoEditPage,
             gotoShowPage: element.props.gotoShowPage || gotoShowPage,
             deleteItem: element.props.deleteItem || deleteItem,
+            cancelItem: element.props.cancelItem || cancelItem,
+            confirmItem: element.props.confirmItem || confirmItem,
             record,
           }),
         )}
@@ -37,6 +41,8 @@ ActionGroup.propTypes = {
   gotoEditPage: PropTypes.func,
   gotoShowPage: PropTypes.func,
   deleteItem: PropTypes.func,
+  cancelItem: PropTypes.func,
+  confirmItem: PropTypes.func,
 };
 
 ActionGroup.defaultProps = {

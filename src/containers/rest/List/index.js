@@ -6,6 +6,8 @@ import {
   retrieveList,
   editRecord,
   deleteRecord,
+  cancelRecord,
+  confirmRecord,
   customQuery,
   setCurrentDataShow,
   exportExcelAction,
@@ -19,7 +21,7 @@ class RestList extends Component {
   constructor(props) {
     super(props);
     const paramFromUrl = getFilterFromUrl(this.props.location.search);
-    const filter = (this.props.location && paramFromUrl) || this.props.initialFilter;
+    const filter = (this.props.location && paramFromUrl) || this.props.initialFilter;    
     this.props.retrieveList(filter || { limit: 20, skip: 0, filter: {} }, true);
     // console.log("HERE " ,filter);
 
@@ -114,6 +116,8 @@ const mapDispatchToProps = (dispatch, props) => {
     updateRecord: (id, data, isChangeToEdit) =>
       dispatch(editRecord(props.resource, id, data, isChangeToEdit)),
     deleteItem: id => dispatch(deleteRecord(props.resource, id)),
+    cancelItem: id => dispatch(cancelRecord(props.resource, id)),
+    confirmItem: (id,data) => dispatch(confirmRecord(props.resource, id, data)),
     pushQuery: filter => {
       dispatch(push(`${props.rootPath}/${props.resource}?${getSearch(filter)}`))
     },

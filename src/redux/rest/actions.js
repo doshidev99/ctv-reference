@@ -13,6 +13,14 @@ export const REST_ACTION_TYPES = makeConstantCreator(
   'DELETE_RECORD_SUCCESS',
   'DELETE_RECORD_FAILED',
 
+  'CANCEL_RECORD',
+  'CANCEL_RECORD_SUCCESS',
+  'CANCEL_RECORD_FAILED',
+
+  'CONFIRM_RECORD',
+  'CONFIRM_RECORD_SUCCESS',
+  'CONFIRM_RECORD_FAILED',
+
   'EDIT_MULTI_RECORD',
   'EDIT_RECORD',
   'EDIT_RECORD_SUCCESS',
@@ -75,6 +83,26 @@ export const deleteRecordSuccess = (resource, data) =>
   });
 export const deleteRecordFailed = error =>
   makeActionCreator(REST_ACTION_TYPES.DELETE_RECORD_FAILED, error);
+
+export const cancelRecord = (resource, id) =>
+  makeActionCreator(REST_ACTION_TYPES.CANCEL_RECORD, { resource, id });
+export const cancelRecordSuccess = (resource, data) =>
+  makeActionCreator(REST_ACTION_TYPES.CANCEL_RECORD_SUCCESS, {
+    resource,
+    data,
+  });
+export const cancelRecordFailed = error =>
+  makeActionCreator(REST_ACTION_TYPES.CANCEL_RECORD_FAILED, error);
+
+export const confirmRecord = (resource, id, data) =>
+  makeActionCreator(REST_ACTION_TYPES.CONFIRM_RECORD, { resource, id, data });
+export const confirmRecordSuccess = (resource, data) =>
+  makeActionCreator(REST_ACTION_TYPES.CONFIRM_RECORD_SUCCESS, {
+    resource,
+    data,
+  });
+export const confirmRecordFailed = error =>
+  makeActionCreator(REST_ACTION_TYPES.CONFIRM_RECORD_FAILED, error);
 
 export const editMultiRecord = (resource, data) =>
   makeActionCreator(REST_ACTION_TYPES.EDIT_MULTI_RECORD, { resource, data });
