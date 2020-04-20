@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 // import { Icon, Button } from "antd";
 import { connect } from "react-redux";
-import moment from 'moment'
+import moment from "moment";
 import {
   SingleMailContents,
   SingleMailHeader,
@@ -68,18 +68,23 @@ class MailContent extends Component {
                     &gt;
                   </span>
                 </h3>
-                
+
                 <span className="mailDate">{moment(mail.date).calendar()}</span>
               </div>
-              <p>
-                to
-                <span style={{ paddingLeft: 3 }}>me</span>
-              </p>
+              {!this.props.viewer ? (
+                <p>
+                  to
+                  <span style={{ paddingLeft: 3 }}>me</span>
+                </p>
+              ) : (
+                ""
+              )}
             </div>
           </SingleMailInfo>
 
           <SingleMailBody className="mailBody">
-            <p>{mail.body}</p>
+            {/* eslint-disable-next-line react/no-danger */}
+            <p dangerouslySetInnerHTML={{__html: mail.body}} />
           </SingleMailBody>
           {replyArea}
         </div>
@@ -88,14 +93,15 @@ class MailContent extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  const { isCompose } = state.mail;
+const mapStateToProps = (state) => {
+  const { isCompose, viewer } = state.mail;
   return {
     isCompose,
+    viewer,
   };
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   composeMail: () => {
     dispatch(composeMailAction());
   },
