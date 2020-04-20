@@ -14,12 +14,17 @@ import {
 const { Item } = Form;
 
 class CreateMailForm extends Component {
-  handleSubmit = async () => {
+  
+
+  handleSubmit =  () => {
     this.props.form.validateFields((err, values) => {
-      const attachmentLink = this.props.file ? this.props.file : "";
+      const attachments = this.props.files ? this.props.files : "";
+      attachments.forEach(e => {
+        delete e.id
+      })
       values = {
         ...values,
-        attachmentLink,
+        attachments,
       };
       this.props.sendMail(values);
     });
@@ -43,26 +48,45 @@ class CreateMailForm extends Component {
     }
   };
 
+  
+
+
   handleUpload = async ({ file, onSuccess, onError }) => {
     try {
       const signedUrlS3 = await getSignedUrlS3(
         file.name,
         file.type,
-        "mailAttachment",
+        "MAIL_ATTACHMENT",
       );
-      uploadFile(file, signedUrlS3.url).then(response => {
-        this.props.uploadFileSuccess(response.url);
-        onSuccess("OK");
-      });
+      const response = await uploadFile(file, signedUrlS3.url);
+      const payload = {
+        name: file.name,
+        mimeType: file.type,
+        link: response.url,
+      };
+      this.props.uploadFileSuccess(payload);
+      onSuccess("OK");
     } catch (error) {
       onError("Error cmnr =)))");
     }
   };
+  
+  handleRemove = (e) => {
+    this.props.removeFileUpload(e.id)
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { loading } = this.props;
-
+    const { loading, files } = this.props;
+    let fileList = [...files] || []
+    fileList = fileList.map((e, index)=> ({
+      id: e.id,
+      name: e.name,
+      url: e.link,
+      status: 'done',
+      uid: index,
+    }))
+   
     return (
       <Scrollbar className="singleMailScroll" continuousScrolling>
         <MailComposerWrapper>
@@ -104,10 +128,11 @@ class CreateMailForm extends Component {
           </Item>
           <Item>
             <Upload
+              fileList={fileList}
               className="upload"
               onChange={this.handleOnChange}
               customRequest={this.handleUpload}
-              onRemove={this.props.removeFileUpload}
+              onRemove={this.handleRemove}
             >
               <Button shape="circle" icon="upload" />
             </Upload>
@@ -129,22 +154,23 @@ class CreateMailForm extends Component {
 }
 
 const mapStateToProps = state => {
-  const { fileUrl, sendMailLoading } = state.mail;
+  const { fileUrl, sendMailLoading, files } = state.mail;
   return {
     file: fileUrl,
+    files,
     loading: sendMailLoading,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  uploadFileSuccess: fileUrl => {
-    dispatch(uploadFileSuccessAction(fileUrl));
+  uploadFileSuccess: (payload) => {
+    dispatch(uploadFileSuccessAction(payload));
   },
 
-  removeFileUpload: () => {
-    dispatch(removeFileAction());
+  removeFileUpload: (id) => {
+    dispatch(removeFileAction(id));
   },
-
+  
   sendMail: payload => {
     dispatch(sendMailAction(payload));
   },

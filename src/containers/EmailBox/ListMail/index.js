@@ -13,14 +13,16 @@ import {
 } from "../../../redux/mail/actions";
 
 class ListMail extends Component {
-  state = {
-    currentMailId: null,
-  };
-
-  componentDidMount() {
-    const orderBy="-updatedAt"
-    const filter = `{"deletedAt":null}`
-    this.props.getListMail(10, 0,filter,orderBy);
+ 
+  constructor (props) {
+    super(props);
+    this.state = {
+      currentMailId: null,
+    };
+    const initialFilter = { limit: 50, offset: 0, orderBy: "-updatedAt", filter: {
+      "sender":{"$not":2},
+    }};
+    this.props.getListMail(initialFilter);
   }
 
   handleChange = () => {};
@@ -51,7 +53,7 @@ class ListMail extends Component {
     };
     const activeClass = isSelected ? "activeMail" : "";
 
-    const unreadClass = !mail.isRead ? "unreadMail" : "";
+    const unreadClass = !mail.isRead && this.props.viewer !== 'me' ? "unreadMail" : "";
     const tagOption = mail.tags
       ? // eslint-disable-next-line no-shadow
         tagColor[tags.findIndex(tags => tags === mail.tags)]
@@ -134,6 +136,7 @@ const mapStateToProps = state => {
     listMailLoading,
     getOneMaiFailure,
     listMailFailure,
+    viewer,
   } = state.mail;
   return {
     mails,
@@ -144,12 +147,14 @@ const mapStateToProps = state => {
     listMailLoading,
     getOneMaiFailure,
     listMailFailure,
+    viewer,
+
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  getListMail: (limit, offset, filter, orderBy) => {
-    dispatch(getMailListAction(limit, offset, filter, orderBy));
+  getListMail: (filterParams) => {
+    dispatch(getMailListAction(filterParams));
   },
 
   getOneMail: id => {

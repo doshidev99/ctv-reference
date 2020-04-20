@@ -4,8 +4,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 // import dumpedMails from "./fakeData";
 import {
-  getUnreadMailAction,
+  getReceivedMailAction,
   unComposeMailAction,
+  getMailListAction,
 } from "../../../../redux/mail/actions";
 
 const buckets = [
@@ -28,13 +29,25 @@ class MailBucket extends Component {
   }
 
   componentDidMount = () => {
-    this.props.loadUnread();
+    this.props.loadReceived();
   };
 
   handleChangeView = (key) => {
     this.setState({
       currentKey: key,
     })
+    if(key === 'sent') {
+      const applyFilter = { limit: 50, offset: 0, orderBy: "-updatedAt", filter: {
+        "sender": 2,
+      }};
+      this.props.getListMail(applyFilter);
+    }
+    if(key === 'inbox') {
+      const applyFilter = { limit: 50, offset: 0, orderBy: "-updatedAt", filter: {
+        "sender":{"$not":2},
+      }};
+      this.props.getListMail(applyFilter);
+    }
     this.props.changeView();
   };
 
@@ -52,7 +65,7 @@ class MailBucket extends Component {
         <span>{bucket.name}</span>
         <span className="mailBadge">
           {/* {unread[bucket.name] ? unread[bucket.name] : ""} */}
-          {bucket.key === "inbox" ? this.props.unRead: ""}
+          {bucket.key === "inbox" ? this.props.received: ""}
         </span>
       </li>
     );
@@ -68,16 +81,21 @@ class MailBucket extends Component {
 }
 
 const mapStateToProps = state => {
-  const { unRead } = state.mail;
+  const { received, sended } = state.mail;
   return {
-    unRead,
+    received,
+    sended,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  loadUnread: () => {
-    dispatch(getUnreadMailAction());
+  loadReceived: () => {
+    dispatch(getReceivedMailAction());
   },
+  getListMail: (filterParams) => {
+    dispatch(getMailListAction(filterParams));
+  },
+
   changeView: () => {
     dispatch(unComposeMailAction());
   },
