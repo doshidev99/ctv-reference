@@ -30,6 +30,9 @@ export const PropertyTypes = makeConstantCreator(
   "ADD_PROPERTY_IMAGE",
   "REMOVE_PROPERTY_IMAGE",
 
+  "ADD_PROPERTY_MEDIA",
+  "REMOVE_PROPERTY_MEDIA",
+
   "ADD_NEW_DISCOUNT",
   "REMOVE_DISCOUNT",
   "ON_CHANGE_DISCOUNT",
@@ -288,3 +291,16 @@ export const getProductTableSuccessAction = (data) =>
   makeActionCreator(PropertyTypes.RETRIEVE_PRODUCT_TABLE_SUCCESS, { data});
 
 
+
+// HANDLE PROPERTY MEDIA
+
+export const addPropertyMediaAction = (payload) =>
+  makeActionCreator(PropertyTypes.ADD_PROPERTY_MEDIA, { payload});
+
+export const removePropertyMediaAction = (id) =>
+  makeActionCreator(PropertyTypes.REMOVE_PROPERTY_MEDIA, { id});
+
+
+
+// "ADD_PROPERTY_MEDIA",
+// "REMOVE_PROPERTY_MEDIA",
