@@ -10,6 +10,7 @@ import {
   submitCreatePropertyFormSuccessAction,
   getOnePropertySuccessAction,
   getProductTableSuccessAction,
+  getOnePropertyAction,
   // uploadFileSuccessAction,
   // uploadFileFailureAction,
 } from "./actions";
@@ -96,27 +97,27 @@ function* createProperty({ payload }) {
       }
     });
 
-    body.paymentMethods.forEach((e) => {
-      delete e.id;
-      e.discounts.forEach((sube) => {
-        delete sube.id;
-        sube.groupId = 1;
-        clean(sube);
-        if (sube.time && sube.time.length === 2) {
-          const { time } = sube;
-          [sube.beganAt, sube.endedAt] = time;
-          delete e.time;
-        } else {
-          sube.beganAt = null;
-          sube.endedAt = null;
-          delete sube.time;
-        }
-      });
-      const newDiscounts = [...e.discounts].filter(
-        (value) => Object.keys(value).length >= 6,
-      );
-      e.discounts = newDiscounts;
-    });
+    // body.paymentMethods.forEach((e) => {
+    //   delete e.id;
+    //   e.discounts.forEach((sube) => {
+    //     delete sube.id;
+    //     sube.groupId = 1;
+    //     clean(sube);
+    //     if (sube.time && sube.time.length === 2) {
+    //       const { time } = sube;
+    //       [sube.beganAt, sube.endedAt] = time;
+    //       delete e.time;
+    //     } else {
+    //       sube.beganAt = null;
+    //       sube.endedAt = null;
+    //       delete sube.time;
+    //     }
+    //   });
+    //   const newDiscounts = [...e.discounts].filter(
+    //     (value) => Object.keys(value).length >= 6,
+    //   );
+    //   e.discounts = newDiscounts;
+    // });
 
     body.salesPolicies.forEach((e) => {
       delete e.id;
@@ -129,17 +130,26 @@ function* createProperty({ payload }) {
       (value) => Object.keys(value).length >= 6,
     );
     const newLegalRecords = body.legalRecords.filter(
-      (value) => Object.keys(value).length !== 0,
+      (value) => Object.keys(value).length >= 3,
     );
     const newSitePlans = body.sitePlans.filter(
       (value) => Object.keys(value).length !== 1,
     );
 
+    const newSalesPolicies = body.salesPolicies.filter(
+      (value) => Object.keys(value).length >= 3,
+    )
+
+    const newPaymentProgress = body.paymentProgress.filter(
+      (value) => Object.keys(value).length >= 3,
+    )
     body.legalRecords = newLegalRecords;
     body.sitePlans = newSitePlans;
     body.discounts = newDiscounts;
-    
-    yield call(
+    body.salesPolicies = newSalesPolicies
+    body.paymentProgress = newPaymentProgress
+   
+    const response = yield call(
       apiWrapper,
       {
         isShowProgress: true,
@@ -151,6 +161,7 @@ function* createProperty({ payload }) {
       body,
     );
     yield put(submitCreatePropertyFormSuccessAction());
+    yield put(getOnePropertyAction(response.id));
   } catch (error) {
     yield put(submitCreatePropertyFormFailureAtion(error));
   }

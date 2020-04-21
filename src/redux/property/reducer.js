@@ -1,4 +1,4 @@
-import moment from 'moment'
+import moment from "moment";
 import { makeReducerCreator } from "../../utils/reduxUtils";
 import { PropertyTypes } from "./actions";
 import { mongoObjectId } from "../../utils/textProcessor";
@@ -35,6 +35,7 @@ export const initialState = {
   ],
   priceList: null,
   propertyImage: [],
+  medias: [],
   discounts: [],
   paymentMethods: [],
   location: [],
@@ -243,6 +244,41 @@ const removePropertyImage = (state, { link }) => {
   return {
     ...state,
     propertyImage,
+  };
+};
+
+// PROPERTY MEDIA
+
+const addPropertyMedia = (state, { payload }) => {
+  const mediaList = [...state.medias];
+  if (payload.type === 1) {
+    const index = mediaList.findIndex((e) => e.id === payload.id);
+    if (index >= 0) {
+      mediaList[index] = payload;
+    } else {
+      mediaList.push({
+        id: mongoObjectId(),
+        ...payload,
+      });
+    }
+  } else {
+    mediaList.push({
+      id: mongoObjectId(),
+      ...payload,
+    });
+  }
+
+  return {
+    ...state,
+    medias: mediaList,
+  };
+};
+
+const removePropertyMedia = (state, { id }) => {
+  const mediaList = [...state.medias];
+  return {
+    ...state,
+    medias: mediaList.filter((e) => e.id !== id),
   };
 };
 
@@ -614,30 +650,30 @@ const getOnePropertySuccess = (state, { data }) => {
     tags,
   };
 
-  legalRecords.forEach((e) => {
+  legalRecords && legalRecords.forEach((e) => {
     e.id = mongoObjectId();
   });
-  sitePlans.forEach((e) => {
+  sitePlans && sitePlans.forEach((e) => {
     e.id = mongoObjectId();
   });
-  salesPolicies.forEach((e) => {
+  salesPolicies && salesPolicies.forEach((e) => {
     e.id = mongoObjectId();
   });
 
-  discounts.forEach((e) => {
-    if(e.beganAt || e.endedAt) {
+  discounts && discounts.forEach((e) => {
+    if (e.beganAt || e.endedAt) {
       e.time = [moment(e.beganAt), moment(e.endedAt)];
     } else {
-      e.time=null
+      e.time = null;
     }
   });
 
-  paymentMethods.forEach((e) => {
+  paymentMethods && paymentMethods.forEach((e) => {
     e.discounts.forEach((sube) => {
-      if(sube.beganAt || sube.endedAt) {
-        sube.time = [moment(sube.beganAt),moment(sube.endedAt) ];
-      }else {
-        sube.time = null
+      if (sube.beganAt || sube.endedAt) {
+        sube.time = [moment(sube.beganAt), moment(sube.endedAt)];
+      } else {
+        sube.time = null;
       }
     });
   });
@@ -664,24 +700,24 @@ const getOnePropertySuccess = (state, { data }) => {
 
 const getProductTableSuccess = (state, { data }) => {
   const { total, limit, offset, results } = data;
-  results.forEach(e => {
-    e.key = e.id
-  })
+  results.forEach((e) => {
+    e.key = e.id;
+  });
   return {
     ...state,
     limit,
     offset,
     total,
     productTable: results,
-  loading: false,
-
+    loading: false,
   };
 };
 
-const getProductTable= state => ({
+const getProductTable = (state) => ({
   ...state,
   loading: true,
-})
+});
+
 export const property = makeReducerCreator(initialState, {
   [PropertyTypes.GET_LIST_PROPERTY]: getListProperty,
   [PropertyTypes.GET_LIST_PROPERTY_SUCCESS]: getListPropertySuccess,
@@ -749,4 +785,7 @@ export const property = makeReducerCreator(initialState, {
 
   [PropertyTypes.RETRIEVE_PRODUCT_TABLE_SUCCESS]: getProductTableSuccess,
   [PropertyTypes.RETRIEVE_PRODUCT_TABLE]: getProductTable,
+
+  [PropertyTypes.ADD_PROPERTY_MEDIA]: addPropertyMedia,
+  [PropertyTypes.REMOVE_PROPERTY_MEDIA]: removePropertyMedia,
 });

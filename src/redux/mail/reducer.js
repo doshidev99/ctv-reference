@@ -214,8 +214,8 @@ export const mail = makeReducerCreator(initialState, {
   [MailTypes.COMPOSE_LARGE_MAIL]: composeLargeMail,
   [MailTypes.UNCOMPOSE_MAIL]: uncomposeMail,
 
-  [MailTypes.UPLOAD_FILE_SUCCESS]: uploadFileSuccess,
-  [MailTypes.UPLOAD_FILE_FAILURE]: uploadFileFailure,
+  [MailTypes.UPLOAD_ATTACHMENT_FILE_SUCCESS]: uploadFileSuccess,
+  [MailTypes.UPLOAD_ATTACHMENT_FILE_FAILURE]: uploadFileFailure,
 
   [MailTypes.REMOVE_FILE]: removeFile,
 
