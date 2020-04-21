@@ -62,8 +62,11 @@ class PaymentProgress extends Component {
       const payload = {
         link: response.url,
         ...result,
-      };
-      this.props.addPaymentProgressSuccess(this.props.id, payload);
+      }
+      this.props.addPaymentProgressSuccess(
+        this.props.id,
+        payload,
+      );
       onSuccess("OK");
     } catch (error) {
       message.error("Xảy ra lỗi, vui lòng thử lại");
@@ -78,21 +81,16 @@ class PaymentProgress extends Component {
           <Col xs={10}>
             <div className="title">
               <FormItem>
-                <div>
-                  {this.props.form.getFieldDecorator("title", {
-                    rules: [
-                      {
-                        required: true,
-                        message: "Tiêu đề ko đc để trống",
-                      },
-                    ],
-                  })(
-                    <Input
-                      className="PaymentProgressInput"
-                      placeholder="Tiêu đề"
-                    />,
-                  )}
-                </div>
+                {this.props.form.getFieldDecorator("title", {
+                  rules: [
+                    {
+                      required: true,
+                      message: "Tiêu đề ko đc để trống",
+                    },
+                  ],
+                })(
+                  <Input className="PaymentProgressInput" placeholder="Tiêu đề" />,
+                )}
               </FormItem>
             </div>
           </Col>
@@ -129,7 +127,6 @@ class PaymentProgress extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  PaymentProgress: state.property.PaymentProgress,
   file: state.property.fileUrl,
 });
 

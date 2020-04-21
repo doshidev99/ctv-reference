@@ -10,16 +10,17 @@ import {
   Row,
 } from "antd";
 import { connect } from "react-redux";
-import PaymentProgressWrapper from "./styles";
+import moment from 'moment'
+import SalesPolicyWrapper from "./styles";
 import { getSignedUrlS3, uploadFile } from "../../../../utils/uploadFile";
 import {
-  addPaymentProgressSuccessAction,
+  addSalesPolicySuccessAction,
   uploadFileSuccessAction,
-  removePaymentProgressAction,
+  removeSalesPolicyAction,
 } from "../../../../redux/property/actions";
 
 const FormItem = Form.Item;
-class PaymentProgress extends Component {
+class SalesPolicy extends Component {
   handleOnChange = async (info) => {
     if (info.file.status !== "uploading") {
       // console.log(info.file, info.fileList);
@@ -39,7 +40,7 @@ class PaymentProgress extends Component {
   };
 
   handleRemove = () => {
-    this.props.removePaymentProgress(this.props.id);
+    this.props.removeSalesPolicy(this.props.id);
   };
 
   handleUpload = async ({ file, onSuccess, onError }) => {
@@ -55,7 +56,7 @@ class PaymentProgress extends Component {
       const signedUrlS3 = await getSignedUrlS3(
         file.name,
         file.type,
-        "PAYMENT_PROGRESS",
+        "SALES_POLICY",
       );
       const response = await uploadFile(file, signedUrlS3.url);
       this.props.uploadFileSuccess(response.url);
@@ -63,7 +64,7 @@ class PaymentProgress extends Component {
         link: response.url,
         ...result,
       };
-      this.props.addPaymentProgressSuccess(this.props.id, payload);
+      this.props.addSalesPolicySuccess(this.props.id, payload);
       onSuccess("OK");
     } catch (error) {
       message.error("Xảy ra lỗi, vui lòng thử lại");
@@ -72,27 +73,32 @@ class PaymentProgress extends Component {
   };
 
   render() {
+    const fileList = [];
+    if (this.props.data) {
+      fileList.push({
+        uid: "1",
+        status: "done",
+        name: this.props.data.title ,
+        url: this.props.data.url,
+      });
+    }
     return (
-      <PaymentProgressWrapper>
+      <SalesPolicyWrapper>
         <Row>
           <Col xs={10}>
             <div className="title">
               <FormItem>
-                <div>
-                  {this.props.form.getFieldDecorator("title", {
-                    rules: [
-                      {
-                        required: true,
-                        message: "Tiêu đề ko đc để trống",
-                      },
-                    ],
-                  })(
-                    <Input
-                      className="PaymentProgressInput"
-                      placeholder="Tiêu đề"
-                    />,
-                  )}
-                </div>
+                {this.props.form.getFieldDecorator("title", {
+                  rules: [
+                    {
+                      required: true,
+                      message: "Tiêu đề ko đc để trống",
+                    },
+                  ],
+                  initialValue: this.props.data && this.props.data.title,
+                })(
+                  <Input className="salesPolicyInput" placeholder="Tiêu đề" />,
+                )}
               </FormItem>
             </div>
           </Col>
@@ -106,6 +112,7 @@ class PaymentProgress extends Component {
                       message: "Vui lòng chọn ngày",
                     },
                   ],
+                  initialValue: this.props.data && moment(this.props.data.updatedAt),
                 })(<DatePicker />)}
               </FormItem>
             </div>
@@ -116,6 +123,7 @@ class PaymentProgress extends Component {
                 className="upload"
                 onChange={this.handleOnChange}
                 customRequest={this.handleUpload}
+                defaultFileList={fileList}
               >
                 <Button shape="round" icon="upload" />
               </Upload>
@@ -123,13 +131,12 @@ class PaymentProgress extends Component {
             </div>
           </Col>
         </Row>
-      </PaymentProgressWrapper>
+      </SalesPolicyWrapper>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  PaymentProgress: state.property.PaymentProgress,
   file: state.property.fileUrl,
 });
 
@@ -137,15 +144,15 @@ const mapDispatchToProps = (dispatch) => ({
   uploadFileSuccess: (fileUrl) => {
     dispatch(uploadFileSuccessAction(fileUrl, "create"));
   },
-  addPaymentProgressSuccess: (id, payload) => {
-    dispatch(addPaymentProgressSuccessAction(id, payload));
+  addSalesPolicySuccess: (id, payload) => {
+    dispatch(addSalesPolicySuccessAction(id, payload));
   },
-  removePaymentProgress: (id) => {
-    dispatch(removePaymentProgressAction(id));
+  removeSalesPolicy: (id) => {
+    dispatch(removeSalesPolicyAction(id));
   },
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Form.create()(PaymentProgress));
+)(Form.create()(SalesPolicy));

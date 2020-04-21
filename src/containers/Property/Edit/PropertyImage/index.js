@@ -3,7 +3,7 @@ import { Upload, Icon,Button, Modal, message, Row, Col } from 'antd';
 import { connect } from "react-redux";
 import PropertyImageWrapper from './styles'
 
-import { uploadFileSuccessAction, addPropertyMediaAction, removePropertyMediaAction } from "../../../../redux/property/actions";
+import { uploadFileSuccessAction, removePropertyImagetAction, addPropertyImageAction } from "../../../../redux/property/actions";
 import { getSignedUrlS3, uploadFile } from "../../../../utils/uploadFile";
 
 function getBase64(file) {
@@ -57,12 +57,7 @@ class PropertyImage extends Component {
       );
       const response = await uploadFile(file, signedUrlS3.url);
       this.props.uploadImageSuccess(response.url);
-      const payload = {
-        mimeType: file.type,
-        link: response.url,
-        type: 2,
-      }
-      this.props.addPropertyImage(payload);
+      this.props.addPropertyImage(response.url);
       onSuccess("OK");
     } catch (error) {
       message.error("Xảy ra lỗi, vui lòng thử lại");
@@ -71,26 +66,22 @@ class PropertyImage extends Component {
   };
 
   handleRemove = (e) => {
-    this.props.removeImage(e.id)
+    this.props.removeImage(e.url)
   }
 
   render() {
     const { previewVisible, previewImage } = this.state;
-    const {medias} = this.props;
-    let fileList = medias || []
-    if(fileList.length > 0 ) {
-      fileList = fileList.filter(e => e.type === 2);
-    }
-    fileList = fileList.map( e=> ({
-      url: e.link,
+    const {images} = this.props;
+    let fileList = images || []
+
+    fileList = fileList.map((e, index) => ({
+      url: e,
       status: 'done',
-      uid: e.id,
-      id: e.id,
+      uid: index,
     }))
     const uploadButton = (
       <Button>
         <Icon type="upload" />
-        {' '}
         Upload
       </Button>
     );
@@ -129,8 +120,7 @@ class PropertyImage extends Component {
 
 const mapStateToProps = state => ({
   file: state.property.fileUrl,
-  // images: state.property.propertyImage,
-  medias: state.property.medias,
+  images: state.property.propertyImage,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -138,13 +128,12 @@ const mapDispatchToProps = dispatch => ({
     dispatch(uploadFileSuccessAction(fileUrl, "create"));
   },
 
-  addPropertyImage :(payload) => {
-    dispatch(addPropertyMediaAction(payload));
+  addPropertyImage :(url) => {
+    dispatch(addPropertyImageAction(url));
   },
 
-
-  removeImage: id => {
-    dispatch(removePropertyMediaAction(id));
+  removeImage: url => {
+    dispatch(removePropertyImagetAction(url));
   },
 
 });

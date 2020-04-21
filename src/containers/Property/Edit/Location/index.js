@@ -38,7 +38,7 @@ class Location extends Component {
               <label className="locationLabel">Vị trí</label>
               <FormItem>
                 {this.props.form.getFieldDecorator("locationDescription")(
-                  <Editor />,
+                  <Editor content={this.props.description} />,
                 )}
               </FormItem>
             </div>

@@ -31,18 +31,19 @@ class PropertyDiscount extends Component {
   constructor(props) {
     super(props);
     const initialFilter = { limit: 50, skip: 0, order: "id", filter: {} };
-    this.props.retrieveRefferences(
-      "discount-groups",
-      initialFilter || { limit: 20, skip: 0, filter: {} },
-      true,
-    );
+    if(!this.props.groups) {
+      this.props.retrieveRefferences(
+        "discount-groups",
+        initialFilter || { limit: 20, skip: 0, filter: {} },
+        true,
+      );
+    }
   }
 
   render() {
     const { discounts, groups } = this.props;
     const groupsExceptPayment =
-      groups && groups.list ? groups.list : [];
-      
+      groups && groups.list ? groups.list.filter((e) => e.id !== 1) : [];
     const data = groupsExceptPayment.map((group) => {
       const discountsOfGroup = discounts.filter((e) => e.groupId === group.id);
       return {
@@ -59,7 +60,6 @@ class PropertyDiscount extends Component {
               <DiscountGroup data={el} form={this.props.form} />
             </Tabs.TabPane>
           ))}
-          
         </Tabs>
       </Wrapper>
     );

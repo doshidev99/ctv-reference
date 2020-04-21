@@ -17,8 +17,8 @@ export const MailTypes = makeConstantCreator(
   "COMPOSE_LARGE_MAIL",
   "UNCOMPOSE_MAIL",
 
-  "UPLOAD_FILE_SUCCESS",
-  "UPLOAD_FILE_FAILURE",
+  "UPLOAD_ATTACHMENT_FILE_SUCCESS",
+  "UPLOAD_ATTACHMENT_FILE_FAILURE",
 
   "REMOVE_FILE",
 
@@ -98,9 +98,9 @@ export const unComposeMailAction = () =>
 
 // Upload file
 export const uploadFileSuccessAction = file =>
-  makeActionCreator(MailTypes.UPLOAD_FILE_SUCCESS, { file });
+  makeActionCreator(MailTypes.UPLOAD_ATTACHMENT_FILE_SUCCESS, { file });
 export const uploadFileFailureAction = error =>
-  makeActionCreator(MailTypes.UPLOAD_FILE_FAILURE, { error });
+  makeActionCreator(MailTypes.UPLOAD_ATTACHMENT_FILE_FAILURE, { error });
 
 // Remove file
 export const removeFileAction = (id) => makeActionCreator(MailTypes.REMOVE_FILE, {id});
