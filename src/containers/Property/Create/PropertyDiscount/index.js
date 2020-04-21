@@ -41,7 +41,8 @@ class PropertyDiscount extends Component {
   render() {
     const { discounts, groups } = this.props;
     const groupsExceptPayment =
-      groups && groups.list ? groups.list.filter((e) => e.id !== 1) : [];
+      groups && groups.list ? groups.list : [];
+      
     const data = groupsExceptPayment.map((group) => {
       const discountsOfGroup = discounts.filter((e) => e.groupId === group.id);
       return {
@@ -58,6 +59,7 @@ class PropertyDiscount extends Component {
               <DiscountGroup data={el} form={this.props.form} />
             </Tabs.TabPane>
           ))}
+          
         </Tabs>
       </Wrapper>
     );

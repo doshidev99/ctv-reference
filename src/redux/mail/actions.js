@@ -17,8 +17,8 @@ export const MailTypes = makeConstantCreator(
   "COMPOSE_LARGE_MAIL",
   "UNCOMPOSE_MAIL",
 
-  "UPLOAD_FILE_SUCCESS",
-  "UPLOAD_FILE_FAILURE",
+  "UPLOAD_ATTACHMENT_FILE_SUCCESS",
+  "UPLOAD_ATTACHMENT_FILE_FAILURE",
 
   "REMOVE_FILE",
 
@@ -26,22 +26,22 @@ export const MailTypes = makeConstantCreator(
   "SEND_MAIL_SUCCESS",
   "SEND_MAIL_FAILURE",
 
-  "GET_UNREAD_MAIL",
-  "GET_UNREAD_MAIL_SUCCESS",
-  "GET_UNREAD_MAIL_FAILURE",
+  "GET_RECEIVED_MAIL",
+  "GET_RECEIVED_MAIL_SUCCESS",
+  "GET_RECEIVED_MAIL_FAILURE",
 
   "DELETE_MAIL",
   "DELETE_MAIL_SUCCESS",
   "DELETE_MAIL_FAILURE",
+
+
+  "SET_VIEWER",
 );
 
 // Get list mail
-export const getMailListAction = (limit, offset, filter, orderBy) =>
+export const getMailListAction = (filterParams) =>
   makeActionCreator(MailTypes.GET_MAIL_LIST, {
-    limit,
-    offset,
-    filter,
-    orderBy,
+    ...filterParams,
   });
 
 export const getMailListSuccessAction = (data, total, limit, offset) =>
@@ -97,13 +97,13 @@ export const unComposeMailAction = () =>
   makeActionCreator(MailTypes.UNCOMPOSE_MAIL);
 
 // Upload file
-export const uploadFileSuccessAction = fileUrl =>
-  makeActionCreator(MailTypes.UPLOAD_FILE_SUCCESS, { fileUrl });
+export const uploadFileSuccessAction = file =>
+  makeActionCreator(MailTypes.UPLOAD_ATTACHMENT_FILE_SUCCESS, { file });
 export const uploadFileFailureAction = error =>
-  makeActionCreator(MailTypes.UPLOAD_FILE_FAILURE, { error });
+  makeActionCreator(MailTypes.UPLOAD_ATTACHMENT_FILE_FAILURE, { error });
 
 // Remove file
-export const removeFileAction = () => makeActionCreator(MailTypes.REMOVE_FILE);
+export const removeFileAction = (id) => makeActionCreator(MailTypes.REMOVE_FILE, {id});
 
 // Send mail
 export const sendMailAction = payload =>
@@ -113,13 +113,13 @@ export const sendMailSuccessAction = () =>
 export const sendMailFailureAction = error =>
   makeActionCreator(MailTypes.SEND_MAIL_FAILURE, { error });
 
-// Get unread mail
-export const getUnreadMailAction = () =>
-  makeActionCreator(MailTypes.GET_UNREAD_MAIL);
-export const getUnreadMailActionSuccess = total =>
-  makeActionCreator(MailTypes.GET_UNREAD_MAIL_SUCCESS, { total });
-export const getUnreadMailActionFailure = error =>
-  makeActionCreator(MailTypes.GET_UNREAD_MAIL_FAILURE, { error });
+// Get received mail
+export const getReceivedMailAction = () =>
+  makeActionCreator(MailTypes.GET_RECEIVED_MAIL);
+export const getReceivedMailActionSuccess = ({sent, received}) =>
+  makeActionCreator(MailTypes.GET_RECEIVED_MAIL_SUCCESS, { sent, received });
+export const getReceivedMailActionFailure = error =>
+  makeActionCreator(MailTypes.GET_RECEIVED_MAIL_FAILURE, { error });
 
 // Delete mail
 export const deleteMailAction = id =>
@@ -128,3 +128,7 @@ export const deleteMailActionSuccess = (id) =>
   makeActionCreator(MailTypes.DELETE_MAIL_SUCCESS, {id});
 export const deleteMailActionFailure = error =>
   makeActionCreator(MailTypes.DELETE_MAIL_FAILURE, { error });
+
+export const setViewerAction = viewer =>
+  makeActionCreator(MailTypes.SET_VIEWER, { viewer });
+

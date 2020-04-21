@@ -42,11 +42,12 @@ import Room from "./Room";
 import { getListCityAction } from "../../../redux/city/actions";
 import { getListPropertyTypeAction } from "../../../redux/propertyType/actions";
 import { retrieveList } from "../../../redux/rest/actions";
-import Payment from "./Payment";
+// import Payment from "./Payment";
 import PropertyDiscount from "./PropertyDiscount";
 import RestSelect from "../../../components/RestInput/RestSelect";
 import { getResources } from "../../../redux/rest/selectors";
 import PaymentProgress from "./PaymentProgress";
+import MainImage from "./MainImage";
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -58,24 +59,42 @@ class CreatePropertyForm extends Component {
       tags: null,
       city: 1,
       type: 1,
-      paymentMethod: 1,
+      // paymentMethod: 1,
       transactionType: 1,
     };
     const initialFilter = { limit: 50, skip: 0, order: "id", filter: {} };
-    this.props.retrieveRefferences(
-      "cities",
-      initialFilter || { limit: 20, skip: 0, filter: {} },
-      true,
-    );
-    this.props.retrieveRefferences(
-      "property-types",
-      initialFilter || { limit: 20, skip: 0, filter: {} },
-      true,
-    );
+    if (!this.props.cities) {
+      this.props.retrieveRefferences(
+        "cities",
+        initialFilter || { limit: 20, skip: 0, filter: {} },
+        true,
+      );
+    }
+    if (!this.props.propertyTypes) {
+      this.props.retrieveRefferences(
+        "property-types",
+        initialFilter || { limit: 20, skip: 0, filter: {} },
+        true,
+      );
+    }  
+    
+    if (!this.props.paymentMethodOptions) {
+      this.props.retrieveRefferences(
+        "payment-methods",
+        { limit: 50, skip: 0, order: "id", filter: {} },
+        true,
+      );
+    }  
+
+
+    this.props.clearFields();
   }
 
   handleSubmit = async (e) => {
     e.preventDefault();
+    const test = await this.props.form.getFieldsValue();
+    // eslint-disable-next-line no-console
+    console.log(test);
     this.props.form.validateFields((err, values) => {
       if (!err) {
         values.openSaleDate = values.openSaleDate
@@ -88,27 +107,27 @@ class CreatePropertyForm extends Component {
           discounts,
           salesPolicies,
           paymentProgress,
-          paymentMethods,
+          // paymentMethods,
           priceList,
-          propertyImage,
+          // propertyImage,
+          medias,
           productTable,
           location,
-          locationDescription,
         } = this.props;
 
-        const medias = [];
-        propertyImage.forEach((el) => {
-          medias.push({
-            type: 2,
-            link: el,
-          });
-        });
+        // const medias = [];
+        // propertyImage.forEach((el) => {
+        //   medias.push({
+        //     type: 2,
+        //     link: el,
+        //   });
+        // });
 
         values.transactionType = Number(values.transactionType);
         values = {
           ...values,
           legalRecords,
-          paymentMethods,
+          // paymentMethods,
           sitePlans,
           discounts,
           salesPolicies,
@@ -121,10 +140,9 @@ class CreatePropertyForm extends Component {
             latitude: location[0],
             longitude: location[1],
           },
-          locationDescription,
         };
         // eslint-disable-next-line no-console
-
+        
         this.props.submitForm(values);
       } else {
         message.error("Có lỗi xảy ra");
@@ -163,10 +181,12 @@ class CreatePropertyForm extends Component {
       sitePlans,
       discounts,
       createPropertyLoading,
+      paymentMethodOptions,
       salesPolicies,
       paymentProgress,
     } = this.props;
-
+    
+    
     const { getFieldDecorator } = form;
 
     const legalArea = legalRecords.map((e) => (
@@ -230,7 +250,7 @@ class CreatePropertyForm extends Component {
                     source="typeId"
                     valueProp="id"
                     titleProp="name"
-                    placeholder="Thành phố"
+                    placeholder="Loại dự án"
                     resourceData={this.props.propertyTypes.list}
                   />
                 ) : null}
@@ -320,9 +340,16 @@ class CreatePropertyForm extends Component {
                 </div>
               </Col>
             </Row>
+            
+            {/* MAIN IMAGE */}
+            <Row>
+              <Col>
+                <MainImage />
+              </Col>
+            </Row>
 
             {/* LOCATION  */}
-            <Location />
+            <Location form={this.props.form} />
 
             {/*  Chưa validate */}
             <Row>
@@ -377,7 +404,33 @@ class CreatePropertyForm extends Component {
               </Col>
             </Row>
             <Row gutter={[8, 24]}>
-              <Col span={12}>
+              <Col xs={24} md={12}>
+                <Row>
+                  <div className="form-group-title">
+                    <p>Phương thức thanh toán</p>
+                  </div>
+                </Row>
+                <Row>
+                  <FormItem>
+                    {getFieldDecorator('paymentMethodIds',{
+                      valuePropName: "option",
+                    })(
+                      <Select
+                        mode="multiple"
+                     >  
+                        {
+                           paymentMethodOptions && paymentMethodOptions.list &&paymentMethodOptions.list.map(e => (
+                             <Option key={e.id} value={e.id}>{e.name}</Option>
+                           ))
+                        }
+                        
+                        {/* <Option value={2}>New</Option> */}
+                      </Select>,
+                  )}
+                  </FormItem>
+                </Row>
+              </Col>
+              <Col xs={24} md={12}>
                 <div className="paymentProgress">
                   <Row>
                     <div className="form-group-title">
@@ -411,18 +464,6 @@ class CreatePropertyForm extends Component {
                     <PropertyDiscount
                       retrieveRefferences={this.props.retrieveRefferences}
                     />
-                  </Col>
-                </Row>
-              </Col>
-              <Col xs={20}>
-                <Row>
-                  <Col xs={24}>
-                    <div className="form-group-title">
-                      <span>Phương thức thanh toán</span>
-                    </div>
-                  </Col>
-                  <Col xs={24}>
-                    <Payment />
                   </Col>
                 </Row>
               </Col>
@@ -523,7 +564,7 @@ const mapStateToProps = (state) => {
     legalRecords,
     sitePlans,
     discounts,
-    paymentMethods,
+    // paymentMethods,
     salesPolicies,
     paymentProgress,
     priceList,
@@ -532,6 +573,7 @@ const mapStateToProps = (state) => {
     location,
     locationDescription,
     //------------------------
+    medias,
     createPropertyLoading,
   } = state.property;
   // const { propertyTypes, listPropertyTypeFailure } = state.propertyType;
@@ -545,12 +587,14 @@ const mapStateToProps = (state) => {
     salesPolicies,
     paymentProgress,
     priceList,
-    paymentMethods,
     propertyImage,
     productTable,
     location,
     locationDescription,
+    medias,
+
     //---------------------
+    paymentMethodOptions: getResources(state, 'payment-methods'),
     propertyTypes: getResources(state, "property-types"),
     cities: getResources(state, "cities"),
     listCityFailure,
@@ -604,6 +648,10 @@ const mapDispatchToProps = (dispatch, props) => ({
         isRefresh,
       ),
     );
+  },
+
+  clearFields: () => {
+    dispatch(propertyActions.clearAction())
   },
 });
 

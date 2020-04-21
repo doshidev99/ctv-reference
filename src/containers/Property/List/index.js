@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Label from "../../../components/RestField/Label";
 import ActionGroup from "../../../components/RestActions/ActionGroup";
-// import EditButton from "../../../components/RestActions/EditButton";
+import EditButton from "../../../components/RestActions/EditButton";
 import DeleteButton from "../../../components/RestActions/DeleteButton";
 import RestList from "../../rest/List";
 import Filter from "../components/Filter";
@@ -27,6 +27,7 @@ class ListProperty extends Component {
           {...this.props}
           redirects={{
             create: 'newPage',
+            edit: 'newPage',
           }}
         >
           <Label
@@ -47,6 +48,7 @@ class ListProperty extends Component {
           />
           <ActionGroup>
             <DeleteButton customMessage="Bạn có chắc chắn muốn xóa ?" />
+            <EditButton />
           </ActionGroup>
         </RestList>
       </PropertyWrapper>

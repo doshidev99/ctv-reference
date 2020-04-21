@@ -1,7 +1,7 @@
+import moment from "moment";
 import { makeReducerCreator } from "../../utils/reduxUtils";
 import { PropertyTypes } from "./actions";
 import { mongoObjectId } from "../../utils/textProcessor";
-
 // Setup inintial state for property
 export const initialState = {
   properties: [],
@@ -35,6 +35,7 @@ export const initialState = {
   ],
   priceList: null,
   propertyImage: [],
+  medias: [],
   discounts: [],
   paymentMethods: [],
   location: [],
@@ -188,7 +189,7 @@ const addSalesPolicy = (state) => {
   };
 };
 
-const addSalesPoliciesSuccess = (state, { id, payload}) => {
+const addSalesPoliciesSuccess = (state, { id, payload }) => {
   const salesPolicies = [...state.salesPolicies];
   const index = salesPolicies.findIndex((e) => e.id === id);
   salesPolicies[index] = {
@@ -246,12 +247,47 @@ const removePropertyImage = (state, { link }) => {
   };
 };
 
+// PROPERTY MEDIA
+
+const addPropertyMedia = (state, { payload }) => {
+  const mediaList = [...state.medias];
+  if (payload.type === 1) {
+    const index = mediaList.findIndex((e) => e.id === payload.id);
+    if (index >= 0) {
+      mediaList[index] = payload;
+    } else {
+      mediaList.push({
+        id: mongoObjectId(),
+        ...payload,
+      });
+    }
+  } else {
+    mediaList.push({
+      id: mongoObjectId(),
+      ...payload,
+    });
+  }
+
+  return {
+    ...state,
+    medias: mediaList,
+  };
+};
+
+const removePropertyMedia = (state, { id }) => {
+  const mediaList = [...state.medias];
+  return {
+    ...state,
+    medias: mediaList.filter((e) => e.id !== id),
+  };
+};
+
 // DISCOUNT
 const addNewDiscount = (state, { groupId, mode }) => {
-  if (mode === 'payment') {
-    const paymentMethods = [...state.paymentMethods]
-    const index = paymentMethods.findIndex(e => e.id === groupId); // index cua nhom payment method
-    const {discounts} = paymentMethods[index]
+  if (mode === "payment") {
+    const paymentMethods = [...state.paymentMethods];
+    const index = paymentMethods.findIndex((e) => e.id === groupId); // index cua nhom payment method
+    const { discounts } = paymentMethods[index];
     discounts.push({
       id: mongoObjectId(),
       groupId,
@@ -267,7 +303,7 @@ const addNewDiscount = (state, { groupId, mode }) => {
     id: mongoObjectId(),
     groupId,
   });
-  
+
   return {
     ...state,
     discounts,
@@ -275,11 +311,11 @@ const addNewDiscount = (state, { groupId, mode }) => {
 };
 
 const removeDiscount = (state, { id, groupId, mode }) => {
-  if (mode === 'payment') {
-    const paymentMethods = [...state.paymentMethods]
-    const index = paymentMethods.findIndex(e => e.id === groupId); // index cua nhom payment method
-    let {discounts} = paymentMethods[index]
-    discounts = discounts.filter(e => e.id !== id)
+  if (mode === "payment") {
+    const paymentMethods = [...state.paymentMethods];
+    const index = paymentMethods.findIndex((e) => e.id === groupId); // index cua nhom payment method
+    let { discounts } = paymentMethods[index];
+    discounts = discounts.filter((e) => e.id !== id);
     paymentMethods[index].discounts = discounts;
     return {
       ...state,
@@ -294,15 +330,16 @@ const removeDiscount = (state, { id, groupId, mode }) => {
   };
 };
 
-const onChangeDiscount = (state, {id, payload, mode}) => {
-  if(mode === 'payment') {
-    const {groupId} = payload
-    const paymentMethods = [...state.paymentMethods]
-    const paymentIndex = paymentMethods.findIndex(e => e.id === groupId); // index cua nhom payment method
-    const {discounts} = paymentMethods[paymentIndex]
+const onChangeDiscount = (state, { id, payload, mode }) => {
+  if (mode === "payment") {
+    const { groupId } = payload;
+    const paymentMethods = [...state.paymentMethods];
+    const paymentIndex = paymentMethods.findIndex((e) => e.id === groupId); // index cua nhom payment method
+    const { discounts } = paymentMethods[paymentIndex];
     const currentDiscountIndex = discounts.findIndex((e) => e.id === id);
     discounts[currentDiscountIndex] = {
-      id, ...payload,
+      id,
+      ...payload,
     };
     paymentMethods[paymentIndex].discounts = discounts;
     return {
@@ -313,19 +350,21 @@ const onChangeDiscount = (state, {id, payload, mode}) => {
   const discounts = [...state.discounts];
   const index = discounts.findIndex((e) => e.id === id);
   discounts[index] = {
-    id, ...payload,
+    id,
+    ...payload,
   };
   return {
     ...state,
     discounts,
   };
-}
+};
 
-const addNewDiscountSuccess = (state, {id,  payload }) => {
+const addNewDiscountSuccess = (state, { id, payload }) => {
   const discounts = [...state.discounts];
   const index = discounts.findIndex((e) => e.id === id);
   discounts[index] = {
-    id, ...payload,
+    id,
+    ...payload,
   };
   return {
     ...state,
@@ -525,8 +564,6 @@ const removeOnePaymentMethod = (state, { id }) => {
   };
 };
 
-
-
 // PAYMENT PROGRESS
 const addPaymentProgress = (state) => {
   const paymentProgress = [...state.paymentProgress];
@@ -539,7 +576,7 @@ const addPaymentProgress = (state) => {
   };
 };
 
-const addPaymentProgressSuccess = (state, { id, payload}) => {
+const addPaymentProgressSuccess = (state, { id, payload }) => {
   const paymentProgress = [...state.paymentProgress];
   const index = paymentProgress.findIndex((e) => e.id === id);
   paymentProgress[index] = {
@@ -562,6 +599,124 @@ const removeOnePaymentProgress = (state, { id }) => {
   };
 };
 
+// CLEAR
+const clear = () => ({ ...initialState });
+
+//
+
+const getOnePropertySuccess = (state, { data }) => {
+  // console.log(data);
+  const {
+    id,
+    name,
+    cityId,
+    typeId,
+    openSaleDate,
+    commissionRate,
+    overview,
+    legalRecords,
+    location,
+    locationDescription,
+    sitePlans,
+    salesPolicies,
+    priceList,
+    mainImages,
+    medias,
+    paymentProgress,
+    discounts,
+    paymentMethods,
+    isVisible,
+    transactionType,
+    tags,
+  } = data;
+  const currentProperty = {
+    id,
+    name,
+    cityId,
+    typeId,
+    openSaleDate,
+    commissionRate,
+    overview,
+    location,
+    locationDescription,
+    priceList,
+    mainImages,
+    medias,
+    paymentProgress,
+    discounts,
+    paymentMethods,
+    isVisible,
+    transactionType,
+    tags,
+  };
+
+  legalRecords && legalRecords.forEach((e) => {
+    e.id = mongoObjectId();
+  });
+  sitePlans && sitePlans.forEach((e) => {
+    e.id = mongoObjectId();
+  });
+  salesPolicies && salesPolicies.forEach((e) => {
+    e.id = mongoObjectId();
+  });
+
+  discounts && discounts.forEach((e) => {
+    if (e.beganAt || e.endedAt) {
+      e.time = [moment(e.beganAt), moment(e.endedAt)];
+    } else {
+      e.time = null;
+    }
+  });
+
+  paymentMethods && paymentMethods.forEach((e) => {
+    e.discounts.forEach((sube) => {
+      if (sube.beganAt || sube.endedAt) {
+        sube.time = [moment(sube.beganAt), moment(sube.endedAt)];
+      } else {
+        sube.time = null;
+      }
+    });
+  });
+  const propertyImage = mainImages.map((e) => e.link);
+  return {
+    ...state,
+    currentProperty,
+    location: [
+      currentProperty.location.latitude,
+      currentProperty.location.longitude,
+    ],
+    legalRecords,
+    sitePlans,
+    salesPolicies,
+    priceList,
+    propertyImage,
+    paymentProgress: paymentProgress || [],
+    discounts,
+    paymentMethods,
+  };
+};
+
+// -------Get product table----
+
+const getProductTableSuccess = (state, { data }) => {
+  const { total, limit, offset, results } = data;
+  results.forEach((e) => {
+    e.key = e.id;
+  });
+  return {
+    ...state,
+    limit,
+    offset,
+    total,
+    productTable: results,
+    loading: false,
+  };
+};
+
+const getProductTable = (state) => ({
+  ...state,
+  loading: true,
+});
 
 export const property = makeReducerCreator(initialState, {
   [PropertyTypes.GET_LIST_PROPERTY]: getListProperty,
@@ -620,18 +775,17 @@ export const property = makeReducerCreator(initialState, {
   [PropertyTypes.ADD_NEW_PAYMENT_METHOD_SUCCESS]: addNewPaymentMethodSuccess,
   [PropertyTypes.REMOVE_PAYMENT_METHOD]: removeOnePaymentMethod,
 
-
-
-
-
   [PropertyTypes.ADD_PAYMENT_PROGRESS]: addPaymentProgress,
   [PropertyTypes.ADD_PAYMENT_PROGRESS_SUCCESS]: addPaymentProgressSuccess,
   [PropertyTypes.REMOVE_PAYMENT_PROGRESS]: removeOnePaymentProgress,
+
+  [PropertyTypes.CLEAR]: clear,
+
+  [PropertyTypes.GET_ONE_PROPERTY_SUCCESS]: getOnePropertySuccess,
+
+  [PropertyTypes.RETRIEVE_PRODUCT_TABLE_SUCCESS]: getProductTableSuccess,
+  [PropertyTypes.RETRIEVE_PRODUCT_TABLE]: getProductTable,
+
+  [PropertyTypes.ADD_PROPERTY_MEDIA]: addPropertyMedia,
+  [PropertyTypes.REMOVE_PROPERTY_MEDIA]: removePropertyMedia,
 });
-
-
-
-
-// "",
-// "",
-// "",

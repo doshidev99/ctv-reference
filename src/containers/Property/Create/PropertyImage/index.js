@@ -3,7 +3,7 @@ import { Upload, Icon,Button, Modal, message, Row, Col } from 'antd';
 import { connect } from "react-redux";
 import PropertyImageWrapper from './styles'
 
-import { uploadFileSuccessAction, removePropertyImagetAction, addPropertyImageAction } from "../../../../redux/property/actions";
+import { uploadFileSuccessAction, addPropertyMediaAction, removePropertyMediaAction } from "../../../../redux/property/actions";
 import { getSignedUrlS3, uploadFile } from "../../../../utils/uploadFile";
 
 function getBase64(file) {
@@ -57,7 +57,12 @@ class PropertyImage extends Component {
       );
       const response = await uploadFile(file, signedUrlS3.url);
       this.props.uploadImageSuccess(response.url);
-      this.props.addPropertyImage(response.url);
+      const payload = {
+        mimeType: file.type,
+        link: response.url,
+        type: 2,
+      }
+      this.props.addPropertyImage(payload);
       onSuccess("OK");
     } catch (error) {
       message.error("Xảy ra lỗi, vui lòng thử lại");
@@ -66,18 +71,21 @@ class PropertyImage extends Component {
   };
 
   handleRemove = (e) => {
-    this.props.removeImage(e.url)
+    this.props.removeImage(e.id)
   }
 
   render() {
     const { previewVisible, previewImage } = this.state;
-    const {images} = this.props;
-    let fileList = images || []
-
-    fileList = fileList.map((e, index) => ({
-      url: e,
+    const {medias} = this.props;
+    let fileList = medias || []
+    if(fileList.length > 0 ) {
+      fileList = fileList.filter(e => e.type === 2);
+    }
+    fileList = fileList.map( e=> ({
+      url: e.link,
       status: 'done',
-      uid: index,
+      uid: e.id,
+      id: e.id,
     }))
     const uploadButton = (
       <Button>
@@ -121,7 +129,8 @@ class PropertyImage extends Component {
 
 const mapStateToProps = state => ({
   file: state.property.fileUrl,
-  images: state.property.propertyImage,
+  // images: state.property.propertyImage,
+  medias: state.property.medias,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -129,12 +138,13 @@ const mapDispatchToProps = dispatch => ({
     dispatch(uploadFileSuccessAction(fileUrl, "create"));
   },
 
-  addPropertyImage :(url) => {
-    dispatch(addPropertyImageAction(url));
+  addPropertyImage :(payload) => {
+    dispatch(addPropertyMediaAction(payload));
   },
 
-  removeImage: url => {
-    dispatch(removePropertyImagetAction(url));
+
+  removeImage: id => {
+    dispatch(removePropertyMediaAction(id));
   },
 
 });

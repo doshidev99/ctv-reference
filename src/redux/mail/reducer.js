@@ -1,5 +1,6 @@
 import { makeReducerCreator } from "../../utils/reduxUtils";
 import { MailTypes } from "./actions";
+import { mongoObjectId } from "../../utils/textProcessor";
 
 // Setup inintial state for property types
 export const initialState = {
@@ -16,15 +17,18 @@ export const initialState = {
   getOneMailFailure: undefined,
   isCompose: false,
   isComposeLarge: false,
-  fileUrl:null,
+  fileUrl: null,
+  files: [],
   commonError: undefined,
   sendMailLoading: false,
-  unRead: 0,
+  received: 0,
+  sent: 0,
+  viewer: 'me',
 };
 // End setup
 
 // LIST MAILS
-const getMailList = state => ({
+const getMailList = (state) => ({
   ...state,
   listMailLoading: true,
 });
@@ -40,7 +44,7 @@ const getMailListSuccess = (state, { data, total, limit, offset }) => ({
   listMailFailure: false,
 });
 
-const getMailListFailure = state => ({
+const getMailListFailure = (state) => ({
   ...state,
   listMailLoading: false,
   listMailSuccess: false,
@@ -48,7 +52,7 @@ const getMailListFailure = state => ({
 });
 
 // GET ONE MAIL
-const getOneMail = state => ({
+const getOneMail = (state) => ({
   ...state,
   loading: true,
   isCompose: false,
@@ -65,7 +69,7 @@ const getOneMailSuccess = (state, { data }) => ({
   isComposeLarge: false,
 });
 
-const getOneMailFailure = state => ({
+const getOneMailFailure = (state) => ({
   ...state,
   loading: false,
   getOneMailSuccess: false,
@@ -74,11 +78,10 @@ const getOneMailFailure = state => ({
   isComposeLarge: false,
 });
 
-
 // MARK AS READ
 const markOneMailReadSuccess = (state, { id }) => {
   const mailList = [...state.mails];
-  const index = mailList.findIndex(e => e.id === id);
+  const index = mailList.findIndex((e) => e.id === id);
   mailList[index].isRead = true;
   return {
     ...state,
@@ -87,78 +90,90 @@ const markOneMailReadSuccess = (state, { id }) => {
   };
 };
 
-const markOneMailReadFailure = state => ({
+const markOneMailReadFailure = (state) => ({
   ...state,
   commonError: true,
 });
 
 // CHANGE STATUS TO COMPOSE
 const composeMail = (state) => ({
-  ...state, 
+  ...state,
   isCompose: true,
-})
+});
 const composeLargeMail = (state) => ({
   ...state,
   isComposeLarge: true,
   currentMail: null,
-})
+});
 const uncomposeMail = (state) => ({
   ...state,
   isCompose: false,
   isComposeLarge: false,
-})
-
+});
 
 // UPLOAD FILE
-const uploadFileSuccess = (state, { fileUrl }) => {
+const uploadFileSuccess = (state, { file }) => {
+  const fileList = [...state.files];
+  file.id = mongoObjectId();
+  fileList.push(file);
   return {
     ...state,
-    fileUrl,
+    files: fileList,
+    fileUrl: file.link,
     loading: false,
   };
 };
-const uploadFileFailure = state => ({
+const uploadFileFailure = (state) => ({
   ...state,
   loading: false,
 });
-const removeFile = (state) => ({
-  ...state, 
-  fileUrl: null,
-})
+const removeFile = (state, { id }) => {
+  const fileList = [...state.files];
+  const files = fileList.filter((e) => e.id !== id);
+  
+  return {
+    ...state,
+    files,
+    fileUrl: null,
+  };
+};
 
 // Send mail
 const sendMail = (state) => ({
   ...state,
   sendMailLoading: true,
-})
+});
 const sendMailSuccess = (state) => ({
   ...state,
+  files: [],
+  fileUrl: null,
   sendMailLoading: false,
   commonError: false,
-})
+});
 const sendMailFailure = (state) => ({
   ...state,
   sendMailLoading: false,
   commonError: true,
-})
+});
 
-// Get unread mail
-const getUnreadMailSuccess = (state, {total}) => ({
+// Get received and sent mail
+const getReceivedMailSuccess = (state, { received, sent=0 }) => ({
   ...state,
-  unRead: total,
+  received, 
+  sent,
   commonError: false,
-})
-const getUnreadMailFailure = (state) => ({
+});
+const getReceivedMailFailure = (state) => ({
   ...state,
-  unRead: 0,
+  received: 0,
   commonError: true,
-})
+});
 
 // Delete mail
-const deleteMailSuccess = (state, {id}) => {
+const deleteMailSuccess = (state, { id }) => {
   const mailList = [...state.mails];
-  const index = mailList.findIndex(e =>  e.id ===id)
-  if(index !== -1) {
+  const index = mailList.findIndex((e) => e.id === id);
+  if (index !== -1) {
     mailList.splice(index, 1);
   }
   return {
@@ -166,11 +181,21 @@ const deleteMailSuccess = (state, {id}) => {
     mails: mailList,
     currentMail: null,
     commonError: false,
-  }
-}
+  };
+};
 const deleteMailFailure = (state) => ({
   ...state,
   commonError: true,
+});
+
+
+
+// Set viewer (to change view of one mail)
+
+const setViewer = (state, {viewer}) => ({
+  ...state,
+  viewer,
+  currentMail: null,
 })
 
 export const mail = makeReducerCreator(initialState, {
@@ -189,9 +214,8 @@ export const mail = makeReducerCreator(initialState, {
   [MailTypes.COMPOSE_LARGE_MAIL]: composeLargeMail,
   [MailTypes.UNCOMPOSE_MAIL]: uncomposeMail,
 
-  
-  [MailTypes.UPLOAD_FILE_SUCCESS]: uploadFileSuccess,
-  [MailTypes.UPLOAD_FILE_FAILURE]: uploadFileFailure,
+  [MailTypes.UPLOAD_ATTACHMENT_FILE_SUCCESS]: uploadFileSuccess,
+  [MailTypes.UPLOAD_ATTACHMENT_FILE_FAILURE]: uploadFileFailure,
 
   [MailTypes.REMOVE_FILE]: removeFile,
 
@@ -199,14 +223,14 @@ export const mail = makeReducerCreator(initialState, {
   [MailTypes.SEND_MAIL_SUCCESS]: sendMailSuccess,
   [MailTypes.SEND_MAIL_FAILURE]: sendMailFailure,
 
-  [MailTypes.GET_UNREAD_MAIL_SUCCESS]: getUnreadMailSuccess,
-  [MailTypes.GET_UNREAD_MAIL_FAILURE]: getUnreadMailFailure,
+  [MailTypes.GET_RECEIVED_MAIL_SUCCESS]: getReceivedMailSuccess,
+  [MailTypes.GET_RECEIVED_MAIL_FAILURE]: getReceivedMailFailure,
 
   [MailTypes.DELETE_MAIL_SUCCESS]: deleteMailSuccess,
   [MailTypes.DELETE_MAIL_FAILURE]: deleteMailFailure,
-  
+
+  [MailTypes.SET_VIEWER]: setViewer,
+
+
+
 });
-
-
-
-

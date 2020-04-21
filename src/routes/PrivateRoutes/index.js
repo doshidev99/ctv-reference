@@ -45,6 +45,12 @@ const routes = [
         exact: true,
         title: i18n.t('property.title'),
       },
+      {
+        path: '/:id/edit',
+        component:lazy(() => import('../../pages/Property/Edit')),
+        exact: true,
+        title: i18n.t('property.title'),
+      },
     ],
   },
   {
