@@ -33,7 +33,7 @@ class Filter extends Component {
           <RestFormInput source="code.$ilike" placeholder="Mã giao dich" />
         </ColLayout>
         <ColLayout elementProps={elementPropsCol}>
-          <RestFormInput source="realtor.$ilike" placeholder="Tên CTV" />
+          <RestFormInput source="realtor.fullName.$ilike" placeholder="Tên CTV" />
         </ColLayout>
         <ColLayout elementProps={elementPropsCol}>
           <RestSelect

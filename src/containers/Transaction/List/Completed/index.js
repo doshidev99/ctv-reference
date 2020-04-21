@@ -16,7 +16,7 @@ class ListTransaction extends Component {
     return (
       <PropertyWrapper>
         <RestList
-          title="Danh sách giao dịch"
+          // title="Danh sách giao dịch"
           filter={<Filter />}
           resource="transactions"
           initialFilter={{ limit: 10, skip: 0, filter: {status: {"$in": [3,4]}}}}
