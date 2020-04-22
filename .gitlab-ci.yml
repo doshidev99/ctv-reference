@@ -13,7 +13,7 @@ eslint-test:
   image: node:8
   except:
     - master
-    - staging
+    - dev
   before_script:
     - rm -rf /tmp/*
     - npm i --no-cache
@@ -24,7 +24,7 @@ docker-build:
   stage: build
   image: docker:latest
   only:
-    - staging
+    - dev
   services:
     - docker:dind
   variables:
@@ -43,7 +43,7 @@ docker-deploy:
   stage: deploy
   image: gitlab/dind:latest
   only:
-    - staging
+    - dev
   environment: development
   variables:
     DOCKER_CONTAINER: $$(docker ps --filter "name=ctv-web" -aq)
