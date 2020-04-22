@@ -17,11 +17,11 @@ export const PROCESSING_STATUS = [
   },
   {
     id: 1,
-    titleProp: 'Chờ xác nhận đặt cọc',
+    titleProp: 'Chờ xác nhận',
   },
   {
     id: 2,
-    titleProp: 'Đã xác nhận đặt cọc',
+    titleProp: 'Đã xác nhận',
   },
 ];
 
@@ -32,19 +32,19 @@ export const STATUS = [
   },
   {
     id: 1,
-    titleProp: 'Chờ xác nhận đặt cọc',
+    titleProp: 'Chờ xác nhận',
   },
   {
     id: 2,
-    titleProp: 'Đã xác nhận đặt cọc',
+    titleProp: 'Đã xác nhận',
   },
   {
     id: 3,
-    titleProp: 'Thanh toán hoa hồng',
+    titleProp: 'Đang thanh toán',
   },
   {
     id: 4,
-    titleProp: 'Hoàn thành',
+    titleProp: 'Đã thanh toán',
   },
   {
     id: 5,
@@ -55,11 +55,11 @@ export const STATUS = [
 export const COMPLETED_STATUS = [
   {
     id: 3,
-    titleProp: 'Thanh toán hoa hồng',
+    titleProp: 'Đang thanh toán',
   },
   {
     id: 4,
-    titleProp: 'Hoàn thành',
+    titleProp: 'Đã thanh toán',
   },
 ];
 

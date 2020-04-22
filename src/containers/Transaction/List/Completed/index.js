@@ -64,11 +64,11 @@ class ListTransaction extends Component {
             render={(status) => {
               let color = "geekblue";
               if (status === 3){
-                status = "Thanh toán hoa hồng";
+                status = "Đang thanh toán";
                 color = "gold";
               }
               else if (status === 4){
-                status = "Hoàn thành";
+                status = "Đã thanh toán";
                 color = "green";
               }
               return (

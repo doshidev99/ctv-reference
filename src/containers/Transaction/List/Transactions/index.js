@@ -68,19 +68,19 @@ class ListTransaction extends Component {
                 color = "geekblue";
               }
               else if (status === 1){
-                status = "Chờ xác nhận đặt cọc";
+                status = "Chờ xác nhận";
                 color = "purple";
               }
               else if (status === 2){
-                status = "Đã xác nhận đặt cọc";
+                status = "Đã xác nhận";
                 color = "lime";
               }
               else if (status === 3){
-                status = "Thanh toán hoa hồng";
+                status = "Đang thanh toán";
                 color = "gold";
               }
               else if (status === 4){
-                status = "Hoàn thành";
+                status = "Đã thanh toán";
                 color = "green";
               }
               else if (status === 5){
