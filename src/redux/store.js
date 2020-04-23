@@ -3,6 +3,7 @@ import createSagaMiddleware from 'redux-saga';
 import { createBrowserHistory } from 'history';
 import { routerMiddleware } from 'connected-react-router';
 import reducers from './reducers';
+// eslint-disable-next-line import/no-cycle
 import rootSaga from './sagas';
 
 export const history = createBrowserHistory();

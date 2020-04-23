@@ -35,7 +35,7 @@ class ListProperty extends Component {
             title="Tên dự án"
             // isRedirect
             render={( value, record) => {
-            return <Link to={`/properties/${record.id}`}>{value}</Link>
+            return <Link to={`/properties/${record.id}/edit`}>{value}</Link>
           }} 
           
           />

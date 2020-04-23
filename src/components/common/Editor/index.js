@@ -28,6 +28,11 @@ export default class Editor extends Component {
     };
   }
 
+  componentDidMount() {
+    this.setState({
+      value: '',
+    })
+  }
 
   handleChange(value) {
     this.isChangeState=true;
@@ -37,6 +42,7 @@ export default class Editor extends Component {
 
   render() {
     const { label, placeholder, content } = this.props;
+    // console.log(content);
     
     let value;
     if(this.isChangeState) {

@@ -9,9 +9,11 @@ export const initialState = {
   limit: 10,
   total: null,
   loading: false,
+  currentProperty: {},
   listPropertySuccess: undefined,
   listPropertyFailure: undefined,
   createPropertyLoading: false,
+  getOnePropertyLoading: false,
   legalRecords: [
     {
       id: mongoObjectId(),
@@ -602,10 +604,13 @@ const removeOnePaymentProgress = (state, { id }) => {
 // CLEAR
 const clear = () => ({ ...initialState });
 
-//
+// GET ONE PROPERTY
+const getOneProperty = (state) => ({
+  ...state,
+  getOnePropertyLoading: true,
+});
 
 const getOnePropertySuccess = (state, { data }) => {
-  // console.log(data);
   const {
     id,
     name,
@@ -624,7 +629,7 @@ const getOnePropertySuccess = (state, { data }) => {
     medias,
     paymentProgress,
     discounts,
-    paymentMethods,
+    paymentMethodIds,
     isVisible,
     transactionType,
     tags,
@@ -644,40 +649,43 @@ const getOnePropertySuccess = (state, { data }) => {
     medias,
     paymentProgress,
     discounts,
-    paymentMethods,
+    paymentMethodIds,
     isVisible,
     transactionType,
     tags,
+    ...state.currentProperty,
   };
+  medias&&medias.push(...mainImages)
+  legalRecords &&
+    legalRecords.forEach((e) => {
+      e.id = mongoObjectId();
+      e.readOnly = true;
+    });
+  sitePlans &&
+    sitePlans.forEach((e) => {
+      e.id = mongoObjectId();
+      e.readOnly = true;
+    });
+  salesPolicies &&
+    salesPolicies.forEach((e) => {
+      e.id = mongoObjectId();
+      e.readOnly = true;
+    });
 
-  legalRecords && legalRecords.forEach((e) => {
-    e.id = mongoObjectId();
-  });
-  sitePlans && sitePlans.forEach((e) => {
-    e.id = mongoObjectId();
-  });
-  salesPolicies && salesPolicies.forEach((e) => {
-    e.id = mongoObjectId();
-  });
-
-  discounts && discounts.forEach((e) => {
-    if (e.beganAt || e.endedAt) {
-      e.time = [moment(e.beganAt), moment(e.endedAt)];
-    } else {
-      e.time = null;
-    }
-  });
-
-  paymentMethods && paymentMethods.forEach((e) => {
-    e.discounts.forEach((sube) => {
-      if (sube.beganAt || sube.endedAt) {
-        sube.time = [moment(sube.beganAt), moment(sube.endedAt)];
+  discounts &&
+    discounts.forEach((e) => {
+      if (e.beganAt || e.endedAt) {
+        e.time = [moment(e.beganAt), moment(e.endedAt)];
       } else {
-        sube.time = null;
+        e.time = null;
       }
     });
-  });
-  const propertyImage = mainImages.map((e) => e.link);
+  paymentProgress &&
+    paymentProgress.forEach((e) => {
+      e.id = mongoObjectId();
+      e.readOnly = true;
+    });
+  // const propertyImage = mainImages.map((e) => e.link);
   return {
     ...state,
     currentProperty,
@@ -685,14 +693,15 @@ const getOnePropertySuccess = (state, { data }) => {
       currentProperty.location.latitude,
       currentProperty.location.longitude,
     ],
-    legalRecords,
-    sitePlans,
-    salesPolicies,
+    legalRecords: legalRecords || [],
+    sitePlans: sitePlans || [],
+    salesPolicies: salesPolicies || [],
     priceList,
-    propertyImage,
+    medias,
     paymentProgress: paymentProgress || [],
-    discounts,
-    paymentMethods,
+    discounts: discounts || [],
+    paymentMethodIds: paymentMethodIds || [],
+    getOnePropertyLoading: false,
   };
 };
 
@@ -703,12 +712,17 @@ const getProductTableSuccess = (state, { data }) => {
   results.forEach((e) => {
     e.key = e.id;
   });
+
+  const { currentProperty } = state;
   return {
     ...state,
     limit,
     offset,
     total,
-    productTable: results,
+    currentProperty: {
+      ...currentProperty,
+      productTable: results,
+    },
     loading: false,
   };
 };
@@ -781,6 +795,7 @@ export const property = makeReducerCreator(initialState, {
 
   [PropertyTypes.CLEAR]: clear,
 
+  [PropertyTypes.GET_ONE_PROPERTY]: getOneProperty,
   [PropertyTypes.GET_ONE_PROPERTY_SUCCESS]: getOnePropertySuccess,
 
   [PropertyTypes.RETRIEVE_PRODUCT_TABLE_SUCCESS]: getProductTableSuccess,

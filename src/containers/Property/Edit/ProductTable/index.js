@@ -13,8 +13,8 @@ class ProductTable extends Component {
   columnHeaders = [
     {
       title: "Mã sản phẩm",
-      dataIndex: "code",
-      key: "code",
+      dataIndex: "productCode",
+      key: "productCode",
       width: 100,
       // render: text => <Link to={text}>{text}</Link>,
     },
@@ -27,8 +27,15 @@ class ProductTable extends Component {
       title: "Tầng",
       dataIndex: "floor",
       key: "floor",
-      sorter: (a, b) => a - b,
-      sortDirections: ["descend"],
+      // sorter: (a, b) => a - b,
+      // sortDirections: ["descend"],
+    },
+    {
+      title: "Mã căn",
+      dataIndex: "code",
+      key: "code",
+      // sorter: (a, b) => a - b,
+      // sortDirections: ["descend"],
     },
     {
       title: "Loại căn hộ",
@@ -41,7 +48,7 @@ class ProductTable extends Component {
       key: "direction",
     },
     {
-      title: "Diện tích thông thủy",
+      title: "Diện tích",
       dataIndex: "area",
       key: "area",
       render: (e) => {
@@ -52,13 +59,22 @@ class ProductTable extends Component {
       title: "Giá bán chưa VAT+PBT",
       dataIndex: "price",
       key: "price",
-      sorter: (a, b) => a.price - b.price,
+      // sorter: (a, b) => a.price - b.price,
       sortDirections: ["descend"],
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+     
     },
   ];
 
   constructor(props) {
     super(props);
+    this.state = {
+      isExcel: false,
+    };
     this.props.retrieveData(this.props.id, {
       limit: 10,
       offset: 0,
@@ -71,18 +87,6 @@ class ProductTable extends Component {
       // eslint-disable-next-line prefer-destructuring
       df = df[0];
       const result = df.map((row) => {
-        // row.productCode = row["Mã sản phẩm"];
-        // row.building = row["Toà"];
-        // row.floor = row["Tầng"];
-        // row.area = row["Diện tích thông thuỷ"];
-        // row.price = row["Giá bán chưa VAT + PBT"];
-        // delete row["Mã sản phẩm"];
-        // delete row["Tòa"];
-        // delete row["Tầng"];
-        // delete row["Diện tích thông thuỷ"];
-        // delete row["Giá bán chưa VAT + PBT"];
-        // return row
-
         const obj = Object.keys(row).map((key) => {
           return {
             key,
@@ -94,13 +98,15 @@ class ProductTable extends Component {
       result.forEach((e, index) => {
         result[index] = {
           key: index,
-          code: e[0].value,
-          building: e[1].value !== "" ? e[1].value : undefined,
-          floor: e[2].value !== "" ? e[2].value : undefined,
-          type: e[3].value !== "" ? e[3].value : undefined,
-          direction: e[4].value !== "" ? e[4].value : undefined,
-          area: e[5].value,
-          price: e[6].value,
+          productCode: e[0].value,
+          building: e[1].value || undefined,
+          floor: e[2].value.toString() || undefined,
+          code: e[3].value.toString(),
+          type: e[4].value || undefined,
+          direction: e[5].value|| undefined,
+          area: e[6].value,
+          price: e[7].value,
+          status:  e[8].value || undefined,
         };
       });
       this.props.loadExcelSuccess(result);
@@ -153,6 +159,7 @@ class ProductTable extends Component {
     // const floors = this.props.floors.map(e => (
     //   <Floor key={e.id} id={e.id} name={e.name} rooms={e.rooms} />
     // ));
+
     return (
       <ProductTableWrapper>
         <Upload
@@ -169,22 +176,28 @@ class ProductTable extends Component {
         <Table
           columns={this.columnHeaders}
           className="tableProduct"
-          dataSource={this.props.productTable}
-          pagination={false}
+          dataSource={
+            (!this.state.isExcel &&
+              this.props.currentProperty &&
+              this.props.currentProperty.productTable) ||
+              this.props.productTable
+          }
+          pagination={this.state.isExcel}
           loading={this.props.loading}
-
         />
-        <Row type="flex" justify="end">
-          <Pagination
-            showTotal={(totalItem, range) =>
+        {!this.state.isExcel && (
+          <Row type="flex" justify="end">
+            <Pagination
+              showTotal={(totalItem, range) =>
                 `${range[0]}-${range[1]} of ${totalItem} items`}
-            onChange={this.onChangePage}
-            defaultCurrent={1}
-            current={page}
-            total={total}
-            pageSize={limit}
+              onChange={this.onChangePage}
+              defaultCurrent={1}
+              current={page}
+              total={total}
+              pageSize={limit}
             />
-        </Row>
+          </Row>
+        )}
       </ProductTableWrapper>
     );
   }
@@ -196,6 +209,7 @@ const mapStateToProps = (state) => {
     limit,
     total,
     productTable,
+    currentProperty,
     loading,
   } = state.property;
   return {
@@ -203,8 +217,8 @@ const mapStateToProps = (state) => {
     limit,
     total,
     productTable,
+    currentProperty,
     loading,
-
   };
 };
 
