@@ -1,12 +1,18 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export default styled.div`
-  .propertyNameLabel, .commissionLabel, 
-  .discountTitle, .sitePlanTitle, 
-  .productTableTitle, .othersTitle, 
-  .legalTitle, .salesPolicyTitle, 
-  .cityLabel, .typeLabel, 
-  .openSaleDateLabel, .paymentMethodLabel {
+  .propertyNameLabel,
+  .commissionLabel,
+  .discountTitle,
+  .sitePlanTitle,
+  .productTableTitle,
+  .othersTitle,
+  .legalTitle,
+  .salesPolicyTitle,
+  .cityLabel,
+  .typeLabel,
+  .openSaleDateLabel,
+  .paymentMethodLabel {
     font-size: 18px;
     font-weight: 500;
   }
@@ -14,14 +20,14 @@ export default styled.div`
     font-size: 18px;
     font-weight: 500;
   }
-  
+
   .openSaleDate {
     .ant-calendar-picker {
-      width: 100%
+      width: 100%;
     }
   }
   .overview {
-    .ql-container{
+    .ql-container {
       height: 350px;
     }
     label {
@@ -33,14 +39,14 @@ export default styled.div`
   .legalArea {
     margin-bottom: 10px;
   }
-  
+
   .salesPolicyArea {
     margin: 20px 0;
     margin-right: 10px;
   }
 
   .locationDescription {
-    .ql-container{
+    .ql-container {
       height: 100px;
     }
   }
@@ -50,7 +56,6 @@ export default styled.div`
       margin-right: 10px;
     }
   }
-
 
   .discountArea {
     margin-bottom: 10px;
@@ -64,7 +69,7 @@ export default styled.div`
     .display {
       label {
         margin-right: 10px;
-        line-height: 25px
+        line-height: 25px;
       }
     }
 
@@ -72,7 +77,7 @@ export default styled.div`
       display: flex;
       label {
         width: 100px;
-        line-height: 25px
+        line-height: 25px;
       }
     }
   }
@@ -80,11 +85,13 @@ export default styled.div`
     display: flex;
     justify-content: flex-end;
     button {
-      width: 200px
+      width: 200px;
     }
-
   }
   .ant-table {
-    color:  #F2F3F5
+    color: #f2f3f5;
   }
-`
+  .ant-upload-list-item-info {
+    max-width: 100px;
+  }
+`;

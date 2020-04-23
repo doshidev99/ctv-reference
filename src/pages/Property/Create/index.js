@@ -7,7 +7,7 @@ import CreatePropertyForm from '../../../containers/Property/Create/index'
 
 
 
-export default function NewProperty(){
+export default function CreateProperty(){
   return (
     <PropertyPageWrapper>
       <PageTitle>{i18n.t("property.newPropertyTitle")}</PageTitle>

@@ -1,6 +1,10 @@
 import { takeEvery, put, call } from "redux-saga/effects";
 import moment from "moment";
 import { object } from "prop-types";
+import { notification } from "antd";
+import I18n from "i18next";
+// eslint-disable-next-line import/no-cycle
+import { history } from "../store";
 import {
   PropertyTypes,
   getListPropertySuccessAction,
@@ -21,7 +25,7 @@ import {
   createOneProperty,
 } from "../../api/modules/property";
 
-import { getDataByIdApi, getAllApi } from "../../api/common/crud";
+import { getDataByIdApi, getAllApi, putApi } from "../../api/common/crud";
 import { apiWrapper } from "../../utils/reduxUtils";
 
 function* getListProperty({ limit, offset, filter }) {
@@ -72,53 +76,38 @@ const clean = (obj) => {
 function* createProperty({ payload }) {
   try {
     const body = JSON.parse(JSON.stringify(payload));
-    body.legalRecords.forEach((e) => {
-      delete e.id;
-    });
-    body.sitePlans.forEach((e) => {
+    body.medias.forEach((e) => {
       delete e.id;
     });
 
-    body.sections.forEach((e) => {
-      delete e.key;
-    });
+    body.legalRecords &&
+      body.legalRecords.forEach((e) => {
+        delete e.id;
+      });
+    body.sitePlans &&
+      body.sitePlans.forEach((e) => {
+        delete e.id;
+      });
 
-    body.discounts.forEach((e) => {
-      delete e.id;
-      clean(e);
-      if (e.time && e.time.length === 2) {
-        const { time } = e;
-        [e.beganAt, e.endedAt] = time;
-        delete e.time;
-      } else {
-        e.beganAt = null;
-        e.endedAt = null;
-        delete e.time;
-      }
-    });
+    body.sections &&
+      body.sections.forEach((e) => {
+        delete e.key;
+      });
 
-    // body.paymentMethods.forEach((e) => {
-    //   delete e.id;
-    //   e.discounts.forEach((sube) => {
-    //     delete sube.id;
-    //     sube.groupId = 1;
-    //     clean(sube);
-    //     if (sube.time && sube.time.length === 2) {
-    //       const { time } = sube;
-    //       [sube.beganAt, sube.endedAt] = time;
-    //       delete e.time;
-    //     } else {
-    //       sube.beganAt = null;
-    //       sube.endedAt = null;
-    //       delete sube.time;
-    //     }
-    //   });
-    //   const newDiscounts = [...e.discounts].filter(
-    //     (value) => Object.keys(value).length >= 6,
-    //   );
-    //   e.discounts = newDiscounts;
-    // });
-
+    body.discounts &&
+      body.discounts.forEach((e) => {
+        delete e.id;
+        clean(e);
+        if (e.time && e.time.length === 2) {
+          const { time } = e;
+          [e.beganAt, e.endedAt] = time;
+          delete e.time;
+        } else {
+          e.beganAt = null;
+          e.endedAt = null;
+          delete e.time;
+        }
+      });
     body.salesPolicies.forEach((e) => {
       delete e.id;
     });
@@ -138,18 +127,18 @@ function* createProperty({ payload }) {
 
     const newSalesPolicies = body.salesPolicies.filter(
       (value) => Object.keys(value).length >= 3,
-    )
+    );
 
     const newPaymentProgress = body.paymentProgress.filter(
       (value) => Object.keys(value).length >= 3,
-    )
+    );
     body.legalRecords = newLegalRecords;
     body.sitePlans = newSitePlans;
     body.discounts = newDiscounts;
-    body.salesPolicies = newSalesPolicies
-    body.paymentProgress = newPaymentProgress
-   
-    const response = yield call(
+    body.salesPolicies = newSalesPolicies;
+    body.paymentProgress = newPaymentProgress;
+
+    yield call(
       apiWrapper,
       {
         isShowProgress: true,
@@ -161,14 +150,27 @@ function* createProperty({ payload }) {
       body,
     );
     yield put(submitCreatePropertyFormSuccessAction());
-    yield put(getOnePropertyAction(response.id));
+    setTimeout(history.push(`/properties`), 3000);
   } catch (error) {
+
     yield put(submitCreatePropertyFormFailureAtion(error));
   }
 }
 
 function* getOneProperty({ id }) {
   try {
+    const paymentMethods = yield call(
+      apiWrapper,
+      {
+        isShowProgress: true,
+        isShowSucceedNoti: false,
+        errorDescription: "Có lỗi xảy ra",
+      },
+      getDataByIdApi,
+      "properties",
+      `${Number(id)}/payment-methods?limit=50`,
+    );
+    // console.log(paymentMethods);
     const response = yield call(
       apiWrapper,
       {
@@ -180,18 +182,121 @@ function* getOneProperty({ id }) {
       "properties",
       Number(id),
     );
-    yield put(getOnePropertySuccessAction(response))
+
+    response.paymentMethodIds = paymentMethods.results.map((e) => e.id);
+
+    yield put(getOnePropertySuccessAction(response));
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(error);
   }
 }
+function* updateProperty({ id, payload }) {
+  try {
+    const body = JSON.parse(JSON.stringify(payload));
+    body.medias.forEach((e) => {
+      if (typeof e.id !== typeof Number) {
+        delete e.id;
+      }
+    });
+    body.legalRecords.forEach((e) => {
+      if (e.readOnly) {
+        delete e.readOnly;
+      }
+      delete e.id;
+    });
+    body.sitePlans &&
+      body.sitePlans.forEach((e) => {
+        if (e.readOnly) {
+          delete e.readOnly;
+        }
+        delete e.id;
+      });
 
+    body.sections &&
+      body.sections.forEach((e) => {
+        delete e.key;
+      });
 
-function * getProductTable({id, filterParams}) {
+    body.discounts.forEach((e) => {
+      delete e.id;
+      clean(e);
+      if (e.time && e.time.length === 2) {
+        const { time } = e;
+        [e.beganAt, e.endedAt] = time;
+        delete e.time;
+      } else {
+        e.beganAt = null;
+        e.endedAt = null;
+        delete e.time;
+      }
+    });
+
+    body.salesPolicies &&
+      body.salesPolicies.forEach((e) => {
+        if (e.readOnly) {
+          delete e.readOnly;
+        }
+        delete e.id;
+      });
+    body.paymentProgress &&
+      body.paymentProgress.forEach((e) => {
+        if (e.readOnly) {
+          delete e.readOnly;
+        }
+        delete e.id;
+      });
+
+    const newDiscounts = body.discounts.filter(
+      (value) => Object.keys(value).length >= 6,
+    );
+    const newLegalRecords = body.legalRecords.filter(
+      (value) => Object.keys(value).length >= 3,
+    );
+    const newSitePlans = body.sitePlans.filter(
+      (value) => Object.keys(value).length !== 1,
+    );
+
+    const newSalesPolicies = body.salesPolicies.filter(
+      (value) => Object.keys(value).length >= 3,
+    );
+
+    const newPaymentProgress = body.paymentProgress.filter(
+      (value) => Object.keys(value).length >= 3,
+    );
+    body.legalRecords = newLegalRecords;
+    body.sitePlans = newSitePlans;
+    body.discounts = newDiscounts;
+    body.salesPolicies = newSalesPolicies;
+    body.paymentProgress = newPaymentProgress;
+
+    const response = yield call(
+      apiWrapper,
+      {
+        isShowProgress: true,
+        isShowSucceedNoti: true,
+        successDescription: "Cập nhật thành công",
+        // errorDescription: "Có lỗi xảy ra",
+      },
+      putApi,
+      "properties",
+      id,
+      body,
+    );
+    put(getOnePropertyAction(response.id));
+  } catch (error) {
+    notification.error({
+      message: I18n.t("error.title"),
+      description: "Có lỗi xảy ra, vui lòng tải lại trang",
+    });
+    throw error;
+  }
+}
+
+function* getProductTable({ id, filterParams }) {
   try {
     const limit = filterParams.limit || 10;
-    const { offset } = filterParams
+    const { offset } = filterParams;
     const response = yield call(
       apiWrapper,
       {
@@ -205,7 +310,7 @@ function * getProductTable({id, filterParams}) {
     );
     response.limit = limit;
     response.offset = offset;
-    yield put(getProductTableSuccessAction(response))
+    yield put(getProductTableSuccessAction(response));
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(error);
@@ -218,4 +323,5 @@ export default [
 
   takeEvery(PropertyTypes.GET_ONE_PROPERTY, getOneProperty),
   takeEvery(PropertyTypes.RETRIEVE_PRODUCT_TABLE, getProductTable),
+  takeEvery(PropertyTypes.SUBMIT_EDIT_ONE_PROPERTY, updateProperty),
 ];
