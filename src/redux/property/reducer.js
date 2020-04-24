@@ -104,15 +104,10 @@ const addNewLegalRecord = (state) => {
     legalRecords,
   };
 };
-const addNewLegalRecordSuccess = (state, { id, title, link, mimeType }) => {
+const addNewLegalRecordSuccess = (state, { payload}) => {
   const legalRecords = [...state.legalRecords];
-  const index = legalRecords.findIndex((e) => e.id === id);
-  legalRecords[index] = {
-    id,
-    title,
-    link,
-    mimeType,
-  };
+  const index = legalRecords.findIndex((e) => e.id === payload.id);
+  legalRecords[index] = payload
   return {
     ...state,
     legalRecords,

@@ -115,12 +115,9 @@ export const uploadSiteImageFailureAction = (error) =>
 // Legal record
 export const addNewLegalRecordAction = () =>
   makeActionCreator(PropertyTypes.ADD_NEW_LEGAL_RECORD);
-export const addNewLegalRecordSuccessAction = (id, title, link, mimeType) =>
+export const addNewLegalRecordSuccessAction = (payload) =>
   makeActionCreator(PropertyTypes.ADD_NEW_LEGAL_RECORD_SUCCESS, {
-    id,
-    title,
-    link,
-    mimeType,
+    payload,
   });
 
 export const removeOneLegalRecordAction = (id) =>

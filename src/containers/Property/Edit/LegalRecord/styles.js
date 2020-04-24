@@ -2,9 +2,12 @@ import styled from "styled-components";
 
 export default styled.div`
   display: flex;
+  .ant-row {
+    width: 100%;
+  }
   justify-content: space-between;
   .title {
-    width: 150%;
+    width: 100%;
     display: block;
   }
 
@@ -12,14 +15,13 @@ export default styled.div`
     margin-bottom: 0;
   }
   .files {
-    width: 300px;
     display: flex;
     justify-content: flex-end;
     .upload, .cancel {
       font-size: 20px
       margin-right: 10px;
       display: flex;
-      flex-direction: row-reverse;
+      flex-direction: column;
 
       .ant-upload-list {
         display: flex

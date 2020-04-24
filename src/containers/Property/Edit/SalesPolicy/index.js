@@ -112,8 +112,7 @@ class SalesPolicy extends Component {
                       message: "Vui lòng chọn ngày",
                     },
                   ],
-                  initialValue: this.props.data && moment(this.props.data.updatedAt),
-                })(<DatePicker />)}
+                })(<DatePicker placeholder="Thời điểm cập nhât" />)}
               </FormItem>
             </div>
           </Col>

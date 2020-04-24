@@ -56,7 +56,7 @@ class CreatePropertyForm extends Component {
     super(props);
     this.state = {
       isVisible: true,
-      tags: null,
+      tags: [],
       city: 1,
       type: 1,
       // paymentMethod: 1,

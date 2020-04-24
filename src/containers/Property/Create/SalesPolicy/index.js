@@ -103,7 +103,7 @@ class SalesPolicy extends Component {
                       message: "Vui lòng chọn ngày",
                     },
                   ],
-                })(<DatePicker />)}
+                })(<DatePicker placeholder="Thời điểm cập nhât" />)}
               </FormItem>
             </div>
           </Col>

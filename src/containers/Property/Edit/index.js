@@ -171,10 +171,12 @@ class EditPropertyForm extends Component {
         key={e.id}
         id={e.id}
         data={{
-          id: e.id, 
-          title: e.title, 
-          mimeType: e.mimeType, 
-          link:  e.link}}
+          id: e.id,
+          title: e.title,
+          mimeType: e.mimeType,
+          link: e.link,
+          updatedAt: e.updatedAt,
+        }}
       />
     ));
     const sitePlanArea = sitePlans.map((e) => (
@@ -182,10 +184,11 @@ class EditPropertyForm extends Component {
         key={e.id}
         id={e.id}
         data={{
-        id: e.id, 
-        title: e.title, 
-        links:  e.links,
-      }} />
+          id: e.id,
+          title: e.title,
+          links: e.links,
+        }}
+      />
     ));
     // eslint-disable-next-line no-unused-vars
     const discountArea = discounts.map((e) => (
@@ -197,11 +200,12 @@ class EditPropertyForm extends Component {
         key={e.id}
         id={e.id}
         data={{
-        id: e.id, 
-        title: e.title, 
-        link:  e.link,
-        updatedAt: e.updatedAt,
-      }} />
+          id: e.id,
+          title: e.title,
+          link: e.link,
+          updatedAt: e.updatedAt,
+        }}
+      />
     ));
 
     const paymentProgressArea = paymentProgress.map((e) => (
@@ -468,7 +472,10 @@ class EditPropertyForm extends Component {
                   <div className="productTableTitle">
                     <span>Bảng hàng</span>
                   </div>
-                  <ProductTable retrieveData={this.props.getProductTable} id={this.props.match.params.id} />
+                  <ProductTable
+                    retrieveData={this.props.getProductTable}
+                    id={this.props.match.params.id}
+                  />
                 </div>
               </Col>
             </Row>

@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import { Input, Button, Upload, message, Form } from "antd";
+import {
+  Input,
+  Button,
+  Upload,
+  message,
+  Form,
+  DatePicker,
+  Row,
+  Col,
+} from "antd";
 import { connect } from "react-redux";
 import LegalRecordWrapper from "./styles";
 
@@ -76,33 +85,47 @@ class LegalRecord extends Component {
     }
     return (
       <LegalRecordWrapper>
-        <div className="title">
-          <FormItem>
-            <div>
-              {this.props.form.getFieldDecorator("legalRecords", {
-                rules: [
-                  {
-                    required: true,
-                    message: "Tiêu đề ko đc để trống",
-                  },
-                ],
-                initialValue: this.props.data && this.props.data.title,
-              })(<Input className="legalRecords" placeholder="Tiêu đề" />)}
+        <Row gutter={[16]}>
+          <Col xs={10}>
+            <div className="title">
+              <FormItem>
+                <div>
+                  {this.props.form.getFieldDecorator("legalRecords", {
+                    rules: [
+                      {
+                        required: true,
+                        message: "Tiêu đề ko đc để trống",
+                      },
+                    ],
+                    initialValue: this.props.data && this.props.data.title,
+                  })(<Input className="legalRecords" placeholder="Tiêu đề" />)}
+                </div>
+              </FormItem>
             </div>
-          </FormItem>
-        </div>
-
-        <div className="files">
-          <Upload
-            className="upload"
-            onChange={this.handleOnChange}
-            customRequest={this.handleUpload}
-            defaultFileList={fileList}
-          >
-            <Button shape="round" icon="upload" />
-          </Upload>
-          <Button icon="minus" shape="round" onClick={this.handleRemove} />
-        </div>
+          </Col>
+          <Col xs={8}>
+            <div>
+              <FormItem>
+                {this.props.form.getFieldDecorator(`updatedAt`, {
+                  initialValue: this.props.data && this.props.data.updatedAt,
+                })(<DatePicker placeholder="Thời điểm cập nhât" />)}
+              </FormItem>
+            </div>
+          </Col>
+          <Col xs={6}>
+            <div className="files">
+              <Upload
+                className="upload"
+                onChange={this.handleOnChange}
+                customRequest={this.handleUpload}
+                defaultFileList={fileList}
+              >
+                <Button shape="round" icon="upload" />
+              </Upload>
+              <Button icon="minus" shape="round" onClick={this.handleRemove} />
+            </div>
+          </Col>
+        </Row>
       </LegalRecordWrapper>
     );
   }
