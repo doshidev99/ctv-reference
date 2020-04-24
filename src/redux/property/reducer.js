@@ -608,8 +608,6 @@ const getOneProperty = (state) => ({
 });
 
 const getOnePropertySuccess = (state, { data }) => {
-  console.log(data);
-  
   const {
     id,
     name,
