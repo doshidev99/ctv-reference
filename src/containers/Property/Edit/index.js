@@ -195,7 +195,7 @@ class EditPropertyForm extends Component {
           title: e.title,
           mimeType: e.mimeType,
           link: e.link,
-          updatedAt: e.updatedAt,
+          updatedAt: moment(e.updatedAt),
           readOnly: e.readOnly,
         }}
       />
@@ -224,13 +224,22 @@ class EditPropertyForm extends Component {
           id: e.id,
           title: e.title,
           link: e.link,
-          updatedAt: e.updatedAt,
+          updatedAt: moment(e.updatedAt),
         }}
       />
     ));
 
     const paymentProgressArea = paymentProgress.map((e) => (
-      <PaymentProgress key={e.id} id={e.id} />
+      <PaymentProgress
+        key={e.id}
+        id={e.id}
+        data={{
+          id: e.id,
+          title: e.title,
+          link: e.link,
+          updatedAt: moment(e.updatedAt),
+        }}
+      />
     ));
     const { currentProperty } = this.props;
     return (

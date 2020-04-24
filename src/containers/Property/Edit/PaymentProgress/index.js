@@ -75,6 +75,16 @@ class PaymentProgress extends Component {
   };
 
   render() {
+    const{data} = this.props
+    const fileList = [];
+    if (data&& data.link) {
+      fileList.push({
+        uid: "1",
+        status: "done",
+        url: data.link,
+        name:data.title,
+      });
+    }
     return (
       <PaymentProgressWrapper>
         <Row>
@@ -82,6 +92,7 @@ class PaymentProgress extends Component {
             <div className="title">
               <FormItem>
                 {this.props.form.getFieldDecorator("title", {
+                  initialValue: data && data.title,
                   rules: [
                     {
                       required: true,
@@ -98,6 +109,7 @@ class PaymentProgress extends Component {
             <div className="time">
               <FormItem>
                 {this.props.form.getFieldDecorator(`updatedAt`, {
+                   initialValue: data && data.updatedAt,
                   rules: [
                     {
                       required: true,
@@ -114,6 +126,7 @@ class PaymentProgress extends Component {
                 className="upload"
                 onChange={this.handleOnChange}
                 customRequest={this.handleUpload}
+                fileList={fileList}
               >
                 <Button shape="round" icon="upload" />
               </Upload>

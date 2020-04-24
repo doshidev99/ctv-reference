@@ -269,7 +269,6 @@ function* updateProperty({ id, payload }) {
     body.discounts = newDiscounts;
     body.salesPolicies = newSalesPolicies;
     body.paymentProgress = newPaymentProgress;
-
     const response = yield call(
       apiWrapper,
       {

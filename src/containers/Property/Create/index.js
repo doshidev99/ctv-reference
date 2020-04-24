@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import i18n from "i18next";
+
 import {
   Layout,
   Form,
@@ -13,6 +14,7 @@ import {
   message,
   Radio,
   InputNumber,
+  notification,
 } from "antd";
 // import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -114,6 +116,14 @@ class CreatePropertyForm extends Component {
           location,
         } = this.props;
 
+        if(location.length === 0) {
+          notification.error({
+            message: i18n.t('error.title'),
+            description: "Vui lòng chọn vị trí dự án trên bản đồ",
+          });
+          return;
+        }
+      
         // const medias = [];
         // propertyImage.forEach((el) => {
         //   medias.push({
