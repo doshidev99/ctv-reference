@@ -10,7 +10,7 @@ import {
   Row,
 } from "antd";
 import { connect } from "react-redux";
-import moment from 'moment'
+// import moment from 'moment'
 import SalesPolicyWrapper from "./styles";
 import { getSignedUrlS3, uploadFile } from "../../../../utils/uploadFile";
 import {

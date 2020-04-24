@@ -13,7 +13,7 @@ class ProductTable extends Component {
   columnHeaders = [
     {
       title: "Mã sản phẩm",
-      dataIndex: "code",
+      dataIndex: "productCode",
       key: "productCode",
       width: 100,
       // render: text => <Link to={text}>{text}</Link>,
@@ -66,9 +66,6 @@ class ProductTable extends Component {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      render: e => {
-        return `${e}`;
-      },
     },
   ];
 
@@ -78,18 +75,6 @@ class ProductTable extends Component {
       // eslint-disable-next-line prefer-destructuring
       df = df[0];
       const result = df.map(row => {
-        // row.productCode = row["Mã sản phẩm"];
-        // row.building = row["Toà"];
-        // row.floor = row["Tầng"];
-        // row.area = row["Diện tích thông thuỷ"];
-        // row.price = row["Giá bán chưa VAT + PBT"];
-        // delete row["Mã sản phẩm"];
-        // delete row["Tòa"];
-        // delete row["Tầng"];
-        // delete row["Diện tích thông thuỷ"];
-        // delete row["Giá bán chưa VAT + PBT"];
-        // return row
-
         const obj = Object.keys(row).map(key => {
           return {
             key,
@@ -103,8 +88,8 @@ class ProductTable extends Component {
           key: index,
           productCode: e[0].value,
           building: e[1].value || undefined,
-          floor: e[2].value || undefined,
-          code: e[3].value,
+          floor: e[2].value.toString() || undefined,
+          code: e[3].value.toString(),
           type: e[4].value || undefined,
           direction: e[5].value|| undefined,
           area: e[6].value,

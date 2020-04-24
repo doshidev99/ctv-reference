@@ -42,7 +42,7 @@ class LegalRecord extends Component {
 
   handleUpload = async ({ file, onSuccess, onError }) => {
     try {
-      const title = await this.props.form.validateFields((err, val) => {
+      const values = await this.props.form.validateFields((err, val) => {
         if (err) {
           onError("Error cmnr =)))");
           return false;
@@ -57,12 +57,13 @@ class LegalRecord extends Component {
       );
       const response = await uploadFile(file, signedUrlS3.url);
       this.props.uploadFileSuccess(response.url);
-      this.props.addLegalRecordSuccess(
-        this.props.id,
-        title.legalRecords,
-        response.url,
-        file.type,
-      );
+      const payload = {
+        id: this.props.id,
+        ...values,
+        link: response.url,
+        mimeType: file.type,
+      };
+      this.props.addLegalRecordSuccess(payload);
       onSuccess("OK");
     } catch (error) {
       message.error("Xảy ra lỗi, vui lòng thử lại");
@@ -76,11 +77,12 @@ class LegalRecord extends Component {
 
   render() {
     const fileList = [];
-    if (this.props.data) {
+    if (this.props.data&& this.props.data.link) {
       fileList.push({
         uid: "1",
         status: "done",
-        url: this.props.data.url,
+        url: this.props.data.link,
+        name: this.props.data.title,
       });
     }
     return (
@@ -90,7 +92,7 @@ class LegalRecord extends Component {
             <div className="title">
               <FormItem>
                 <div>
-                  {this.props.form.getFieldDecorator("legalRecords", {
+                  {this.props.form.getFieldDecorator("title", {
                     rules: [
                       {
                         required: true,
@@ -139,8 +141,8 @@ const mapDispatchToProps = (dispatch) => ({
   uploadFileSuccess: (fileUrl) => {
     dispatch(uploadFileSuccessAction(fileUrl, "create"));
   },
-  addLegalRecordSuccess: (id, title, url, type) => {
-    dispatch(addNewLegalRecordSuccessAction(id, title, url, type));
+  addLegalRecordSuccess: (payload) => {
+    dispatch(addNewLegalRecordSuccessAction(payload));
   },
   handleRemoveLegalRecord: (id) => {
     dispatch(removeOneLegalRecordAction(id));

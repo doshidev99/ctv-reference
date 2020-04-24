@@ -76,16 +76,15 @@ class CreatePropertyForm extends Component {
         initialFilter || { limit: 20, skip: 0, filter: {} },
         true,
       );
-    }  
-    
+    }
+
     if (!this.props.paymentMethodOptions) {
       this.props.retrieveRefferences(
         "payment-methods",
         { limit: 50, skip: 0, order: "id", filter: {} },
         true,
       );
-    }  
-
+    }
 
     this.props.clearFields();
   }
@@ -142,7 +141,7 @@ class CreatePropertyForm extends Component {
           },
         };
         // eslint-disable-next-line no-console
-        
+
         this.props.submitForm(values);
       } else {
         message.error("Có lỗi xảy ra");
@@ -185,8 +184,7 @@ class CreatePropertyForm extends Component {
       salesPolicies,
       paymentProgress,
     } = this.props;
-    
-    
+
     const { getFieldDecorator } = form;
 
     const legalArea = legalRecords.map((e) => (
@@ -204,9 +202,9 @@ class CreatePropertyForm extends Component {
       <SalesPolicy key={e.id} id={e.id} />
     ));
 
-    const paymentProgressArea = paymentProgress.map(e =>(
+    const paymentProgressArea = paymentProgress.map((e) => (
       <PaymentProgress key={e.id} id={e.id} />
-    ))
+    ));
     return (
       <StyleWrapper>
         <Layout>
@@ -284,21 +282,27 @@ class CreatePropertyForm extends Component {
               <Col xs={6}>
                 {/*  COMMISSION RATE */}
                 <FormItem>
-                  {getFieldDecorator("commissionRate")(
-                    <div className="commission">
-                      <div className="commissionLabel">
-                        <span>Tỉ lệ hoa hồng (%)</span>
-                      </div>
-                      {/* <Input placeholder="Tỷ lệ" type="number" /> */}
+                  <div className="commission">
+                    <div className="commissionLabel">
+                      <span>Tỉ lệ hoa hồng (%)</span>
+                    </div>
+                    {getFieldDecorator("commissionRate", {
+                      rules: [
+                        {
+                          required: true,
+                          message: "Hãy chọn phần trăm chiết khấu",
+                        },
+                      ],
+                    })(
                       <InputNumber
                         placeholder="Tỷ lệ (%)"
                         name="commissionRate"
                         min={0}
                         max={100}
                         // onChange={this.handleChange}
-                      />
-                    </div>,
-                  )}
+                      />,
+                    )}
+                  </div>
                 </FormItem>
               </Col>
             </Row>
@@ -340,7 +344,7 @@ class CreatePropertyForm extends Component {
                 </div>
               </Col>
             </Row>
-            
+
             {/* MAIN IMAGE */}
             <Row>
               <Col>
@@ -412,21 +416,28 @@ class CreatePropertyForm extends Component {
                 </Row>
                 <Row>
                   <FormItem>
-                    {getFieldDecorator('paymentMethodIds',{
+                    {getFieldDecorator("paymentMethodIds", {
                       valuePropName: "option",
-                    })(
-                      <Select
-                        mode="multiple"
-                     >  
+                      rules: [
                         {
-                           paymentMethodOptions && paymentMethodOptions.list &&paymentMethodOptions.list.map(e => (
-                             <Option key={e.id} value={e.id}>{e.name}</Option>
-                           ))
-                        }
-                        
+                          required: true,
+                          message:
+                            "Vui lòng chọn ít nhất 1 phương thức thanh toán",
+                        },
+                      ],
+                    })(
+                      <Select mode="multiple">
+                        {paymentMethodOptions &&
+                          paymentMethodOptions.list &&
+                          paymentMethodOptions.list.map((e) => (
+                            <Option key={e.id} value={e.id}>
+                              {e.name}
+                            </Option>
+                          ))}
+
                         {/* <Option value={2}>New</Option> */}
                       </Select>,
-                  )}
+                    )}
                   </FormItem>
                 </Row>
               </Col>
@@ -450,7 +461,7 @@ class CreatePropertyForm extends Component {
                 </div>
               </Col>
             </Row>
-            
+
             <Row gutter={[16, 24]}>
               {/* DISCOUNT */}
               <Col xs={20}>
@@ -594,7 +605,7 @@ const mapStateToProps = (state) => {
     medias,
 
     //---------------------
-    paymentMethodOptions: getResources(state, 'payment-methods'),
+    paymentMethodOptions: getResources(state, "payment-methods"),
     propertyTypes: getResources(state, "property-types"),
     cities: getResources(state, "cities"),
     listCityFailure,
@@ -651,7 +662,7 @@ const mapDispatchToProps = (dispatch, props) => ({
   },
 
   clearFields: () => {
-    dispatch(propertyActions.clearAction())
+    dispatch(propertyActions.clearAction());
   },
 });
 
