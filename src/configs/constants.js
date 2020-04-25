@@ -10,6 +10,59 @@ export const ADMIN_ROLES = [
   },
 ];
 
+export const PROCESSING_STATUS = [
+  {
+    id: 0,
+    titleProp: 'Đang xử lý',
+  },
+  {
+    id: 1,
+    titleProp: 'Chờ xác nhận',
+  },
+  {
+    id: 2,
+    titleProp: 'Đã xác nhận',
+  },
+];
+
+export const STATUS = [
+  {
+    id: 0,
+    titleProp: 'Đang xử lý',
+  },
+  {
+    id: 1,
+    titleProp: 'Chờ xác nhận',
+  },
+  {
+    id: 2,
+    titleProp: 'Đã xác nhận',
+  },
+  {
+    id: 3,
+    titleProp: 'Đang thanh toán',
+  },
+  {
+    id: 4,
+    titleProp: 'Đã thanh toán',
+  },
+  {
+    id: 5,
+    titleProp: 'Đã hủy',
+  },
+];
+
+export const COMPLETED_STATUS = [
+  {
+    id: 3,
+    titleProp: 'Đang thanh toán',
+  },
+  {
+    id: 4,
+    titleProp: 'Đã thanh toán',
+  },
+];
+
 export const REGISTRATION_STATUS =[
   {
     id: 0,

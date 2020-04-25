@@ -28,7 +28,7 @@ export function* retrieveList({ resource }) {
       return state.rest[resource];
     });
     // console.log("Saga: Resource: ", resource, " >>" ,{ limit, skip, filter, include, order });
-    
+
     const params = convertRequestParams('getAll', {
       limit: limit < 1000 && limit,
       skip: skip || 0,
@@ -37,7 +37,7 @@ export function* retrieveList({ resource }) {
       order,
     });
 
-    //  console.log("Saga: Resource: ", resource, " >>", params)
+    // console.log("Saga: Params: ", resource, " >>", params)
     const response = yield call(
       apiWrapper,
       {
@@ -49,8 +49,8 @@ export function* retrieveList({ resource }) {
       resource,
       params,
     );
-    // console.log(response);
-    
+    // console.log("Saga: Response: ",response);
+
     const convertData = convertResponseData('getAll', response);
     yield put(
       actions.retrieveListSuccess(resource, {
@@ -60,6 +60,8 @@ export function* retrieveList({ resource }) {
       }),
     );
   } catch (error) {
+    // console.log("Error: ",error);
+
     yield put(actions.retrieveListFailed(resource, error));
   }
 }
@@ -80,7 +82,7 @@ export function* retrieveOneRecord({ resource, id, data }) {
     );
 
       // console.log(response);
-      
+
     const rest = yield select(state => state.rest);
     const convertData = convertResponseData('getOne', response);
     const formattedData = {
@@ -115,7 +117,7 @@ export function* editRecord({ resource, id, data, isGoBack }) {
   try {
     const currentModal = yield select(state => state.modal.current);
     // const response = yield call(apiWrapper, putRecord, true, false, resource, id, data);
-    
+
     const response = yield call(
       apiWrapper,
       {
@@ -132,7 +134,7 @@ export function* editRecord({ resource, id, data, isGoBack }) {
 
     // console.log({ resource, id, data, isGoBack });
     // console.log(response);
-    
+
 
     const rest = yield select(state => state.rest);
     const convertData = convertResponseData('update', response);
