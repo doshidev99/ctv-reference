@@ -5,8 +5,8 @@ const formatFilterParams = params => {
   const formattedParams = {};
   Object.keys(params).forEach(key => {
     if(params[key] && params[key].$range && params[key].$range.length === 2) {
-      formattedParams[key] = 
-      { 
+      formattedParams[key] =
+      {
         $gte: params[key].$range[0],
         $lte: params[key].$range[1],
       }
@@ -35,7 +35,7 @@ export const convertRequestParams = (type, params, resource, mappedBy) => {
   if (params.include) {
     query.fields = JSON.stringify(params.include);
   }
-  
+
   switch (type) {
     case 'getAll':
       return query;
