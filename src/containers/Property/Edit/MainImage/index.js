@@ -65,18 +65,20 @@ class PropertyMainImage extends Component {
     let fileList = [...medias] || [];
     if (fileList.length > 0) {
       fileList = fileList.filter((e) => e.type === 1);
-      fileList.forEach(e => {
-        e.key = e.id
-        e.name = e.link
-        e.uid = e.id
-        e.status = 'done'
-      })
+      fileList = fileList.map((e) => ({
+        key: e.id,
+        name: e.link,
+        uid: e.id,
+        id: e.id,
+        status: "done",
+        link: e.link,
+      }));
     }
     const uploadButton = (
       <Button>
         <Icon type="upload" />
         {' '}
-          Upload
+Upload
       </Button>
     );
     return (
@@ -88,22 +90,23 @@ class PropertyMainImage extends Component {
         </Row>
 
         <Upload
-              // listType="picture"
-              // fileList={fileList}
-              // onPreview={this.handlePreview}
+          // listType="picture"
+          fileList={fileList}
+          // onPreview={this.handlePreview}
           onChange={this.handleOnChange}
           customRequest={this.handleUpload}
-          onRemove={()=> this.handleRemove(fileList.length && fileList[0])}
+          onRemove={() => this.handleRemove(fileList.length && fileList[0])}
           className="upload-main-image"
-            >
+        >
           {fileList.length >= 8 ? null : uploadButton}
         </Upload>
         <Row>
           <Col>
             <div className="main-image">
-              {fileList.length > 0 && (<img src={fileList.length > 0 && fileList[0].link} alt="main" />)}
+              {fileList.length > 0 && (
+                <img src={fileList.length > 0 && fileList[0].link} alt="main" />
+              )}
             </div>
-           
           </Col>
         </Row>
       </Wrapper>

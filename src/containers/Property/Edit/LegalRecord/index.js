@@ -67,11 +67,12 @@ class LegalRecord extends Component {
 
   render() {
     const fileList = [];
-    if (this.props.data) {
+    if (this.props.data&& this.props.data.link) {
       fileList.push({
         uid: "1",
         status: "done",
-        url: this.props.data.url,
+        url: this.props.data.link,
+        name: this.props.data.title,
       });
     }
     return (
@@ -87,7 +88,7 @@ class LegalRecord extends Component {
                   },
                 ],
                 initialValue: this.props.data && this.props.data.title,
-              })(<Input className="legalRecords" placeholder="Tiêu đề" />)}
+              })(<Input className="legalRecords" placeholder="Tiêu đề" readOnly={!!this.props.data.readOnly} />)}
             </div>
           </FormItem>
         </div>

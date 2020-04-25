@@ -1,5 +1,6 @@
 import { all } from "redux-saga/effects";
 import staffSaga from "./staff/sagas";
+// eslint-disable-next-line import/no-cycle
 import propertySaga from "./property/sagas";
 import transactionSaga from "./transaction/sagas";
 import citySaga from "./city/sagas";

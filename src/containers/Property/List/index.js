@@ -35,9 +35,15 @@ class ListProperty extends Component {
             title="Tên dự án"
             // isRedirect
             render={( value, record) => {
+<<<<<<< HEAD
             return <Link to={`/properties/${record.id}`}>{value}</Link>
           }}
 
+=======
+            return <Link to={`/properties/${record.id}/edit`}>{value}</Link>
+          }} 
+          
+>>>>>>> 876fb0edd3eaba3c62a62eb716a1665c6cebe298
           />
           <Label source="type.name" title="Loại dự án" />
           <Label source="city.name" title="Tỉnh thành" />
