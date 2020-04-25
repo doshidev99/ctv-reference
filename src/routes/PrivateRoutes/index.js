@@ -8,7 +8,7 @@ import ModalRoute from '../ModalRoute';
 import Loading from '../../components/common/LoadingScreen';
 import PrivateLayout from '../../layout/PrivateLayout';
 import Dashboard from '../../pages/Dashboard';
-import DetailTransaction from '../../pages/DetailTransaction'
+// import DetailTransaction from '../../pages/DetailTransaction'
 import EmailBox from '../../pages/EmailBox';
 import ListTransaction from '../../pages/ListTransaction';
 import ProcessingTransaction from '../../pages/ListTransaction/ProcessingTransaction';
@@ -62,7 +62,7 @@ const routes = [
       },
       {
         path: '/:id/show',
-        component: DetailTransaction,
+        component: lazy(() => import('../../pages/DetailTransaction/index')),
         exact: true,
         title: i18n.t('transaction.detail.title'),
       },

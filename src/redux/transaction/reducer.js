@@ -20,11 +20,12 @@ export const initialState = {
   confirmTransError: undefined,
   addPaymentSuccess: undefined,
   addPaymentFailure: undefined,
-
   transactions: [],
   loading: false,
   listTransactionSuccess: undefined,
   listTransactionFailure: undefined,
+  listPaymentFailure:undefined,
+
   currentTransaction: {},
   errors: [],
 
@@ -116,13 +117,13 @@ const removeBonus = (state, { id }) => {
   };
 };
 
-const onChangeBonus = (state, { id, title, value }) => {
+const onChangeBonus = (state, { id, name, value }) => {
   const bonus = [...state.bonus];
   const index = bonus.findIndex(e => e.id === id);
   let currentBonus = bonus.filter(e => e.id === id);
   currentBonus = {
     id,
-    title,
+    name,
     value,
   };
   bonus[index] = currentBonus;
@@ -272,6 +273,44 @@ const addPaymentFailure = (state) => ({
   addPaymentFailure: true,
 })
 
+const changeType = state => ({
+  ...state,
+  loading: true,
+  isLoadingStatus: true,
+});
+const changeTypeSuccess = (state, { status }) => {
+  const { transaction } = state;
+  transaction.status = status;
+  transaction.type = 1;
+  return {
+    ...state,
+    transaction,
+    isLoadingStatus: false,
+  }
+};
+const changeTypeFailure = (state) => ({
+  ...state,
+  isLoadingStatus: false,
+})
+
+// const submitUpdateTransaction = state => ({
+//   ...state,
+//   isLoadingStatus: true,
+// });
+
+const submitUpdateTransactionSuccess = (state, { data }) => {
+  console.log(data);
+  
+  return {
+    ...state,
+    isLoadingStatus: true,
+  }
+};
+const submitUpdateTransactionFailure = (state) => ({
+  ...state,
+  isLoadingStatus: false,
+})
+
 export const transaction = makeReducerCreator(initialState, {
   [TransactionTypes.GET_LIST_TRANSACTION]: getListTransaction,
 
@@ -318,4 +357,12 @@ export const transaction = makeReducerCreator(initialState, {
   [TransactionTypes.ADD_PAYMENT]: addPayment,
   [TransactionTypes.ADD_PAYMENT_SUCCESS]: addPaymentSuccess,
   [TransactionTypes.ADD_PAYMENT_FAILURE]: addPaymentFailure,
+
+  [TransactionTypes.CHANGE_TYPE]: changeType,
+  [TransactionTypes.CHANGE_TYPE_SUCCESS]: changeTypeSuccess,
+  [TransactionTypes.CHANGE_TYPE_FAILURE]: changeTypeFailure,
+
+  // [TransactionTypes.SUBMIT_UPDATE_TRANSACTION]: submitUpdateTransaction,
+  [TransactionTypes.SUBMIT_UPDATE_TRANSACTION_SUCCESS]: submitUpdateTransactionSuccess,
+  [TransactionTypes.SUBMIT_UPDATE_TRANSACTION_FAILURE]: submitUpdateTransactionFailure,
 })

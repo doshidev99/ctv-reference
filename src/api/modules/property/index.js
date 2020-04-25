@@ -15,3 +15,11 @@ export async function getPropertyTypes(params) {
 export async function createOneProperty(payload) {
   return post("/properties", payload);
 }
+
+export async function getListPaymentMethod(id) {
+  return get(`/properties/${id}/payment-methods`)
+}
+
+export async function getListDiscountGroup(id) {
+  return get(`/properties/${id}/discount-groups`)
+}

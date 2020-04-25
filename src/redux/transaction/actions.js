@@ -45,6 +45,14 @@ export const TransactionTypes = makeConstantCreator(
   "ADD_PAYMENT",
   "ADD_PAYMENT_SUCCESS",
   "ADD_PAYMENT_FAILURE",
+
+  "CHANGE_TYPE",
+  "CHANGE_TYPE_SUCCESS",
+  "CHANGE_TYPE_FAILURE",
+  
+  "SUBMIT_UPDATE_TRANSACTION",
+  "SUBMIT_UPDATE_TRANSACTION_SUCCESS",
+  "SUBMIT_UPDATE_TRANSACTION_FAILURE",
 );
 
 // Get detail transaction by id
@@ -76,8 +84,8 @@ export const addNewBonusAction = () =>
   makeActionCreator(TransactionTypes.ADD_NEW_BONUS);
 export const removeBonusAction = id =>
   makeActionCreator(TransactionTypes.REMOVE_BONUS, { id });
-export const onChangeBonusAction = (id, title, value) =>
-  makeActionCreator(TransactionTypes.ON_CHANGE_BONUS, { id, title, value });
+export const onChangeBonusAction = (id, name, value) =>
+  makeActionCreator(TransactionTypes.ON_CHANGE_BONUS, { id,name, value });
 
 // Confirm uy nhiem chi order :3
 export const confirmOrderAction = (id) =>
@@ -136,6 +144,22 @@ export const addPaymentSuccessAction = (data, total, detail) =>
   makeActionCreator(TransactionTypes.ADD_PAYMENT_SUCCESS, {data, total, detail});
 export const addPaymentFailureAction = error =>
   makeActionCreator(TransactionTypes.ADD_PAYMENT_FAILURE, { error });
+
+// Change type transaction
+export const changeTypeAction = (id) => 
+  makeActionCreator(TransactionTypes.CHANGE_TYPE, {id});
+export const changeTypeSuccessAction = (status) =>
+  makeActionCreator(TransactionTypes.CHANGE_TYPE_SUCCESS, {status});
+export const changeTypeFailureAction = error =>
+  makeActionCreator(TransactionTypes.CHANGE_TYPE_FAILURE, { error });
+
+// Update confirm transaction form
+export const submitUpdateFormAction = (id, payload) =>
+  makeActionCreator(TransactionTypes.SUBMIT_UPDATE_TRANSACTION, {id, payload});
+export const submitUpdateFormSuccessAction = (data) =>
+  makeActionCreator(TransactionTypes.SUBMIT_UPDATE_TRANSACTION_SUCCESS, { data });
+export const submitUpdateFormFailureAction = error =>
+  makeActionCreator(TransactionTypes.SUBMIT_UPDATE_TRANSACTION_FAILURE, { error });
 
 
 

@@ -36,6 +36,7 @@ export const initialState = {
   priceList: null,
   propertyImage: [],
   discounts: [],
+  discountGroup: [],
   paymentMethods: [],
   location: [],
   locationDescription: "",
@@ -562,6 +563,23 @@ const removeOnePaymentProgress = (state, { id }) => {
   };
 };
 
+const getPaymentMethodsSuccess = (state, { result }) => ({
+  ...state,
+  paymentMethods: result,
+});
+
+const getPaymentMethodsFailure = state => ({
+  ...state,
+});
+
+const getDiscountGroupSuccess = (state, { result }) => ({
+  ...state,
+  discountGroup: result,
+});
+
+const getDiscountGroupFailure = state => ({
+  ...state,
+});
 
 export const property = makeReducerCreator(initialState, {
   [PropertyTypes.GET_LIST_PROPERTY]: getListProperty,
@@ -620,18 +638,14 @@ export const property = makeReducerCreator(initialState, {
   [PropertyTypes.ADD_NEW_PAYMENT_METHOD_SUCCESS]: addNewPaymentMethodSuccess,
   [PropertyTypes.REMOVE_PAYMENT_METHOD]: removeOnePaymentMethod,
 
-
-
-
-
   [PropertyTypes.ADD_PAYMENT_PROGRESS]: addPaymentProgress,
   [PropertyTypes.ADD_PAYMENT_PROGRESS_SUCCESS]: addPaymentProgressSuccess,
   [PropertyTypes.REMOVE_PAYMENT_PROGRESS]: removeOnePaymentProgress,
+
+  [PropertyTypes.GET_PAYMENT_METHOD_SUCCESS]: getPaymentMethodsSuccess,
+  [PropertyTypes.GET_PAYMENT_METHOD_FAILURE]: getPaymentMethodsFailure,
+
+  [PropertyTypes.GET_DISCOUNT_GROUP_SUCCESS]: getDiscountGroupSuccess,
+  [PropertyTypes.GET_DISCOUNT_GROUP_FAILURE]: getDiscountGroupFailure,
 });
 
-
-
-
-// "",
-// "",
-// "",
