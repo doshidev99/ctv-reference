@@ -151,7 +151,7 @@ export function* editRecord({ resource, id, data, isGoBack }) {
   }
 }
 
-export function* createRecord({ resource, data }) {
+export function* createRecord({ resource, data, isGoToShowPage }) {
   try {
     const currentModal = yield select(state => state.modal.current);
     // const response = yield call(apiWrapper, postRecord, true, false, resource, data);
@@ -178,6 +178,9 @@ export function* createRecord({ resource, data }) {
         count: rest[resource] ? rest[resource].count + 1 : 1,
       }),
     );
+    if(!isGoToShowPage) {
+      return;
+    }
     yield put(actions.retrieveOneRecord(resource, response.id));
     yield put(currentModal ? closeModal() : goBack());
   } catch (error) {

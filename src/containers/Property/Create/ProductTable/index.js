@@ -13,8 +13,8 @@ class ProductTable extends Component {
   columnHeaders = [
     {
       title: "Mã sản phẩm",
-      dataIndex: "code",
-      key: "code",
+      dataIndex: "productCode",
+      key: "productCode",
       width: 100,
       // render: text => <Link to={text}>{text}</Link>,
     },
@@ -31,6 +31,13 @@ class ProductTable extends Component {
       sortDirections: ["descend"],
     },
     {
+      title: "Mã căn",
+      dataIndex: "code",
+      key: "code",
+      sorter: (a, b) => a - b,
+      sortDirections: ["descend"],
+    },
+    {
       title: "Loại căn hộ",
       dataIndex: "type",
       key: "type",
@@ -41,7 +48,7 @@ class ProductTable extends Component {
       key: "direction",
     },
     {
-      title: "Diện tích thông thủy",
+      title: "Diện tích",
       dataIndex: "area",
       key: "area",
       render: e => {
@@ -55,6 +62,11 @@ class ProductTable extends Component {
       sorter: (a, b) => a.price - b.price,
       sortDirections: ["descend"],
     },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+    },
   ];
 
   onImportExcel = async ({ file, onSuccess, onError }) => {
@@ -63,18 +75,6 @@ class ProductTable extends Component {
       // eslint-disable-next-line prefer-destructuring
       df = df[0];
       const result = df.map(row => {
-        // row.productCode = row["Mã sản phẩm"];
-        // row.building = row["Toà"];
-        // row.floor = row["Tầng"];
-        // row.area = row["Diện tích thông thuỷ"];
-        // row.price = row["Giá bán chưa VAT + PBT"];
-        // delete row["Mã sản phẩm"];
-        // delete row["Tòa"];
-        // delete row["Tầng"];
-        // delete row["Diện tích thông thuỷ"];
-        // delete row["Giá bán chưa VAT + PBT"];
-        // return row
-
         const obj = Object.keys(row).map(key => {
           return {
             key,
@@ -86,13 +86,15 @@ class ProductTable extends Component {
       result.forEach((e, index) => {
         result[index] = {
           key: index,
-          code: e[0].value,
-          building: e[1].value !== "" ? e[1].value : undefined,
-          floor: e[2].value !== "" ? e[2].value : undefined,
-          type: e[3].value !== "" ? e[3].value : undefined,
-          direction: e[4].value !== "" ? e[4].value : undefined,
-          area: e[5].value,
-          price: e[6].value,
+          productCode: e[0].value,
+          building: e[1].value || undefined,
+          floor: e[2].value.toString() || undefined,
+          code: e[3].value.toString(),
+          type: e[4].value || undefined,
+          direction: e[5].value|| undefined,
+          area: e[6].value,
+          price: e[7].value,
+          status:  e[8].value || undefined,
         };
       });
       this.props.loadExcelSuccess(result);

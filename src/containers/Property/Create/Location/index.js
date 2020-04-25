@@ -9,7 +9,9 @@ import { connect } from "react-redux";
 
 import LocationWrapper from "./styles";
 import Editor from "../../../../components/common/Editor/index";
-import { markLocationAction, onChangeLocationDescriptionAction } from "../../../../redux/property/actions";
+import {
+  markLocationAction,
+} from "../../../../redux/property/actions";
 
 const FormItem = Form.Item;
 const centerLocation = [16.0592, 108.2179];
@@ -23,12 +25,8 @@ L.Icon.Default.mergeOptions({
 });
 
 class Location extends Component {
-  addMarker = e => {
+  addMarker = (e) => {
     this.props.markLocation([e.latlng.lat, e.latlng.lng]);
-  };
-
-  handleChange = (e) => {
-    this.props.onChangeText(e)
   };
 
   render() {
@@ -36,14 +34,14 @@ class Location extends Component {
       <LocationWrapper>
         <Row>
           <Col xs={24} lg={16} xl={12}>
-            {this.props.form.getFieldDecorator("locationDescription")(
-              <div className="locationDescription">
-                <label className="locationLabel">Vị trí</label>
-                <FormItem>
-                  <Editor onChange={this.handleChange} />
-                </FormItem>
-              </div>,
-            )}
+            <div className="locationDescription">
+              <label className="locationLabel">Vị trí</label>
+              <FormItem>
+                {this.props.form.getFieldDecorator("locationDescription")(
+                  <Editor />,
+                )}
+              </FormItem>
+            </div>
           </Col>
           <Col xs={24} lg={16} xl={12}>
             <div className="locationMap">
@@ -61,16 +59,13 @@ class Location extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   location: state.property.location,
 });
 
-const mapDispatchToProps = dispatch => ({
-  markLocation: latlg => {
+const mapDispatchToProps = (dispatch) => ({
+  markLocation: (latlg) => {
     dispatch(markLocationAction(latlg));
-  },
-  onChangeText: text => {
-    dispatch(onChangeLocationDescriptionAction(text))
   },
 });
 

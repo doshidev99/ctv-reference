@@ -30,6 +30,9 @@ export const PropertyTypes = makeConstantCreator(
   "ADD_PROPERTY_IMAGE",
   "REMOVE_PROPERTY_IMAGE",
 
+  "ADD_PROPERTY_MEDIA",
+  "REMOVE_PROPERTY_MEDIA",
+
   "ADD_NEW_DISCOUNT",
   "REMOVE_DISCOUNT",
   "ON_CHANGE_DISCOUNT",
@@ -73,6 +76,19 @@ export const PropertyTypes = makeConstantCreator(
   "GET_DISCOUNT_GROUP",
   "GET_DISCOUNT_GROUP_SUCCESS",
   "GET_DISCOUNT_GROUP_FAILURE",
+
+  
+  "CLEAR",
+
+
+  "GET_ONE_PROPERTY",
+  "GET_ONE_PROPERTY_SUCCESS",
+
+
+  "SUBMIT_EDIT_ONE_PROPERTY",
+
+  "RETRIEVE_PRODUCT_TABLE",
+  "RETRIEVE_PRODUCT_TABLE_SUCCESS",
 );
 
 // Get list property
@@ -276,6 +292,41 @@ export const getDiscountGroupFailureAction = (error) =>
     error,
   });
 
-// "ADD_PAYMENT_PROGRESS",
-// "ADD_PAYMENT_PROGRESS_SUCCESS",
-// "REMOVE_PAYMENT_PROGRESS",
+export const clearAction = () => makeActionCreator(PropertyTypes.CLEAR)
+
+
+// -------------------GET ONE PROPERTY------------------------------
+export const getOnePropertyAction = (id) =>
+  makeActionCreator(PropertyTypes.GET_ONE_PROPERTY, {id});
+export const getOnePropertySuccessAction = ( data) =>
+  makeActionCreator(PropertyTypes.GET_ONE_PROPERTY_SUCCESS, {
+    data,
+  });
+
+
+  // SUBMIT EDIT PROPERTY
+export const submitEditPropertyFormAction = (id, payload) =>
+  makeActionCreator(PropertyTypes.SUBMIT_EDIT_ONE_PROPERTY, { id, payload });
+
+
+// GET PRODUCT TABLE
+export const getProductTableAction = (id, filterParams ) =>
+  makeActionCreator(PropertyTypes.RETRIEVE_PRODUCT_TABLE, { id, filterParams });
+
+export const getProductTableSuccessAction = (data) =>
+  makeActionCreator(PropertyTypes.RETRIEVE_PRODUCT_TABLE_SUCCESS, { data});
+
+
+
+// HANDLE PROPERTY MEDIA
+
+export const addPropertyMediaAction = (payload) =>
+  makeActionCreator(PropertyTypes.ADD_PROPERTY_MEDIA, { payload});
+
+export const removePropertyMediaAction = (id) =>
+  makeActionCreator(PropertyTypes.REMOVE_PROPERTY_MEDIA, { id});
+
+
+
+// "ADD_PROPERTY_MEDIA",
+// "REMOVE_PROPERTY_MEDIA",
