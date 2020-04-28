@@ -13,6 +13,7 @@ import partnerSaga from "./partner/sagas";
 import eventSaga from "./event/sagas";
 import trainingSaga from "./training/sagas";
 import serviceSaga from "./service/sagas";
+import dashboardSaga from "./dashboard/sagas";
 import restSaga from './rest/sagas';
 import restFilterSaga from './restFilter/sagas';
 
@@ -31,6 +32,7 @@ export default function* root() {
     ...eventSaga,
     ...trainingSaga,
     ...serviceSaga,
+    ...dashboardSaga,
     ...restSaga,
     ...restFilterSaga,
   ]);
