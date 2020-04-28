@@ -13,6 +13,7 @@ import { partner } from "./partner/reducer";
 import { event } from "./event/reducer";
 import { training } from "./training/reducer";
 import { service } from "./service/reducer";
+import { dashboard } from "./dashboard/reducer";
 import rest from './rest/reducer';
 import restFilter from './restFilter/reducer';
 import modal from './modal/reducer';
@@ -34,6 +35,7 @@ export default history =>
     event,
     training,
     service,
+    dashboard,
     rest,
     restFilter,
     modal,
