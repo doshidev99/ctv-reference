@@ -21,7 +21,7 @@ class RestList extends Component {
   constructor(props) {
     super(props);
     const paramFromUrl = getFilterFromUrl(this.props.location.search);
-    const filter = (this.props.location && paramFromUrl) || this.props.initialFilter;    
+    const filter = (this.props.location && paramFromUrl) || this.props.initialFilter;
     this.props.retrieveList(filter || { limit: 20, skip: 0, filter: {} }, true);
     // console.log("HERE " ,filter);
 
@@ -30,6 +30,7 @@ class RestList extends Component {
   retrieveList = filter => {
     // this.props.pushQuery(filter);
     this.props.retrieveList(filter, true);
+    // console.log("HERE " ,filter);
   };
 
   gotoEditPage = id => {
@@ -71,7 +72,7 @@ class RestList extends Component {
 
   render() {
     return (
-      <RestListComponent 
+      <RestListComponent
         {...this.props}
         onRow={this.props.onDoubleClick === 'show' ? this.gotoShowPage : null}
         gotoEditPage={this.gotoEditPage}
@@ -80,7 +81,6 @@ class RestList extends Component {
         exportExcel={this.exportExcel}
         retrieveList={this.retrieveList}
         loadingExport={this.props.loadingExport}
-      
       />
     );
   }
@@ -99,8 +99,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    retrieveList: (filter, isRefresh) => {
-      return dispatch(
+    retrieveList: async (filter, isRefresh) => {
+      await dispatch(
         retrieveList(
           props.resource,
           {
@@ -110,6 +110,16 @@ const mapDispatchToProps = (dispatch, props) => {
           isRefresh,
         ),
       );
+      // return dispatch(
+      //   retrieveList(
+      //     props.resource,
+      //     {
+      //       ...props.initialFilter,
+      //       ...filter,
+      //     },
+      //     isRefresh,
+      //   ),
+      // );
     },
     customQuery: (id, queryUrl, data, isChangeToEdit) =>
       dispatch(customQuery(props.resource, id, queryUrl, data, isChangeToEdit)),

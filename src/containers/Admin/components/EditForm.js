@@ -22,6 +22,20 @@ class AdminForm extends Component{
           placeholder="Họ và tên"
           requiredMessage="Please input fullname"
         />
+        <RestFormInput
+          required
+          source="phone"
+          title="Số điện thoại"
+          placeholder="Số điện thoại"
+          requiredMessage="Please input phone number"
+        />
+        <RestFormInput
+          required
+          source="occupation"
+          title="Chức danh"
+          placeholder="Chức danh"
+          requiredMessage="Please input occupation"
+        />
         {roleData ? (
           <RestSelect
             required

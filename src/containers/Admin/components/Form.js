@@ -25,6 +25,20 @@ class AdminForm extends Component {
         />
         <RestFormInput
           required
+          source="phone"
+          title="Số điện thoại"
+          placeholder="Số điện thoại"
+          requiredMessage="Please input phone number"
+        />
+        <RestFormInput
+          required
+          source="occupation"
+          title="Chức danh"
+          placeholder="Chức danh"
+          requiredMessage="Please input occupation"
+        />
+        <RestFormInput
+          required
           source="email"
           title="Email"
           placeholder="example@gmail.com"
