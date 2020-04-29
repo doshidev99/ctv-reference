@@ -37,7 +37,7 @@ import { retrieveList } from "../../../redux/rest/actions";
 // import Payment from "./Payment";
 import PropertyDiscount from "./PropertyDiscount";
 import RestSelect from "../../../components/RestInput/RestSelect";
-import { getResources } from "../../../redux/rest/selectors";
+import { getResources, getListResourceData } from "../../../redux/rest/selectors";
 import PaymentProgress from "./PaymentProgress";
 import MainImage from "./MainImage";
 
@@ -74,6 +74,13 @@ class EditPropertyForm extends Component {
       this.props.retrieveRefferences(
         "payment-methods",
         { limit: 50, skip: 0, order: "id", filter: {} },
+        true,
+      );
+    }
+    if (!this.props.staffs || this.props.staffs.length === 0) {
+      this.props.retrieveRefferences(
+        "staffs",
+        { limit: 100, skip: 0, order: "id", filter: {} },
         true,
       );
     }
@@ -183,7 +190,6 @@ class EditPropertyForm extends Component {
       paymentProgress,
       loading,
     } = this.props;
-
     const { getFieldDecorator } = form;
 
     const legalArea = legalRecords.map((e) => (
@@ -247,22 +253,47 @@ class EditPropertyForm extends Component {
         <Layout>
           <Spin spinning={loading}>
             <Form layout="vertical" onSubmit={this.handleSubmit}>
-              <FormItem>
-                <div>
-                  <label className="propertyNameLabel">Tên dự án</label>
-                  {getFieldDecorator("name", {
-                    initialValue: currentProperty && currentProperty.name,
-                    rules: [
-                      {
-                        required: true,
-                        message: i18n.t(
-                          "input.propertyName.validateMsg.required",
-                        ),
-                      },
-                    ],
-                  })(<Input />)}
-                </div>
-              </FormItem>
+              <Row gutter={16}>
+                <Col xs={24} md={18}>
+                  <FormItem>
+                    {getFieldDecorator("name", {
+                      rules: [
+                        {
+                          required: true,
+                          message: i18n.t(
+                            "input.propertyName.validateMsg.required",
+                          ),
+                        },
+                      ],
+                    })(
+                      <div>
+                        <label className="propertyNameLabel">Tên dự án</label>
+                        <Input />
+                      </div>,
+                    )}
+                  </FormItem>
+                </Col>
+                <Col xs={24} md={6}>
+                  <FormItem>
+                    <div>
+                      <label className="form-group-title">
+                        Người phụ trách
+                      </label>
+                      <RestSelect
+                        form={this.props.form}
+                        source="staffId"
+                        defaultValue={currentProperty.staffId}
+                        valueProp="id"
+                        titleProp="fullName"
+                        required
+                        requiredMessage="Vui lòng chọn người phụ trách"
+                        placeholder="Người phụ trách"
+                        resourceData={this.props.staffs}
+                      />
+                    </div>
+                  </FormItem>
+                </Col>
+              </Row>
               <Row gutter={16}>
                 <Col xs={6}>
                   {/* CITY */}
@@ -662,6 +693,7 @@ const mapStateToProps = (state) => {
     paymentMethodOptions: getResources(state, "payment-methods"),
     propertyTypes: getResources(state, "property-types"),
     cities: getResources(state, "cities"),
+    staffs: getListResourceData(state, "staffs"),
     listCityFailure,
     //---------------------
     currentProperty,
