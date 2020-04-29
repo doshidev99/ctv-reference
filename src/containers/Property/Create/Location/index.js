@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 import React, { Component } from "react";
-import { Form, Row, Col } from "antd";
+import { Form, Row, Col, Input } from "antd";
 import "leaflet/dist/leaflet.css";
 
 import { Map, TileLayer, Marker } from "react-leaflet";
@@ -32,10 +32,24 @@ class Location extends Component {
   render() {
     return (
       <LocationWrapper>
+        <div className="locationLabel">
+          <span>Vị trí</span>
+        </div>
         <Row>
           <Col xs={24} lg={16} xl={12}>
             <div className="locationDescription">
-              <label className="locationLabel">Vị trí</label>
+              <FormItem>
+                {this.props.form.getFieldDecorator("address", {
+                rules: [
+                  {
+                    required:true,
+                    message: "Địa chỉ dự án không được trống",
+                  },
+                ],
+              })(
+                <Input placeholder="Nhập địa chỉ dự án" />,
+                )}
+              </FormItem>
               <FormItem>
                 {this.props.form.getFieldDecorator("locationDescription")(
                   <Editor />,
@@ -72,4 +86,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Form.create()(Location));
+)(Location);

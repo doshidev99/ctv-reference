@@ -119,7 +119,7 @@ function* createProperty({ payload }) {
       (value) => Object.keys(value).length >= 6,
     );
     const newLegalRecords = body.legalRecords.filter(
-      (value) => Object.keys(value).length >= 3,
+      (value) => Object.keys(value).length >= 2,
     );
     const newSitePlans = body.sitePlans.filter(
       (value) => Object.keys(value).length !== 1,
@@ -251,7 +251,7 @@ function* updateProperty({ id, payload }) {
       (value) => Object.keys(value).length >= 6,
     );
     const newLegalRecords = body.legalRecords.filter(
-      (value) => Object.keys(value).length >= 3,
+      (value) => Object.keys(value).length >= 2,
     );
     const newSitePlans = body.sitePlans.filter(
       (value) => Object.keys(value).length !== 1,
@@ -269,7 +269,6 @@ function* updateProperty({ id, payload }) {
     body.discounts = newDiscounts;
     body.salesPolicies = newSalesPolicies;
     body.paymentProgress = newPaymentProgress;
-
     const response = yield call(
       apiWrapper,
       {
