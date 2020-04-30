@@ -24,6 +24,11 @@ class ListEvent extends Component {
           resource="events"
           initialFilter={{ limit: 10, skip: 0, order: 'id', filter: {} }}
           {...this.props}
+          redirects={{
+            // create: 'newPage',
+            // edit: 'newPage',
+            show: 'newPage',
+          }}
         >
           <Label
             source="name"
@@ -46,7 +51,7 @@ class ListEvent extends Component {
             source="tags"
             title="Tags"
             render={value=> value.map(tag => (
-              tag === 1 ? (<Tag color="green">New</Tag>) : (<Tag color="red">Hot</Tag>)
+              tag === 1 ? (<Tag key={tag} color="green">New</Tag>) : (<Tag key={tag} color="red">Hot</Tag>)
             ))}
            />
           <ActionGroup>
