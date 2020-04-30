@@ -19,8 +19,8 @@ const modalRoutes = [
     component: lazy(() => import('../../containers/ServiceRegist/Edit')),
   },
   {
-    path: '/payments',
-    component: lazy(() => import('../../containers/TransactionPage/DetailTransaction/EditPayment/index')),
+    path: '/transaction-payments',
+    component: lazy(() => import('../../containers/Transaction/Show/StatusTrans/EditPayment')),
   },
 ];
 

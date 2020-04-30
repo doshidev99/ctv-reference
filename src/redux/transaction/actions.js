@@ -140,8 +140,8 @@ export const confirmTransactionFailureAction = error =>
   // Add payment phase
 export const addPaymentAction = (id, payload) =>
   makeActionCreator(TransactionTypes.ADD_PAYMENT, {id, payload});
-export const addPaymentSuccessAction = (data, total, detail) =>
-  makeActionCreator(TransactionTypes.ADD_PAYMENT_SUCCESS, {data, total, detail});
+export const addPaymentSuccessAction = () =>
+  makeActionCreator(TransactionTypes.ADD_PAYMENT_SUCCESS);
 export const addPaymentFailureAction = error =>
   makeActionCreator(TransactionTypes.ADD_PAYMENT_FAILURE, { error });
 

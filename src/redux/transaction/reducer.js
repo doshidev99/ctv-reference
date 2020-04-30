@@ -254,15 +254,11 @@ const confirmTransactionFailure = (state, { error }) => ({
 const addPayment = state => ({
   ...state,
   isLoadingConfirm: true,
-  isLoadingTable: true,
 });
-const addPaymentSuccess = (state, { data, total, detail }) => ({
+const addPaymentSuccess = (state) => ({
   ...state,
   isLoadingConfirm: false,
-  isLoadingTable: false,
-  payment: data,
-  total,
-  transaction: detail,
+  // transaction: detail,
   addPaymentSuccess: true,
   addPaymentFailure: false,
 });
@@ -299,8 +295,6 @@ const changeTypeFailure = (state) => ({
 // });
 
 const submitUpdateTransactionSuccess = (state, { data }) => {
-  console.log(data);
-  
   return {
     ...state,
     isLoadingStatus: true,

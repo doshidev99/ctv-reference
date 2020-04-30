@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import moment from "moment";
 import { withRouter } from "react-router-dom";
 import i18n from "i18next";
-import { Layout, Row, Col, Form, Typography, Input, Table, Skeleton, DatePicker, Select, Button, Radio, Modal, Popconfirm, Checkbox } from "antd";
+import { Layout, Row, Col, Form, Typography, Input, Skeleton, DatePicker, Select, Button, Radio, Modal, Popconfirm, Checkbox } from "antd";
 import StyleWrapper from "./styles";
 import Bonus from './ComissionBonus';
 import StandingOrderImage from './OrderPicture';

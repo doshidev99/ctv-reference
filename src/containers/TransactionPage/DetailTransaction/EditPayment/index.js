@@ -6,8 +6,6 @@ import RestRow from "../../../../components/RestLayout/RowLayout";
 import EditWrapper from "./styles";
 
 const EditPayment = (props) => {
-  console.log('ok');
-    
   return (
     <EditWrapper>
       <RestEdit {...props} resource="transaction-payments" title="Chỉnh sửa payment">
