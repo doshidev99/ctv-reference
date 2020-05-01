@@ -4,11 +4,11 @@ import { connect } from "react-redux";
 import moment from "moment";
 import { withRouter } from "react-router-dom";
 import i18n from "i18next";
-import {  Row, Col, Form, Typography, Input, Skeleton, DatePicker, Select, Button, Radio, Modal, Popconfirm, Checkbox, Switch } from "antd";
+import {  Row, Col, Form, Typography, Input, Skeleton, DatePicker, Select, Button, Radio, Modal, Popconfirm, Checkbox } from "antd";
 import StyleWrapper from "./styles";
 import Bonus from './ComissionBonus';
 import StandingOrderImage from './OrderPicture';
-// import PaymentTable from './TablePayment';
+// import TablePayment from './TablePayment';
 import Label from '../../../../components/RestField/Label';
 import RestList from '../../../rest/List';
 import ActionGroup from "../../../../components/RestActions/ActionGroup";
@@ -26,7 +26,7 @@ import {
 import {getPaymentMethodAction, getDiscountGroupAction } from "../../../../redux/property/actions"
 
 const FormItem = Form.Item;
-const { Title, Text } = Typography
+const { Title } = Typography
 
 class StatusTrans extends Component {
   state = {
@@ -116,6 +116,7 @@ class StatusTrans extends Component {
       visibleCommission: false,
     });
   };
+
 
   render() {
     const {
@@ -387,50 +388,53 @@ class StatusTrans extends Component {
                 </Row>
 
                 <Title level={4}>Các đợt thanh toán</Title>
-                <Row style={{marginBottom: "10px"}}>
-                  <Col span={6}>
-                    <Button type="primary" icon="plus" onClick={this.showModalCommission}>Thêm đợt thanh toán</Button>
-                  </Col>
-                  <Modal
-                    title="Thêm đợt thanh toán"
-                    visible={visibleCommission}
-                    onOk={this.handleSubmitCommission}
-                    onCancel={this.handleCancelModalCommission}
-                    footer={[
-                      <Button key="submit" type="primary" loading={isLoadingConfirm} onClick={this.handleSubmitCommission}>
+                { transaction.status === 3 && (
+                  <Row style={{marginBottom: "10px"}}>
+                    <Col span={6}>
+                      <Button type="primary" icon="plus" onClick={this.showModalCommission}>Thêm đợt thanh toán</Button>
+                    </Col>
+                    <Modal
+                      title="Thêm đợt thanh toán"
+                      visible={visibleCommission}
+                      onOk={this.handleSubmitCommission}
+                      onCancel={this.handleCancelModalCommission}
+                      footer={[
+                        <Button key="submit" type="primary" loading={isLoadingConfirm} onClick={this.handleSubmitCommission}>
                       Xác nhận
-                      </Button>,
+                        </Button>,
                     ]}
                   >
-                    <Row>
-                      <Col span={12}>
-                        <p>Tổng tiền hoa hồng chưa thanh toán:</p>
-                      </Col>
-                      <Col span={12}>
-                        {transaction.actualCommissionAmount && transaction.withdrawnAmount !== null ? transaction.actualCommissionAmount - transaction.withdrawnAmount : ''}
-                        {' VND'}
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col span={12}>
-                        <p>Số tiền thanh toán:</p>
-                      </Col>
-                      <Col span={12}>
-                        <Form layout="vertical" onSubmit={this.handleSubmitCommission}>
-                          <FormItem>
-                            {this.props.form.getFieldDecorator("amount", {
+                      <Row>
+                        <Col span={12}>
+                          <p>Tổng tiền hoa hồng chưa thanh toán:</p>
+                        </Col>
+                        <Col span={12}>
+                          {transaction.actualCommissionAmount && transaction.withdrawnAmount !== null ? transaction.actualCommissionAmount - transaction.withdrawnAmount : ''}
+                          {' VND'}
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col span={12}>
+                          <p>Số tiền thanh toán:</p>
+                        </Col>
+                        <Col span={12}>
+                          <Form layout="vertical" onSubmit={this.handleSubmitCommission}>
+                            <FormItem>
+                              {this.props.form.getFieldDecorator("amount", {
                               // rules: [{ required: true, message: 'Vui lòng nhập giá trị!'}],
                             })(
                               <div className="payAmount">
                                 <Input placeholder="Tiền hoa hồng" />
                               </div>,
                             )}
-                          </FormItem>
-                        </Form>
-                      </Col>
-                    </Row>
-                  </Modal>
-                </Row>
+                            </FormItem>
+                          </Form>
+                        </Col>
+                      </Row>
+                    </Modal>
+                  </Row>
+                )}
+                
                 <RestList
                   resource={apiUrl}
                   initialFilter={{ limit: 10, skip: 0, order:'-createdAt', filter: {} }}
@@ -440,7 +444,7 @@ class StatusTrans extends Component {
                   <Label
                     source="createdAt"
                     title="Thời gian"
-                    render={value => <Text>{moment(value).format('DD-MM-YYYY hh:mm')}</Text>}
+                    render={value => moment(value).format('DD-MM-YYYY HH:mm')}
                    />
                   <Label
                     source="amount"
@@ -448,12 +452,7 @@ class StatusTrans extends Component {
                   <Label
                     source="isSent"
                     title="Trạng thái gửi"
-                    render={value =><Switch checked={value} disabled />}
-                  />
-                  <Label
-                    source="realtorReceived"
-                    title="Tình trạng"
-                    render={record => record.realtorReceived === true ? 'Đã rút': 'Chưa rút'}
+                    render={value =>value ? 'Đã gửi tiền': 'Chưa gửi tiền'}
                   />
                   <ActionGroup>
                     <CustomEditButton resourceCustom="transaction-payments" />

@@ -35,7 +35,6 @@ import {
   resendRequestApi,
   cancelTransApi,
   confirmTransactionApi,
-  addPaymentApi,
   createRewardApi,
   changeTypeApi,
   updateTransactionApi,
@@ -63,7 +62,7 @@ function* getTableSaga({ id }) {
     const data = results.map(e => {
       return {
         key: e.id,
-        date: moment(e.createdAt).format('DD/MM/YYYY hh:mm:ss'),
+        date: moment(e.createdAt).format('DD/MM/YYYY HH:mm:ss '),
         amount: e.amount,
         // paymentType: e.type === 1 ? 'Thanh toán' : 'Tạm ứng',
         realtorReceived: e.realtorReceived === true ? 'Đã rút': 'Chưa rút',
@@ -172,9 +171,6 @@ function* addPayment({id, payload}) {
     yield put(addPaymentSuccessAction())
   } catch (error) {
     yield put(addPaymentFailureAction(error))
-    console.log(error);
-    
-    
   }
 }
 
@@ -190,7 +186,7 @@ function* changeType ({id}) {
 function* updateDetailTrans ({id, payload}) {
   try {
     payload.rewards.map((e) => delete e.id)
-    const response = yield call(
+     yield call(
       apiWrapper,
       {
         isShowLoading: true,
@@ -202,7 +198,7 @@ function* updateDetailTrans ({id, payload}) {
       id,
       payload,
     );
-    yield put(submitUpdateFormSuccessAction(response))
+    yield put(submitUpdateFormSuccessAction())
     yield getDetailSaga({id})
   } catch (error) {
     yield put(submitUpdateFormFailureAction(error));

@@ -6,11 +6,8 @@ import { renderMessage } from '../../../utils/textProcessor';
 // import IntlMessages from '../../utility/IntlMessages';
 
 const RestSwitch = props => {
-  console.log(props);
   
   const value = getRecordData(props.record, props.source) || props.value;
-  console.log(value);
-  
   // const value = getRecordData(props.record, props.source)
   
   return props.isShowConfirm ? (

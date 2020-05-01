@@ -311,13 +311,10 @@ function* getPaymentMethod({ id }) {
         date: moment(e.createdAt).format("L"),
       };
     });
-    console.log(data);
     
     yield put(getPaymentMethodSuccessAction(data));
   } catch (error) {
     yield put(getPaymentMethodFailureAction(error));
-    console.log(error);
-    
   }
 }
 

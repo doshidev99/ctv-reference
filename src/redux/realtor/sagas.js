@@ -1,4 +1,4 @@
-import { takeEvery, put } from "redux-saga/effects";
+import { takeEvery, put, call } from "redux-saga/effects";
 import moment from "moment";
 import {
   RealtorTypes,
@@ -8,12 +8,18 @@ import {
   getOneRealtorFailureAction,
   getTransactionsByRealtorSuccessAction,
   getTransactionsByRealtorFailureAction,
+  requestResendFailureAction,
+  requestResendSuccessAction,
+  confirmDigitalContractSuccessAction,
+  confirmDigitalContractFailureAction,
 } from "./actions";
-// import {data} from './tempData'
+import { apiWrapper } from "../../utils/reduxUtils";
 import {
   getRealtors,
   getOneRealtor,
   getTransactionsByRealtor,
+  requestResend,
+  confirmDigitalContract,
 } from "../../api/modules/realtor";
 
 const TRANSACTION_STATUS = {
@@ -114,6 +120,47 @@ function* getTransactionsByRealtorId({ id, limit, offset, filter, orderBy }) {
     yield put(getTransactionsByRealtorFailureAction(error));
   }
 }
+
+function* updateContractMessage({id, status, payload}){
+  try {
+    const response = yield call(
+      apiWrapper,
+      {
+        isShowLoading: true,
+        isShowSucceedNoti: false,
+        errorDescription: "Lỗi !!",
+      },
+      requestResend,
+      id,
+      status,
+      payload,
+    );
+    yield put(requestResendSuccessAction(response))
+  } catch (error) {
+    yield put(requestResendFailureAction(error));
+  }
+}
+
+function* confirmContract({id, status}){
+  try {
+    const response = yield call(
+      apiWrapper,
+      {
+        isShowLoading: true,
+        isShowSucceedNoti: false,
+        errorDescription: "Lỗi !!",
+      },
+      confirmDigitalContract,
+      id,
+      status,
+    );
+    yield put(confirmDigitalContractSuccessAction(response));
+    
+  } catch (error) {
+    yield put(confirmDigitalContractFailureAction(error));
+  }
+}
+
 export default [
   takeEvery(RealtorTypes.GET_LIST_REALTOR, getListRealtor),
   takeEvery(RealtorTypes.GET_ONE_REALTOR, getOneRealtorInfo),
@@ -121,4 +168,6 @@ export default [
     RealtorTypes.GET_TRANSACTIONS_BY_REALTOR,
     getTransactionsByRealtorId,
   ),
+  takeEvery(RealtorTypes.REQUEST_RESEND, updateContractMessage),
+  takeEvery(RealtorTypes.CONFIRM_CONTRACT, confirmContract),
 ];

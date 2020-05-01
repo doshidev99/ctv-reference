@@ -38,6 +38,7 @@ class FormComponent extends Component {
       if (!err) {
         const submitData = this.props.formatOnSubmit ? this.props.formatOnSubmit(values) : values;
         this.props.onSubmit(submitData);
+        if (this.props.extraSubmitAction) this.props.extraSubmitAction();
       }
     });
   };
@@ -143,6 +144,7 @@ FormComponent.propTypes = {
   customEditButton: PropTypes.node,
   record: PropTypes.object,
   formatOnSubmit: PropTypes.func,
+  extraSubmitAction: PropTypes.func,
 };
 
 FormComponent.defaultProps = {

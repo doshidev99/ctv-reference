@@ -156,8 +156,8 @@ export const changeTypeFailureAction = error =>
 // Update confirm transaction form
 export const submitUpdateFormAction = (id, payload) =>
   makeActionCreator(TransactionTypes.SUBMIT_UPDATE_TRANSACTION, {id, payload});
-export const submitUpdateFormSuccessAction = (data) =>
-  makeActionCreator(TransactionTypes.SUBMIT_UPDATE_TRANSACTION_SUCCESS, { data });
+export const submitUpdateFormSuccessAction = () =>
+  makeActionCreator(TransactionTypes.SUBMIT_UPDATE_TRANSACTION_SUCCESS);
 export const submitUpdateFormFailureAction = error =>
   makeActionCreator(TransactionTypes.SUBMIT_UPDATE_TRANSACTION_FAILURE, { error });
 

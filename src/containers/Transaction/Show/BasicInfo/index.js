@@ -57,7 +57,7 @@ class BasicInfo extends Component {
                 <p>
                   {i18n.t("transaction.detail.transDate")}
                   {': '}
-                  {transaction.transactedAt ? moment(transaction.transactedAt).format('DD/MM/YYYY') : ''}
+                  {transaction.transactedAt ? moment(transaction.transactedAt).format('DD/MM/YYYY') : 'Chưa cập nhật'}
                 </p>
                 <p>
                     Loại giao dịch
