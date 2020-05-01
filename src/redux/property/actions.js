@@ -263,7 +263,7 @@ export const removePaymentProgressAction = (id) =>
 
 
 
-export const clearAction = () => makeActionCreator(PropertyTypes.CLEAR)
+export const clearAction = (preservedFields) => makeActionCreator(PropertyTypes.CLEAR, {preservedFields})
 
 
 // -------------------GET ONE PROPERTY------------------------------

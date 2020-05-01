@@ -10,7 +10,6 @@ import {
   Col,
   Select,
 } from "antd";
-// import DateRangePicker from "../../../../../../components/form/FormDateRangePicker";
 import Wrapper from "./styles";
 
 const FormItem = Form.Item;
@@ -104,11 +103,6 @@ class DiscountItem extends Component {
     return (
       <Wrapper>
         <Row gutter={16} type="flex" justify="space-around">
-          {/* {getFieldDecorator("id",{
-            initialValue: data.id,
-          })(
-            <Input type="hidden" />,
-          )} */}
           <Col xs={9}>
             <FormItem className="formItem">
               <div className="title">

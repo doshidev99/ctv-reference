@@ -94,9 +94,9 @@ class EditPropertyForm extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    const test = await this.props.form.getFieldsValue();
-    // eslint-disable-next-line no-console
-    console.log(test);
+    // const test = await this.props.form.getFieldsValue();
+    // // eslint-disable-next-line no-console
+    // console.log(test);
     this.props.form.validateFields((err, values) => {
       if (!err) {
         values.openSaleDate = values.openSaleDate
@@ -118,13 +118,7 @@ class EditPropertyForm extends Component {
           // locationDescription,
         } = this.props;
 
-        // const medias = [];
-        // propertyImage.forEach((el) => {
-        //   medias.push({
-        //     type: 2,
-        //     link: el,
-        //   });
-        // });
+     
 
         values.transactionType = Number(values.transactionType);
         values = {
@@ -138,7 +132,7 @@ class EditPropertyForm extends Component {
 
           priceList: priceList !== null ? priceList.link : null,
           medias,
-          sections: productTable,
+          sections: productTable.length > 0 ? productTable : undefined,
           location: {
             latitude: location[0],
             longitude: location[1],
@@ -256,7 +250,9 @@ class EditPropertyForm extends Component {
               <Row gutter={16}>
                 <Col xs={24} md={18}>
                   <FormItem>
-                    {getFieldDecorator("name", {
+                    <div>
+                      <label className="propertyNameLabel">Tên dự án</label>
+                      {getFieldDecorator("name", {
                       rules: [
                         {
                           required: true,
@@ -265,12 +261,11 @@ class EditPropertyForm extends Component {
                           ),
                         },
                       ],
+                      initialValue: currentProperty && currentProperty.name,
                     })(
-                      <div>
-                        <label className="propertyNameLabel">Tên dự án</label>
-                        <Input />
-                      </div>,
+                      <Input />,
                     )}
+                    </div>
                   </FormItem>
                 </Col>
                 <Col xs={24} md={6}>

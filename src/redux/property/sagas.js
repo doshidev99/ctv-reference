@@ -1,4 +1,4 @@
-import { takeEvery, put, call } from "redux-saga/effects";
+import { takeEvery, put, call, select } from "redux-saga/effects";
 import moment from "moment";
 import { object } from "prop-types";
 import { notification } from "antd";
@@ -25,7 +25,7 @@ import {
   createOneProperty,
 } from "../../api/modules/property";
 
-import { getDataByIdApi, getAllApi, putApi } from "../../api/common/crud";
+import { getDataByIdApi, getAllApi, putApi, delApiWithPayload } from "../../api/common/crud";
 import { apiWrapper } from "../../utils/reduxUtils";
 
 function* getListProperty({ limit, offset, filter }) {
@@ -182,9 +182,9 @@ function* getOneProperty({ id }) {
       "properties",
       Number(id),
     );
-
     response.paymentMethodIds = paymentMethods.results.map((e) => e.id);
-
+    // console.log(response);
+    
     yield put(getOnePropertySuccessAction(response));
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -193,6 +193,27 @@ function* getOneProperty({ id }) {
 }
 function* updateProperty({ id, payload }) {
   try {
+    const { deletedDiscountIds } = yield select(state => {
+      return state.property;
+    });
+    if(deletedDiscountIds.length > 0) {
+      const deletedPayload = {
+        ids: [...deletedDiscountIds],
+      }
+      yield call(
+        apiWrapper,
+        {
+          isShowProgress: true,
+          isShowSucceedNoti: false,
+          errorDescription: "Có lỗi xảy ra",
+        },
+        delApiWithPayload,
+        "discounts",
+        deletedPayload,
+      );
+    }
+
+  
     const body = JSON.parse(JSON.stringify(payload));
     body.medias.forEach((e) => {
       if (typeof e.id !== typeof Number) {
@@ -216,10 +237,16 @@ function* updateProperty({ id, payload }) {
     body.sections &&
       body.sections.forEach((e) => {
         delete e.key;
+        if (e.propertyId) {
+          delete e.propertyId
+        }
       });
 
     body.discounts.forEach((e) => {
       delete e.id;
+      if (e.propertyId) {
+        delete e.propertyId
+      }
       clean(e);
       if (e.time && e.time.length === 2) {
         const { time } = e;
@@ -269,6 +296,7 @@ function* updateProperty({ id, payload }) {
     body.discounts = newDiscounts;
     body.salesPolicies = newSalesPolicies;
     body.paymentProgress = newPaymentProgress;
+    
     const response = yield call(
       apiWrapper,
       {
@@ -294,8 +322,6 @@ function* updateProperty({ id, payload }) {
 
 function* getProductTable({ id, filterParams }) {
   try {
-    const limit = filterParams.limit || 10;
-    const { offset } = filterParams;
     const response = yield call(
       apiWrapper,
       {
@@ -304,11 +330,9 @@ function* getProductTable({ id, filterParams }) {
         errorDescription: "Có lỗi xảy ra",
       },
       getAllApi,
-      `properties/${id}/sections`,
+      `properties/${id}/sections/all`,
       filterParams,
     );
-    response.limit = limit;
-    response.offset = offset;
     yield put(getProductTableSuccessAction(response));
   } catch (error) {
     // eslint-disable-next-line no-console

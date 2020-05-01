@@ -1,4 +1,5 @@
 import moment from "moment";
+import * as _ from 'lodash'
 import { makeReducerCreator } from "../../utils/reduxUtils";
 import { PropertyTypes } from "./actions";
 import { mongoObjectId } from "../../utils/textProcessor";
@@ -35,6 +36,7 @@ export const initialState = {
       id: mongoObjectId(),
     },
   ],
+  deletedDiscountIds: [],
   priceList: null,
   propertyImage: [],
   medias: [],
@@ -106,12 +108,12 @@ const addNewLegalRecord = (state) => {
     legalRecords,
   };
 };
-const addNewLegalRecordSuccess = (state, { payload}) => {
+const addNewLegalRecordSuccess = (state, { payload }) => {
   const legalRecords = [...state.legalRecords];
   const index = legalRecords.findIndex((e) => e.id === payload.id);
   legalRecords[index] = {
     ...payload,
-  }
+  };
   return {
     ...state,
     legalRecords,
@@ -310,6 +312,11 @@ const addNewDiscount = (state, { groupId, mode }) => {
 };
 
 const removeDiscount = (state, { id, groupId, mode }) => {
+  const deletedDiscountList = [...state.deletedDiscountIds];
+  // eslint-disable-next-line no-restricted-globals
+  if (!isNaN(id)) {
+    deletedDiscountList.push(id);
+  }
   if (mode === "payment") {
     const paymentMethods = [...state.paymentMethods];
     const index = paymentMethods.findIndex((e) => e.id === groupId); // index cua nhom payment method
@@ -326,6 +333,7 @@ const removeDiscount = (state, { id, groupId, mode }) => {
   return {
     ...state,
     discounts,
+    deletedDiscountIds: deletedDiscountList,
   };
 };
 
@@ -516,12 +524,6 @@ const deleteOnePropertyError = (state) => {
   };
 };
 
-// LOAD EXCEL
-const loadExcelSuccess = (state, { data }) => ({
-  ...state,
-  productTable: data,
-});
-
 // CREATE PROPERTY
 
 const creatingProperty = (state) => ({
@@ -599,7 +601,14 @@ const removeOnePaymentProgress = (state, { id }) => {
 };
 
 // CLEAR
-const clear = () => ({ ...initialState });
+// eslint-disable-next-line no-unused-vars
+const clear = (state,{preservedFields}) => { // preservedFields : các field cần giữ lại khi clear state
+  let preservedStates;
+  if(preservedFields) {
+    preservedStates = preservedFields.map(e => state[e]);
+  }
+  return { ...initialState, ...preservedStates };
+};
 
 // GET ONE PROPERTY
 const getOneProperty = (state) => ({
@@ -654,7 +663,7 @@ const getOnePropertySuccess = (state, { data }) => {
     tags,
     ...state.currentProperty,
   };
-  medias&&medias.push(...mainImages)
+  medias && medias.push(...mainImages);
   legalRecords &&
     legalRecords.forEach((e) => {
       e.id = mongoObjectId();
@@ -707,22 +716,48 @@ const getOnePropertySuccess = (state, { data }) => {
 // -------Get product table----
 
 const getProductTableSuccess = (state, { data }) => {
-  const { total, limit, offset, results } = data;
-  results.forEach((e) => {
+  // const { total, limit, offset, results } = data;
+  data.forEach((e) => {
     e.key = e.id;
   });
-
   const { currentProperty } = state;
   return {
     ...state,
-    limit,
-    offset,
-    total,
+    // productTable: data,
     currentProperty: {
       ...currentProperty,
-      productTable: results,
+      productTable: data,
     },
     loading: false,
+  };
+};
+
+// LOAD EXCEL
+const loadExcelSuccess = (state, { data }) => {
+  
+  // console.log("Đây là cái cũ >>",state.productTable);
+  // console.log("Đây là cái mới từ excel >>",data);
+  let productTable = [...state.currentProperty.productTable] // productTable từ API
+
+  // list new sections (in case unmapable)
+   const newProductTable = _.differenceBy(data, productTable, 'productCode')
+   productTable.forEach(row => {
+    data.forEach(d => {
+      if(d.productCode === row.code) { // if 2 productCode is equal
+        if(d.status === 1 || d.status === 2 || d.status === 3) { // If booked/sold/reserved
+          const {status, price} = row;
+          row = {...d, status, price} // keep the old status and price
+        }else {
+          row = {...d } // overwrite the old seciton with new sections data
+        }
+      }
+    })
+  })
+  productTable = [...productTable, ...newProductTable]
+
+  return {
+    ...state,
+    productTable,
   };
 };
 
