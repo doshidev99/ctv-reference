@@ -26,6 +26,7 @@ function* loginSaga({
       localStorage.setItem("fullName", response.fullName)
       localStorage.setItem("id", response.id);
       localStorage.setItem("avatar", response.avatar);
+      localStorage.setItem("role", response.role.name);
       yield put(loginSuccessAction(response));
     } else {
       yield put(loginFailureAction(response));

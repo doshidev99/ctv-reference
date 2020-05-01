@@ -106,7 +106,7 @@ class PaymentProgress extends Component {
                       message: "Vui lòng chọn ngày",
                     },
                   ],
-                })(<DatePicker />)}
+                })(<DatePicker placeholder="Thời gian cập nhật" />)}
               </FormItem>
             </div>
           </Col>

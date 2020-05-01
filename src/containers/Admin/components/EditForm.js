@@ -12,6 +12,7 @@ class AdminForm extends Component{
 
   render() {
     const { roleData } = this.props;
+    const role = localStorage.getItem('role');
     return (
       <RestRow {...this.props}>
         <RestFormInput
@@ -22,6 +23,22 @@ class AdminForm extends Component{
           placeholder="Họ và tên"
           requiredMessage="Please input fullname"
         />
+        <RestFormInput
+          required
+          disabled
+          source="phone"
+          title="Số điện thoại"
+          placeholder="Số điện thoại"
+          requiredMessage="Please input phone number"
+        />
+        <RestFormInput
+          required
+          disabled={role !== 'superadmin'}
+          source="occupation"
+          title="Chức danh"
+          placeholder="Chức danh"
+          requiredMessage="Please input occupation"
+        />
         {roleData ? (
           <RestSelect
             required
@@ -31,6 +48,7 @@ class AdminForm extends Component{
             titleProp="name"
             placeholder="Vai trò"
             defaultValue={roleData.list[1].id}
+            disabled={role !== 'superadmin'}
             resourceData={roleData.list}
         />
       ) : (

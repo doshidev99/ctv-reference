@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import { Input, Button, Upload, message, Form } from "antd";
+import {
+  Input,
+  Button,
+  Upload,
+  message,
+  Form,
+  DatePicker,
+  Row,
+  Col,
+} from "antd";
 import { connect } from "react-redux";
 import LegalRecordWrapper from "./styles";
 
@@ -13,7 +22,7 @@ import { getSignedUrlS3, uploadFile } from "../../../../utils/uploadFile";
 const FormItem = Form.Item;
 
 class LegalRecord extends Component {
-  handleOnChange = async info => {
+  handleOnChange = async (info) => {
     if (info.file.status !== "uploading") {
       // console.log(info.file, info.fileList);
     }
@@ -31,15 +40,14 @@ class LegalRecord extends Component {
     }
   };
 
-
   handleUpload = async ({ file, onSuccess, onError }) => {
     try {
-      const title = await this.props.form.validateFields((err,val) => {
+      const values = await this.props.form.validateFields((err, val) => {
         if (err) {
           onError("Error cmnr =)))");
           return false;
         }
-        return val
+        return val;
       });
 
       const signedUrlS3 = await getSignedUrlS3(
@@ -49,7 +57,13 @@ class LegalRecord extends Component {
       );
       const response = await uploadFile(file, signedUrlS3.url);
       this.props.uploadFileSuccess(response.url);
-      this.props.addLegalRecordSuccess(this.props.id, title.legalRecords, response.url, file.type);
+      const payload = {
+        id: this.props.id,
+        ...values,
+        link: response.url,
+        mimeType: file.type,
+      };
+      this.props.addLegalRecordSuccess(payload);
       onSuccess("OK");
     } catch (error) {
       message.error("Xảy ra lỗi, vui lòng thử lại");
@@ -57,65 +71,73 @@ class LegalRecord extends Component {
     }
   };
 
-  
   handleRemove = () => {
-    this.props.handleRemoveLegalRecord(this.props.id)
-  }
+    this.props.handleRemoveLegalRecord(this.props.id);
+  };
 
   render() {
     return (
       <LegalRecordWrapper>
-        <div className="title">
-          <FormItem>
-            {this.props.form.getFieldDecorator("legalRecords", {
-              rules: [
-                {
-                  required: true,
-                  message: "Tiêu đề ko đc để trống",
-                },
-              ],
-            })(
-              <div>
-                <Input className="legalRecords" placeholder="Tiêu đề" />
-              </div>,
-            )}
-          </FormItem>
-        </div>
-
-        <div className="files">
-          <Upload
-            className="upload"
-            onChange={this.handleOnChange}
-            customRequest={this.handleUpload}
-          >
-            <Button shape="round" icon="upload" />
-          </Upload>
-          <Button
-            icon="minus"
-            shape="round"
-            onClick={this.handleRemove}
-          />
-        </div>
+        <Row gutter={[16]}>
+          <Col xs={10}>
+            <div className="title">
+              <FormItem>
+                {this.props.form.getFieldDecorator("title", {
+                  rules: [
+                    {
+                      required: true,
+                      message: "Tiêu đề ko đc để trống",
+                    },
+                  ],
+                })(
+                  <div>
+                    <Input className="legalRecords" placeholder="Tiêu đề" />
+                  </div>,
+                )}
+              </FormItem>
+            </div>
+          </Col>
+          <Col xs={8}>
+            <div>
+              <FormItem>
+                {this.props.form.getFieldDecorator(
+                  `updatedAt`,
+                )(<DatePicker placeholder="Thời gian cập nhật" />)}
+              </FormItem>
+            </div>
+          </Col>
+          <Col xs={6}>
+            <div className="files">
+              <Upload
+                className="upload"
+                onChange={this.handleOnChange}
+                customRequest={this.handleUpload}
+              >
+                <Button shape="round" icon="upload" />
+              </Upload>
+              <Button icon="minus" shape="round" onClick={this.handleRemove} />
+            </div>
+          </Col>
+        </Row>
       </LegalRecordWrapper>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   file: state.property.fileUrl,
 });
 
-const mapDispatchToProps = dispatch => ({
-  uploadFileSuccess: fileUrl => {
+const mapDispatchToProps = (dispatch) => ({
+  uploadFileSuccess: (fileUrl) => {
     dispatch(uploadFileSuccessAction(fileUrl, "create"));
   },
-  addLegalRecordSuccess: (id, title, url, type) => {
-    dispatch(addNewLegalRecordSuccessAction(id, title, url, type));
+  addLegalRecordSuccess: (payload) => {
+    dispatch(addNewLegalRecordSuccessAction(payload));
   },
-  handleRemoveLegalRecord: id => {
+  handleRemoveLegalRecord: (id) => {
     dispatch(removeOneLegalRecordAction(id));
   },
- 
 });
 export default connect(
   mapStateToProps,

@@ -107,15 +107,12 @@ const addNewLegalRecord = (state) => {
     legalRecords,
   };
 };
-const addNewLegalRecordSuccess = (state, { id, title, link, mimeType }) => {
+const addNewLegalRecordSuccess = (state, { payload}) => {
   const legalRecords = [...state.legalRecords];
-  const index = legalRecords.findIndex((e) => e.id === id);
+  const index = legalRecords.findIndex((e) => e.id === payload.id);
   legalRecords[index] = {
-    id,
-    title,
-    link,
-    mimeType,
-  };
+    ...payload,
+  }
   return {
     ...state,
     legalRecords,
@@ -634,6 +631,7 @@ const getOnePropertySuccess = (state, { data }) => {
     name,
     cityId,
     typeId,
+    staffId,
     openSaleDate,
     commissionRate,
     overview,
@@ -657,6 +655,7 @@ const getOnePropertySuccess = (state, { data }) => {
     name,
     cityId,
     typeId,
+    staffId,
     openSaleDate,
     commissionRate,
     overview,

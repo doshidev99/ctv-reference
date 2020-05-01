@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 import React, { Component } from "react";
-import { Form, Row, Col } from "antd";
+import { Form, Row, Col, Input } from "antd";
 import "leaflet/dist/leaflet.css";
 
 import { Map, TileLayer, Marker } from "react-leaflet";
@@ -9,9 +9,7 @@ import { connect } from "react-redux";
 
 import LocationWrapper from "./styles";
 import Editor from "../../../../components/common/Editor/index";
-import {
-  markLocationAction,
-} from "../../../../redux/property/actions";
+import { markLocationAction } from "../../../../redux/property/actions";
 
 const FormItem = Form.Item;
 const centerLocation = [16.0592, 108.2179];
@@ -32,10 +30,24 @@ class Location extends Component {
   render() {
     return (
       <LocationWrapper>
+        <div className="locationLabel">
+          <span>Vị trí</span>
+        </div>
         <Row>
           <Col xs={24} lg={16} xl={12}>
             <div className="locationDescription">
-              <label className="locationLabel">Vị trí</label>
+              <FormItem>
+                {this.props.form.getFieldDecorator("address", {
+                rules: [
+                  {
+                    required:true,
+                    message: "Địa chỉ dự án không được trống",
+                  },
+                ],
+              })(
+                <Input placeholder="Nhập địa chỉ dự án" />,
+                )}
+              </FormItem>
               <FormItem>
                 {this.props.form.getFieldDecorator("locationDescription")(
                   <Editor content={this.props.description} />,
@@ -45,7 +57,7 @@ class Location extends Component {
           </Col>
           <Col xs={24} lg={16} xl={12}>
             <div className="locationMap">
-              <Map center={centerLocation} zoom={13} onClick={this.addMarker}>
+              <Map center={(this.props.location.length && this.props.location) || centerLocation} zoom={13} onClick={this.addMarker}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 {this.props.location.length > 0 ? (
                   <Marker position={this.props.location} />
@@ -72,4 +84,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Form.create()(Location));
+)(Location);

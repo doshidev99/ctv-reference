@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import { Input, Button, Upload, message, Form } from "antd";
+import {
+  Input,
+  Button,
+  Upload,
+  message,
+  Form,
+  DatePicker,
+  Row,
+  Col,
+} from "antd";
 import { connect } from "react-redux";
 import LegalRecordWrapper from "./styles";
 
@@ -33,7 +42,7 @@ class LegalRecord extends Component {
 
   handleUpload = async ({ file, onSuccess, onError }) => {
     try {
-      const title = await this.props.form.validateFields((err, val) => {
+      const values = await this.props.form.validateFields((err, val) => {
         if (err) {
           onError("Error cmnr =)))");
           return false;
@@ -48,12 +57,13 @@ class LegalRecord extends Component {
       );
       const response = await uploadFile(file, signedUrlS3.url);
       this.props.uploadFileSuccess(response.url);
-      this.props.addLegalRecordSuccess(
-        this.props.id,
-        title.legalRecords,
-        response.url,
-        file.type,
-      );
+      const payload = {
+        id: this.props.id,
+        ...values,
+        link: response.url,
+        mimeType: file.type,
+      };
+      this.props.addLegalRecordSuccess(payload);
       onSuccess("OK");
     } catch (error) {
       message.error("Xảy ra lỗi, vui lòng thử lại");
@@ -77,33 +87,47 @@ class LegalRecord extends Component {
     }
     return (
       <LegalRecordWrapper>
-        <div className="title">
-          <FormItem>
-            <div>
-              {this.props.form.getFieldDecorator("legalRecords", {
-                rules: [
-                  {
-                    required: true,
-                    message: "Tiêu đề ko đc để trống",
-                  },
-                ],
-                initialValue: this.props.data && this.props.data.title,
-              })(<Input className="legalRecords" placeholder="Tiêu đề" readOnly={!!this.props.data.readOnly} />)}
+        <Row gutter={[16]}>
+          <Col xs={10}>
+            <div className="title">
+              <FormItem>
+                <div>
+                  {this.props.form.getFieldDecorator("title", {
+                    rules: [
+                      {
+                        required: true,
+                        message: "Tiêu đề ko đc để trống",
+                      },
+                    ],
+                    initialValue: this.props.data && this.props.data.title,
+                  })(<Input className="legalRecords" placeholder="Tiêu đề" />)}
+                </div>
+              </FormItem>
             </div>
-          </FormItem>
-        </div>
-
-        <div className="files">
-          <Upload
-            className="upload"
-            onChange={this.handleOnChange}
-            customRequest={this.handleUpload}
-            defaultFileList={fileList}
-          >
-            <Button shape="round" icon="upload" />
-          </Upload>
-          <Button icon="minus" shape="round" onClick={this.handleRemove} />
-        </div>
+          </Col>
+          <Col xs={8}>
+            <div>
+              <FormItem>
+                {this.props.form.getFieldDecorator(`updatedAt`, {
+                  initialValue: this.props.data && this.props.data.updatedAt,
+                })(<DatePicker placeholder="Thời điểm cập nhât" />)}
+              </FormItem>
+            </div>
+          </Col>
+          <Col xs={6}>
+            <div className="files">
+              <Upload
+                className="upload"
+                onChange={this.handleOnChange}
+                customRequest={this.handleUpload}
+                defaultFileList={fileList}
+              >
+                <Button shape="round" icon="upload" />
+              </Upload>
+              <Button icon="minus" shape="round" onClick={this.handleRemove} />
+            </div>
+          </Col>
+        </Row>
       </LegalRecordWrapper>
     );
   }
@@ -117,8 +141,8 @@ const mapDispatchToProps = (dispatch) => ({
   uploadFileSuccess: (fileUrl) => {
     dispatch(uploadFileSuccessAction(fileUrl, "create"));
   },
-  addLegalRecordSuccess: (id, title, url, type) => {
-    dispatch(addNewLegalRecordSuccessAction(id, title, url, type));
+  addLegalRecordSuccess: (payload) => {
+    dispatch(addNewLegalRecordSuccessAction(payload));
   },
   handleRemoveLegalRecord: (id) => {
     dispatch(removeOneLegalRecordAction(id));

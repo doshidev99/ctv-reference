@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import i18n from "i18next";
+
 import {
   Layout,
   Form,
@@ -13,6 +14,7 @@ import {
   message,
   Radio,
   InputNumber,
+  notification,
 } from "antd";
 // import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -45,7 +47,7 @@ import { retrieveList } from "../../../redux/rest/actions";
 // import Payment from "./Payment";
 import PropertyDiscount from "./PropertyDiscount";
 import RestSelect from "../../../components/RestInput/RestSelect";
-import { getResources } from "../../../redux/rest/selectors";
+import { getResources, getListResourceData } from "../../../redux/rest/selectors";
 import PaymentProgress from "./PaymentProgress";
 import MainImage from "./MainImage";
 
@@ -86,6 +88,14 @@ class CreatePropertyForm extends Component {
       );
     }
 
+    if (!this.props.staffs || this.props.staffs.length === 0) {
+      this.props.retrieveRefferences(
+        "staffs",
+        { limit: 100, skip: 0, order: "id", filter: {} },
+        true,
+      );
+    }
+
     this.props.clearFields();
   }
 
@@ -113,6 +123,14 @@ class CreatePropertyForm extends Component {
           productTable,
           location,
         } = this.props;
+
+        if (location.length === 0) {
+          notification.error({
+            message: i18n.t("error.title"),
+            description: "Vui lòng chọn vị trí dự án trên bản đồ",
+          });
+          return;
+        }
 
         // const medias = [];
         // propertyImage.forEach((el) => {
@@ -184,9 +202,8 @@ class CreatePropertyForm extends Component {
       salesPolicies,
       paymentProgress,
     } = this.props;
-
+    const userId = Number(localStorage.getItem("id"));
     const { getFieldDecorator } = form;
-
     const legalArea = legalRecords.map((e) => (
       <LegalRecord key={e.id} id={e.id} />
     ));
@@ -209,21 +226,47 @@ class CreatePropertyForm extends Component {
       <StyleWrapper>
         <Layout>
           <Form layout="vertical" onSubmit={this.handleSubmit}>
-            <FormItem>
-              {getFieldDecorator("name", {
-                rules: [
-                  {
-                    required: true,
-                    message: i18n.t("input.propertyName.validateMsg.required"),
-                  },
-                ],
-              })(
-                <div>
-                  <label className="propertyNameLabel">Tên dự án</label>
-                  <Input />
-                </div>,
-              )}
-            </FormItem>
+            <Row gutter={16}>
+              <Col xs={24} md={18}>
+                <FormItem>
+                  {getFieldDecorator("name", {
+                    rules: [
+                      {
+                        required: true,
+                        message: i18n.t(
+                          "input.propertyName.validateMsg.required",
+                        ),
+                      },
+                    ],
+                  })(
+                    <div>
+                      <label className="propertyNameLabel">Tên dự án</label>
+                      <Input />
+                    </div>,
+                  )}
+                </FormItem>
+              </Col>
+              <Col xs={24} md={6}>
+                <FormItem>
+                  <div>
+                    <label className="form-group-title">Người phụ trách</label>
+                    <RestSelect
+                      form={this.props.form}
+                      source="staffId"
+                      defaultValue={userId}
+                      valueProp="id"
+                      titleProp="fullName"
+                      required
+                      requiredMessage='Vui lòng chọn người phụ trách'
+                      placeholder="Người phụ trách"
+                      resourceData={this.props.staffs}
+                  />
+                  </div>
+                
+                </FormItem>
+              </Col>
+            </Row>
+
             <Row gutter={16}>
               <Col xs={6}>
                 {/* CITY */}
@@ -434,8 +477,6 @@ class CreatePropertyForm extends Component {
                               {e.name}
                             </Option>
                           ))}
-
-                        {/* <Option value={2}>New</Option> */}
                       </Select>,
                     )}
                   </FormItem>
@@ -608,6 +649,7 @@ const mapStateToProps = (state) => {
     paymentMethodOptions: getResources(state, "payment-methods"),
     propertyTypes: getResources(state, "property-types"),
     cities: getResources(state, "cities"),
+    staffs: getListResourceData(state, "staffs"),
     listCityFailure,
     //---------------------
     createPropertyLoading,
