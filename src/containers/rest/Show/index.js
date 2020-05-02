@@ -44,6 +44,10 @@ const mapDispatchToProps = (dispatch, props) => {
       props.history.push(
         `${props.match.path.replace("/:id/show", "")}/${id}/edit`,
       ),
+    gotoEditCustomPage: (id) =>
+      props.history.push(
+        `${props.match.path.replace("/:id/show", "")}/${id}/edit`,
+      ),
     deleteItem: (id) => {
       dispatch(deleteRecord(props.resource, id));
       props.history.push(props.match.path.replace("/:id/show", ""));

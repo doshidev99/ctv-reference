@@ -19,7 +19,7 @@ export async function confirmOrderApi (id) {
 
 export async function confirmOrderImageApi (params) {
   const standingOrder = params.imageUrl;
-  return put(`/transactions/${params.id}`, {standingOrder})
+  return put(`/transactions/${params.id}/confirmation`, {standingOrder})
 }
 
 export async function resendRequestApi (id) {
@@ -52,10 +52,27 @@ export async function createRewardApi (id, bonus) {
 }
 
 export async function addPaymentApi (id, payload) {
-  const {payAmount, advanceAmount, type} = payload;
+  const {amount} = payload;
   return post(`/transaction-payments`, {
     transactionId: id,
-    amount: payAmount || advanceAmount,
-    type,
+    amount,
+  })
+}
+
+export async function changeTypeApi (id) {
+  return put(`/transactions/${id}/deposit`)
+}
+
+export async function updateTransactionApi (id, payload) {
+  const { paymentMethodId, actualCommissionAmount, contractCode, transactedAt, personalIncomeTaxRate, discountIds, rewards } = payload;
+  
+  return put(`/transactions/${id}/pay`, {
+    paymentMethodId,
+    actualCommissionAmount,
+    contractCode,
+    transactedAt,
+    personalIncomeTaxRate,
+    discountIds,
+    rewards,
   })
 }

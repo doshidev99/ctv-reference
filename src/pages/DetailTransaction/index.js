@@ -3,7 +3,8 @@ import i18n from "i18next";
 import { Layout } from "antd";
 import TransactionPageWrapper from "./styles";
 import PageTitle from "../../components/common/PageTitle/index";
-import DetailTransaction from '../../containers/TransactionPage/DetailTransaction/index'
+import DetailTransaction from '../../containers/TransactionPage/DetailTransaction/index';
+
 
 
 export default function DetailTransactionPage(){

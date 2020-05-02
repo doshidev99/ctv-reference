@@ -12,6 +12,11 @@ import {
   deletePropertyFailureAction,
   submitCreatePropertyFormFailureAtion,
   submitCreatePropertyFormSuccessAction,
+  getPaymentMethodSuccessAction,
+  getPaymentMethodFailureAction,
+  getDiscountGroupSuccessAction,
+  getDiscountGroupFailureAction,
+
   getOnePropertySuccessAction,
   getProductTableSuccessAction,
   getOnePropertyAction,
@@ -23,6 +28,8 @@ import {
   getProperties,
   deleteOne,
   createOneProperty,
+  getListPaymentMethod,
+  getListDiscountGroup,
 } from "../../api/modules/property";
 
 import { getDataByIdApi, getAllApi, putApi } from "../../api/common/crud";
@@ -292,6 +299,41 @@ function* updateProperty({ id, payload }) {
   }
 }
 
+function* getPaymentMethod({ id }) {
+  try {
+    const { results } = yield getListPaymentMethod(id);
+    const data = results.map((e) => {
+      return {
+        id: e.id,
+        name: e.name,
+        isVisible: e.isVisible,
+        date: moment(e.createdAt).format("L"),
+      };
+    });
+    
+    yield put(getPaymentMethodSuccessAction(data));
+  } catch (error) {
+    yield put(getPaymentMethodFailureAction(error));
+  }
+}
+
+function* getDiscountGroup({ id }) {
+  try {
+    const { results } = yield getListDiscountGroup(id);
+    const data = results.map((e) => {
+      return {
+        id: e.id,
+        name: e.name,
+        isVisible: e.isVisible,
+        discounts: e.discounts,
+      };
+    });
+    yield put(getDiscountGroupSuccessAction(data));
+  } catch (error) {
+    yield put(getDiscountGroupFailureAction(error));
+  }
+}
+
 function* getProductTable({ id, filterParams }) {
   try {
     const limit = filterParams.limit || 10;
@@ -319,6 +361,8 @@ export default [
   takeEvery(PropertyTypes.GET_LIST_PROPERTY, getListProperty),
   takeEvery(PropertyTypes.DELETE_PROPERTY, deleteProperty),
   takeEvery(PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM, createProperty),
+  takeEvery(PropertyTypes.GET_PAYMENT_METHOD, getPaymentMethod),
+  takeEvery(PropertyTypes.GET_DISCOUNT_GROUP, getDiscountGroup),
 
   takeEvery(PropertyTypes.GET_ONE_PROPERTY, getOneProperty),
   takeEvery(PropertyTypes.RETRIEVE_PRODUCT_TABLE, getProductTable),

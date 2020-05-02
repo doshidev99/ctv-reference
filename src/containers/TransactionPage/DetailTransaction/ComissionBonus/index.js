@@ -11,9 +11,9 @@ const FormItem = Form.Item;
 class Bonus extends Component {
   handleChange = async () => {
     const vals = await this.props.form.getFieldsValue();
-    const {title, amount} = vals
+    const {name, value} = vals
     
-    this.props.onChange(this.props.id, title, amount)
+    this.props.onChange(this.props.id, name, value)
   };
 
   handleRemove = () => {
@@ -23,11 +23,11 @@ class Bonus extends Component {
   render() {
     return (
       <BonusWrapper>
-        <Row>
+        <Row className="formContainer">
           <Col span={14}>
             <FormItem className="formItem">
-              {this.props.form.getFieldDecorator("title")(
-                <div className="title">
+              {this.props.form.getFieldDecorator("name")(
+                <div className="name">
                   <Input onChange={this.handleChange} placeholder="Tên khoảng thưởng" />
                 </div>,
               )}
@@ -35,12 +35,12 @@ class Bonus extends Component {
           </Col>
           <Col span={8}>
             <FormItem>
-              {this.props.form.getFieldDecorator("amount", {
+              {this.props.form.getFieldDecorator("value", {
                 rules: [
                   // { type: 'number', message: 'Vui lòng nhập số tiền!' },
                 ],
               })(
-                <div className="amount">
+                <div className="value">
                   <Input onChange={this.handleChange} placeholder="Số tiền"  />
                 </div>,
               )}
@@ -63,8 +63,8 @@ const mapDispatchToProps = dispatch => ({
   handleRemove: (id) => {
     dispatch(removeBonusAction(id));
   },
-  onChange: (id, title, url) => {
-    dispatch(onChangeBonusAction(id, title, url));
+  onChange: (id, name, value) => {
+    dispatch(onChangeBonusAction(id, name, value));
   },
   
  

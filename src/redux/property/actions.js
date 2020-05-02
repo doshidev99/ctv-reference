@@ -69,6 +69,15 @@ export const PropertyTypes = makeConstantCreator(
   "ADD_PAYMENT_PROGRESS_SUCCESS",
   "REMOVE_PAYMENT_PROGRESS",
 
+  "GET_PAYMENT_METHOD",
+  "GET_PAYMENT_METHOD_SUCCESS",
+  "GET_PAYMENT_METHOD_FAILURE",
+
+  "GET_DISCOUNT_GROUP",
+  "GET_DISCOUNT_GROUP_SUCCESS",
+  "GET_DISCOUNT_GROUP_FAILURE",
+
+  
   "CLEAR",
 
 
@@ -261,7 +270,24 @@ export const addPaymentProgressSuccessAction = (id, payload) =>
 export const removePaymentProgressAction = (id) =>
   makeActionCreator(PropertyTypes.REMOVE_PAYMENT_PROGRESS, { id });
 
+// Get payment method of one property
+export const getPaymentMethodAction = (id) =>
+  makeActionCreator(PropertyTypes.GET_PAYMENT_METHOD, {id});
+export const getPaymentMethodSuccessAction = (result) =>
+  makeActionCreator(PropertyTypes.GET_PAYMENT_METHOD_SUCCESS, {result});
+export const getPaymentMethodFailureAction = (error) =>
+  makeActionCreator(PropertyTypes.GET_PAYMENT_METHOD_FAILURE, {
+    error,
+  });
 
+export const getDiscountGroupAction = (id) =>
+  makeActionCreator(PropertyTypes.GET_DISCOUNT_GROUP, {id});
+export const getDiscountGroupSuccessAction = (result) =>
+  makeActionCreator(PropertyTypes.GET_DISCOUNT_GROUP_SUCCESS, {result});
+export const getDiscountGroupFailureAction = (error) =>
+  makeActionCreator(PropertyTypes.GET_DISCOUNT_GROUP_FAILURE, {
+    error,
+  });
 
 export const clearAction = () => makeActionCreator(PropertyTypes.CLEAR)
 

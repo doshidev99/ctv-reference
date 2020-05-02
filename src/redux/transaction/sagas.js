@@ -1,4 +1,4 @@
-import { takeEvery, put } from "redux-saga/effects";
+import { takeEvery, put, call } from "redux-saga/effects";
 import moment from 'moment'
 import {
   TransactionTypes,
@@ -20,6 +20,11 @@ import {
   confirmTransactionFailureAction,
   addPaymentSuccessAction,
   addPaymentFailureAction,
+  // changeTypeSuccessAction,
+  changeTypeFailureAction,
+  changeTypeSuccessAction,
+  submitUpdateFormSuccessAction,
+  submitUpdateFormFailureAction,
 } from "./actions";
 import {
   getDetailTransactionApi,
@@ -30,9 +35,12 @@ import {
   resendRequestApi,
   cancelTransApi,
   confirmTransactionApi,
-  addPaymentApi,
   createRewardApi,
+  changeTypeApi,
+  updateTransactionApi,
 } from "../../api/modules/transaction/index";
+import * as sagas from '../rest/sagas';
+import { apiWrapper } from '../../utils/reduxUtils';
 
 function* getDetailSaga({ id }) {
   try {
@@ -54,9 +62,9 @@ function* getTableSaga({ id }) {
     const data = results.map(e => {
       return {
         key: e.id,
-        date: moment(e.createdAt).format('DD/MM/YYYY'),
+        date: moment(e.createdAt).format('DD/MM/YYYY HH:mm:ss '),
         amount: e.amount,
-        paymentType: e.type === 1 ? 'Thanh toán' : 'Tạm ứng',
+        // paymentType: e.type === 1 ? 'Thanh toán' : 'Tạm ứng',
         realtorReceived: e.realtorReceived === true ? 'Đã rút': 'Chưa rút',
       }
     })
@@ -138,24 +146,64 @@ function* confirmTransaction({id, payload}) {
 
 function* addPayment({id, payload}) {
   try {
-    yield addPaymentApi(id, payload);
-    const {results, total} = yield getTablePaymentApi({ id });
-    const data = results.map(e => {
-      return {
-        key: e.id,
-        date: moment(e.createdAt).format('DD/MM/YYYY'),
-        amount: e.amount,
-        paymentType: e.type === 1 ? 'Thanh toán' : 'Tạm ứng',
-        realtorReceived: e.realtorReceived === true ? 'Đã rút': 'Chưa rút',
-      }
-    })
-    const detail = yield getDetailTransactionApi(id);
-    yield put(addPaymentSuccessAction(data,total, detail))
+    // const response = yield call(
+    //   apiWrapper,
+    //   {
+    //     isShowLoading: true,
+    //     isShowSucceedNoti: true,
+    //     successDescription: "Thêm thành công",
+    //     errorDescription: "Lỗi !!",
+    //   },
+    //   addPaymentApi,
+    //   id,
+    //   payload,
+    // );
+    
+    const resource = "transaction-payments"
+    // yield sagas.retrieveList(resource)
+    // const detail = yield getDetailTransactionApi(id);
+    const data = {
+      transactionId: id,
+      amount: payload.amount,
+      type: 1,
+    }    
+    yield sagas.createRecord({resource, data})
+    yield put(addPaymentSuccessAction())
   } catch (error) {
     yield put(addPaymentFailureAction(error))
   }
 }
 
+function* changeType ({id}) {
+  try {
+    const { status } = yield changeTypeApi(id);
+    yield put(changeTypeSuccessAction(status))
+  } catch (error) {
+    yield put(changeTypeFailureAction(error));
+  }
+}
+
+function* updateDetailTrans ({id, payload}) {
+  try {
+    payload.rewards.map((e) => delete e.id)
+     yield call(
+      apiWrapper,
+      {
+        isShowLoading: true,
+        isShowSucceedNoti: true,
+        successDescription: "Cập nhật thành công",
+        errorDescription: "Lỗi !!",
+      },
+      updateTransactionApi,
+      id,
+      payload,
+    );
+    yield put(submitUpdateFormSuccessAction())
+    yield getDetailSaga({id})
+  } catch (error) {
+    yield put(submitUpdateFormFailureAction(error));
+  }
+}
 export default [
   takeEvery(TransactionTypes.GET_DETAIL_TRANSACTION, getDetailSaga),
   takeEvery(TransactionTypes.GET_TABLE_PAYMENT, getTableSaga),
@@ -166,4 +214,6 @@ export default [
   takeEvery(TransactionTypes.CANCEL_TRANSACTION, cancelTransaction),
   takeEvery(TransactionTypes.CONFIRM_TRANSACTION, confirmTransaction),
   takeEvery(TransactionTypes.ADD_PAYMENT, addPayment),
+  takeEvery(TransactionTypes.CHANGE_TYPE, changeType),
+  takeEvery(TransactionTypes.SUBMIT_UPDATE_TRANSACTION, updateDetailTrans),
 ];

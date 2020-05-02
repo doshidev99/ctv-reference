@@ -39,6 +39,7 @@ export const initialState = {
   propertyImage: [],
   medias: [],
   discounts: [],
+  discountGroup: [],
   paymentMethods: [],
   location: [],
   locationDescription: "",
@@ -598,6 +599,23 @@ const removeOnePaymentProgress = (state, { id }) => {
   };
 };
 
+const getPaymentMethodsSuccess = (state, { result }) => ({
+  ...state,
+  paymentMethods: result,
+});
+
+const getPaymentMethodsFailure = state => ({
+  ...state,
+});
+
+const getDiscountGroupSuccess = (state, { result }) => ({
+  ...state,
+  discountGroup: result,
+});
+
+const getDiscountGroupFailure = state => ({
+  ...state,
+});
 // CLEAR
 const clear = () => ({ ...initialState });
 
@@ -791,6 +809,12 @@ export const property = makeReducerCreator(initialState, {
   [PropertyTypes.ADD_PAYMENT_PROGRESS]: addPaymentProgress,
   [PropertyTypes.ADD_PAYMENT_PROGRESS_SUCCESS]: addPaymentProgressSuccess,
   [PropertyTypes.REMOVE_PAYMENT_PROGRESS]: removeOnePaymentProgress,
+
+  [PropertyTypes.GET_PAYMENT_METHOD_SUCCESS]: getPaymentMethodsSuccess,
+  [PropertyTypes.GET_PAYMENT_METHOD_FAILURE]: getPaymentMethodsFailure,
+
+  [PropertyTypes.GET_DISCOUNT_GROUP_SUCCESS]: getDiscountGroupSuccess,
+  [PropertyTypes.GET_DISCOUNT_GROUP_FAILURE]: getDiscountGroupFailure,
 
   [PropertyTypes.CLEAR]: clear,
 
