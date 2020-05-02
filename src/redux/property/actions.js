@@ -289,7 +289,7 @@ export const getDiscountGroupFailureAction = (error) =>
     error,
   });
 
-export const clearAction = () => makeActionCreator(PropertyTypes.CLEAR)
+export const clearAction = (preservedFields) => makeActionCreator(PropertyTypes.CLEAR, {preservedFields})
 
 
 // -------------------GET ONE PROPERTY------------------------------

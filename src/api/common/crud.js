@@ -14,6 +14,9 @@ export async function delApi(resource, id) {
   }
   return del(`/${resource}`);
 }
+export async function delApiWithPayload(resource, payload) {
+  return del(`/${resource}`, payload);
+}
 
 export async function postApi(resource, data) {
   return post(`/${resource}`, data);
