@@ -5,7 +5,23 @@ import { mongoObjectId } from "../../utils/textProcessor";
 // Setup inintial state for app
 export const initialState = {
   transaction: {},
-  payment: [],
+  transactionPayments: {
+    payments: [],
+    currentPayment: {},
+    offset: 0, // offset = (page - 1) * limit;
+    limit: 10,
+    total: null,
+    loading: false,
+
+    listPaymentSuccess: undefined,
+    listPaymentFailure: undefined,
+
+    createPaymentSuccess: undefined,
+    createPaymentFailure: undefined,
+
+    updatePaymentSuccess: undefined,
+    updatePaymentFailure: undefined,
+  },
   total: null,
   isLoadingDetail: true,
   isLoadingTable: false,
@@ -58,19 +74,67 @@ const getTablePayment = (state) => ({
   ...state,
   isLoadingTable: true,
 })
-const getTablePaymentSuccess = (state, { data, total }) => ({
+const getTablePaymentSuccess = (state, { data, total, limit, offset }) => ({
   ...state,
-  payment: data,
-  total,
+  transactionPayments: {
+    ...state.transactionPayments,
+    payments: data,
+    limit, 
+    offset,
+    total,
+    loading: false,
+    currentPayment: {},
+  },
   isLoadingTable: false,
+  listPaymentFailure: false,
   tablePaymentSuccess: true,
   tablePaymentFailure: false,
 })
 const getTablePaymentFail = state => ({
   ...state,
-  isLoadingTable: true,
+  isLoadingTable: false,
+  listPaymentFailure: true,
   tablePaymentSuccess: false,
   tablePaymentFailure: true,
+})
+
+// ---------------------------------------
+const getOnePaymentSuccess = (state, {data}) => {
+  return {
+    ...state,
+    loading: false,
+    transactionPayments: {
+      ...state.transactionPayments,
+      currentPayment: data,
+    },
+  };
+};
+
+const getOnePaymentFailure = state => ({
+  ...state,
+  loading: false,
+});
+
+// -----------------------------------------
+const updateOnePaymentSuccess = state => ({
+  ...state,
+  loading:false,
+  transactionPayments: {
+    ...state.transactionPayments,
+    currentPayment: {},
+    updatePaymentFailure: false,
+    updatePaymentSuccess: true,
+  },
+  
+})
+const updateOnePaymentFailure = state => ({
+  ...state,
+  loading:false,
+  transactionPayments: {
+    ...state.transactionPayments,
+    updatePaymentFailure: true,
+    updatePaymentSuccess: false,
+  },
 })
 
 const getListTransaction = state => ({
@@ -251,23 +315,19 @@ const confirmTransactionFailure = (state, { error }) => ({
   confirmTransactionError: error,
 })
 
-const addPayment = state => ({
-  ...state,
-  isLoadingConfirm: true,
-  isLoadingStatus: true,
-});
+
 const addPaymentSuccess = (state) => ({
   ...state,
-  isLoadingConfirm: false,
+  // isLoadingConfirm: false,
   // transaction: detail,
-  isLoadingStatus: false,
+  // isLoadingStatus: false,
   addPaymentSuccess: true,
   addPaymentFailure: false,
 });
 const addPaymentFailure = (state) => ({
   ...state,
-  isLoadingConfirm: false,
-  isLoadingStatus: false,
+  // isLoadingConfirm: false,
+  // isLoadingStatus: false,
   addPaymentSuccess: false,
   addPaymentFailure: true,
 })
@@ -351,7 +411,7 @@ export const transaction = makeReducerCreator(initialState, {
   [TransactionTypes.CONFIRM_TRANSACTION_SUCCESS]: confirmTransactionSuccess,
   [TransactionTypes.CONFIRM_TRANSACTION_FAILURE]: confirmTransactionFailure,
 
-  [TransactionTypes.ADD_PAYMENT]: addPayment,
+  // [TransactionTypes.ADD_PAYMENT]: addPayment,
   [TransactionTypes.ADD_PAYMENT_SUCCESS]: addPaymentSuccess,
   [TransactionTypes.ADD_PAYMENT_FAILURE]: addPaymentFailure,
 
@@ -362,4 +422,10 @@ export const transaction = makeReducerCreator(initialState, {
   // [TransactionTypes.SUBMIT_UPDATE_TRANSACTION]: submitUpdateTransaction,
   [TransactionTypes.SUBMIT_UPDATE_TRANSACTION_SUCCESS]: submitUpdateTransactionSuccess,
   [TransactionTypes.SUBMIT_UPDATE_TRANSACTION_FAILURE]: submitUpdateTransactionFailure,
+
+  [TransactionTypes.GET_ONE_PAYMENT_SUCCESS]: getOnePaymentSuccess,
+  [TransactionTypes.GET_ONE_PAYMENT_FAILURE]: getOnePaymentFailure,
+
+  [TransactionTypes.UPDATE_ONE_PAYMENT_SUCCESS]: updateOnePaymentSuccess,
+  [TransactionTypes.UPDATE_ONE_PAYMENT_FAILURE]: updateOnePaymentFailure,
 })

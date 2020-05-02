@@ -59,18 +59,26 @@ export async function addPaymentApi (id, payload) {
   })
 }
 
+export async function updatePaymentApi (id, payload) {
+  const {amount, isSent} = payload;
+  return put(`/transaction-payments`, {
+    transactionId: id,
+    amount,
+    isSent,
+  })
+}
+
 export async function changeTypeApi (id) {
   return put(`/transactions/${id}/deposit`)
 }
 
 export async function updateTransactionApi (id, payload) {
-  const { paymentMethodId, actualCommissionAmount, contractCode, transactedAt, personalIncomeTaxRate, discountIds, rewards } = payload;
+  const { paymentMethodId, actualCommissionAmount, contractCode, personalIncomeTaxRate, discountIds, rewards } = payload;
   
   return put(`/transactions/${id}/pay`, {
     paymentMethodId,
     actualCommissionAmount,
     contractCode,
-    transactedAt,
     personalIncomeTaxRate,
     discountIds,
     rewards,

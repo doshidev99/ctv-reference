@@ -1,25 +1,19 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import moment from "moment";
 import { withRouter } from "react-router-dom";
 import i18n from "i18next";
-import {  Row, Col, Form, Typography, Input, Skeleton, DatePicker, Select, Button, Radio, Modal, Popconfirm, Checkbox } from "antd";
+import {  Row, Col, Form, Typography, Input, Skeleton, Select, Button, Radio, Modal, Popconfirm, Checkbox } from "antd";
 import StyleWrapper from "./styles";
 import Bonus from './ComissionBonus';
 import StandingOrderImage from './OrderPicture';
-// import TablePayment from './TablePayment';
-import Label from '../../../../components/RestField/Label';
-import RestList from '../../../rest/List';
-import ActionGroup from "../../../../components/RestActions/ActionGroup";
-import CustomEditButton from "../../../../components/RestActions/CustomEditButton";
+import TablePayment from './TablePayment';
 import {
   addNewBonusAction,
   confirmOrderAction,
   resendRequestAction,
   cancelTransactionAction,
   confirmTransactionAction,
-  addPaymentAction,
   changeTypeAction,
   submitUpdateFormAction,
 } from "../../../../redux/transaction/actions";
@@ -55,32 +49,18 @@ class StatusTrans extends Component {
     e.preventDefault();
     this.props.form.validateFields( async (err, values) => {
       if (!err) {
-        // values.type = 1;
         await this.props.addPayment(this.props.match.params.id,values);
         this.handleCancelModalCommission();
       }
     });
   }
-
-  // handleSubmitAdvance = e => {
-  //   e.preventDefault();
-  //   this.props.form.validateFields( async (err, values) => {
-  //     if(!err) {
-  //       values.type = 2;
-  //       await this.props.addPayment(this.props.match.params.id,values);
-  //       this.handleCancelModalAdvance();
-  //     }
-  //   })
-  // }
   
   handleSubmitEdit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        values.transactedAt = values.transactedAt
-          ? values.transactedAt.format()
-          : null;
-        values.discountIds = values.discountIds.concat(values.discountId.filter(Boolean));
+        values.discountIds = values.discountIds || [];
+        values.discountIds = values.discountIds || values.discountId ? values.discountIds.concat(values.discountId.filter(Boolean)) : [];
         const {bonus} = this.props;
         values = {
           ...values,
@@ -128,9 +108,8 @@ class StatusTrans extends Component {
       paymentMethods,
       discountGroup,
       } = this.props;
-      const { visibleEdit, visibleCommission } = this.state;
+      const { visibleEdit } = this.state;
       const { getFieldDecorator } = form;
-      const apiUrl = `transactions/${this.props.match.params.id}/payments`
       const bonusArea = bonus.map(e => <Bonus key={e.id} id={e.id} />);
 
     return (
@@ -245,26 +224,6 @@ class StatusTrans extends Component {
                           })(
                             <Input placeholder="Phần trăm(%) thuế  TNCN" />,
                         )}
-                    </FormItem>
-                    {/* <FormItem label="Đã nhận thưởng:">
-                          {getFieldDecorator("receivedReward", {
-                            valuePropName: "checked",
-                            initialValue: transaction.receivedReward,
-                          })(disableSwitch ? <Switch disabled /> : <Switch />)}
-                        </FormItem> */}
-                    <FormItem label="Ngày giao dịch:">
-                      {getFieldDecorator("transactedAt", {
-                            rules: [
-                              {
-                                type: "object",
-                                required: true,
-                                message: "Vui lòng chọn ngày giao dịch",
-                                whitespace: true,
-                              },
-                            ],
-                          })(
-                            <DatePicker initialValue={transaction.transactedAt ? moment(transaction.transactedAt): ''} />,
-                          )}
                     </FormItem>
                     <FormItem label="Phương thức thanh toán:">
                       {getFieldDecorator("paymentMethodId", {
@@ -388,76 +347,7 @@ class StatusTrans extends Component {
                 </Row>
 
                 <Title level={4}>Các đợt thanh toán</Title>
-                { transaction.status === 3 && (
-                  <Row style={{marginBottom: "10px"}}>
-                    <Col span={6}>
-                      <Button type="primary" icon="plus" onClick={this.showModalCommission}>Thêm đợt thanh toán</Button>
-                    </Col>
-                    <Modal
-                      title="Thêm đợt thanh toán"
-                      visible={visibleCommission}
-                      onOk={this.handleSubmitCommission}
-                      onCancel={this.handleCancelModalCommission}
-                      footer={[
-                        <Button key="submit" type="primary" loading={isLoadingConfirm} onClick={this.handleSubmitCommission}>
-                      Xác nhận
-                        </Button>,
-                    ]}
-                  >
-                      <Row>
-                        <Col span={12}>
-                          <p>Tổng tiền hoa hồng chưa thanh toán:</p>
-                        </Col>
-                        <Col span={12}>
-                          {transaction.actualCommissionAmount && transaction.withdrawnAmount !== null ? transaction.actualCommissionAmount - transaction.withdrawnAmount : ''}
-                          {' VND'}
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col span={12}>
-                          <p>Số tiền thanh toán:</p>
-                        </Col>
-                        <Col span={12}>
-                          <Form layout="vertical" onSubmit={this.handleSubmitCommission}>
-                            <FormItem>
-                              {this.props.form.getFieldDecorator("amount", {
-                              // rules: [{ required: true, message: 'Vui lòng nhập giá trị!'}],
-                            })(
-                              <div className="payAmount">
-                                <Input placeholder="Tiền hoa hồng" />
-                              </div>,
-                            )}
-                            </FormItem>
-                          </Form>
-                        </Col>
-                      </Row>
-                    </Modal>
-                  </Row>
-                )}
-                
-                <RestList
-                  resource={apiUrl}
-                  initialFilter={{ limit: 10, skip: 0, order:'-createdAt', filter: {} }}
-                  hasCreate={false}
-                  {...this.props}
-                >
-                  <Label
-                    source="createdAt"
-                    title="Thời gian"
-                    render={value => moment(value).format('DD-MM-YYYY HH:mm')}
-                   />
-                  <Label
-                    source="amount"
-                    title="Số tiền" />
-                  <Label
-                    source="isSent"
-                    title="Trạng thái gửi"
-                    render={value =>value ? 'Đã gửi tiền': 'Chưa gửi tiền'}
-                  />
-                  <ActionGroup>
-                    <CustomEditButton resourceCustom="transaction-payments" />
-                  </ActionGroup>
-                </RestList>
+                <TablePayment {...this.props} />
               </div>
             )}
           </div>
@@ -468,23 +358,17 @@ class StatusTrans extends Component {
 }
 
 StatusTrans.propTypes = {
-  isLoadingDetail: PropTypes.bool,
-  isLoadingTable: PropTypes.bool,
   isLoadingStatus: PropTypes.bool,
   isLoadingConfirm: PropTypes.bool,
   transaction: PropTypes.object,
-  payment: PropTypes.array,
   form: PropTypes.object,
 }
 
 const mapStateToProps = state => {
   const {
     transaction,
-    payment,
     total,
     bonus,
-    isLoadingDetail,
-    isLoadingTable,
     isLoadingStatus,
     isLoadingConfirm,
     addPaymentSuccess,
@@ -493,11 +377,8 @@ const mapStateToProps = state => {
   const {paymentMethods, discountGroup} = state.property;
   return {
     transaction,
-    payment,
     total,
     bonus,
-    isLoadingDetail,
-    isLoadingTable,
     isLoadingStatus,
     isLoadingConfirm,
     addPaymentSuccess,
@@ -522,9 +403,6 @@ const mapDispatchToProps = dispatch => ({
   },
   confirmTransaction: (id, payload) => {
     dispatch(confirmTransactionAction(id, payload));
-  },
-  addPayment: (id, payload) => {
-    dispatch(addPaymentAction(id, payload));
   },
   changeType: (id) => {
     dispatch(changeTypeAction(id));

@@ -9,6 +9,14 @@ export const TransactionTypes = makeConstantCreator(
   "GET_TABLE_PAYMENT_SUCCESS",
   "GET_TABLE_PAYMENT_FAIL",
 
+  "GET_ONE_PAYMENT",
+  "GET_ONE_PAYMENT_SUCCESS",
+  "GET_ONE_PAYMENT_FAILURE",
+
+  "UPDATE_ONE_PAYMENT",
+  "UPDATE_ONE_PAYMENT_SUCCESS",
+  "UPDATE_ONE_PAYMENT_FAILURE",
+
   "GET_LIST_TRANSACTION",
   "GET_LIST_TRANSACTION_SUCCESS",
   "GET_LIST_TRANSACTION_FAILURE",
@@ -56,18 +64,18 @@ export const TransactionTypes = makeConstantCreator(
 );
 
 // Get detail transaction by id
-export const getDetailTransactionAction = id =>
-  makeActionCreator(TransactionTypes.GET_DETAIL_TRANSACTION, { id });
-export const getDetailTransactionSuccessAction = data =>
+export const getDetailTransactionAction = (id) =>
+  makeActionCreator(TransactionTypes.GET_DETAIL_TRANSACTION, {id});
+export const getDetailTransactionSuccessAction = (data) =>
   makeActionCreator(TransactionTypes.GET_DETAIL_TRANSACTION_SUCCESS, {data});
 export const getDetailTransactionFailureAction = error =>
   makeActionCreator(TransactionTypes.GET_DETAIL_TRANSACTION_FAIL, {error});
 
 // Get table transactions payments by transactionId
-export const getTablePaymentAction = id =>
-  makeActionCreator(TransactionTypes.GET_TABLE_PAYMENT, {id});
-export const getTablePaymentSuccessAction = (data, total) =>
-  makeActionCreator(TransactionTypes.GET_TABLE_PAYMENT_SUCCESS, {data, total});
+export const getTablePaymentAction = (id, limit, offset, filter, orderBy, fields) =>
+  makeActionCreator(TransactionTypes.GET_TABLE_PAYMENT, {id, limit, offset, filter, orderBy, fields});
+export const getTablePaymentSuccessAction = (data, total,  limit, offset) =>
+  makeActionCreator(TransactionTypes.GET_TABLE_PAYMENT_SUCCESS, {data, total, limit, offset});
 export const getTablePaymentFailureAction = error =>
   makeActionCreator(TransactionTypes.GET_TABLE_PAYMENT_FAIL, {error});
 
@@ -161,5 +169,20 @@ export const submitUpdateFormSuccessAction = () =>
 export const submitUpdateFormFailureAction = error =>
   makeActionCreator(TransactionTypes.SUBMIT_UPDATE_TRANSACTION_FAILURE, { error });
 
+  
+  // Get one document
+export const getOnePaymentAction = (id) =>
+makeActionCreator(TransactionTypes.GET_ONE_PAYMENT, {id});
+export const getOnePaymentSuccessAction = (data) =>
+makeActionCreator(TransactionTypes.GET_ONE_PAYMENT_SUCCESS, {data});
+export const getOnePaymentFailureAction = error =>
+makeActionCreator(TransactionTypes.GET_ONE_PAYMENT_FAILURE, { error });
 
+// Edit one service
+export const updateOnePaymentAction = (id, payload) =>
+  makeActionCreator(TransactionTypes.UPDATE_ONE_PAYMENT, {id, payload});
+export const updateOnePaymentSuccessAction = (id) =>
+  makeActionCreator(TransactionTypes.UPDATE_ONE_PAYMENT_SUCCESS, {id});
+export const updateOnePaymentFailureAction = error =>
+  makeActionCreator(TransactionTypes.UPDATE_ONE_PAYMENT_FAILURE, { error });
 

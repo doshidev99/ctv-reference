@@ -63,7 +63,7 @@ const routes = [
       },
       {
         path: '/:id/show',
-        component: lazy(() => import('../../pages/DetailTransaction/index2')),
+        component: lazy(() => import('../../pages/Transaction/Detail')),
         exact: true,
         title: i18n.t('transaction.detail.title'),
       },
