@@ -4,7 +4,7 @@ import Scrollbar from "react-smooth-scrollbar";
 import { connect } from "react-redux";
 import moment from "moment";
 import { message, Spin } from "antd";
-import MailSearchBox from "./SearchMail";
+// import MailSearchBox from "./SearchMail";
 import { tagColor, tags } from "../MailOption/MailTag";
 import Wrapper from "./styles";
 import {
@@ -117,9 +117,9 @@ class ListMail extends Component {
           <h3>Inbox</h3>
           {/* <PaginationControl /> */}
         </div>
-        <div className="searchMailWrapper">
+        {/* <div className="searchMailWrapper">
           <MailSearchBox />
-        </div>
+        </div> */}
         {content}
       </Wrapper>
     );
