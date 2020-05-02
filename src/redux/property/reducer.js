@@ -1,5 +1,5 @@
 import moment from "moment";
-import * as _ from 'lodash'
+import * as _ from "lodash";
 import { makeReducerCreator } from "../../utils/reduxUtils";
 import { PropertyTypes } from "./actions";
 import { mongoObjectId } from "../../utils/textProcessor";
@@ -606,7 +606,7 @@ const getPaymentMethodsSuccess = (state, { result }) => ({
   paymentMethods: result,
 });
 
-const getPaymentMethodsFailure = state => ({
+const getPaymentMethodsFailure = (state) => ({
   ...state,
 });
 
@@ -615,15 +615,16 @@ const getDiscountGroupSuccess = (state, { result }) => ({
   discountGroup: result,
 });
 
-const getDiscountGroupFailure = state => ({
+const getDiscountGroupFailure = (state) => ({
   ...state,
 });
 // CLEAR
 // eslint-disable-next-line no-unused-vars
-const clear = (state,{preservedFields}) => { // preservedFields : các field cần giữ lại khi clear state
+const clear = (state, { preservedFields }) => {
+  // preservedFields : các field cần giữ lại khi clear state
   let preservedStates;
-  if(preservedFields) {
-    preservedStates = preservedFields.map(e => state[e]);
+  if (preservedFields) {
+    preservedStates = preservedFields.map((e) => state[e]);
   }
   return { ...initialState, ...preservedStates };
 };
@@ -658,6 +659,7 @@ const getOnePropertySuccess = (state, { data }) => {
     isVisible,
     transactionType,
     tags,
+    vatRate,
   } = data;
   const currentProperty = {
     id,
@@ -679,6 +681,7 @@ const getOnePropertySuccess = (state, { data }) => {
     isVisible,
     transactionType,
     tags,
+    vatRate,
     ...state.currentProperty,
   };
   medias && medias.push(...mainImages);
@@ -752,26 +755,27 @@ const getProductTableSuccess = (state, { data }) => {
 
 // LOAD EXCEL
 const loadExcelSuccess = (state, { data }) => {
-  
   // console.log("Đây là cái cũ >>",state.productTable);
   // console.log("Đây là cái mới từ excel >>",data);
-  let productTable = [...state.currentProperty.productTable] // productTable từ API
+  let productTable = [...state.currentProperty.productTable]; // productTable từ API
 
   // list new sections (in case unmapable)
-   const newProductTable = _.differenceBy(data, productTable, 'productCode')
-   productTable.forEach(row => {
-    data.forEach(d => {
-      if(d.productCode === row.code) { // if 2 productCode is equal
-        if(d.status === 1 || d.status === 2 || d.status === 3) { // If booked/sold/reserved
-          const {status, price} = row;
-          row = {...d, status, price} // keep the old status and price
-        }else {
-          row = {...d } // overwrite the old seciton with new sections data
+  const newProductTable = _.differenceBy(data, productTable, "productCode");
+  productTable.forEach((row) => {
+    data.forEach((d) => {
+      if (d.productCode === row.code) {
+        // if 2 productCode is equal
+        if (d.status === 1 || d.status === 2 || d.status === 3) {
+          // If booked/sold/reserved
+          const { status, price } = row;
+          row = { ...d, status, price }; // keep the old status and price
+        } else {
+          row = { ...d }; // overwrite the old seciton with new sections data
         }
       }
-    })
-  })
-  productTable = [...productTable, ...newProductTable]
+    });
+  });
+  productTable = [...productTable, ...newProductTable];
 
   return {
     ...state,

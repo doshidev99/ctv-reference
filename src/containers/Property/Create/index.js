@@ -270,7 +270,7 @@ class CreatePropertyForm extends Component {
             </Row>
 
             <Row gutter={16}>
-              <Col xs={6}>
+              <Col xs={4}>
                 {/* CITY */}
                 <span className="form-group-title">Thành phố</span>
                 {this.props.cities ? (
@@ -284,7 +284,7 @@ class CreatePropertyForm extends Component {
                   />
                 ) : null}
               </Col>
-              <Col xs={6}>
+              <Col xs={4}>
                 {/* PROPERTY TYPE */}
                 <span className="form-group-title">Loại dự án</span>
                 {this.props.propertyTypes ? (
@@ -324,7 +324,7 @@ class CreatePropertyForm extends Component {
                   </div>
                 </FormItem>
               </Col>
-              <Col xs={6}>
+              <Col xs={5}>
                 {/*  COMMISSION RATE */}
                 <FormItem>
                   <div className="commission">
@@ -342,6 +342,32 @@ class CreatePropertyForm extends Component {
                       <InputNumber
                         placeholder="Tỷ lệ (%)"
                         name="commissionRate"
+                        min={0}
+                        max={100}
+                        // onChange={this.handleChange}
+                      />,
+                    )}
+                  </div>
+                </FormItem>
+              </Col>
+              <Col xs={5}>
+                {/*  VAT RATE */}
+                <FormItem>
+                  <div className="vatRate">
+                    <div className="form-group-title">
+                      <span>Tỉ lệ VAT (%)</span>
+                    </div>
+                    {getFieldDecorator("vatRate", {
+                      rules: [
+                        {
+                          required: true,
+                          message: "Hãy chọn phần trăm VAT",
+                        },
+                      ],
+                    })(
+                      <InputNumber
+                        placeholder="Tỷ lệ (%)"
+                        name="vatRate"
                         min={0}
                         max={100}
                         // onChange={this.handleChange}
