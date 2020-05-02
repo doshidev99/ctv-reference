@@ -20,11 +20,14 @@ import {
   confirmTransactionFailureAction,
   addPaymentSuccessAction,
   addPaymentFailureAction,
-  // changeTypeSuccessAction,
   changeTypeFailureAction,
   changeTypeSuccessAction,
   submitUpdateFormSuccessAction,
   submitUpdateFormFailureAction,
+  getOnePaymentSuccessAction,
+  getOnePaymentFailureAction,
+  updateOnePaymentSuccessAction,
+  updateOnePaymentFailureAction,
 } from "./actions";
 import {
   getDetailTransactionApi,
@@ -38,8 +41,9 @@ import {
   createRewardApi,
   changeTypeApi,
   updateTransactionApi,
+  addPaymentApi,
 } from "../../api/modules/transaction/index";
-import * as sagas from '../rest/sagas';
+import { putApi, getDataByIdApi } from "../../api/common/crud";
 import { apiWrapper } from '../../utils/reduxUtils';
 
 function* getDetailSaga({ id }) {
@@ -56,21 +60,48 @@ function* getDetailSaga({ id }) {
   }
 }
 
-function* getTableSaga({ id }) {
+function* getTableSaga({ id, limit, offset, filter , orderBy, fields }) {
   try {
-    const {results, total} = yield getTablePaymentApi({ id });
-    const data = results.map(e => {
-      return {
-        key: e.id,
-        date: moment(e.createdAt).format('DD/MM/YYYY HH:mm:ss '),
-        amount: e.amount,
-        // paymentType: e.type === 1 ? 'Thanh toán' : 'Tạm ứng',
-        realtorReceived: e.realtorReceived === true ? 'Đã rút': 'Chưa rút',
-      }
-    })
-    yield put(getTablePaymentSuccessAction(data,total))
+    if (limit === undefined) {
+      limit = 50;
+    }
+    if (offset === undefined) {
+      offset = 0
+    }
+    if (fields === undefined) {
+     fields = `["id", "amount", "createdAt", "isSent"]`
+    }
+    const {results, total} = yield getTablePaymentApi({ id, limit, offset, filter , orderBy, fields  });
+    const data = results.map(e => ({
+      key: e.id,
+      createdAt: moment(e.createdAt).format('DD/MM/YYYY HH:mm'),
+      amount: e.amount,
+      // paymentType: e.type === 1 ? 'Thanh toán' : 'Tạm ứng',
+      // realtorReceived: e.realtorReceived === true ? 'Đã rút': 'Chưa rút',
+      isSent: e.isSent,
+    }))
+    yield put(getTablePaymentSuccessAction(data, total, limit, offset))
   } catch (error) {
     yield put(getTablePaymentFailureAction(error))
+  }
+}
+
+function* getOnePayment({id}) {
+  try {
+    const data = yield call(
+      apiWrapper,
+      {
+        isShowLoading: true,
+        isShowSucceedNoti: false,
+        errorDescription: "Có lỗi xảy ra",
+      },
+      getDataByIdApi,
+      "transaction-payments",
+      id,
+    );
+    yield put(getOnePaymentSuccessAction(data))
+  } catch (error) {
+    yield put(getOnePaymentFailureAction(error))
   }
 }
 
@@ -146,31 +177,48 @@ function* confirmTransaction({id, payload}) {
 
 function* addPayment({id, payload}) {
   try {
-    // const response = yield call(
-    //   apiWrapper,
-    //   {
-    //     isShowLoading: true,
-    //     isShowSucceedNoti: true,
-    //     successDescription: "Thêm thành công",
-    //     errorDescription: "Lỗi !!",
-    //   },
-    //   addPaymentApi,
-    //   id,
-    //   payload,
-    // );
+    yield call(
+      apiWrapper,
+      {
+        isShowLoading: true,
+        isShowSucceedNoti: true,
+        successDescription: "Thêm thành công",
+        errorDescription: "Lỗi !!",
+      },
+      addPaymentApi,
+      id,
+      payload,
+    );
     
-    const resource = "transaction-payments"
-    // yield sagas.retrieveList(resource)
-    // const detail = yield getDetailTransactionApi(id);
-    const data = {
-      transactionId: id,
-      amount: payload.amount,
-      type: 1,
-    }    
-    yield sagas.createRecord({resource, data})
+    yield getTableSaga({id,limit: 5, offset: 0,filter: null,orderBy: '-createdAt'})
+    yield getDetailSaga({id})
     yield put(addPaymentSuccessAction())
   } catch (error) {
     yield put(addPaymentFailureAction(error))
+  }
+}
+
+function* updateOnePayment({id, payload}) {
+  try {
+    const response = yield call(
+      apiWrapper,
+      {
+        isShowLoading: true,
+        isShowSucceedNoti: true,
+        successDescription: "Chỉnh sửa thành công",
+        errorDescription: "Lỗi !!",
+      },
+      putApi,
+      'transaction-payments',
+      id,
+      payload,
+    );
+    
+    yield getTableSaga({id: response.transactionId, limit: 5, offset: 0,filter: null,orderBy: '-createdAt'})
+    yield getDetailSaga({id: response.transactionId})
+    yield put(updateOnePaymentSuccessAction())
+  } catch (error) {
+    yield put(updateOnePaymentFailureAction(error))
   }
 }
 
@@ -216,4 +264,6 @@ export default [
   takeEvery(TransactionTypes.ADD_PAYMENT, addPayment),
   takeEvery(TransactionTypes.CHANGE_TYPE, changeType),
   takeEvery(TransactionTypes.SUBMIT_UPDATE_TRANSACTION, updateDetailTrans),
+  takeEvery(TransactionTypes.GET_ONE_PAYMENT, getOnePayment),
+  takeEvery(TransactionTypes.UPDATE_ONE_PAYMENT, updateOnePayment),
 ];
