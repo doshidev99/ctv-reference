@@ -37,7 +37,10 @@ import { retrieveList } from "../../../redux/rest/actions";
 // import Payment from "./Payment";
 import PropertyDiscount from "./PropertyDiscount";
 import RestSelect from "../../../components/RestInput/RestSelect";
-import { getResources, getListResourceData } from "../../../redux/rest/selectors";
+import {
+  getResources,
+  getListResourceData,
+} from "../../../redux/rest/selectors";
 import PaymentProgress from "./PaymentProgress";
 import MainImage from "./MainImage";
 
@@ -117,8 +120,6 @@ class EditPropertyForm extends Component {
           location,
           // locationDescription,
         } = this.props;
-
-     
 
         values.transactionType = Number(values.transactionType);
         values = {
@@ -253,18 +254,16 @@ class EditPropertyForm extends Component {
                     <div>
                       <label className="propertyNameLabel">Tên dự án</label>
                       {getFieldDecorator("name", {
-                      rules: [
-                        {
-                          required: true,
-                          message: i18n.t(
-                            "input.propertyName.validateMsg.required",
-                          ),
-                        },
-                      ],
-                      initialValue: currentProperty && currentProperty.name,
-                    })(
-                      <Input />,
-                    )}
+                        rules: [
+                          {
+                            required: true,
+                            message: i18n.t(
+                              "input.propertyName.validateMsg.required",
+                            ),
+                          },
+                        ],
+                        initialValue: currentProperty && currentProperty.name,
+                      })(<Input />)}
                     </div>
                   </FormItem>
                 </Col>
@@ -290,7 +289,7 @@ class EditPropertyForm extends Component {
                 </Col>
               </Row>
               <Row gutter={16}>
-                <Col xs={6}>
+                <Col xs={4}>
                   {/* CITY */}
                   <span className="form-group-title">Thành phố</span>
                   {this.props.cities ? (
@@ -305,7 +304,7 @@ class EditPropertyForm extends Component {
                     />
                   ) : null}
                 </Col>
-                <Col xs={6}>
+                <Col xs={4}>
                   {/* PROPERTY TYPE */}
                   <span className="form-group-title">Loại dự án</span>
                   {this.props.propertyTypes ? (
@@ -344,7 +343,7 @@ class EditPropertyForm extends Component {
                     </div>
                   </FormItem>
                 </Col>
-                <Col xs={6}>
+                <Col xs={5}>
                   {/*  COMMISSION RATE */}
                   <FormItem>
                     <div className="commission">
@@ -368,6 +367,36 @@ class EditPropertyForm extends Component {
                           name="commissionRate"
                           min={0}
                           max={100}
+                        />,
+                      )}
+                    </div>
+                  </FormItem>
+                </Col>
+                <Col xs={5}>
+                  {/*  VAT RATE */}
+                  <FormItem>
+                    <div className="vatRate">
+                      <div className="form-group-title">
+                        <span>Tỉ lệ VAT (%)</span>
+                      </div>
+                      {getFieldDecorator("vatRate", {
+                        initialValue:
+                          (currentProperty &&
+                            Number(currentProperty.vatRate)) ||
+                          null,
+                        rules: [
+                          {
+                            required: true,
+                            message: "Hãy chọn phần trăm VAT",
+                          },
+                        ],
+                      })(
+                        <InputNumber
+                          placeholder="Tỷ lệ (%)"
+                          name="vatRate"
+                          min={0}
+                          max={100}
+                          // onChange={this.handleChange}
                         />,
                       )}
                     </div>
