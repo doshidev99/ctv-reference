@@ -70,6 +70,36 @@ const getTransactionsFailure = state => ({
   loading: false,
 })
 
+// Admin request realtor resend digital contract
+const requestResend = state => ({
+  ...state,
+  loading: true,
+})
+const requestResendSuccess = (state,{data} )=> ({
+  ...state,
+  loading: false,
+  currentRealtor: data,
+})
+const requestResendFailure = state => ({
+  ...state,  
+  loading: false,
+})
+
+// Admin cancel digital contract
+const confirmDigitalContract = state => ({
+  ...state,
+  loading: true,
+})
+const confirmDigitalContractSuccess = ( state, { data })=> ({
+  ...state,
+  loading: false,
+  currentRealtor: data,
+})
+const confirmDigitalContractFailure = state => ({
+  ...state,  
+  loading: false,
+})
+
 export const realtor = makeReducerCreator(initialState, {
   [RealtorTypes.GET_LIST_REALTOR]: getListRealtor,
   [RealtorTypes.GET_LIST_REALTOR_SUCCESS]: getListRealtorSuccess,
@@ -82,4 +112,12 @@ export const realtor = makeReducerCreator(initialState, {
   [RealtorTypes.GET_TRANSACTIONS_BY_REALTOR]: getTransactions,
   [RealtorTypes.GET_TRANSACTIONS_BY_REALTOR_SUCCESS]: getTransactionsSuccess,
   [RealtorTypes.GET_TRANSACTIONS_BY_REALTOR_FAILURE]: getTransactionsFailure,
+
+  [RealtorTypes.REQUEST_RESEND]: requestResend,
+  [RealtorTypes.REQUEST_RESEND_SUCCESS]: requestResendSuccess,
+  [RealtorTypes.REQUEST_RESEND_FAILURE]: requestResendFailure,
+  
+  [RealtorTypes.CONFIRM_CONTRACT]: confirmDigitalContract,
+  [RealtorTypes.CONFIRM_CONTRACT_SUCCESS]: confirmDigitalContractSuccess,
+  [RealtorTypes.CONFIRM_CONTRACT_FAILURE]: confirmDigitalContractFailure,
 })

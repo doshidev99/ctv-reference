@@ -157,7 +157,6 @@ export function* createRecord({ resource, data, isGoToShowPage }) {
   try {
     const currentModal = yield select(state => state.modal.current);
     // const response = yield call(apiWrapper, postRecord, true, false, resource, data);
-
     const response = yield call(
       apiWrapper,
       {

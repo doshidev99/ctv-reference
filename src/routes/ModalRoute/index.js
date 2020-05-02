@@ -18,8 +18,10 @@ const modalRoutes = [
     path: '/service-registrations',
     component: lazy(() => import('../../containers/ServiceRegist/Edit')),
   },
-  
-  
+  {
+    path: '/transaction-payments',
+    component: lazy(() => import('../../containers/Transaction/Show/StatusTrans/EditPayment')),
+  },
 ];
 
 const getModalRoute = currentModal => {

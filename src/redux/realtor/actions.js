@@ -12,6 +12,14 @@ export const RealtorTypes = makeConstantCreator(
   "GET_TRANSACTIONS_BY_REALTOR",
   "GET_TRANSACTIONS_BY_REALTOR_SUCCESS",
   "GET_TRANSACTIONS_BY_REALTOR_FAILURE",
+  
+  "REQUEST_RESEND",
+  "REQUEST_RESEND_SUCCESS",
+  "REQUEST_RESEND_FAILURE",
+
+  "CONFIRM_CONTRACT",
+  "CONFIRM_CONTRACT_SUCCESS",
+  "CONFIRM_CONTRACT_FAILURE",
 );
 
 // Get list realtor
@@ -84,3 +92,36 @@ export const getTransactionsByRealtorFailureAction = error =>
   makeActionCreator(RealtorTypes.GET_TRANSACTIONS_BY_REALTOR_FAILURE, {
     error,
   });
+
+// Update realtor contract message
+export const requestResend = (id, status, payload) =>
+  makeActionCreator(RealtorTypes.REQUEST_RESEND, {
+    id,
+    status,
+    payload,
+  });
+
+export const requestResendSuccessAction = data =>
+  makeActionCreator(RealtorTypes.REQUEST_RESEND_SUCCESS, {
+    data,
+  });
+export const requestResendFailureAction = error =>
+  makeActionCreator(RealtorTypes.REQUEST_RESEND_FAILURE, {
+    error,
+  });
+
+// confirm digital contract
+export const confirmDigitalContractAction = (id, status) =>
+makeActionCreator(RealtorTypes.CONFIRM_CONTRACT, {
+  id,
+  status,
+});
+
+export const confirmDigitalContractSuccessAction = data =>
+makeActionCreator(RealtorTypes.CONFIRM_CONTRACT_SUCCESS, {
+  data,
+});
+export const confirmDigitalContractFailureAction = error =>
+makeActionCreator(RealtorTypes.CONFIRM_CONTRACT_FAILURE, {
+  error,
+});

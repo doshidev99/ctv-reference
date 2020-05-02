@@ -16,4 +16,10 @@ export default styled.div`
   .button-group button{
     margin: 30px 0
   }
+  .changeTypeButton {
+    margin-left: 20px
+  }
+  .buttonGrConfirm button {
+    margin-right: 15px
+  }
 `;

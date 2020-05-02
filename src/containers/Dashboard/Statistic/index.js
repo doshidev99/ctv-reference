@@ -59,7 +59,7 @@ class StatisticData extends Component {
               <Statistic
                 className="left-info"
                 title="Tổng hoa hồng (VND)"
-                value={(commissionAmount && commissionAmount.total) || 0}
+                value={(commissionAmount &&`${commissionAmount.total/1000000} M` ) || 0}
               />
               <div className="shift">
                 <Statistic

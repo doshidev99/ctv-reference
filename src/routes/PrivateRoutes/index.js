@@ -7,12 +7,8 @@ import ModalRoute from '../ModalRoute';
 import Loading from '../../components/common/LoadingScreen';
 import PrivateLayout from '../../layout/PrivateLayout';
 import Dashboard from '../../pages/Dashboard';
-import DetailTransaction from '../../pages/DetailTransaction'
+// import DetailTransaction from '../../pages/DetailTransaction'
 import EmailBox from '../../pages/EmailBox';
-// import ListTransaction from '../../pages/ListTransaction';
-// import ProcessingTransaction from '../../pages/ListTransaction/ProcessingTransaction';
-// import CompletedTransaction from '../../pages/ListTransaction/CompletedTransaction';
-// import CanceledTransaction from '../../pages/ListTransaction/CanceledTransaction';
 import Option from '../../pages/Option';
 import ListPartner from '../../pages/ListPartner';
 import ListEvent from '../../pages/ListEvent';
@@ -55,42 +51,37 @@ const routes = [
   },
   {
     path: '/transactions',
-    // component: ListTransaction,
     component: lazy(() => import('../../pages/Transaction/Transactions')),
     exact: true,
     title: i18n.t('transaction.title'),
     routes: [
       {
         path: '/',
-        // component: ListTransaction,
         component: lazy(() => import('../../pages/Transaction/Transactions')),
         exact: true,
         title: i18n.t('transaction.title'),
       },
       {
         path: '/:id/show',
-        component: DetailTransaction,
+        component: lazy(() => import('../../pages/Transaction/Detail')),
         exact: true,
         title: i18n.t('transaction.detail.title'),
       },
       {
         path: '/processing',
         component: lazy(() => import('../../pages/Transaction/Processing')),
-        // component: ProcessingTransaction,
         exact: true,
         title: i18n.t('transaction.title'),
       },
       {
         path: '/completed',
         component: lazy(() => import('../../pages/Transaction/Completed')),
-        // component: CompletedTransaction,
         exact: true,
         title: i18n.t('transaction.title'),
       },
       {
         path: '/canceled',
         component: lazy(() => import('../../pages/Transaction/Canceled')),
-        // component: CanceledTransaction,
         exact: true,
         title: i18n.t('transaction.title'),
       },

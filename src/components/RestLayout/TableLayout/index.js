@@ -142,6 +142,8 @@ export const getAction = (props, item) => {
   switch (item.props.source) {
     case 'edit':
       return { gotoEditPage: item.props.gotoEditPage || props.gotoEditPage };
+    case 'editCustom':
+      return { gotoEditCustomPage: item.props.gotoEditCustomPage || props.gotoEditCustomPage };
     case 'delete':
       return { deleteItem: item.props.deleteItem || props.deleteItem };
     case 'cancel':
@@ -155,6 +157,7 @@ export const getAction = (props, item) => {
         gotoShowPage: props.gotoShowPage,
         deleteItem: props.deleteItem,
         gotoEditPage: props.gotoEditPage,
+        gotoEditCustomPage: props.gotoEditCustomPage,
         cancelItem: props.cancelItem,
         confirmItem: props.confirmItem,
       };

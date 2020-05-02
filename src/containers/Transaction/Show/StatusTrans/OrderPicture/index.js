@@ -3,8 +3,8 @@ import { Upload, Icon, Modal, Button, message } from 'antd';
 import { connect } from "react-redux";
 import i18n from "i18next";
 import OrderImageWrapper from './styles'
-import { uploadImageAction, uploadImageSuccessAction, confirmOrderImageAction, removeOrderImageAction} from "../../../../redux/transaction/actions";
-import { getSignedUrlS3, uploadFile } from "../../../../utils/uploadFile";
+import { uploadImageAction, uploadImageSuccessAction, confirmOrderImageAction, removeOrderImageAction} from "../../../../../redux/transaction/actions";
+import { getSignedUrlS3, uploadFile } from "../../../../../utils/uploadFile";
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
