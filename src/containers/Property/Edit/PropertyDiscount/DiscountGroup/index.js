@@ -19,35 +19,21 @@ class DiscountGroup extends Component {
         this.props.addNewDiscount(this.props.data.id);
       } else {
         const data = await this.props.form.validateFields();
-        // console.log(data);
-
         const { id, ...payload } = data;
-        // console.log(id);
-        // console.log(payload);
 
         if (
           Number(data[`type_${id}`]) === 1 &&
           Number(data[`value_${id}`]) > 100
         ) {
-          // console.log("error");
-
           const temp = {};
           temp[`value_${id}`] = {
             value: data.value,
             errors: [new Error("Tỉ lệ ko được vượt quá 100%")],
           };
-          // console.log(temp);
-
           await this.props.form.setFields(temp);
         } else {
-          // console.log("OK");
-          // const { id, ...payload } = data;
-          // console.log(payload);
-
           payload.groupId = this.props.data.id;
           await this.props.addNewDiscountSuccess(id, payload);
-          // console.log(this.props.data);
-
           await this.props.addNewDiscount(this.props.data.id);
         }
       }
@@ -75,7 +61,6 @@ class DiscountGroup extends Component {
               data={e}
               groupId={data.id}
               handleRemove={this.props.removeDiscount}
-              // form={this.props.form}
               onChange={this.props.onChangeText}
             />
           </Col>

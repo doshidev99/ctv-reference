@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Upload, Table, message, Row, Pagination } from "antd";
+import { Button, Upload, Table, message } from "antd";
 import { connect } from "react-redux";
 import ProductTableWrapper from "./styles";
 // import Floor from "./Floor";
@@ -66,9 +66,28 @@ class ProductTable extends Component {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-     
+      render: (e) => {
+        if (e === undefined) {
+          return "";
+        }
+        return `${this.STATUSES_1[e]}`;
+      },
     },
   ];
+
+  STATUSES_1 = {
+    0: "SELLING",
+    1: "BOOKED",
+    2: "SOLD",
+    3: "RESERVED",
+  };
+
+  STATUSES_2 = {
+    SELLING: 0,
+    BOOKED: 1,
+    SOLD: 2,
+    RESERVED: 3,
+  };
 
   constructor(props) {
     super(props);
@@ -83,6 +102,9 @@ class ProductTable extends Component {
 
   onImportExcel = async ({ file, onSuccess, onError }) => {
     try {
+      this.setState({
+        isExcel: true,
+      });
       let df = await handleXLSX(file);
       // eslint-disable-next-line prefer-destructuring
       df = df[0];
@@ -103,10 +125,10 @@ class ProductTable extends Component {
           floor: e[2].value.toString() || undefined,
           code: e[3].value.toString(),
           type: e[4].value || undefined,
-          direction: e[5].value|| undefined,
+          direction: e[5].value || undefined,
           area: e[6].value,
           price: e[7].value,
-          status:  e[8].value || undefined,
+          status: (e[8].value && this.STATUSES_2[e[8].value])|| undefined,
         };
       });
       this.props.loadExcelSuccess(result);
@@ -139,27 +161,7 @@ class ProductTable extends Component {
     return isXLSX;
   };
 
-  onChangePage = (page, limit) => {
-    const offset = (page - 1) * limit;
-    this.props.retrieveData(this.props.id, {
-      limit,
-      offset,
-    });
-  };
-
   render() {
-    const {
-      offset, // offset = (page - 1) * limit;
-      limit,
-      total,
-    } = this.props;
-    const page = offset / limit + 1;
-    // console.log(this.props.floors);
-
-    // const floors = this.props.floors.map(e => (
-    //   <Floor key={e.id} id={e.id} name={e.name} rooms={e.rooms} />
-    // ));
-
     return (
       <ProductTableWrapper>
         <Upload
@@ -180,24 +182,23 @@ class ProductTable extends Component {
             (!this.state.isExcel &&
               this.props.currentProperty &&
               this.props.currentProperty.productTable) ||
+            this.props.productTable
+          }
+          pagination
+          loading={this.props.loading}
+        />
+        {/* <Table
+          columns={this.columnHeaders}
+          className="tableProduct"
+          dataSource={
+            (!this.state.isExcel &&
+              this.props.currentProperty &&
+              this.props.currentProperty.productTable) ||
               this.props.productTable
           }
           pagination={this.state.isExcel}
           loading={this.props.loading}
-        />
-        {!this.state.isExcel && (
-          <Row type="flex" justify="end">
-            <Pagination
-              showTotal={(totalItem, range) =>
-                `${range[0]}-${range[1]} of ${totalItem} items`}
-              onChange={this.onChangePage}
-              defaultCurrent={1}
-              current={page}
-              total={total}
-              pageSize={limit}
-            />
-          </Row>
-        )}
+        /> */}
       </ProductTableWrapper>
     );
   }
