@@ -215,12 +215,9 @@ const removeOneSalesPolicy = (state, { id }) => {
 };
 
 // PRICE LIST
-const addPriceList = (state, { link, mimeType }) => ({
+const addPriceList = (state, { payload }) => ({
   ...state,
-  priceList: {
-    link,
-    mimeType,
-  },
+  priceList: payload,
 });
 
 const removePriceList = (state) => ({

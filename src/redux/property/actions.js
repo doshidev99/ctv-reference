@@ -159,8 +159,8 @@ export const removeSalesPolicyAction = (id) =>
   makeActionCreator(PropertyTypes.REMOVE_SALES_POLICY, { id });
 
 // Price list
-export const addPriceListAction = (link, mimeType) =>
-  makeActionCreator(PropertyTypes.ADD_PRICE_LIST, { link, mimeType });
+export const addPriceListAction = (payload) =>
+  makeActionCreator(PropertyTypes.ADD_PRICE_LIST, { payload });
 export const removePriceListAction = () =>
   makeActionCreator(PropertyTypes.REMOVE_PRICE_LIST);
 
