@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { DatePicker } from 'antd';
 import FormItem from '../FormItem';
+// import FormTitle from '../FormTitle';
 import { DateTimePickerWrapper } from './styles';
 
 const FormDateTimePicker = props => {
-  const { required, defaultValue, initialValue } = props;
+  const { required, defaultValue, initialValue  } = props;
   return (
     <DateTimePickerWrapper>
       <FormItem
@@ -20,6 +21,7 @@ const FormDateTimePicker = props => {
         className="title"
         required={required}
       >
+        {/* {title && <FormTitle title={title} required={required} />} */}
         <DatePicker showTime format="ddd - MMM DD YYYY - HH:mm" className="viewDatePicker" />
       </FormItem>
     </DateTimePickerWrapper>
@@ -36,6 +38,7 @@ FormDateTimePicker.propTypes = {
   defaultValue: PropTypes.any,
   initialValue: PropTypes.object,
   formOptions: PropTypes.object,
+  // title: PropTypes.string,
 };
 
 FormDateTimePicker.defaultProps = {

@@ -11,9 +11,6 @@ import Dashboard from '../../pages/Dashboard';
 import EmailBox from '../../pages/EmailBox';
 import Option from '../../pages/Option';
 import ListPartner from '../../pages/ListPartner';
-import ListEvent from '../../pages/ListEvent';
-import NewEvent from '../../pages/NewEvent';
-import DetailEvent from '../../pages/DetailEvent';
 import Training from '../../pages/Training';
 
 const routes = [
@@ -115,36 +112,42 @@ const routes = [
   },
   {
     path: '/events',
-    component: ListEvent,
+    component: lazy(() => import('../../pages/Event/List')),
     exact: true,
     title: "Sự kiện",
     routes: [
       {
         path: '/',
-        component: ListEvent,
+        component: lazy(() => import('../../pages/Event/List')),
         exact: true,
         title: "Danh sách sự kiện",
       },
       {
         path: '/create',
-        component: NewEvent,
+        component: lazy(() => import('../../pages/Event/Create')),
         exact: true,
         title: "Tạo mới sự kiện",
       },
       {
         path: '/:id/show',
-        component: DetailEvent,
+        component: lazy(() => import('../../pages/Event/Show')),
         exact: true,
         title: i18n.t('realtor.title'),
       },
+      // {
+      //   path: '/:id/edit',
+      //   component: DetailEvent,
+      //   exact: true,
+      //   title: i18n.t('realtor.title'),
+      // },
     ],
   },
-  {
-    path: '/event',
-    component: lazy(() => import('../../pages/Event/index')),
-    exact: true,
-    title: "Sự kiện",
-  },
+  // {
+  //   path: '/event',
+  //   component: ListEvent,
+  //   exact: true,
+  //   title: "Sự kiện",
+  // },
   {
     path: '/staffs',
     component: lazy(() => import('../../pages/Admin/index')),
