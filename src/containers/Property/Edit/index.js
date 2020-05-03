@@ -131,7 +131,7 @@ class EditPropertyForm extends Component {
           salesPolicies,
           paymentProgress,
 
-          priceList: priceList !== null ? priceList.link : null,
+          priceList: priceList ||null,
           medias,
           sections: productTable.length > 0 ? productTable : undefined,
           location: {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Upload, Button, message, Row, Col } from 'antd'
 import { connect } from "react-redux";
+import moment from 'moment';
 import PriceListWrapper from './styles'
 import { getSignedUrlS3, uploadFile } from '../../../../utils/uploadFile';
 import {addPriceListAction, uploadFileSuccessAction, removePriceListAction  } from "../../../../redux/property/actions";
@@ -37,7 +38,13 @@ class PriceList extends Component {
       );
       const response = await uploadFile(file, signedUrlS3.url);
       this.props.uploadFileSuccess(response.url);
-      this.props.addPriceList(response.url, file.type);
+      const payload = {
+        title: file.name,
+        link: response.url,
+        mimeType: file.type,
+        updatedAt:  moment().toDate(),
+      }
+      this.props.addPriceList(payload);
       onSuccess("OK");
     } catch (error) {
       message.error("Xảy ra lỗi, vui lòng thử lại");
@@ -46,19 +53,21 @@ class PriceList extends Component {
   };
 
   render() {
-    const fileList = [{
-      status: 'done',
-      uid: '1',
-      url: this.props.priceList,
-      name: 'Bang gia',
-    }]
+    const {priceList} = this.props;
+    let fileList = [];
+    if (priceList) {
+      fileList = [{
+        status: 'done',
+        uid: '1',
+        url:  priceList.link,
+        name: priceList.title,
+      }]
+    }
     return (
       <PriceListWrapper>
         <Row>
           <div className="title">
-            <p>
-            Bảng giá
-            </p>
+            <p>Bảng giá</p>
           </div>
         </Row>
         <Row>
@@ -68,8 +77,7 @@ class PriceList extends Component {
               onChange={this.handleOnChange}
               onRemove={this.handleRemove}
               customRequest={this.handleUpload}
-              defaultFileList={fileList}
-
+              fileList={fileList}
             >
               <Button icon="upload" className="uploadPriceButton" />
             </Upload>
@@ -90,8 +98,8 @@ const mapDispatchToProps = dispatch => ({
   uploadFileSuccess: fileUrl => {
     dispatch(uploadFileSuccessAction(fileUrl, "create"));
   },
-  addPriceList: (fileUrl, type) => {
-    dispatch(addPriceListAction(fileUrl, type));
+  addPriceList: (payload) => {
+    dispatch(addPriceListAction(payload));
   },
   removePriceList: () => {
     dispatch(removePriceListAction());
