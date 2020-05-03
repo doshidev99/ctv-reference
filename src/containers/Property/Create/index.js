@@ -152,8 +152,7 @@ class CreatePropertyForm extends Component {
           discounts,
           salesPolicies,
           paymentProgress,
-
-          priceList: priceList !== null ? priceList.link : null,
+          priceList: priceList ||null,
           medias,
           sections: productTable,
           location: {
