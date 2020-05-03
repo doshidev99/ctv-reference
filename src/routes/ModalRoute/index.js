@@ -22,6 +22,10 @@ const modalRoutes = [
     path: '/transaction-payments',
     component: lazy(() => import('../../containers/Transaction/Show/StatusTrans/EditPayment')),
   },
+  {
+    path: '/events',
+    component: lazy(() => import('../../containers/Event/Edit')),
+  },
 ];
 
 const getModalRoute = currentModal => {

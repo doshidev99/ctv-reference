@@ -60,6 +60,7 @@ function* getListEvent({ limit, offset, filter, orderBy, fields }) {
 
 function* createOneEvent({ payload }) {
   try {
+    
     yield call(
       apiWrapper,
       {
@@ -108,7 +109,7 @@ function* updateOneEvent({ id, payload }) {
 
 function* getOne({ id }) {
   try {
-    const response = yield call(
+    const data = yield call(
       apiWrapper,
       {
         isShowLoading: true,
@@ -119,17 +120,6 @@ function* getOne({ id }) {
       "events",
       id,
     );
-    // console.log(response);
-
-    const data = {
-      id: response.id,
-      name: response.name,
-      content: response.name,
-      locationDescription: response.locationDescription,
-      happenAt: moment(response.happenAt).format("L"),
-      isVisible: response.isVisible,
-    };
-    // console.log(data);
 
     yield put(getOneEventSuccessAction(data));
   } catch (error) {

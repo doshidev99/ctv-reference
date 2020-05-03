@@ -11,9 +11,6 @@ import Dashboard from '../../pages/Dashboard';
 import EmailBox from '../../pages/EmailBox';
 import Option from '../../pages/Option';
 import ListPartner from '../../pages/ListPartner';
-import ListEvent from '../../pages/ListEvent';
-import NewEvent from '../../pages/NewEvent';
-import DetailEvent from '../../pages/DetailEvent';
 import Training from '../../pages/Training';
 
 const routes = [
@@ -125,12 +122,12 @@ const routes = [
         exact: true,
         title: "Danh sách sự kiện",
       },
-      // {
-      //   path: '/create',
-      //   component: lazy(() => import('../../pages/Event/Create')),
-      //   exact: true,
-      //   title: "Tạo mới sự kiện",
-      // },
+      {
+        path: '/create',
+        component: lazy(() => import('../../pages/Event/Create')),
+        exact: true,
+        title: "Tạo mới sự kiện",
+      },
       {
         path: '/:id/show',
         component: lazy(() => import('../../pages/Event/Show')),

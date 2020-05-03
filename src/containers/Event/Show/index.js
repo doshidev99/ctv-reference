@@ -1,40 +1,119 @@
-import React from 'react';
-import moment from 'moment';
-import { Typography } from 'antd';
-import RestShow from '../../rest/Show';
-import TextField from '../../../components/RestField/TextField';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Descriptions, Typography, Tag } from "antd";
+import moment from 'moment'
+import Wrapper from "./styles";
+import { getOneEventAction } from "../../../redux/event/actions";
+import RestList from '../../rest/List';
+import Label from '../../../components/RestField/Label';
 
-const { Text } = Typography;
+const { Text, Title } = Typography;
 
-const ShowEvent = props => {
-  return (
-    <RestShow
-      {...props}
-      // hasEdit
-      // noCardWrapper
-      header="Thông tin cơ bản"
-      resource="events"
-    >
-      <TextField source="name" title="Tên sự kiện" />
-      <TextField
-        source="beganAt"
-        title="Thời gian bắt đầu"
-        render={value => moment(value).format('DD-MM-YYYY hh:mm')}
-       />
-      <TextField
-        source="endedAt"
-        title="Thời gian kết thúc"
-        render={value => moment(value).format('DD-MM-YYYY hh:mm')}
-       />
-      <TextField source="capacity" title="Số lượng" />
-      <TextField source="locationDescription" title="Địa điểm" />
-      <TextField
-        source="isVisible"
-        title="Trạng thái"
-        render={value => value === false ? <Text type="danger">Không khả dụng</Text>: <Text type="warning">Khả dụng</Text>}
-       />
-    </RestShow>
-  );
+class ShowEvent extends Component {
+  componentDidMount() {
+    const { id } = this.props.match.params;
+    this.props.getEventInfo(id);
+  }
+
+  render() {
+    const EVENT_REGIST_STATUS = [
+      {
+        id: 0,
+        text: "Chưa xác nhận",
+      },
+      {
+        id: 1,
+        text: "Không tham gia",
+      },
+      {
+        id: 2,
+        text: "Có thể tham gia",
+      },
+      {
+        id: 3,
+        text: "Sẽ tham gia",
+      },
+    ]
+    const { currentEvent  } = this.props;
+    const tags = currentEvent.tags? currentEvent.tags.map((e) => (
+      e === 1 ? (<Tag key={e} color="green">New</Tag>) : (<Tag key={e} color="red">Hot</Tag>)
+    )): [];
+    // let { digitalContract } = this.props.currentEvent;
+    return (
+      <Wrapper>
+        <Descriptions column={1}>
+          <Descriptions.Item label="Tên sự kiên">{currentEvent.name}</Descriptions.Item>
+          <Descriptions.Item label="Thời gian bắt đầu">{moment(currentEvent.happenAt).format("DD/MM/YYYY HH:mm")}</Descriptions.Item>
+          <Descriptions.Item label="Thời gian kết thúc">{moment(currentEvent.endedAt).format("DD/MM/YYYY HH:mm")}</Descriptions.Item>
+          <Descriptions.Item label="Địa điểm">{currentEvent.locationDescription}</Descriptions.Item>
+          <Descriptions.Item label="Nội dung miêu tả"> 
+            {currentEvent.content}
+          </Descriptions.Item>
+          <Descriptions.Item label="Số lượng khách"> 
+            {currentEvent.capacity}
+          </Descriptions.Item>
+          <Descriptions.Item label="Trạng thái">
+            <Text type={currentEvent.isVisible ? 'secondary': 'danger'}>{currentEvent.isVisible ? "Khả dụng": "Không khả dụng"}</Text>
+          </Descriptions.Item>
+          <Descriptions.Item label="Tags"> 
+            {tags}
+          </Descriptions.Item>
+          <Descriptions.Item label="Số lượng đăng kí"> 
+            {currentEvent.registrationQuantity}
+          </Descriptions.Item>
+        </Descriptions>
+        <Title level={4}>Danh sách đăng kí</Title>
+        <RestList
+          resource={`events/${this.props.match.params.id}/registrations`}
+          initialFilter={{ limit: 10, skip: 0, order: 'id', filter: {} }}
+          hasCreate={false}
+          {...this.props}
+        >
+          <Label
+            source="fullName"
+            title="Họ và tên"
+            width="15%"
+          />
+          <Label
+            source="email"
+            title="Email"
+          />
+          <Label
+            source="phone"
+            title="Số điện thoại"
+          />
+          <Label
+            source="note"
+            title="Ghi chú"
+            width="30%"
+          />
+          <Label
+            source="status"
+            title="Trạng thái"
+            render={value => EVENT_REGIST_STATUS.find(item => item.id === value)
+              && EVENT_REGIST_STATUS.find(item => item.id === value).text}
+          />
+          <Label
+            source="createdAt"
+            title="Thời gian đăng kí"
+            render={value => moment(value).format("DD/MM/YYYY HH:mm")}
+          />
+        </RestList>
+      </Wrapper>
+    );
+  }
+}
+
+const mapStateToProps = state => {
+  const { currentEvent } = state.event;
+  return {
+    currentEvent,
+  };
 };
 
-export default ShowEvent;
+const mapDispatchToProps = dispatch => ({
+  getEventInfo: id => {
+    dispatch(getOneEventAction(id));
+  },
+});
+export default connect(mapStateToProps, mapDispatchToProps)(ShowEvent);
