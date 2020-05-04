@@ -115,3 +115,48 @@ export const EVENT_TAGS = [
     color: 'red',
   },
 ]
+
+export const DIGITAL_CONTRACT_STATUS = [
+  {
+    id: 0,
+    text: "Chưa gửi",
+    color: "red",
+  },
+  {
+    id: 1,
+    text: "Chờ xác nhận",
+    color: "geekblue",
+  },
+  {
+    id: 2,
+    text: "Xác nhận",
+    color: "purple",
+  },
+  {
+    id: 3,
+    text: "Yêu cầu gửi lại",
+    color: "gold",
+  },
+]
+export const IDENTITY_STATUS = [
+  {
+    id: 0,
+    text: "Chưa gửi",
+    color: "red",
+  },
+  {
+    id: 1,
+    text: "Chờ xác nhận",
+    color: "geekblue",
+  },
+  {
+    id: 2,
+    text: "Xác nhận",
+    color: "purple",
+  },
+  {
+    id: 3,
+    text: "Yêu cầu gửi lại",
+    color: "gold",
+  },
+]

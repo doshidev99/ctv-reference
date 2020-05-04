@@ -1,5 +1,4 @@
-import { takeEvery, put } from "redux-saga/effects";
-import moment from "moment";
+import { takeEvery, put, call } from "redux-saga/effects";
 import {
   RealtorTypes,
   getListRealtorSuccessAction,
@@ -8,12 +7,24 @@ import {
   getOneRealtorFailureAction,
   getTransactionsByRealtorSuccessAction,
   getTransactionsByRealtorFailureAction,
+  requestResendFailureAction,
+  requestResendSuccessAction,
+  requestResendIdentitySuccessAction,
+  requestResendIdentityFailureAction,
+  confirmDigitalContractSuccessAction,
+  confirmDigitalContractFailureAction,
+  confirmIdentitySuccessAction,
+  confirmIdentityFailureAction,
 } from "./actions";
-// import {data} from './tempData'
+import { apiWrapper } from "../../utils/reduxUtils";
 import {
   getRealtors,
   getOneRealtor,
   getTransactionsByRealtor,
+  requestResend,
+  requestResendIdentity,
+  confirmDigitalContract,
+  confirmIdentityApi,
 } from "../../api/modules/realtor";
 
 const TRANSACTION_STATUS = {
@@ -57,17 +68,7 @@ function* getListRealtor({ limit, offset, filter, orderBy, fields }) {
 
 function* getOneRealtorInfo({ id }) {
   try {
-    const result = yield getOneRealtor(id);
-    const data = {
-      id: result.id,
-      fullName: result.fullName,
-      phone: result.phone,
-      address: result.address,
-      birthday: moment(result.birthday).format("L"),
-      digitalContract: result.digitalContract,
-      digitalContractStatus: result.digitalContractStatus,
-    };
-
+    const data = yield getOneRealtor(id);
     yield put(getOneRealtorSuccessAction(data));
   } catch (error) {
     yield put(getOneRealtorFailureAction(error));
@@ -114,6 +115,87 @@ function* getTransactionsByRealtorId({ id, limit, offset, filter, orderBy }) {
     yield put(getTransactionsByRealtorFailureAction(error));
   }
 }
+
+function* updateContractMessage({id, status, payload}){
+  try {
+    const response = yield call(
+      apiWrapper,
+      {
+        isShowLoading: true,
+        isShowSucceedNoti: false,
+        errorDescription: "Lỗi !!",
+      },
+      requestResend,
+      id,
+      status,
+      payload,
+    );
+    yield put(requestResendSuccessAction(response))
+  } catch (error) {
+    yield put(requestResendFailureAction(error));
+  }
+}
+
+function* updateIdentityRequestMessage({id, status, payload}){
+  try {
+    const response = yield call(
+      apiWrapper,
+      {
+        isShowLoading: true,
+        isShowSucceedNoti: false,
+        errorDescription: "Lỗi !!",
+      },
+      requestResendIdentity,
+      id,
+      status,
+      payload,
+    );
+    yield put(requestResendIdentitySuccessAction(response))
+  } catch (error) {
+    yield put(requestResendIdentityFailureAction(error));
+  }
+}
+
+function* confirmContract({id, status}){
+  try {
+    const response = yield call(
+      apiWrapper,
+      {
+        isShowLoading: true,
+        isShowSucceedNoti: false,
+        errorDescription: "Lỗi !!",
+      },
+      confirmDigitalContract,
+      id,
+      status,
+    );
+    yield put(confirmDigitalContractSuccessAction(response));
+    
+  } catch (error) {
+    yield put(confirmDigitalContractFailureAction(error));
+  }
+}
+
+function* confirmIdentity({id, status}){
+  try {
+    const response = yield call(
+      apiWrapper,
+      {
+        isShowLoading: true,
+        isShowSucceedNoti: false,
+        errorDescription: "Lỗi !!",
+      },
+      confirmIdentityApi,
+      id,
+      status,
+    );
+    yield put(confirmIdentitySuccessAction(response));
+    
+  } catch (error) {
+    yield put(confirmIdentityFailureAction(error));
+  }
+}
+
 export default [
   takeEvery(RealtorTypes.GET_LIST_REALTOR, getListRealtor),
   takeEvery(RealtorTypes.GET_ONE_REALTOR, getOneRealtorInfo),
@@ -121,4 +203,8 @@ export default [
     RealtorTypes.GET_TRANSACTIONS_BY_REALTOR,
     getTransactionsByRealtorId,
   ),
+  takeEvery(RealtorTypes.REQUEST_RESEND, updateContractMessage),
+  takeEvery(RealtorTypes.REQUEST_RESEND_IDENTITY, updateIdentityRequestMessage),
+  takeEvery(RealtorTypes.CONFIRM_CONTRACT, confirmContract),
+  takeEvery(RealtorTypes.CONFIRM_IDENTITY, confirmIdentity),
 ];

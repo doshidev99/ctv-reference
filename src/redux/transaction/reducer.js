@@ -5,7 +5,23 @@ import { mongoObjectId } from "../../utils/textProcessor";
 // Setup inintial state for app
 export const initialState = {
   transaction: {},
-  payment: [],
+  transactionPayments: {
+    payments: [],
+    currentPayment: {},
+    offset: 0, // offset = (page - 1) * limit;
+    limit: 10,
+    total: null,
+    loading: false,
+
+    listPaymentSuccess: undefined,
+    listPaymentFailure: undefined,
+
+    createPaymentSuccess: undefined,
+    createPaymentFailure: undefined,
+
+    updatePaymentSuccess: undefined,
+    updatePaymentFailure: undefined,
+  },
   total: null,
   isLoadingDetail: true,
   isLoadingTable: false,
@@ -20,11 +36,12 @@ export const initialState = {
   confirmTransError: undefined,
   addPaymentSuccess: undefined,
   addPaymentFailure: undefined,
-
   transactions: [],
   loading: false,
   listTransactionSuccess: undefined,
   listTransactionFailure: undefined,
+  listPaymentFailure:undefined,
+
   currentTransaction: {},
   errors: [],
 
@@ -57,19 +74,67 @@ const getTablePayment = (state) => ({
   ...state,
   isLoadingTable: true,
 })
-const getTablePaymentSuccess = (state, { data, total }) => ({
+const getTablePaymentSuccess = (state, { data, total, limit, offset }) => ({
   ...state,
-  payment: data,
-  total,
+  transactionPayments: {
+    ...state.transactionPayments,
+    payments: data,
+    limit, 
+    offset,
+    total,
+    loading: false,
+    currentPayment: {},
+  },
   isLoadingTable: false,
+  listPaymentFailure: false,
   tablePaymentSuccess: true,
   tablePaymentFailure: false,
 })
 const getTablePaymentFail = state => ({
   ...state,
-  isLoadingTable: true,
+  isLoadingTable: false,
+  listPaymentFailure: true,
   tablePaymentSuccess: false,
   tablePaymentFailure: true,
+})
+
+// ---------------------------------------
+const getOnePaymentSuccess = (state, {data}) => {
+  return {
+    ...state,
+    loading: false,
+    transactionPayments: {
+      ...state.transactionPayments,
+      currentPayment: data,
+    },
+  };
+};
+
+const getOnePaymentFailure = state => ({
+  ...state,
+  loading: false,
+});
+
+// -----------------------------------------
+const updateOnePaymentSuccess = state => ({
+  ...state,
+  loading:false,
+  transactionPayments: {
+    ...state.transactionPayments,
+    currentPayment: {},
+    updatePaymentFailure: false,
+    updatePaymentSuccess: true,
+  },
+  
+})
+const updateOnePaymentFailure = state => ({
+  ...state,
+  loading:false,
+  transactionPayments: {
+    ...state.transactionPayments,
+    updatePaymentFailure: true,
+    updatePaymentSuccess: false,
+  },
 })
 
 const getListTransaction = state => ({
@@ -116,13 +181,13 @@ const removeBonus = (state, { id }) => {
   };
 };
 
-const onChangeBonus = (state, { id, title, value }) => {
+const onChangeBonus = (state, { id, name, value }) => {
   const bonus = [...state.bonus];
   const index = bonus.findIndex(e => e.id === id);
   let currentBonus = bonus.filter(e => e.id === id);
   currentBonus = {
     id,
-    title,
+    name,
     value,
   };
   bonus[index] = currentBonus;
@@ -250,26 +315,57 @@ const confirmTransactionFailure = (state, { error }) => ({
   confirmTransactionError: error,
 })
 
-const addPayment = state => ({
+
+const addPaymentSuccess = (state) => ({
   ...state,
-  isLoadingConfirm: true,
-  isLoadingTable: true,
-});
-const addPaymentSuccess = (state, { data, total, detail }) => ({
-  ...state,
-  isLoadingConfirm: false,
-  isLoadingTable: false,
-  payment: data,
-  total,
-  transaction: detail,
+  // isLoadingConfirm: false,
+  // transaction: detail,
+  // isLoadingStatus: false,
   addPaymentSuccess: true,
   addPaymentFailure: false,
 });
 const addPaymentFailure = (state) => ({
   ...state,
-  isLoadingConfirm: false,
+  // isLoadingConfirm: false,
+  // isLoadingStatus: false,
   addPaymentSuccess: false,
   addPaymentFailure: true,
+})
+
+const changeType = state => ({
+  ...state,
+  loading: true,
+  isLoadingStatus: true,
+});
+const changeTypeSuccess = (state, { status }) => {
+  const { transaction } = state;
+  transaction.status = status;
+  transaction.type = 1;
+  return {
+    ...state,
+    transaction,
+    isLoadingStatus: false,
+  }
+};
+const changeTypeFailure = (state) => ({
+  ...state,
+  isLoadingStatus: false,
+})
+
+// const submitUpdateTransaction = state => ({
+//   ...state,
+//   isLoadingStatus: true,
+// });
+
+const submitUpdateTransactionSuccess = (state) => {
+  return {
+    ...state,
+    isLoadingStatus: true,
+  }
+};
+const submitUpdateTransactionFailure = (state) => ({
+  ...state,
+  isLoadingStatus: false,
 })
 
 export const transaction = makeReducerCreator(initialState, {
@@ -315,7 +411,21 @@ export const transaction = makeReducerCreator(initialState, {
   [TransactionTypes.CONFIRM_TRANSACTION_SUCCESS]: confirmTransactionSuccess,
   [TransactionTypes.CONFIRM_TRANSACTION_FAILURE]: confirmTransactionFailure,
 
-  [TransactionTypes.ADD_PAYMENT]: addPayment,
+  // [TransactionTypes.ADD_PAYMENT]: addPayment,
   [TransactionTypes.ADD_PAYMENT_SUCCESS]: addPaymentSuccess,
   [TransactionTypes.ADD_PAYMENT_FAILURE]: addPaymentFailure,
+
+  [TransactionTypes.CHANGE_TYPE]: changeType,
+  [TransactionTypes.CHANGE_TYPE_SUCCESS]: changeTypeSuccess,
+  [TransactionTypes.CHANGE_TYPE_FAILURE]: changeTypeFailure,
+
+  // [TransactionTypes.SUBMIT_UPDATE_TRANSACTION]: submitUpdateTransaction,
+  [TransactionTypes.SUBMIT_UPDATE_TRANSACTION_SUCCESS]: submitUpdateTransactionSuccess,
+  [TransactionTypes.SUBMIT_UPDATE_TRANSACTION_FAILURE]: submitUpdateTransactionFailure,
+
+  [TransactionTypes.GET_ONE_PAYMENT_SUCCESS]: getOnePaymentSuccess,
+  [TransactionTypes.GET_ONE_PAYMENT_FAILURE]: getOnePaymentFailure,
+
+  [TransactionTypes.UPDATE_ONE_PAYMENT_SUCCESS]: updateOnePaymentSuccess,
+  [TransactionTypes.UPDATE_ONE_PAYMENT_FAILURE]: updateOnePaymentFailure,
 })

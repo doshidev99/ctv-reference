@@ -47,7 +47,10 @@ import { retrieveList } from "../../../redux/rest/actions";
 // import Payment from "./Payment";
 import PropertyDiscount from "./PropertyDiscount";
 import RestSelect from "../../../components/RestInput/RestSelect";
-import { getResources, getListResourceData } from "../../../redux/rest/selectors";
+import {
+  getResources,
+  getListResourceData,
+} from "../../../redux/rest/selectors";
 import PaymentProgress from "./PaymentProgress";
 import MainImage from "./MainImage";
 
@@ -149,8 +152,7 @@ class CreatePropertyForm extends Component {
           discounts,
           salesPolicies,
           paymentProgress,
-
-          priceList: priceList !== null ? priceList.link : null,
+          priceList: priceList ||null,
           medias,
           sections: productTable,
           location: {
@@ -222,6 +224,8 @@ class CreatePropertyForm extends Component {
     const paymentProgressArea = paymentProgress.map((e) => (
       <PaymentProgress key={e.id} id={e.id} />
     ));
+    
+
     return (
       <StyleWrapper>
         <Layout>
@@ -229,21 +233,19 @@ class CreatePropertyForm extends Component {
             <Row gutter={16}>
               <Col xs={24} md={18}>
                 <FormItem>
-                  {getFieldDecorator("name", {
-                    rules: [
-                      {
-                        required: true,
-                        message: i18n.t(
-                          "input.propertyName.validateMsg.required",
-                        ),
-                      },
-                    ],
-                  })(
-                    <div>
-                      <label className="propertyNameLabel">Tên dự án</label>
-                      <Input />
-                    </div>,
-                  )}
+                  <div>
+                    <label className="propertyNameLabel">Tên dự án</label>
+                    {getFieldDecorator("name", {
+                      rules: [
+                        {
+                          required: true,
+                          message: i18n.t(
+                            "input.propertyName.validateMsg.required",
+                          ),
+                        },
+                      ],
+                    })(<Input />)}
+                  </div>
                 </FormItem>
               </Col>
               <Col xs={24} md={6}>
@@ -253,22 +255,21 @@ class CreatePropertyForm extends Component {
                     <RestSelect
                       form={this.props.form}
                       source="staffId"
-                      defaultValue={userId}
+                      defaultValue={this.props.staffs && userId}
                       valueProp="id"
                       titleProp="fullName"
                       required
-                      requiredMessage='Vui lòng chọn người phụ trách'
+                      requiredMessage="Vui lòng chọn người phụ trách"
                       placeholder="Người phụ trách"
                       resourceData={this.props.staffs}
-                  />
+                    />
                   </div>
-                
                 </FormItem>
               </Col>
             </Row>
 
             <Row gutter={16}>
-              <Col xs={6}>
+              <Col xs={4}>
                 {/* CITY */}
                 <span className="form-group-title">Thành phố</span>
                 {this.props.cities ? (
@@ -282,7 +283,7 @@ class CreatePropertyForm extends Component {
                   />
                 ) : null}
               </Col>
-              <Col xs={6}>
+              <Col xs={4}>
                 {/* PROPERTY TYPE */}
                 <span className="form-group-title">Loại dự án</span>
                 {this.props.propertyTypes ? (
@@ -322,7 +323,7 @@ class CreatePropertyForm extends Component {
                   </div>
                 </FormItem>
               </Col>
-              <Col xs={6}>
+              <Col xs={5}>
                 {/*  COMMISSION RATE */}
                 <FormItem>
                   <div className="commission">
@@ -340,6 +341,32 @@ class CreatePropertyForm extends Component {
                       <InputNumber
                         placeholder="Tỷ lệ (%)"
                         name="commissionRate"
+                        min={0}
+                        max={100}
+                        // onChange={this.handleChange}
+                      />,
+                    )}
+                  </div>
+                </FormItem>
+              </Col>
+              <Col xs={5}>
+                {/*  VAT RATE */}
+                <FormItem>
+                  <div className="vatRate">
+                    <div className="form-group-title">
+                      <span>Tỉ lệ VAT (%)</span>
+                    </div>
+                    {getFieldDecorator("vatRate", {
+                      rules: [
+                        {
+                          required: true,
+                          message: "Hãy chọn phần trăm VAT",
+                        },
+                      ],
+                    })(
+                      <InputNumber
+                        placeholder="Tỷ lệ (%)"
+                        name="vatRate"
                         min={0}
                         max={100}
                         // onChange={this.handleChange}

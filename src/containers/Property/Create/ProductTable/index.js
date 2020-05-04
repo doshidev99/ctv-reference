@@ -66,8 +66,28 @@ class ProductTable extends Component {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
+      render: (e) => {
+        if (e === undefined) {
+          return "";
+        }
+        return `${this.STATUSES_1[e]}`;
+      },
     },
   ];
+
+  STATUSES_1 = {
+    0: "SELLING",
+    1: "BOOKED",
+    2: "SOLD",
+    3: "RESERVED",
+  };
+
+  STATUSES_2 = {
+    SELLING: 0,
+    BOOKED: 1,
+    SOLD: 2,
+    RESERVED: 3,
+  };
 
   onImportExcel = async ({ file, onSuccess, onError }) => {
     try {
@@ -94,7 +114,7 @@ class ProductTable extends Component {
           direction: e[5].value|| undefined,
           area: e[6].value,
           price: e[7].value,
-          status:  e[8].value || undefined,
+          status:   (e[8].value && this.STATUSES_2[e[8].value])|| undefined,
         };
       });
       this.props.loadExcelSuccess(result);

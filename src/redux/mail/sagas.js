@@ -10,6 +10,7 @@ import {
   markOneMailReadAction,
   sendMailSuccessAction,
   sendMailFailureAction,
+  getReceivedMailAction,
   getReceivedMailActionSuccess,
   getReceivedMailActionFailure,
   deleteMailActionFailure,
@@ -31,9 +32,6 @@ function* getMailList({ limit, offset, filter, orderBy }) {
       offset = 0;
     }
     if (filter) {
-      // eslint-disable-next-line no-console
-      console.log(filter); // Đang fix api
-      
       if(filter.sender === 2) {
         yield put(setViewerAction('me'))
       } else {
@@ -62,8 +60,6 @@ function* getMailList({ limit, offset, filter, orderBy }) {
         date: e.createdAt,
       };
     });
-    // console.log(data);
-
     yield put(getMailListSuccessAction(data, total, limit, offset));
   } catch (error) {
     yield put(getMailListFailureAction(error));
@@ -97,6 +93,7 @@ function* markRead({ id }) {
       isRead: true,
     };
     yield markAsRead(id, body);
+    yield put(getReceivedMailAction())
     yield put(markOneMailReadSuccessAction(id));
   } catch (error) {
     yield put(markOneMailReadFailureAction(error));

@@ -44,6 +44,18 @@ class RestList extends Component {
     }
   };
 
+  gotoEditCustomPage = (id, resourceCustom) => {
+    const { redirects, pushRoute, showModal, rootPath, setCurrentCustomData } = this.props;
+    setCurrentCustomData(id, resourceCustom);
+    const route = `${rootPath}/${resourceCustom}/${id}/edit`;
+    
+    if (redirects.edit === 'modal') {
+      showModal(route);
+    } else {
+      pushRoute(route);
+    }
+  };
+
   gotoShowPage = id => {
     const { redirects, pushRoute, showModal, resource, rootPath, setCurrentData } = this.props;
     setCurrentData(id);
@@ -76,6 +88,7 @@ class RestList extends Component {
         {...this.props}
         onRow={this.props.onDoubleClick === 'show' ? this.gotoShowPage : null}
         gotoEditPage={this.gotoEditPage}
+        gotoEditCustomPage={this.gotoEditCustomPage}
         gotoCreatePage={this.gotoCreatePage}
         gotoShowPage={this.gotoShowPage}
         exportExcel={this.exportExcel}
@@ -134,6 +147,7 @@ const mapDispatchToProps = (dispatch, props) => {
     showModal: data => dispatch(showModalAction(data)),
     pushRoute: data => dispatch(push(data)),
     setCurrentData: id => dispatch(setCurrentDataShow(props.resource, id)),
+    setCurrentCustomData: (id, resourceCustom) => dispatch(setCurrentDataShow(resourceCustom, id)),
     exportExcel: (resource, data) => dispatch(exportExcelAction(resource, data)),
   };
 };
@@ -155,6 +169,7 @@ RestList.propTypes = {
   rootPath: PropTypes.string,
   onDoubleClick: PropTypes.string,
   setCurrentData: PropTypes.func,
+  setCurrentCustomData: PropTypes.func,
   resourceData: PropTypes.object,
   exportExcel: PropTypes.func,
   loadingExport: PropTypes.bool,

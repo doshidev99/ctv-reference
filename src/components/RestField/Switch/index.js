@@ -6,30 +6,33 @@ import { renderMessage } from '../../../utils/textProcessor';
 // import IntlMessages from '../../utility/IntlMessages';
 
 const RestSwitch = props => {
+  
   const value = getRecordData(props.record, props.source) || props.value;
+  // const value = getRecordData(props.record, props.source)
+  
   return props.isShowConfirm ? (
     <Popconfirm
       title={
         !value ? renderMessage(props.confirmMessage) : renderMessage(props.cancelConfirmMessage)
       }
       onConfirm={props.onChange}
-      okText={renderMessage('button.ok')}
-      cancelText={renderMessage('button.cancel')}
+      okText={renderMessage('ok')}
+      cancelText={renderMessage('cancel')}
     >
       {props.placeholder && (
         <span className="txtPlaceholder" style={{ marginRight: 5 }}>
           {/* <IntlMessages id={props.placeholder} /> */}
-          props.placeholder
+          {props.placeholder}
         </span>
       )}
       <Switch checked={value} disabled={!props.onChange} />
     </Popconfirm>
   ) : (
-    <div>
+    <div style={{marginTop: '10px'}}>
       {props.placeholder && (
-        <span className="txtPlaceholder" style={{ marginRight: 5 }}>
+        <span className="txtPlaceholder" style={{ marginRight: '5px' }}>
           {/* <IntlMessages id={props.placeholder} /> */}
-          props.placeholder
+          {props.placeholder}
         </span>
       )}
       <Switch checked={value} onChange={props.onChange} disabled={!props.onChange} />

@@ -1,33 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
+import { Tag } from "antd"
 import Label from '../../../components/RestField/Label';
 import RestList from '../../rest/List';
 import Filter from '../components/Filter';
 import RealtorWrapper from './styles';
+import {DIGITAL_CONTRACT_STATUS} from "../../../configs/constants"
 
 class ListRealtor extends Component {
   componentDidMount() {}
 
   render() {
-    const DIGITAL_CONTRACT_STATUS = [
-      {
-        id: 0,
-        text: "Chưa gửi",
-      },
-      {
-        id: 1,
-        text: "Chờ xác nhận",
-      },
-      {
-        id: 2,
-        text: "Xác nhận",
-      },
-      {
-        id: 3,
-        text: "Yêu cầu gửi lại",
-      },
-    ]
     return (
       <RealtorWrapper>
         <RestList
@@ -37,9 +21,11 @@ class ListRealtor extends Component {
           initialFilter={{ limit: 10, skip: 0, filter: {} }}
           onDoubleClick="show"
           hasCreate={false}
+          redirects={{
+            show: 'newPage',
+          }}
           {...this.props}
         >
-          <Label source="id" title="ID" width="90px" />
           <Label
             source="fullName"
             title="Họ và tên"
@@ -51,8 +37,15 @@ class ListRealtor extends Component {
           <Label
             source="digitalContractStatus"
             title="Hợp đồng điện tử"
-            render={value => DIGITAL_CONTRACT_STATUS.find(item => item.id === value)
-            && DIGITAL_CONTRACT_STATUS.find(item => item.id === value).text} />
+            render={value => {
+              const found = DIGITAL_CONTRACT_STATUS.find(item => item.id === value)
+              return (
+                <Tag color={found.color} key={found.id}>
+                  {found.text}
+                </Tag>
+              )
+            }}
+          />
         </RestList>
       </RealtorWrapper>
     );

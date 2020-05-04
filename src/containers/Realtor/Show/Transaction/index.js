@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 import Label from '../../../../components/RestField/Label';
 import RestList from '../../../rest/List';
+import {STATUS} from '../../../../configs/constants'
 // import Filter from '../components/Filter';
 import Wrapper from './styles';
 
@@ -11,42 +12,19 @@ class ListTransaction extends Component {
 
   render() {
     const apiUrl = `realtors/${this.props.match.params.id}/transactions`;
-    const TRANSACTION_STATUS = [
-      {
-        id: 0,
-        text: "Đang chờ xử lý",
-      },
-      {
-        id: 1,
-        text: "Đang chờ xác nhận",
-      },
-      {
-        id: 2,
-        text: "Đã xác nhận",
-      },
-      {
-        id: 3,
-        text: "Đang chi trả",
-      },
-      {
-        id: 4,
-        text: "Hoàn thành",
-      },
-      {
-        id: 5,
-        text: "Bị hủy",
-      },
-    ]
     return (
       <Wrapper>
         <div className="section-header">
-          <p>Giao dịch</p>
+          <p>Danh sách giao dịch</p>
         </div>
         <RestList
           // filter={<Filter />}
           resource={apiUrl}
           initialFilter={{ limit: 5, skip: 0, filter: {} }}
           hasCreate={false}
+          redirects={{
+            show: 'newPage',
+          }}
           {...this.props}
         >
           <Label
@@ -61,8 +39,8 @@ class ListTransaction extends Component {
           <Label
             source="status"
             title="Trạng thái"
-            render={value => TRANSACTION_STATUS.find(item => item.id === value)
-            && TRANSACTION_STATUS.find(item => item.id === value).text} />
+            render={value => STATUS.find(item => item.id === value)
+            && STATUS.find(item => item.id === value).titleProp} />
           <Label source="commissionAmount" title="Hoa hồng" />
         </RestList>
       </Wrapper>
