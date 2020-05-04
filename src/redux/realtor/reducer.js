@@ -11,6 +11,7 @@ export const initialState = {
   limit: 10,
   total: null,
   loading: false,
+  loadingPage: false,
   listRealtorSuccess: undefined,
   listRealtorFailure: undefined,
 };
@@ -42,16 +43,16 @@ const getListRealtorFailure = state => ({
 // GET ONE REALTOR
 const getOneRealtor = state => ({
   ...state,
-  loading: true,
+  loadingPage: true,
 })
 const getOneRealtorSuccess = (state,{data} )=> ({
   ...state,
   currentRealtor: data,
-  loading: false,
+  loadingPage: false,
 })
 const getOneRealtorFailure = state => ({
   ...state,  
-  loading: false,
+  loadingPage: false,
 })
 
 // GET TRANSACTIONS BY REALTOR
@@ -85,7 +86,22 @@ const requestResendFailure = state => ({
   loading: false,
 })
 
-// Admin cancel digital contract
+// Admin request realtor resend identity info
+const requestResendIdentity = state => ({
+  ...state,
+  loading: true,
+})
+const requestResendIdentitySuccess = (state,{data} )=> ({
+  ...state,
+  loading: false,
+  currentRealtor: data,
+})
+const requestResendIdentityFailure = state => ({
+  ...state,  
+  loading: false,
+})
+
+// Admin confirm digital contract
 const confirmDigitalContract = state => ({
   ...state,
   loading: true,
@@ -96,6 +112,21 @@ const confirmDigitalContractSuccess = ( state, { data })=> ({
   currentRealtor: data,
 })
 const confirmDigitalContractFailure = state => ({
+  ...state,  
+  loading: false,
+})
+
+// Admin confirm identity card picture
+const confirmIdentity = state => ({
+  ...state,
+  loading: true,
+})
+const confirmIdentitySuccess = ( state, { data })=> ({
+  ...state,
+  loading: false,
+  currentRealtor: data,
+})
+const confirmIdentityFailure = state => ({
   ...state,  
   loading: false,
 })
@@ -116,8 +147,16 @@ export const realtor = makeReducerCreator(initialState, {
   [RealtorTypes.REQUEST_RESEND]: requestResend,
   [RealtorTypes.REQUEST_RESEND_SUCCESS]: requestResendSuccess,
   [RealtorTypes.REQUEST_RESEND_FAILURE]: requestResendFailure,
+
+  [RealtorTypes.REQUEST_RESEND_IDENTITY]: requestResendIdentity,
+  [RealtorTypes.REQUEST_RESEND_IDENTITY_SUCCESS]: requestResendIdentitySuccess,
+  [RealtorTypes.REQUEST_RESEND_IDENTITY_FAILURE]: requestResendIdentityFailure,
   
   [RealtorTypes.CONFIRM_CONTRACT]: confirmDigitalContract,
   [RealtorTypes.CONFIRM_CONTRACT_SUCCESS]: confirmDigitalContractSuccess,
   [RealtorTypes.CONFIRM_CONTRACT_FAILURE]: confirmDigitalContractFailure,
+
+  [RealtorTypes.CONFIRM_IDENTITY]: confirmIdentity,
+  [RealtorTypes.CONFIRM_IDENTITY_SUCCESS]: confirmIdentitySuccess,
+  [RealtorTypes.CONFIRM_IDENTITY_FAILURE]: confirmIdentityFailure,
 })
