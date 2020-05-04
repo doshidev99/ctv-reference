@@ -86,19 +86,19 @@ const routes = [
   },
   {
     path: '/realtors',
-    component: lazy(() => import('../../pages/Realtor/index')),
+    component: lazy(() => import('../../pages/Realtor/List')),
     exact: true,
     title: i18n.t('realtor.title'),
     routes: [
       {
         path: '/',
-        component: lazy(() => import('../../pages/Realtor/index')),
+        component: lazy(() => import('../../pages/Realtor/List')),
         exact: true,
         title: i18n.t('realtor.title'),
       },
       {
         path: '/:id',
-        component: lazy(() => import('../../pages/DetailRealtor/index')),
+        component: lazy(() => import('../../pages/Realtor/Show')),
         exact: true,
         title: i18n.t('realtor.title'),
       },

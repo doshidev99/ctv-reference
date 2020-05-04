@@ -19,8 +19,21 @@ export async function requestResend(id, status, payload) {
    });
 }
 
+export async function requestResendIdentity(id, status, payload) {
+  return patch(`/realtors/${id}`, {
+    identityStatus: status,
+    identityMessage: payload,
+   });
+}
+
 export async function confirmDigitalContract(id, status) {
   return patch(`/realtors/${id}`, {
     digitalContractStatus: status,
+   });
+}
+
+export async function confirmIdentityApi(id, status) {
+  return patch(`/realtors/${id}`, {
+    identityStatus: status,
    });
 }
