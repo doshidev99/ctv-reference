@@ -66,10 +66,10 @@ const sidebarMenu = [
     icon: "audit",
   },
   {
-    key: "online-support",
-    text: "Hỗ trợ trực tuyến",
-    url: "/online-supports",
-    icon: "solution",
+    key: "post",
+    text: "Tin tức",
+    url: "/posts",
+    icon: "file-search",
   },
   {
     key: "staff",
