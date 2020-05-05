@@ -16,7 +16,6 @@ export const getSignedUrlS3 =  (fileName, type, folderPrefix) => {
 };
 
 export const uploadFile = (file, signedRequest) => {
-  
   return new Promise(resolve => {
     if (file instanceof File) {
       const xhr = new XMLHttpRequest();

@@ -19,10 +19,11 @@ const FormItemUI = props => {
     className,
     formOptions,
     disabled,
+    label,
   } = props;
   // console.log(props);
   return (
-    <FormItemWrapper className={className} label={I18n.t(header)}>
+    <FormItemWrapper className={className} label={header? I18n.t(header): label}>
       {form.getFieldDecorator(source, {
         rules: [
           { required, message: requiredMessage },
@@ -56,6 +57,7 @@ FormItemUI.propTypes = {
   className: PropTypes.string,
   formOptions: PropTypes.object,
   disabled: PropTypes.bool,
+  label: PropTypes.string,
 };
 FormItemUI.defaultProps = {
   required: false,

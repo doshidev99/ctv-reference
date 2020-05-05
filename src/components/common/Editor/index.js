@@ -42,17 +42,15 @@ export default class Editor extends Component {
 
   render() {
     const { label, placeholder, content } = this.props;
-    // console.log(content);
-    
     let value;
     if(this.isChangeState) {
       value = this.state.value
     } 
     else if (content) {
         value = content
-      } else {
-        value = ''
-      }
+    } else {
+      value = ''
+    }
    
     const options = {
       theme: 'snow',

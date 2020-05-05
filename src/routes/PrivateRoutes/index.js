@@ -134,20 +134,8 @@ const routes = [
         exact: true,
         title: i18n.t('realtor.title'),
       },
-      // {
-      //   path: '/:id/edit',
-      //   component: DetailEvent,
-      //   exact: true,
-      //   title: i18n.t('realtor.title'),
-      // },
     ],
   },
-  // {
-  //   path: '/event',
-  //   component: ListEvent,
-  //   exact: true,
-  //   title: "Sự kiện",
-  // },
   {
     path: '/staffs',
     component: lazy(() => import('../../pages/Admin/index')),
@@ -177,6 +165,32 @@ const routes = [
     component: lazy(() => import('../../pages/ServiceRegistration/index')),
     exact: true,
     title: "Đăng kí dịch vụ",
+  },
+  {
+    path: '/coupons',
+    component: lazy(() => import('../../pages/Coupon/List')),
+    exact: true,
+    title: "Sự kiện",
+    routes: [
+      {
+        path: '/',
+        component: lazy(() => import('../../pages/Coupon/List')),
+        exact: true,
+        title: "Danh sách sự kiện",
+      },
+      // {
+      //   path: '/create',
+      //   component: lazy(() => import('../../pages/Event/Create')),
+      //   exact: true,
+      //   title: "Tạo mới sự kiện",
+      // },
+      // {
+      //   path: '/:id/show',
+      //   component: lazy(() => import('../../pages/Event/Show')),
+      //   exact: true,
+      //   title: i18n.t('realtor.title'),
+      // },
+    ],
   },
 ];
 

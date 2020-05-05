@@ -13,4 +13,11 @@ export const FormItemWrapper = styled(FormItem)`
       }
     }
   }
+  .labelDiff {
+    color: black;
+    font-size: 14px;
+    &:after {
+      content: '';
+    }
+  }
 `;

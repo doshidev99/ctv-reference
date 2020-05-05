@@ -5,7 +5,9 @@ import RestFormInput from "../../../components/RestInput/RestFormInput";
 import RestFormDateTimePicker from "../../../components/RestInput/RestDateTimePicker";
 import RestSwitch from "../../../components/RestInput/RestSwitch";
 import RestSelectMulti from "../../../components/RestInput/RestSelectMulti";
+import RestEditor from "../../../components/RestInput/RestEditor";
 // import RestAvatarInput from "../../../components/RestInput/RestAvatarInput";
+import RestUpload from "../../../components/RestInput/RestUpload";
 import RestRow from "../../../components/RestLayout/RowLayout";
 
 import { EVENT_TAGS } from "../../../configs/constants";
@@ -23,11 +25,11 @@ class EventForm extends Component{
           placeholder="Tên sự kiện"
           requiredMessage="Vui lòng nhập tên sự kiện"
         />
-        <p style={{"margin-top": "1em"}}>Thời gian bắt đầu</p>
+        <p style={{"marginTop": "1em"}}>Thời gian bắt đầu</p>
         <RestFormDateTimePicker
           source="beganAt"
         />
-        <p style={{"margin-top": "1em"}}>Thời gian kết thúc</p>
+        <p style={{"marginTop": "1em"}}>Thời gian kết thúc</p>
         <RestFormDateTimePicker
           source="endedAt"
         />
@@ -57,6 +59,15 @@ class EventForm extends Component{
         {/* <RestAvatarInput 
           source="mainImage.link"
         /> */}
+        <RestUpload
+          source="mainImage.link"
+          folderPrefix="EVENT_IMAGE"
+          title="Ảnh sự kiện"
+        />
+        <RestEditor
+          source="content"
+          label="Nội dung"
+        />
       </RestRow>
     );
   }

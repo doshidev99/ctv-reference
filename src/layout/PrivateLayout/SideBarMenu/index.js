@@ -60,6 +60,12 @@ const sidebarMenu = [
     icon: "schedule",
   },
   {
+    key: "coupons",
+    text: "Ưu đãi",
+    url: "/coupons",
+    icon: "money-collect",
+  },
+  {
     key: "education",
     text: "Đào tạo",
     url: "/trainings",
