@@ -32,7 +32,6 @@ FormEditor.propTypes = {
   source: PropTypes.string,
   record: PropTypes.object,
   defaultValue: PropTypes.string,
-  // children: PropTypes.any,
 };
 
 export default FormEditor;

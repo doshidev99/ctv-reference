@@ -5,7 +5,7 @@ import RestFormInput from "../../../components/RestInput/RestFormInput";
 import RestRow from "../../../components/RestLayout/RowLayout";
 import RestUpload from "../../../components/RestInput/RestUpload";
 import RestEditor from "../../../components/RestInput/RestEditor";
-import RestFormDateTimePicker from "../../../components/RestInput/RestDateTimePicker";
+import {RestFormDateTimePicker} from "../../../components/RestInput/RestDateTimePicker";
 import RestSwitch from "../../../components/RestInput/RestSwitch";
 // import RestSelect from "../../../components/RestInput/RestSelect";
 // import { getResources } from "../../../redux/rest/selectors";

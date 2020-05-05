@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
 import Label from '../../../components/RestField/Label';
 import Filter from '../components/Filter';
 import RestSwitch from '../../../components/RestField/Switch';
@@ -29,16 +28,13 @@ class ListCoupon extends Component {
           redirects={{
             create: 'modal',
             edit: 'modal',
-            show: 'modal',
           }}
         >
           <Label
             source="title"
             title="Tên coupon"
             width="30%"
-            render={( value, record) => {
-            return <Link to={`/coupons/${record.id}/show`}>{value}</Link>
-          }}  />
+              />
           <Label
             source="beganAt"
             title="Thời gian bắt đầu"

@@ -7,6 +7,14 @@ import { closeModal as closeModalAction } from '../../redux/modal/actions';
 
 const modalRoutes = [
   {
+    path: '/posts/create',
+    component: lazy(() => import('../../containers/Post/Create')),
+  },
+  {
+    path: '/posts',
+    component: lazy(() => import('../../containers/Post/Edit')),
+  },
+  {
     path: '/staffs/create',
     component: lazy(() => import('../../containers/Admin/Create')),
   },
@@ -61,7 +69,7 @@ class ModalRoute extends Component {
 
   render() {
     const { match, location, closeModal } = this.props;
-    
+
     const { visible, currentModal } = this.state;
     const modal = getModalRoute(currentModal);
     const modalOptions = modal && modal.modalOptions ? modal.modalOptions : {};

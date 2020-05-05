@@ -161,6 +161,12 @@ const routes = [
     title: "Đào tạo",
   },
   {
+    path: '/posts',
+    component: lazy(() => import('../../pages/Post')),
+    exact: true,
+    title: "Tin tức",
+  },
+  {
     path: '/service-registrations',
     component: lazy(() => import('../../pages/ServiceRegistration/index')),
     exact: true,

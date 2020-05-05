@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Descriptions, Typography, Tag } from "antd";
 import moment from 'moment'
-import Wrapper from "./styles";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.core.css';
+import Wrapper, {QuillEditorWrapper} from "./styles";
 import { getOneEventAction } from "../../../redux/event/actions";
 import RestList from '../../rest/List';
 import Label from '../../../components/RestField/Label';
@@ -46,14 +49,15 @@ class ShowEvent extends Component {
           <Descriptions.Item label="Thời gian bắt đầu">{moment(currentEvent.happenAt).format("DD/MM/YYYY HH:mm")}</Descriptions.Item>
           <Descriptions.Item label="Thời gian kết thúc">{moment(currentEvent.endedAt).format("DD/MM/YYYY HH:mm")}</Descriptions.Item>
           <Descriptions.Item label="Địa điểm">{currentEvent.locationDescription}</Descriptions.Item>
-          <Descriptions.Item label="Nội dung miêu tả"> 
-            {currentEvent.content}
-          </Descriptions.Item>
+          <Descriptions.Item label="Nội dung miêu tả" />
+          <QuillEditorWrapper>
+            <ReactQuill value={currentEvent.content} readOnly style={{height: '300px', display: 'block'}} />
+          </QuillEditorWrapper>
           <Descriptions.Item label="Số lượng khách"> 
             {currentEvent.capacity}
           </Descriptions.Item>
           <Descriptions.Item label="Trạng thái">
-            <Text type={currentEvent.isVisible ? 'secondary': 'danger'}>{currentEvent.isVisible ? "Khả dụng": "Không khả dụng"}</Text>
+            <Text type={currentEvent.isVisible ? 'warning': 'danger'}>{currentEvent.isVisible ? "Khả dụng": "Không khả dụng"}</Text>
           </Descriptions.Item>
           <Descriptions.Item label="Tags"> 
             {tags}

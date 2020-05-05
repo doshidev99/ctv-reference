@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import RestFormInput from "../../../components/RestInput/RestFormInput";
-import RestFormDateTimePicker from "../../../components/RestInput/RestDateTimePicker";
+import {RestFormDateTimePicker} from "../../../components/RestInput/RestDateTimePicker";
 import RestSwitch from "../../../components/RestInput/RestSwitch";
 import RestEditor from "../../../components/RestInput/RestEditor";
 import RestUpload from "../../../components/RestInput/RestUpload";

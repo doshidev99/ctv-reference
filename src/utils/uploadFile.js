@@ -46,7 +46,7 @@ export const uploadFile = (file, signedRequest) => {
 };
 
 export const handleXLSX = async file => {
-  
+
   return new Promise((resolve, reject) => {
     const fileReader = new FileReader();
     const df = [];
