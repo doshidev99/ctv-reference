@@ -214,7 +214,10 @@ class BasicInfo extends Component {
               </Descriptions.Item>
               <Descriptions.Item label="Chứng minh nhân dân">
                 {currentRealtor.identityStatus || currentRealtor.identityStatus === 0 ? this.renderIdentityStatus(currentRealtor.identityStatus): ''}
-                <Button icon="folder" onClick={this.showModalCmnd} className="open-button-cmnd"> Xem ảnh </Button>
+                {currentRealtor.identityStatus === 1 || currentRealtor.identityStatus === 2 ? (
+                  <Button icon="folder" onClick={this.showModalCmnd} className="open-button-cmnd"> Xem ảnh </Button>
+
+                ): ''}
                 <Modal
                   title="Chứng minh nhân dân"
                   visible={this.state.visibleCmnd}

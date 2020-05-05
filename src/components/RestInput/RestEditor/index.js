@@ -2,18 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FormEditor from '../../form/FormEditor';
 
-const RestFormEditor = props => {
+const RestEditor = props => {
   return (
     <FormEditor
       {...props}
-    />
+      form={props.form}
+      />
   );
 };
 
-RestFormEditor.propTypes = {
+RestEditor.propTypes = {
   source: PropTypes.string,
   record: PropTypes.object,
   defaultValue: PropTypes.string,
 };
 
-export default RestFormEditor;
+export default RestEditor;

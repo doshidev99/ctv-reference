@@ -40,7 +40,7 @@ class UploadAvatar extends React.Component {
       });
 
       const file = info.file.originFileObj;
-      const signedUrlS3 = await getSignedUrlS3(file.name, file.type, this.props.forderPrefix);
+      const signedUrlS3 = await getSignedUrlS3(file.name, file.type, this.props.folderPrefix );
       uploadFile(file, signedUrlS3.url).then(response => {
         this.props.form.setFieldsValue({
           [this.props.source]: response.url,
@@ -129,7 +129,6 @@ UploadAvatar.propTypes = {
   className: PropTypes.string,
   required: PropTypes.bool,
   requiredMessage: PropTypes.string,
-  forderPrefix: PropTypes.string,
 };
 UploadAvatar.defaultProps = {
   required: false,
