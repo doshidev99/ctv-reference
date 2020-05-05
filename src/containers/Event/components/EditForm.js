@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import RestFormInput from "../../../components/RestInput/RestFormInput";
-import RestFormDateTimePicker from "../../../components/RestInput/RestDateTimePicker";
+import {RestFormDateTimePicker} from "../../../components/RestInput/RestDateTimePicker";
 import RestSwitch from "../../../components/RestInput/RestSwitch";
 import RestSelectMulti from "../../../components/RestInput/RestSelectMulti";
 // import RestAvatarInput from "../../../components/RestInput/RestAvatarInput";
@@ -54,13 +54,13 @@ class EventForm extends Component{
           titleProp="name"
           resourceData={EVENT_TAGS}
         />
-        {/* <RestAvatarInput 
+        {/* <RestAvatarInput
           source="mainImage.link"
         /> */}
       </RestRow>
     );
   }
- 
+
 };
 EventForm.propTypes = {
   form: PropTypes.object,

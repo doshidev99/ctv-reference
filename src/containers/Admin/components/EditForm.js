@@ -57,7 +57,6 @@ class AdminForm extends Component{
       </RestRow>
     );
   }
- 
 };
 
 const mapStateToProps = (state) => {
