@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import RestFormDateTimePicker from "../../../components/RestInput/RestDateTimePicker";
+import { RestFormDateTimePicker } from "../../../components/RestInput/RestDateTimePicker";
 import RestRow from "../../../components/RestLayout/RowLayout";
 
 class ServiceRegistForm extends Component{
@@ -17,7 +17,7 @@ class ServiceRegistForm extends Component{
       </RestRow>
     );
   }
- 
+
 };
 ServiceRegistForm.propTypes = {
   form: PropTypes.object,

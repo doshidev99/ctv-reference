@@ -6,6 +6,7 @@ import EditButton from '../../../components/RestActions/EditButton';
 import DeleteButton from '../../../components/RestActions/DeleteButton';
 import RestList from '../../rest/List';
 import Filter from '../components/Filter';
+import RestSwitch from '../../../components/RestField/Switch';
 // import { ADMIN_ROLES } from '../../../configs/constants';
 import { formatDate } from "../../../utils/textProcessor";
 import PostWrapper from './style';
@@ -36,6 +37,16 @@ class ListPost extends Component {
             width="120px"
           />
           <Label source="title" title="Tiêu đề" />
+          <RestSwitch
+            source="isVisible"
+            title="Hiển thị"
+            confirmMessage="Bạn có muốn thay đổi?"
+            cancelConfirmMessage="Hủy bỏ"
+            align="center"
+            isShowConfirm
+            onChange={this.props.onChange}
+            type="switch"
+          />
           <ActionGroup>
             <EditButton />
             <DeleteButton />

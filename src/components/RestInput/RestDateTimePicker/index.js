@@ -11,7 +11,7 @@ import { RestInputContext } from "../RestInputContext";
 
 const { RangePicker } = DatePicker;
 
-const RestFormDateTimePicker = (props) => {
+export const RestFormDateTimePicker = (props) => {
   const { record, form } = props;
   return (
     <RestInputContext.Consumer>
