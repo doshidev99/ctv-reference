@@ -128,32 +128,48 @@ class StatusTrans extends Component {
             )}
             { transaction.status === 1 && (
             <div className="confirm-box">
-              <Title level={4}>{i18n.t("transaction.detail.depositConfirm")}</Title>
-              <Row>
-                <Col span={12}>
-                  <div className="image">
-                    <img alt="deposit" src={transaction.standingOrder} />
-                  </div>
-                </Col>
-                <Col span={4}>
-                  <div className="button-group">
-                    <Button type="primary" onClick={() => this.props.confirmOrder(this.props.match.params.id)} block>
+              { transaction.depositType === 1 ? (
+                <Row gutter={64}>
+                  <Col span={12}>
+                    <div className="image">
+                      <img alt="deposit" src={transaction.standingOrder} />
+                    </div>
+                  </Col>
+                  <Col span={6}>
+                    <div className="button-group">
+                      <Button type="primary" onClick={() => this.props.confirmOrder(this.props.match.params.id)} block>
+                        {i18n.t("transaction.detail.depositConfirm")}
+                      </Button>
+                      <Popconfirm title="Bạn có chắc chắn không？" okText="Chắc" cancelText="Không" onConfirm={() => this.props.resendRequest(this.props.match.params.id)}>
+                        <Button type="primary" block>
+                          {i18n.t("transaction.detail.sendRequest")}
+                        </Button>
+                      </Popconfirm>
+                      <Popconfirm title="Bạn có chắc chắn không？" okText="Chắc" cancelText="Không" onConfirm={() => this.props.cancelTrans(this.props.match.params.id)}>
+                        <Button type="danger" block>
+                          {i18n.t("transaction.detail.cancelTrans")}
+                        </Button>
+                      </Popconfirm>
+                        
+                    </div>
+                  </Col>
+                </Row>
+              ) : (
+                <Row gutter={64}>
+                  <Col span={4}>
+                    <Button type="primary" onClick={() => this.props.confirmOrder(this.props.match.params.id)} size="large" block>
                       {i18n.t("transaction.detail.depositConfirm")}
                     </Button>
-                    <Popconfirm title="Bạn có chắc chắn không？" okText="Chắc" cancelText="Không" onConfirm={() => this.props.resendRequest(this.props.match.params.id)}>
-                      <Button type="primary" block>
-                        {i18n.t("transaction.detail.sendRequest")}
-                      </Button>
-                    </Popconfirm>
+                  </Col>
+                  <Col span={4}>
                     <Popconfirm title="Bạn có chắc chắn không？" okText="Chắc" cancelText="Không" onConfirm={() => this.props.cancelTrans(this.props.match.params.id)}>
-                      <Button type="danger" block>
+                      <Button type="danger" size="large" block>
                         {i18n.t("transaction.detail.cancelTrans")}
                       </Button>
                     </Popconfirm>
-                        
-                  </div>
-                </Col>
-              </Row>
+                  </Col>
+                </Row>  
+              )}
             </div>
             )}
             { transaction.status === 2 && (

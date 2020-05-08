@@ -187,9 +187,9 @@ class TransactionPaymentTable extends Component {
     return (
       <Wrapper>
         <Row type="flex" justify="end">
-          <Col xs={6} className="createButton">
+          <Col className="createButton">
             { transaction.status === 3 && (
-              <Button type="primary" icon="plus" onClick={this.showModal}>
+              <Button type="primary" icon="plus" onClick={this.showModal} size="large">
               Thêm đợt thanh toán
               </Button>
             )}
