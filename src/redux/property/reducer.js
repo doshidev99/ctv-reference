@@ -695,6 +695,7 @@ const getOnePropertySuccess = (state, { data }) => {
     vatRate,
     ...state.currentProperty,
   };
+  
   medias && medias.push(...mainImages);
   legalRecords &&
     legalRecords.forEach((e) => {
