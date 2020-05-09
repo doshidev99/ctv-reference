@@ -40,7 +40,7 @@ class PostForm extends Component {
         <p style={{"margin-top": "1em"}}>Ảnh đính kèm</p>
         <UploadImage
           source="mainImage.link"
-          forderPrefix="POST_IMAGE"
+          folderPrefix="POST_IMAGE"
         />
         <RestSwitch
           source="isVisible"

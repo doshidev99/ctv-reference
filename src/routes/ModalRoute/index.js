@@ -42,6 +42,14 @@ const modalRoutes = [
     path: '/coupons',
     component: lazy(() => import('../../containers/Coupon/Edit')),
   },
+  {
+    path: '/partners/create',
+    component: lazy(() => import('../../containers/Partner/Create')),
+  },
+  {
+    path: '/partners',
+    component: lazy(() => import('../../containers/Partner/Edit')),
+  },
 ];
 
 const getModalRoute = currentModal => {
