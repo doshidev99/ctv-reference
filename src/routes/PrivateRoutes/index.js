@@ -10,7 +10,7 @@ import Dashboard from '../../pages/Dashboard';
 // import DetailTransaction from '../../pages/DetailTransaction'
 import EmailBox from '../../pages/EmailBox';
 import Option from '../../pages/Option';
-import ListPartner from '../../pages/ListPartner';
+// import ListPartner from '../../pages/ListPartner';
 import Training from '../../pages/Training';
 
 const routes = [
@@ -144,7 +144,7 @@ const routes = [
   },
   {
     path: '/partners',
-    component: ListPartner,
+    component: lazy(() => import('../../pages/Partner/List')),
     exact: true,
     title: "Partner",
   },
