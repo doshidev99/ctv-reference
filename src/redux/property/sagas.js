@@ -159,7 +159,10 @@ function* createProperty({ payload }) {
     yield put(submitCreatePropertyFormSuccessAction());
     setTimeout(history.push(`/properties`), 3000);
   } catch (error) {
-
+    notification.error({
+      message: I18n.t("error.title"),
+      description: "Có lỗi xảy ra, vui lòng tải lại trang",
+    });
     yield put(submitCreatePropertyFormFailureAtion(error));
   }
 }
@@ -190,7 +193,7 @@ function* getOneProperty({ id }) {
       Number(id),
     );
     response.paymentMethodIds = paymentMethods.results.map((e) => e.id);
-    // console.log(response);
+    console.log(response);
     
     yield put(getOnePropertySuccessAction(response));
   } catch (error) {
@@ -200,7 +203,7 @@ function* getOneProperty({ id }) {
 }
 function* updateProperty({ id, payload }) {
   try {
-    const { deletedDiscountIds } = yield select(state => {
+    const { deletedDiscountIds, deletedMediaIds } = yield select(state => {
       return state.property;
     });
     if(deletedDiscountIds.length > 0) {
@@ -219,7 +222,24 @@ function* updateProperty({ id, payload }) {
         deletedPayload,
       );
     }
+    if(deletedMediaIds.length > 0) {
+      const deletedPayload = {
+        ids: [...deletedMediaIds],
+      }
+      yield call(
+        apiWrapper,
+        {
+          isShowProgress: true,
+          isShowSucceedNoti: false,
+          errorDescription: "Có lỗi xảy ra",
+        },
+        delApiWithPayload,
+        "medias",
+        deletedPayload,
+      );
+    }
 
+    
   
     const body = JSON.parse(JSON.stringify(payload));
     body.medias.forEach((e) => {
@@ -231,14 +251,18 @@ function* updateProperty({ id, payload }) {
       if (e.readOnly) {
         delete e.readOnly;
       }
-      delete e.id;
+      if (typeof e.id !== typeof Number) {
+        delete e.id;
+      }
     });
     body.sitePlans &&
       body.sitePlans.forEach((e) => {
         if (e.readOnly) {
           delete e.readOnly;
         }
-        delete e.id;
+        if (typeof e.id !== typeof Number) {
+          delete e.id;
+        }
       });
 
     body.sections &&
@@ -250,7 +274,6 @@ function* updateProperty({ id, payload }) {
       });
 
     body.discounts.forEach((e) => {
-      delete e.id;
       if (e.propertyId) {
         delete e.propertyId
       }
@@ -271,16 +294,19 @@ function* updateProperty({ id, payload }) {
         if (e.readOnly) {
           delete e.readOnly;
         }
-        delete e.id;
+        if (typeof e.id !== typeof Number) {
+          delete e.id;
+        }
       });
     body.paymentProgress &&
       body.paymentProgress.forEach((e) => {
         if (e.readOnly) {
           delete e.readOnly;
         }
-        delete e.id;
+        if (typeof e.id !== typeof Number) {
+          delete e.id;
+        }
       });
-
     const newDiscounts = body.discounts.filter(
       (value) => Object.keys(value).length >= 6,
     );
@@ -303,7 +329,7 @@ function* updateProperty({ id, payload }) {
     body.discounts = newDiscounts;
     body.salesPolicies = newSalesPolicies;
     body.paymentProgress = newPaymentProgress;
-    
+      
     const response = yield call(
       apiWrapper,
       {
@@ -317,7 +343,7 @@ function* updateProperty({ id, payload }) {
       id,
       body,
     );
-    put(getOnePropertyAction(response.id));
+    yield put(getOnePropertyAction(response.id));
   } catch (error) {
     notification.error({
       message: I18n.t("error.title"),

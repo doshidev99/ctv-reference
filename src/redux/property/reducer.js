@@ -37,6 +37,7 @@ export const initialState = {
     },
   ],
   deletedDiscountIds: [],
+  deletedMediaIds: [],
   priceList: null,
   propertyImage: [],
   medias: [],
@@ -250,10 +251,14 @@ const removePropertyImage = (state, { link }) => {
 
 const addPropertyMedia = (state, { payload }) => {
   const mediaList = [...state.medias];
+  
   if (payload.type === 1) {
-    const index = mediaList.findIndex((e) => e.id === payload.id);
+    const index = mediaList.findIndex((e) => e.type === payload.type);
     if (index >= 0) {
-      mediaList[index] = payload;
+      mediaList[index] = {
+        id: mediaList[index].id,
+        ...payload,
+      };
     } else {
       mediaList.push({
         id: mongoObjectId(),
@@ -274,10 +279,17 @@ const addPropertyMedia = (state, { payload }) => {
 };
 
 const removePropertyMedia = (state, { id }) => {
+  const deletedMediaList = [...state.deletedMediaIds];
+  // eslint-disable-next-line no-restricted-globals
+  if (!isNaN(id)) {
+    deletedMediaList.push(id);
+  }
+
   const mediaList = [...state.medias];
   return {
     ...state,
     medias: mediaList.filter((e) => e.id !== id),
+    deletedMediaIds: deletedMediaList,
   };
 };
 
@@ -644,6 +656,7 @@ const getOnePropertySuccess = (state, { data }) => {
     overview,
     legalRecords,
     location,
+    address,
     locationDescription,
     sitePlans,
     salesPolicies,
@@ -664,6 +677,7 @@ const getOnePropertySuccess = (state, { data }) => {
     cityId,
     typeId,
     staffId,
+    address,
     openSaleDate,
     commissionRate,
     overview,

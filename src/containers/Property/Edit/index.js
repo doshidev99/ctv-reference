@@ -186,7 +186,8 @@ class EditPropertyForm extends Component {
       loading,
     } = this.props;
     const { getFieldDecorator } = form;
-
+    // console.log(legalRecords);
+    
     const legalArea = legalRecords.map((e) => (
       <LegalRecord
         key={e.id}
@@ -334,8 +335,8 @@ class EditPropertyForm extends Component {
                         rules: [
                           {
                             type: "object",
-                            required: true,
-                            message: "Vui lòng chọn ngày mở bán",
+                            required: false,
+                            // message: "Vui lòng chọn ngày mở bán",
                             whitespace: true,
                           },
                         ],
@@ -454,6 +455,7 @@ class EditPropertyForm extends Component {
               </Row>
               {/* LOCATION  */}
               <Location
+                address={currentProperty && currentProperty.address}
                 description={
                   currentProperty && currentProperty.locationDescription
                 }
