@@ -135,14 +135,6 @@ class CreatePropertyForm extends Component {
           return;
         }
 
-        // const medias = [];
-        // propertyImage.forEach((el) => {
-        //   medias.push({
-        //     type: 2,
-        //     link: el,
-        //   });
-        // });
-
         values.transactionType = Number(values.transactionType);
         values = {
           ...values,

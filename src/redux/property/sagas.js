@@ -193,7 +193,7 @@ function* getOneProperty({ id }) {
       Number(id),
     );
     response.paymentMethodIds = paymentMethods.results.map((e) => e.id);
-    console.log(response);
+    // console.log(response);
     
     yield put(getOnePropertySuccessAction(response));
   } catch (error) {
@@ -203,9 +203,11 @@ function* getOneProperty({ id }) {
 }
 function* updateProperty({ id, payload }) {
   try {
+   
     const { deletedDiscountIds, deletedMediaIds } = yield select(state => {
       return state.property;
     });
+   
     if(deletedDiscountIds.length > 0) {
       const deletedPayload = {
         ids: [...deletedDiscountIds],
@@ -238,20 +240,25 @@ function* updateProperty({ id, payload }) {
         deletedPayload,
       );
     }
-
     
-  
     const body = JSON.parse(JSON.stringify(payload));
-    body.medias.forEach((e) => {
-      if (typeof e.id !== typeof Number) {
-        delete e.id;
+  
+    body.medias = body.medias.map(e=> {
+      
+      if(typeof(e.id) !== 'number') {
+        const {link, mimeType, name, type} = e;
+        return {
+          link, mimeType, name, type,
+        }
       }
-    });
+        return e
+    })
+  
     body.legalRecords.forEach((e) => {
       if (e.readOnly) {
         delete e.readOnly;
       }
-      if (typeof e.id !== typeof Number) {
+      if (e.id) {
         delete e.id;
       }
     });
@@ -260,7 +267,7 @@ function* updateProperty({ id, payload }) {
         if (e.readOnly) {
           delete e.readOnly;
         }
-        if (typeof e.id !== typeof Number) {
+        if (e.id) {
           delete e.id;
         }
       });
@@ -294,7 +301,7 @@ function* updateProperty({ id, payload }) {
         if (e.readOnly) {
           delete e.readOnly;
         }
-        if (typeof e.id !== typeof Number) {
+        if (e.id) {
           delete e.id;
         }
       });
@@ -303,7 +310,7 @@ function* updateProperty({ id, payload }) {
         if (e.readOnly) {
           delete e.readOnly;
         }
-        if (typeof e.id !== typeof Number) {
+        if (e.id) {
           delete e.id;
         }
       });
@@ -329,7 +336,7 @@ function* updateProperty({ id, payload }) {
     body.discounts = newDiscounts;
     body.salesPolicies = newSalesPolicies;
     body.paymentProgress = newPaymentProgress;
-      
+    
     const response = yield call(
       apiWrapper,
       {

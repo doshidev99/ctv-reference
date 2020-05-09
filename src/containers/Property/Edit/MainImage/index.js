@@ -63,8 +63,7 @@ class PropertyMainImage extends Component {
   render() {
     const { medias } = this.props;
     let fileList = [...medias] || [];
-  
-    
+
     if (fileList.length > 0) {
       fileList = fileList.filter((e) => e.type === 1);
       fileList = fileList.map((e) => ({
@@ -79,8 +78,7 @@ class PropertyMainImage extends Component {
     const uploadButton = (
       <Button>
         <Icon type="upload" />
-        {' '}
-Upload
+        Upload
       </Button>
     );
     return (

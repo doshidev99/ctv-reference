@@ -97,56 +97,50 @@ class EditPropertyForm extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    // const test = await this.props.form.getFieldsValue();
-    // // eslint-disable-next-line no-console
-    // console.log(test);
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        values.openSaleDate = values.openSaleDate
-          ? values.openSaleDate.format()
-          : null;
+    try {
+      const {
+        legalRecords,
+        sitePlans,
+        discounts,
+        salesPolicies,
+        paymentProgress,
+        // paymentMethods,
+        priceList,
+        medias,
+        productTable,
+        location,
+        // locationDescription,
+      } = this.props;
+      // return
+      // // eslint-disable-next-line no-console
+      let payload = await this.props.form.validateFields();
+      payload.openSaleDate = payload.openSaleDate
+        ? payload.openSaleDate.format()
+        : null;
 
-        const {
-          legalRecords,
-          sitePlans,
-          discounts,
-          salesPolicies,
-          paymentProgress,
-          // paymentMethods,
-          priceList,
-          // propertyImage,
-          medias,
-          productTable,
-          location,
-          // locationDescription,
-        } = this.props;
+      payload.transactionType = Number(payload.transactionType);
+      payload = {
+        ...payload,
+        legalRecords,
+        sitePlans,
+        discounts,
+        salesPolicies,
+        paymentProgress,
+        medias,
+        priceList: priceList || null,
+        sections: productTable.length > 0 ? productTable : undefined,
+        location: {
+          latitude: location[0],
+          longitude: location[1],
+        },
+      };
+      // eslint-disable-next-line no-console
+      const { id } = this.props.match.params;
 
-        values.transactionType = Number(values.transactionType);
-        values = {
-          ...values,
-          legalRecords,
-          // paymentMethods,
-          sitePlans,
-          discounts,
-          salesPolicies,
-          paymentProgress,
-
-          priceList: priceList ||null,
-          medias,
-          sections: productTable.length > 0 ? productTable : undefined,
-          location: {
-            latitude: location[0],
-            longitude: location[1],
-          },
-          // locationDescription,
-        };
-        // eslint-disable-next-line no-console
-        const { id } = this.props.match.params;
-        this.props.submitForm(id, values);
-      } else {
-        message.error("Có lỗi xảy ra");
-      }
-    });
+      this.props.submitForm(id, payload);
+    } catch (error) {
+      message.error("Có lỗi xảy ra");
+    }
   };
 
   onChangeSwitch = (checked) => {
@@ -186,8 +180,6 @@ class EditPropertyForm extends Component {
       loading,
     } = this.props;
     const { getFieldDecorator } = form;
-    // console.log(legalRecords);
-    
     const legalArea = legalRecords.map((e) => (
       <LegalRecord
         key={e.id}
@@ -240,6 +232,7 @@ class EditPropertyForm extends Component {
           title: e.title,
           link: e.link,
           updatedAt: moment(e.updatedAt),
+          readOnly: e.readOnly,
         }}
       />
     ));
@@ -694,15 +687,16 @@ const mapStateToProps = (state) => {
     propertyImage,
     productTable,
     location,
-    medias,
     locationDescription,
     getOnePropertyLoading,
+    medias,
     //------------------------
     currentProperty,
   } = state.property;
   const { listCityFailure } = state.city;
 
   return {
+    medias,
     legalRecords,
     sitePlans,
     discounts,
@@ -713,7 +707,6 @@ const mapStateToProps = (state) => {
     propertyImage,
     productTable,
     location,
-    medias,
     locationDescription,
     //---------------------
     paymentMethodOptions: getResources(state, "payment-methods"),
