@@ -250,10 +250,14 @@ const removePropertyImage = (state, { link }) => {
 
 const addPropertyMedia = (state, { payload }) => {
   const mediaList = [...state.medias];
+  
   if (payload.type === 1) {
-    const index = mediaList.findIndex((e) => e.id === payload.id);
+    const index = mediaList.findIndex((e) => e.type === payload.type);
     if (index >= 0) {
-      mediaList[index] = payload;
+      mediaList[index] = {
+        id: mediaList[index].id,
+        ...payload,
+      };
     } else {
       mediaList.push({
         id: mongoObjectId(),

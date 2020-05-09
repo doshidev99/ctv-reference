@@ -159,7 +159,10 @@ function* createProperty({ payload }) {
     yield put(submitCreatePropertyFormSuccessAction());
     setTimeout(history.push(`/properties`), 3000);
   } catch (error) {
-
+    notification.error({
+      message: I18n.t("error.title"),
+      description: "Có lỗi xảy ra, vui lòng tải lại trang",
+    });
     yield put(submitCreatePropertyFormFailureAtion(error));
   }
 }
@@ -231,14 +234,18 @@ function* updateProperty({ id, payload }) {
       if (e.readOnly) {
         delete e.readOnly;
       }
-      delete e.id;
+      if (typeof e.id !== typeof Number) {
+        delete e.id;
+      }
     });
     body.sitePlans &&
       body.sitePlans.forEach((e) => {
         if (e.readOnly) {
           delete e.readOnly;
         }
-        delete e.id;
+        if (typeof e.id !== typeof Number) {
+          delete e.id;
+        }
       });
 
     body.sections &&
@@ -250,7 +257,6 @@ function* updateProperty({ id, payload }) {
       });
 
     body.discounts.forEach((e) => {
-      delete e.id;
       if (e.propertyId) {
         delete e.propertyId
       }
@@ -271,16 +277,19 @@ function* updateProperty({ id, payload }) {
         if (e.readOnly) {
           delete e.readOnly;
         }
-        delete e.id;
+        if (typeof e.id !== typeof Number) {
+          delete e.id;
+        }
       });
     body.paymentProgress &&
       body.paymentProgress.forEach((e) => {
         if (e.readOnly) {
           delete e.readOnly;
         }
-        delete e.id;
+        if (typeof e.id !== typeof Number) {
+          delete e.id;
+        }
       });
-
     const newDiscounts = body.discounts.filter(
       (value) => Object.keys(value).length >= 6,
     );
@@ -303,7 +312,6 @@ function* updateProperty({ id, payload }) {
     body.discounts = newDiscounts;
     body.salesPolicies = newSalesPolicies;
     body.paymentProgress = newPaymentProgress;
-    
     const response = yield call(
       apiWrapper,
       {
@@ -317,7 +325,7 @@ function* updateProperty({ id, payload }) {
       id,
       body,
     );
-    put(getOnePropertyAction(response.id));
+    yield put(getOnePropertyAction(response.id));
   } catch (error) {
     notification.error({
       message: I18n.t("error.title"),

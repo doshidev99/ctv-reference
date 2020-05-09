@@ -334,8 +334,8 @@ class EditPropertyForm extends Component {
                         rules: [
                           {
                             type: "object",
-                            required: true,
-                            message: "Vui lòng chọn ngày mở bán",
+                            required: false,
+                            // message: "Vui lòng chọn ngày mở bán",
                             whitespace: true,
                           },
                         ],

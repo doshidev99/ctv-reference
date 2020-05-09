@@ -1,71 +1,125 @@
-import React, { Component } from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import 'react-quill/dist/quill.core.css';
-import QuillEditorWrapper from './styles';
+import React, { Component } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import "react-quill/dist/quill.core.css";
+import { message } from "antd";
+import { getSignedUrlS3, uploadFile } from "../../../utils/uploadFile";
+import QuillEditorWrapper from "./styles";
 
 export default class Editor extends Component {
   constructor(props) {
     super(props);
     this.isChangeState = false;
     this.handleChange = this.handleChange.bind(this);
-    this.state = { value: ' ' };
-    
+    this.state = { value: " " };
+
     this.quillModules = {
       toolbar: {
         container: [
           [{ header: [1, 2, false] }, { font: [] }],
-          ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+          ["bold", "italic", "underline", "strike", "blockquote"],
           [
-            { list: 'ordered' },
-            { list: 'bullet' },
-            { indent: '-1' },
-            { indent: '+1' },
+            { list: "ordered" },
+            { list: "bullet" },
+            { indent: "-1" },
+            { indent: "+1" },
           ],
-          ['clean'],
+          // ["link", "image"],
+          // ["clean"],
         ],
+        handlers: {
+          image: this.uploadImage,
+        },
       },
     };
   }
 
   componentDidMount() {
     this.setState({
-      value: '',
-    })
+      value: "",
+    });
+    // console.log(this.quill);
   }
 
-  handleChange(value) {
-    this.isChangeState=true;
+  handleChange = (value) => {
+    this.isChangeState = true;
     this.setState({ value });
-    this.props.onChange(value)
-  }
+    this.props.onChange(value);
+  };
+
+  uploadImage = () => {
+    const input = document.createElement("input");
+
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.click();
+
+    input.onchange = async () => {
+      const file = input.files[0];
+      const formData = new FormData();
+
+      formData.append("image", file);
+
+      // Save current cursor state
+      const range = this.quill.getEditorSelection(true);
+
+      // Insert temporary loading placeholder image
+      this.quill.renderEditingArea(
+        range.index,
+        "image",
+        `${window.location.origin}/images/loaders/placeholder.gif`,
+      );
+
+      // Move cursor to right side of image (easier to continue typing)
+      // this.quill.setEditorSelection(range.index + 1);
+      try {
+        const signedUrlS3 = await getSignedUrlS3(
+          file.name,
+          file.type,
+          "IMAGES",
+        );
+        const response = await uploadFile(file, signedUrlS3.url);
+        // // Remove placeholder image
+        // this.quill.deleteText(range.index, 1);
+
+        // Insert uploaded image
+        // this.quill.insertEmbed(range.index, 'image', res.body.image);
+
+        this.quill.renderEditingArea(range.index, "image", response.url);
+      } catch (error) {
+        message.error("Xảy ra lỗi, vui lòng thử lại");
+      }
+    };
+  };
 
   render() {
     const { label, placeholder, content } = this.props;
     let value;
-    if(this.isChangeState) {
-      value = this.state.value
-    } 
-    else if (content) {
-        value = content
+    if (this.isChangeState) {
+      value = this.state.value;
+    } else if (content) {
+      value = content;
     } else {
-      value = ''
+      value = "";
     }
-   
+
     const options = {
-      theme: 'snow',
+      theme: "snow",
       formats: Editor.formats,
       placeholder,
       value,
       onChange: this.handleChange,
       modules: this.quillModules,
-      
     };
     return (
-      
       <QuillEditorWrapper>
         <label>{label}</label>
-        <ReactQuill {...options} />
+        <ReactQuill
+          ref={(el) => {
+            this.quill = el;
+          }}
+          {...options}
+        />
       </QuillEditorWrapper>
     );
   }
