@@ -17,7 +17,7 @@ class AdminForm extends Component{
       <RestRow {...this.props}>
         <RestFormInput
           required
-          disabled
+          // disabled
           source="fullName"
           title="Họ và tên"
           placeholder="Họ và tên"
@@ -25,7 +25,7 @@ class AdminForm extends Component{
         />
         <RestFormInput
           required
-          disabled
+          // disabled
           source="phone"
           title="Số điện thoại"
           placeholder="Số điện thoại"
