@@ -67,7 +67,7 @@ class CouponForm extends Component {
         /> */}
         <RestEditor
           required
-          source="content"
+          source="workExperience"
           label="Kinh nghiệm làm việc"
         />
         <RestFormInput
