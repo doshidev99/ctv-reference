@@ -37,6 +37,7 @@ export const initialState = {
     },
   ],
   deletedDiscountIds: [],
+  deletedMediaIds: [],
   priceList: null,
   propertyImage: [],
   medias: [],
@@ -278,10 +279,17 @@ const addPropertyMedia = (state, { payload }) => {
 };
 
 const removePropertyMedia = (state, { id }) => {
+  const deletedMediaList = [...state.deletedMediaIds];
+  // eslint-disable-next-line no-restricted-globals
+  if (!isNaN(id)) {
+    deletedMediaList.push(id);
+  }
+
   const mediaList = [...state.medias];
   return {
     ...state,
     medias: mediaList.filter((e) => e.id !== id),
+    deletedMediaIds: deletedMediaList,
   };
 };
 
@@ -648,6 +656,7 @@ const getOnePropertySuccess = (state, { data }) => {
     overview,
     legalRecords,
     location,
+    address,
     locationDescription,
     sitePlans,
     salesPolicies,
@@ -668,6 +677,7 @@ const getOnePropertySuccess = (state, { data }) => {
     cityId,
     typeId,
     staffId,
+    address,
     openSaleDate,
     commissionRate,
     overview,

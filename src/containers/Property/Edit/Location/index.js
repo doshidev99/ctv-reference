@@ -38,15 +38,14 @@ class Location extends Component {
             <div className="locationDescription">
               <FormItem>
                 {this.props.form.getFieldDecorator("address", {
-                rules: [
-                  {
-                    required:true,
-                    message: "Địa chỉ dự án không được trống",
-                  },
-                ],
-              })(
-                <Input placeholder="Nhập địa chỉ dự án" />,
-                )}
+                  initialValue: this.props.address,
+                  rules: [
+                    {
+                      required: true,
+                      message: "Địa chỉ dự án không được trống",
+                    },
+                  ],
+                })(<Input placeholder="Nhập địa chỉ dự án" />)}
               </FormItem>
               <FormItem>
                 {this.props.form.getFieldDecorator("locationDescription")(
@@ -57,7 +56,14 @@ class Location extends Component {
           </Col>
           <Col xs={24} lg={16} xl={12}>
             <div className="locationMap">
-              <Map center={(this.props.location.length && this.props.location) || centerLocation} zoom={13} onClick={this.addMarker}>
+              <Map
+                center={
+                  (this.props.location.length && this.props.location) ||
+                  centerLocation
+                }
+                zoom={13}
+                onClick={this.addMarker}
+              >
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 {this.props.location.length > 0 ? (
                   <Marker position={this.props.location} />
@@ -81,7 +87,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Location);
+export default connect(mapStateToProps, mapDispatchToProps)(Location);

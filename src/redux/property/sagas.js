@@ -193,7 +193,7 @@ function* getOneProperty({ id }) {
       Number(id),
     );
     response.paymentMethodIds = paymentMethods.results.map((e) => e.id);
-    // console.log(response);
+    console.log(response);
     
     yield put(getOnePropertySuccessAction(response));
   } catch (error) {
@@ -203,7 +203,7 @@ function* getOneProperty({ id }) {
 }
 function* updateProperty({ id, payload }) {
   try {
-    const { deletedDiscountIds } = yield select(state => {
+    const { deletedDiscountIds, deletedMediaIds } = yield select(state => {
       return state.property;
     });
     if(deletedDiscountIds.length > 0) {
@@ -222,7 +222,24 @@ function* updateProperty({ id, payload }) {
         deletedPayload,
       );
     }
+    if(deletedMediaIds.length > 0) {
+      const deletedPayload = {
+        ids: [...deletedMediaIds],
+      }
+      yield call(
+        apiWrapper,
+        {
+          isShowProgress: true,
+          isShowSucceedNoti: false,
+          errorDescription: "Có lỗi xảy ra",
+        },
+        delApiWithPayload,
+        "medias",
+        deletedPayload,
+      );
+    }
 
+    
   
     const body = JSON.parse(JSON.stringify(payload));
     body.medias.forEach((e) => {
@@ -312,6 +329,7 @@ function* updateProperty({ id, payload }) {
     body.discounts = newDiscounts;
     body.salesPolicies = newSalesPolicies;
     body.paymentProgress = newPaymentProgress;
+      
     const response = yield call(
       apiWrapper,
       {
