@@ -24,7 +24,7 @@ export default class Editor extends Component {
             { indent: "-1" },
             { indent: "+1" },
           ],
-          // ["link", "image"],
+          ["link", "image"],
           // ["clean"],
         ],
         handlers: {
@@ -38,7 +38,6 @@ export default class Editor extends Component {
     this.setState({
       value: "",
     });
-    // console.log(this.quill);
   }
 
   handleChange = (value) => {
@@ -49,7 +48,6 @@ export default class Editor extends Component {
 
   uploadImage = () => {
     const input = document.createElement("input");
-
     input.setAttribute("type", "file");
     input.setAttribute("accept", "image/*");
     input.click();
@@ -61,17 +59,17 @@ export default class Editor extends Component {
       formData.append("image", file);
 
       // Save current cursor state
-      const range = this.quill.getEditorSelection(true);
+      const range = this.quill.getEditor().getSelection(true);
 
       // Insert temporary loading placeholder image
-      this.quill.renderEditingArea(
+      this.quill.getEditor().insertEmbed(
         range.index,
         "image",
         `${window.location.origin}/images/loaders/placeholder.gif`,
       );
 
       // Move cursor to right side of image (easier to continue typing)
-      // this.quill.setEditorSelection(range.index + 1);
+      this.quill.getEditor().setSelection(range.index + 1);
       try {
         const signedUrlS3 = await getSignedUrlS3(
           file.name,
@@ -79,13 +77,13 @@ export default class Editor extends Component {
           "IMAGES",
         );
         const response = await uploadFile(file, signedUrlS3.url);
-        // // Remove placeholder image
-        // this.quill.deleteText(range.index, 1);
+        // Remove placeholder image
+        this.quill.getEditor().deleteText(range.index, 1);
 
         // Insert uploaded image
-        // this.quill.insertEmbed(range.index, 'image', res.body.image);
+        // this.quill.getEditor().insertEmbed(range.index, 'image', res.body.image);
 
-        this.quill.renderEditingArea(range.index, "image", response.url);
+        this.quill.getEditor().insertEmbed(range.index, "image", response.url);
       } catch (error) {
         message.error("Xảy ra lỗi, vui lòng thử lại");
       }
@@ -102,7 +100,7 @@ export default class Editor extends Component {
     } else {
       value = "";
     }
-
+    
     const options = {
       theme: "snow",
       formats: Editor.formats,
