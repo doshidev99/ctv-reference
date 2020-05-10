@@ -769,7 +769,11 @@ const getProductTableSuccess = (state, { data }) => {
 const loadExcelSuccess = (state, { data }) => {
   // console.log("Đây là cái cũ >>",state.productTable);
   // console.log("Đây là cái mới từ excel >>",data);
-  let productTable = [...state.currentProperty.productTable]; // productTable từ API
+  let productTable = [];
+  if(state.currentProperty.productTable) {
+    productTable = [...state.currentProperty.productTable]  // productTable từ API
+  }
+
 
   // list new sections (in case unmapable)
   const newProductTable = _.differenceBy(data, productTable, "productCode");
@@ -777,8 +781,8 @@ const loadExcelSuccess = (state, { data }) => {
     data.forEach((d) => {
       if (d.productCode === row.code) {
         // if 2 productCode is equal
-        if (d.status === 1 || d.status === 2 || d.status === 3) {
-          // If booked/sold/reserved
+        if (row.status === 1 || row.status === 2 || row.status === 3) {
+          // If the old section is booked/sold/reserved
           const { status, price } = row;
           row = { ...d, status, price }; // keep the old status and price
         } else {
