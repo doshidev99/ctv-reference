@@ -122,7 +122,6 @@ class SitePlan extends Component {
         <div className="ant-upload-text">Upload</div>
       </div>
     );
-    // const {imageUrl} = this.props
     return (
       <SitePlanWrapper>
         <Row className="site-row">
@@ -143,6 +142,7 @@ class SitePlan extends Component {
                       className="sitePlanLabel"
                       name={this.props.name}
                       placeholder="Tiêu đề"
+                      readOnly={this.props.data&& this.props.data.readOnly}
                     />,
                   )}
                 </FormItem>

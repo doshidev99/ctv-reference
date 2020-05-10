@@ -136,7 +136,7 @@ const addSitePlan = (state) => {
   const sitePlans = [...state.sitePlans];
   sitePlans.push({
     id: mongoObjectId(),
-    link: [],
+    links: [],
   });
   return {
     ...state,
