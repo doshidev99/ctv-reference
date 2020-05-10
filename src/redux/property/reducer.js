@@ -773,26 +773,29 @@ const loadExcelSuccess = (state, { data }) => {
   if(state.currentProperty.productTable) {
     productTable = [...state.currentProperty.productTable]  // productTable từ API
   }
-
-
+  
   // list new sections (in case unmapable)
   const newProductTable = _.differenceBy(data, productTable, "productCode");
-  productTable.forEach((row) => {
+  
+  productTable.forEach((row, index) => {
     data.forEach((d) => {
-      if (d.productCode === row.code) {
+      if (d.productCode === row.productCode) {
         // if 2 productCode is equal
         if (row.status === 1 || row.status === 2 || row.status === 3) {
+         
           // If the old section is booked/sold/reserved
-          const { status, price } = row;
-          row = { ...d, status, price }; // keep the old status and price
+          // const { status, price } = row;
+          const newData = _.pick(d, ['productCode','building', 'code', 'direction', 'floor', 'area', 'type' ])
+          productTable[index] = { ...row, ...newData }; // keep the old status and price
         } else {
-          row = { ...d }; // overwrite the old seciton with new sections data
+          const newData = _.pick(d, ['productCode','building', 'code', 'direction', 'floor', 'area', 'type', 'price', 'status' ])
+          productTable[index] = { ...row,...newData }; // overwrite the old section with new sections data
         }
       }
     });
   });
   productTable = [...productTable, ...newProductTable];
-
+  
   return {
     ...state,
     productTable,
