@@ -303,6 +303,9 @@ function* updateProperty({ id, payload }) {
       if (e.propertyId) {
         delete e.propertyId;
       }
+      if (typeof e.id !== "number") {
+        delete e.id
+      }
       clean(e);
       if (e.time && e.time.length === 2) {
         const { time } = e;
