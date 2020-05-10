@@ -1,5 +1,6 @@
 import { takeEvery, put, call, select } from "redux-saga/effects";
 import moment from "moment";
+import * as _ from "lodash";
 import { object } from "prop-types";
 import { notification } from "antd";
 import I18n from "i18next";
@@ -16,7 +17,6 @@ import {
   getPaymentMethodFailureAction,
   getDiscountGroupSuccessAction,
   getDiscountGroupFailureAction,
-
   getOnePropertySuccessAction,
   getProductTableSuccessAction,
   getOnePropertyAction,
@@ -32,7 +32,12 @@ import {
   getListDiscountGroup,
 } from "../../api/modules/property";
 
-import { getDataByIdApi, getAllApi, putApi, delApiWithPayload } from "../../api/common/crud";
+import {
+  getDataByIdApi,
+  getAllApi,
+  putApi,
+  delApiWithPayload,
+} from "../../api/common/crud";
 import { apiWrapper } from "../../utils/reduxUtils";
 
 function* getListProperty({ limit, offset, filter }) {
@@ -194,7 +199,7 @@ function* getOneProperty({ id }) {
     );
     response.paymentMethodIds = paymentMethods.results.map((e) => e.id);
     // console.log(response);
-    
+
     yield put(getOnePropertySuccessAction(response));
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -203,15 +208,14 @@ function* getOneProperty({ id }) {
 }
 function* updateProperty({ id, payload }) {
   try {
-   
-    const { deletedDiscountIds, deletedMediaIds } = yield select(state => {
+    const { deletedDiscountIds, deletedMediaIds } = yield select((state) => {
       return state.property;
     });
-   
-    if(deletedDiscountIds.length > 0) {
+
+    if (deletedDiscountIds.length > 0) {
       const deletedPayload = {
         ids: [...deletedDiscountIds],
-      }
+      };
       yield call(
         apiWrapper,
         {
@@ -224,10 +228,10 @@ function* updateProperty({ id, payload }) {
         deletedPayload,
       );
     }
-    if(deletedMediaIds.length > 0) {
+    if (deletedMediaIds.length > 0) {
       const deletedPayload = {
         ids: [...deletedMediaIds],
-      }
+      };
       yield call(
         apiWrapper,
         {
@@ -240,20 +244,22 @@ function* updateProperty({ id, payload }) {
         deletedPayload,
       );
     }
-    
+
     const body = JSON.parse(JSON.stringify(payload));
-  
-    body.medias = body.medias.map(e=> {
-      
-      if(typeof(e.id) !== 'number') {
-        const {link, mimeType, name, type} = e;
+
+    body.medias = body.medias.map((e) => {
+      if (typeof e.id !== "number") {
+        const { link, mimeType, name, type } = e;
         return {
-          link, mimeType, name, type,
-        }
+          link,
+          mimeType,
+          name,
+          type,
+        };
       }
-        return e
-    })
-  
+      return e;
+    });
+
     body.legalRecords.forEach((e) => {
       if (e.readOnly) {
         delete e.readOnly;
@@ -272,17 +278,30 @@ function* updateProperty({ id, payload }) {
         }
       });
 
-    body.sections &&
-      body.sections.forEach((e) => {
-        delete e.key;
-        if (e.propertyId) {
-          delete e.propertyId
+    if (body.sections) {
+      body.sections = body.sections.map((e) => {
+        if (e.id) {
+          return _.pick(e, [
+            "id",
+            "productCode",
+            "code",
+            "type",
+            "building",
+            "area",
+            "floor",
+            "direction",
+            "status",
+            "price",
+            "isVisible",
+          ]);
         }
+        return e;
       });
+    }
 
     body.discounts.forEach((e) => {
       if (e.propertyId) {
-        delete e.propertyId
+        delete e.propertyId;
       }
       clean(e);
       if (e.time && e.time.length === 2) {
@@ -336,7 +355,9 @@ function* updateProperty({ id, payload }) {
     body.discounts = newDiscounts;
     body.salesPolicies = newSalesPolicies;
     body.paymentProgress = newPaymentProgress;
-    
+
+    // console.log(body);
+
     const response = yield call(
       apiWrapper,
       {
@@ -371,7 +392,7 @@ function* getPaymentMethod({ id }) {
         date: moment(e.createdAt).format("L"),
       };
     });
-    
+
     yield put(getPaymentMethodSuccessAction(data));
   } catch (error) {
     yield put(getPaymentMethodFailureAction(error));

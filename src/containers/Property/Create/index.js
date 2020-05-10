@@ -144,7 +144,7 @@ class CreatePropertyForm extends Component {
           discounts,
           salesPolicies,
           paymentProgress,
-          priceList: priceList ||null,
+          priceList: priceList || null,
           medias,
           sections: productTable,
           location: {
@@ -216,7 +216,6 @@ class CreatePropertyForm extends Component {
     const paymentProgressArea = paymentProgress.map((e) => (
       <PaymentProgress key={e.id} id={e.id} />
     ));
-    
 
     return (
       <StyleWrapper>
@@ -599,8 +598,8 @@ class CreatePropertyForm extends Component {
                           initialValue={this.state.tags}
                           onChange={this.onChangeTags}
                         >
-                          <Option value={1}>Hot</Option>
-                          <Option value={2}>New</Option>
+                          <Option value={1}>New</Option>
+                          <Option value={2}>Hot</Option>
                         </Select>
                       </div>,
                     )}

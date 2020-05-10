@@ -202,6 +202,7 @@ class EditPropertyForm extends Component {
           id: e.id,
           title: e.title,
           links: e.links,
+          readOnly: e.readOnly,
         }}
       />
     ));
@@ -219,6 +220,7 @@ class EditPropertyForm extends Component {
           title: e.title,
           link: e.link,
           updatedAt: moment(e.updatedAt),
+          readOnly: e.readOnly,
         }}
       />
     ));
@@ -644,8 +646,8 @@ class EditPropertyForm extends Component {
                             // initialValue={currentProperty && currentProperty.tags}
                             onChange={this.onChangeTags}
                           >
-                            <Option value={1}>Hot</Option>
-                            <Option value={2}>New</Option>
+                            <Option value={1}>New</Option>
+                            <Option value={2}>Hot</Option>
                           </Select>,
                         )}
                       </div>
