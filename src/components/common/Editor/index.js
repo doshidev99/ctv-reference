@@ -11,7 +11,7 @@ export default class Editor extends Component {
     super(props);
     this.isChangeState = false;
     this.handleChange = this.handleChange.bind(this);
-    this.state = { value: " " };
+    this.state = { value: "" };
 
     this.quillModules = {
       toolbar: {
@@ -36,8 +36,8 @@ export default class Editor extends Component {
 
   componentDidMount() {
     this.setState({
-      value: "",
-    });
+      value: this.props.content || "",
+    })
   }
 
   handleChange = (value) => {
@@ -96,7 +96,9 @@ export default class Editor extends Component {
     if (this.isChangeState) {
       value = this.state.value;
     } else if (content) {
-      value = content;
+      value = content
+      // console.log(value);
+      
     } else {
       value = "";
     }
