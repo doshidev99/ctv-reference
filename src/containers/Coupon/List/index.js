@@ -20,7 +20,7 @@ class ListCoupon extends Component {
     return (
       <CouponWrapper>
         <RestList
-          title="Danh sách sự kiện"
+          title="Danh sách ưu đãi"
           filter={<Filter />}
           resource="coupons"
           initialFilter={{ limit: 10, skip: 0, order: '-createdAt', filter: {} }}

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FormEditor from '../../form/FormEditor';
+// import { RestInputContext } from '../RestInputContext';
 
 const RestEditor = props => {
   return (
