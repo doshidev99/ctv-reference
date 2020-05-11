@@ -176,7 +176,7 @@ class BasicInfo extends Component {
               Trở lại
       </Button>,
     ]
-    
+
     return (
       <Wrapper>
         { loadingPage ? <Skeleton active /> : (
@@ -198,19 +198,21 @@ class BasicInfo extends Component {
             </Modal>
             <Descriptions column={2}>
               <Descriptions.Item label="Họ và tên">{currentRealtor.fullName}</Descriptions.Item>
-              <Descriptions.Item label="Số điện thoại">{currentRealtor.phone}</Descriptions.Item>
+              <Descriptions.Item label="Số điện thoại">{currentRealtor.phone || 'Chưa cập nhật'}</Descriptions.Item>
               <Descriptions.Item label="Email">
                 {currentRealtor.email}
               </Descriptions.Item>
               <Descriptions.Item label="Giới tính">
-                {currentRealtor.gender === 1 ? "Nam" : "Nữ"}
+                { !currentRealtor.gender && "Chưa cập nhật" }
+                { currentRealtor.gender === 1 && "Nam"}
+                { currentRealtor.gender === 2 && "Nữ"}
               </Descriptions.Item>
               <Descriptions.Item label="Ngày sinh">{currentRealtor.birthday ?  moment(currentRealtor.birthday).format('DD-MM-YYYY'): 'Chưa cập nhật'}</Descriptions.Item>
               <Descriptions.Item label="Địa chỉ"> 
                 {currentRealtor.address || 'Chưa cập nhật'}
               </Descriptions.Item>
               <Descriptions.Item label="Mã tiếp thị liên kết">
-                {currentRealtor.affiliateCode}
+                {currentRealtor.affiliateCode || 'Chưa cập nhật'}
               </Descriptions.Item>
               <Descriptions.Item label="Chứng minh nhân dân">
                 {currentRealtor.identityStatus || currentRealtor.identityStatus === 0 ? this.renderIdentityStatus(currentRealtor.identityStatus): ''}
@@ -231,9 +233,13 @@ class BasicInfo extends Component {
                       {currentRealtor.identityNumber}
                     </p>
                     <p>Ảnh mặt trước cmnd:</p>
-                    <img src={currentRealtor.identityCardFront} alt="avatar" style={{width: "100%", marginBottom:"1em"}} />
+                    {currentRealtor.identityCardFront ? (
+                      <img src={currentRealtor.identityCardFront} alt="avatar" style={{width: "100%", marginBottom:"1em"}} />
+                    ) : 'Chưa cập nhật'}
                     <p>Ảnh mặt sau cmnd:</p>
-                    <img src={currentRealtor.identityCardBack} alt="avatar" style={{width: "100%", marginBottom:"1em"}} />
+                    {currentRealtor.identityCardBack ? (
+                      <img src={currentRealtor.identityCardBack} alt="avatar" style={{width: "100%", marginBottom:"1em"}} />
+                    ) : (<p>Chưa cập nhật</p>)}
                   </div>
                 </Modal>
                 <Modal
@@ -271,9 +277,10 @@ class BasicInfo extends Component {
                 {currentRealtor.digitalContractStatus || currentRealtor.digitalContractStatus === 0 ? this.renderStatus(currentRealtor.digitalContractStatus): ''}
               </Descriptions.Item>
               <Descriptions.Item label="Hợp đồng điện tử">
+                { currentRealtor.digitalContractStatus === 0 && 'Chưa cập nhật'}
                 { (currentRealtor.digitalContractStatus === 1 || currentRealtor.digitalContractStatus === 2) && (
                 <Button icon="folder" onClick={this.showModal} className="open-button"> Xem ảnh </Button>
-            )}
+                )}
               </Descriptions.Item>
               <Descriptions.Item label="Phương thức thanh toán">
                 {currentRealtor.paymentMethod || 'Chưa cập nhật'}
