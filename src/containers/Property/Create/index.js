@@ -135,14 +135,6 @@ class CreatePropertyForm extends Component {
           return;
         }
 
-        // const medias = [];
-        // propertyImage.forEach((el) => {
-        //   medias.push({
-        //     type: 2,
-        //     link: el,
-        //   });
-        // });
-
         values.transactionType = Number(values.transactionType);
         values = {
           ...values,
@@ -152,7 +144,7 @@ class CreatePropertyForm extends Component {
           discounts,
           salesPolicies,
           paymentProgress,
-          priceList: priceList ||null,
+          priceList: priceList || null,
           medias,
           sections: productTable,
           location: {
@@ -224,7 +216,6 @@ class CreatePropertyForm extends Component {
     const paymentProgressArea = paymentProgress.map((e) => (
       <PaymentProgress key={e.id} id={e.id} />
     ));
-    
 
     return (
       <StyleWrapper>
@@ -309,8 +300,8 @@ class CreatePropertyForm extends Component {
                       rules: [
                         {
                           type: "object",
-                          required: true,
-                          message: "Vui lòng chọn ngày mở bán",
+                          required: false,
+                          // message: "Vui lòng chọn ngày mở bán",
                           whitespace: true,
                         },
                       ],
@@ -607,8 +598,8 @@ class CreatePropertyForm extends Component {
                           initialValue={this.state.tags}
                           onChange={this.onChangeTags}
                         >
-                          <Option value={1}>Hot</Option>
-                          <Option value={2}>New</Option>
+                          <Option value={1}>New</Option>
+                          <Option value={2}>Hot</Option>
                         </Select>
                       </div>,
                     )}

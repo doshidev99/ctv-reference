@@ -37,6 +37,7 @@ export const initialState = {
     },
   ],
   deletedDiscountIds: [],
+  deletedMediaIds: [],
   priceList: null,
   propertyImage: [],
   medias: [],
@@ -135,7 +136,7 @@ const addSitePlan = (state) => {
   const sitePlans = [...state.sitePlans];
   sitePlans.push({
     id: mongoObjectId(),
-    link: [],
+    links: [],
   });
   return {
     ...state,
@@ -250,10 +251,14 @@ const removePropertyImage = (state, { link }) => {
 
 const addPropertyMedia = (state, { payload }) => {
   const mediaList = [...state.medias];
+  
   if (payload.type === 1) {
-    const index = mediaList.findIndex((e) => e.id === payload.id);
+    const index = mediaList.findIndex((e) => e.type === payload.type);
     if (index >= 0) {
-      mediaList[index] = payload;
+      mediaList[index] = {
+        id: mediaList[index].id,
+        ...payload,
+      };
     } else {
       mediaList.push({
         id: mongoObjectId(),
@@ -274,10 +279,17 @@ const addPropertyMedia = (state, { payload }) => {
 };
 
 const removePropertyMedia = (state, { id }) => {
+  const deletedMediaList = [...state.deletedMediaIds];
+  // eslint-disable-next-line no-restricted-globals
+  if (!isNaN(id)) {
+    deletedMediaList.push(id);
+  }
+
   const mediaList = [...state.medias];
   return {
     ...state,
     medias: mediaList.filter((e) => e.id !== id),
+    deletedMediaIds: deletedMediaList,
   };
 };
 
@@ -644,6 +656,7 @@ const getOnePropertySuccess = (state, { data }) => {
     overview,
     legalRecords,
     location,
+    address,
     locationDescription,
     sitePlans,
     salesPolicies,
@@ -664,6 +677,7 @@ const getOnePropertySuccess = (state, { data }) => {
     cityId,
     typeId,
     staffId,
+    address,
     openSaleDate,
     commissionRate,
     overview,
@@ -681,6 +695,7 @@ const getOnePropertySuccess = (state, { data }) => {
     vatRate,
     ...state.currentProperty,
   };
+  
   medias && medias.push(...mainImages);
   legalRecords &&
     legalRecords.forEach((e) => {
@@ -754,26 +769,33 @@ const getProductTableSuccess = (state, { data }) => {
 const loadExcelSuccess = (state, { data }) => {
   // console.log("Đây là cái cũ >>",state.productTable);
   // console.log("Đây là cái mới từ excel >>",data);
-  let productTable = [...state.currentProperty.productTable]; // productTable từ API
-
+  let productTable = [];
+  if(state.currentProperty.productTable) {
+    productTable = [...state.currentProperty.productTable]  // productTable từ API
+  }
+  
   // list new sections (in case unmapable)
   const newProductTable = _.differenceBy(data, productTable, "productCode");
-  productTable.forEach((row) => {
+  
+  productTable.forEach((row, index) => {
     data.forEach((d) => {
-      if (d.productCode === row.code) {
+      if (d.productCode === row.productCode) {
         // if 2 productCode is equal
-        if (d.status === 1 || d.status === 2 || d.status === 3) {
-          // If booked/sold/reserved
-          const { status, price } = row;
-          row = { ...d, status, price }; // keep the old status and price
+        if (row.status === 1 || row.status === 2 || row.status === 3) {
+         
+          // If the old section is booked/sold/reserved
+          // const { status, price } = row;
+          const newData = _.pick(d, ['productCode','building', 'code', 'direction', 'floor', 'area', 'type' ])
+          productTable[index] = { ...row, ...newData }; // keep the old status and price
         } else {
-          row = { ...d }; // overwrite the old seciton with new sections data
+          const newData = _.pick(d, ['productCode','building', 'code', 'direction', 'floor', 'area', 'type', 'price', 'status' ])
+          productTable[index] = { ...row,...newData }; // overwrite the old section with new sections data
         }
       }
     });
   });
   productTable = [...productTable, ...newProductTable];
-
+  
   return {
     ...state,
     productTable,

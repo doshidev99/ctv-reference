@@ -1,5 +1,6 @@
 import { takeEvery, put, call, select } from "redux-saga/effects";
 import moment from "moment";
+import * as _ from "lodash";
 import { object } from "prop-types";
 import { notification } from "antd";
 import I18n from "i18next";
@@ -16,7 +17,6 @@ import {
   getPaymentMethodFailureAction,
   getDiscountGroupSuccessAction,
   getDiscountGroupFailureAction,
-
   getOnePropertySuccessAction,
   getProductTableSuccessAction,
   getOnePropertyAction,
@@ -32,7 +32,12 @@ import {
   getListDiscountGroup,
 } from "../../api/modules/property";
 
-import { getDataByIdApi, getAllApi, putApi, delApiWithPayload } from "../../api/common/crud";
+import {
+  getDataByIdApi,
+  getAllApi,
+  putApi,
+  delApiWithPayload,
+} from "../../api/common/crud";
 import { apiWrapper } from "../../utils/reduxUtils";
 
 function* getListProperty({ limit, offset, filter }) {
@@ -159,7 +164,10 @@ function* createProperty({ payload }) {
     yield put(submitCreatePropertyFormSuccessAction());
     setTimeout(history.push(`/properties`), 3000);
   } catch (error) {
-
+    notification.error({
+      message: I18n.t("error.title"),
+      description: "Có lỗi xảy ra, vui lòng tải lại trang",
+    });
     yield put(submitCreatePropertyFormFailureAtion(error));
   }
 }
@@ -191,7 +199,7 @@ function* getOneProperty({ id }) {
     );
     response.paymentMethodIds = paymentMethods.results.map((e) => e.id);
     // console.log(response);
-    
+
     yield put(getOnePropertySuccessAction(response));
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -200,13 +208,14 @@ function* getOneProperty({ id }) {
 }
 function* updateProperty({ id, payload }) {
   try {
-    const { deletedDiscountIds } = yield select(state => {
+    const { deletedDiscountIds, deletedMediaIds } = yield select((state) => {
       return state.property;
     });
-    if(deletedDiscountIds.length > 0) {
+
+    if (deletedDiscountIds.length > 0) {
       const deletedPayload = {
         ids: [...deletedDiscountIds],
-      }
+      };
       yield call(
         apiWrapper,
         {
@@ -219,40 +228,83 @@ function* updateProperty({ id, payload }) {
         deletedPayload,
       );
     }
+    if (deletedMediaIds.length > 0) {
+      const deletedPayload = {
+        ids: [...deletedMediaIds],
+      };
+      yield call(
+        apiWrapper,
+        {
+          isShowProgress: true,
+          isShowSucceedNoti: false,
+          errorDescription: "Có lỗi xảy ra",
+        },
+        delApiWithPayload,
+        "medias",
+        deletedPayload,
+      );
+    }
 
-  
     const body = JSON.parse(JSON.stringify(payload));
-    body.medias.forEach((e) => {
-      if (typeof e.id !== typeof Number) {
-        delete e.id;
+
+    body.medias = body.medias.map((e) => {
+      if (typeof e.id !== "number") {
+        const { link, mimeType, name, type } = e;
+        return {
+          link,
+          mimeType,
+          name,
+          type,
+        };
       }
+      return e;
     });
+
     body.legalRecords.forEach((e) => {
       if (e.readOnly) {
         delete e.readOnly;
       }
-      delete e.id;
+      if (e.id) {
+        delete e.id;
+      }
     });
     body.sitePlans &&
       body.sitePlans.forEach((e) => {
         if (e.readOnly) {
           delete e.readOnly;
         }
-        delete e.id;
-      });
-
-    body.sections &&
-      body.sections.forEach((e) => {
-        delete e.key;
-        if (e.propertyId) {
-          delete e.propertyId
+        if (e.id) {
+          delete e.id;
         }
       });
 
+    if (body.sections) {
+      body.sections = body.sections.map((e) => {
+        if (e.id) {
+          return _.pick(e, [
+            "id",
+            "productCode",
+            "code",
+            "type",
+            "building",
+            "area",
+            "floor",
+            "direction",
+            "status",
+            "price",
+            "isVisible",
+          ]);
+        }
+        return e;
+      });
+    }
+
     body.discounts.forEach((e) => {
-      delete e.id;
       if (e.propertyId) {
-        delete e.propertyId
+        delete e.propertyId;
+      }
+      if (typeof e.id !== "number") {
+        delete e.id
       }
       clean(e);
       if (e.time && e.time.length === 2) {
@@ -271,16 +323,19 @@ function* updateProperty({ id, payload }) {
         if (e.readOnly) {
           delete e.readOnly;
         }
-        delete e.id;
+        if (e.id) {
+          delete e.id;
+        }
       });
     body.paymentProgress &&
       body.paymentProgress.forEach((e) => {
         if (e.readOnly) {
           delete e.readOnly;
         }
-        delete e.id;
+        if (e.id) {
+          delete e.id;
+        }
       });
-
     const newDiscounts = body.discounts.filter(
       (value) => Object.keys(value).length >= 6,
     );
@@ -303,7 +358,9 @@ function* updateProperty({ id, payload }) {
     body.discounts = newDiscounts;
     body.salesPolicies = newSalesPolicies;
     body.paymentProgress = newPaymentProgress;
-    
+
+    // console.log(body);
+
     const response = yield call(
       apiWrapper,
       {
@@ -317,7 +374,7 @@ function* updateProperty({ id, payload }) {
       id,
       body,
     );
-    put(getOnePropertyAction(response.id));
+    yield put(getOnePropertyAction(response.id));
   } catch (error) {
     notification.error({
       message: I18n.t("error.title"),
@@ -338,7 +395,7 @@ function* getPaymentMethod({ id }) {
         date: moment(e.createdAt).format("L"),
       };
     });
-    
+
     yield put(getPaymentMethodSuccessAction(data));
   } catch (error) {
     yield put(getPaymentMethodFailureAction(error));

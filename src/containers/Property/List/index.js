@@ -23,7 +23,7 @@ class ListProperty extends Component {
           title="Danh sách dự án"
           filter={<Filter />}
           resource="properties"
-          initialFilter={{ limit: 10, skip: 0, order: "id", filter: {} }}
+          initialFilter={{ limit: 10, skip: 0, order: "-updatedAt", filter: {} }}
           {...this.props}
           redirects={{
             create: 'newPage',

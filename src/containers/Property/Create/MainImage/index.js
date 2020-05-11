@@ -65,17 +65,18 @@ class PropertyMainImage extends Component {
     let fileList = [...medias] || [];
     if (fileList.length > 0) {
       fileList = fileList.filter((e) => e.type === 1);
-      fileList.forEach(e => {
-        e.key = e.id
-        e.name = e.link
-        e.uid = e.id
-        e.status = 'done'
-      })
+      fileList = fileList.map((e) => ({
+        key: e.id,
+        name: e.link,
+        uid: e.id,
+        id: e.id,
+        status: "done",
+        link: e.link,
+      }));
     }
     const uploadButton = (
       <Button>
         <Icon type="upload" />
-        {' '}
           Upload
       </Button>
     );
@@ -88,9 +89,6 @@ class PropertyMainImage extends Component {
         </Row>
 
         <Upload
-              // listType="picture"
-              // fileList={fileList}
-              // onPreview={this.handlePreview}
           onChange={this.handleOnChange}
           customRequest={this.handleUpload}
           onRemove={()=> this.handleRemove(fileList.length && fileList[0])}

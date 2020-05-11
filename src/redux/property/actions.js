@@ -323,7 +323,3 @@ export const addPropertyMediaAction = (payload) =>
 export const removePropertyMediaAction = (id) =>
   makeActionCreator(PropertyTypes.REMOVE_PROPERTY_MEDIA, { id});
 
-
-
-// "ADD_PROPERTY_MEDIA",
-// "REMOVE_PROPERTY_MEDIA",

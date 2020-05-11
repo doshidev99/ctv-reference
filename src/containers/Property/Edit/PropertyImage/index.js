@@ -78,7 +78,7 @@ class PropertyImage extends Component {
     const {medias} = this.props;
     let fileList = [...medias] || [];
     if (fileList.length > 0) {
-      fileList = fileList.filter((e) => e.type !== 1);
+      fileList = fileList.filter((e) => e.type === 2);
       fileList = fileList.map(e => ({
         url: e.link,
         status: 'done',

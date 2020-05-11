@@ -97,7 +97,11 @@ class SalesPolicy extends Component {
                   ],
                   initialValue: this.props.data && this.props.data.title,
                 })(
-                  <Input className="salesPolicyInput" placeholder="Tiêu đề" />,
+                  <Input
+                    className="salesPolicyInput"
+                    placeholder="Tiêu đề"
+                    readOnly={this.props.data&& this.props.data.readOnly}
+                  />,
                 )}
               </FormItem>
             </div>
@@ -112,6 +116,7 @@ class SalesPolicy extends Component {
                       message: "Vui lòng chọn ngày",
                     },
                   ],
+                  initialValue: this.props.data && this.props.data.updatedAt,
                 })(<DatePicker placeholder="Thời điểm cập nhât" />)}
               </FormItem>
             </div>

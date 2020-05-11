@@ -77,7 +77,7 @@ class LegalRecord extends Component {
 
   render() {
     const fileList = [];
-    if (this.props.data&& this.props.data.link) {
+    if (this.props.data && this.props.data.link) {
       fileList.push({
         uid: "1",
         status: "done",
@@ -85,6 +85,7 @@ class LegalRecord extends Component {
         name: this.props.data.title,
       });
     }
+    
     return (
       <LegalRecordWrapper>
         <Row gutter={[16]}>
@@ -100,7 +101,14 @@ class LegalRecord extends Component {
                       },
                     ],
                     initialValue: this.props.data && this.props.data.title,
-                  })(<Input className="legalRecords" placeholder="Tiêu đề" />)}
+                  })(
+                    <Input
+                      className="legalRecords"
+                      placeholder="Tiêu đề"
+                      // readOnly
+                      readOnly={this.props.data.readOnly && !!this.props.data.readOnly}
+                    />,
+                  )}
                 </div>
               </FormItem>
             </div>
