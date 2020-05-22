@@ -37,7 +37,7 @@ class PostForm extends Component {
           source="content"
           label="Nội dung"
         />
-        <p style={{"margin-top": "1em"}}>Ảnh đính kèm</p>
+        <p style={{marginTop: "1em"}}>Ảnh đính kèm</p>
         <UploadImage
           source="mainImage.link"
           folderPrefix="POST_IMAGE"

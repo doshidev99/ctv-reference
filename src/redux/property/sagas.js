@@ -40,27 +40,23 @@ import {
 } from "../../api/common/crud";
 import { apiWrapper } from "../../utils/reduxUtils";
 
-function* getListProperty({ limit, offset, filter }) {
+function* getListProperty({ limit }) {
   try {
     if (limit === undefined) {
       limit = 5;
     }
-    if (offset === undefined) {
-      offset = 0;
-    }
-    const { results, total } = yield getProperties({ limit, offset, filter });
+    const fields = ["id", "name"]
+    const results = yield getProperties({ limit, fields: JSON.stringify(fields) });
     const data = results.map((e) => {
       return {
         key: e.id,
         name: e.name,
-        city: e.city.name,
-        type: e.type.name,
-        date: moment(e.createdAt).format("L"),
       };
     });
-    yield put(getListPropertySuccessAction(data, total, limit, offset));
+    yield put(getListPropertySuccessAction(data));
   } catch (error) {
     yield put(getListPropertyFailureAction(error));
+    
   }
 }
 
