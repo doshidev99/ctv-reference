@@ -2,7 +2,7 @@ FROM node:10-alpine as build
 
 WORKDIR /app
 
-ENV REACT_APP_SERVER_URL https://api.reesnext.com/api/v1
+ENV REACT_APP_SERVER_URL https://ctv-api-staging.sgroup.ga/api/v1
 
 COPY package.json /app/package.json
 
