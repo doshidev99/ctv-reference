@@ -1,17 +1,25 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Tag } from "antd"
+import { Button, Tag } from "antd"
 import Label from '../../../components/RestField/Label';
 import RestList from '../../rest/List';
 import Filter from '../components/Filter';
 import RealtorWrapper from './styles';
 import {DIGITAL_CONTRACT_STATUS} from "../../../configs/constants"
+import {
+  getExcelAction,
+} from "../../../redux/realtor/exportExcel/actions"
 
 class ListRealtor extends Component {
   componentDidMount() {}
 
+  handleClick = () => {
+    this.props.ExportExcel();
+  }
+
   render() {
+    const { urlExcel } = this.props;
     return (
       <RealtorWrapper>
         <RestList
@@ -47,13 +55,27 @@ class ListRealtor extends Component {
             }}
           />
         </RestList>
+        <div className="buttonExport">
+          <Button type="primary" onClick={this.handleClick} href={urlExcel}>
+            Export Excel
+          </Button>
+        </div>
       </RealtorWrapper>
     );
   }
 }
 
-ListRealtor.propTypes = {
-  onChange: PropTypes.func,
-};
+const mapStateToProps = state => ({
+  urlExcel: state.exportExcel.location,
+})
 
-export default ListRealtor;
+const mapDispatchToProps = dispatch => ({
+  ExportExcel: () =>{
+    dispatch(getExcelAction());
+  },
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ListRealtor);
