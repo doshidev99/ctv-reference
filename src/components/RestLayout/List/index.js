@@ -32,8 +32,6 @@ class RestListComponent extends Component {
   };
 
   onChangePagination = (page, pageSize) => {
-   
-    
     const { resourceData } = this.props;
     const order = resourceData.order ? { order: resourceData.order } : {};
     this.props.retrieveList(
@@ -92,7 +90,7 @@ class RestListComponent extends Component {
     if (BREADCRUMB_LIST.length > 0) {
       BREADCRUMB_LIST[BREADCRUMB_LIST.length - 1].title =
         typeof title === 'string' ? title : BREADCRUMB_LIST[BREADCRUMB_LIST.length - 1].title
-        
+
         // typeof title === 'string' ? (
         //   <IntlMessages id={title} />
         // ) : (
@@ -102,7 +100,7 @@ class RestListComponent extends Component {
       BREADCRUMB_LIST[0] = {
         title:
           typeof title === 'string' ? title : BREADCRUMB_LIST[BREADCRUMB_LIST.length - 1].title,
-          
+
         path: '/',
       };
     }
@@ -227,7 +225,7 @@ class RestListComponent extends Component {
         >
           <PageHeader>
             {title ? (<CustomBreadcrumb data={BREADCRUMB_LIST} />): '' }
-            
+
           </PageHeader>
           {content}
         </LayoutContent>

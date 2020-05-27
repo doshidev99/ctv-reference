@@ -1,4 +1,8 @@
-import { get, patch } from "../../utils";
+import { get, patch, post } from "../../utils";
+
+export async function exportExcel() {
+  return post("/realtors/export");
+}
 
 export async function getRealtors(params) {
   return get("/realtors", params);
