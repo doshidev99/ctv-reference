@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Form, message, DatePicker, Row, Col, Button, Switch, Select } from "antd";
+import { Input,InputNumber, Form, message, DatePicker, Row, Col, Button, Switch, Select } from "antd";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import Wrapper from "./styles";
@@ -14,10 +14,15 @@ class CreateEventForm extends Component {
   handleSubmit = async () => {
     try {
       const payload = await this.props.form.validateFields();
-      payload.mainImage = {
-        link: this.props.eventImage,
-      };
-      await this.props.createEvent(payload);
+      if( !this.props.eventImage) {
+        message.error("Vui lòng thêm ảnh sự kiện")
+      }
+      else {
+        payload.mainImage = {
+          link: this.props.eventImage,
+        };
+        await this.props.createEvent(payload);
+      }
     } catch (error) {
       message.error("Có lỗi xảy ra");
     }
@@ -26,7 +31,7 @@ class CreateEventForm extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { createEventLoading, createEventSuccess } = this.props;
-    if (createEventSuccess) {
+    if (createEventSuccess === true) {
       return <Redirect to="/events" />;
     }
     return (
@@ -92,13 +97,13 @@ class CreateEventForm extends Component {
             <Col span={6}>
               <Item label="Số lượng người">
                 {getFieldDecorator("capacity", {
-                  // rules: [
-                  //   {
-                  //     required: true,
-                  //     message: "Vui lòng nhập số lượng",
-                  //   },
-                  // ],
-                })(<Input placeholder="Số lượng người tham gia" />)}
+                  rules: [
+                    {
+                      type: "number",
+                      message: "Vui lòng nhập số lượng",
+                    },
+                  ],
+                })(<InputNumber step={1} />)}
               </Item>
             </Col>
             <Col span={12}>
@@ -127,7 +132,15 @@ class CreateEventForm extends Component {
           </Row>
           
           <Item label="Hình ảnh sự kiện">
-            <EventImage />
+            {/* {getFieldDecorator("mainImage", {
+              rules: [
+                {
+                  required: true,
+                  message: "Vui lòng chọn ảnh sự kiện",
+                },
+              ],
+            })(<EventImage  />)} */}
+            <EventImage  />
           </Item>
           <Item className="description" label="Mô tả sự kiên">
             {getFieldDecorator("content", {
