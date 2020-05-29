@@ -18,6 +18,11 @@ const RealtorWrapper = styled.div`
   .filterContainer .clearButton {
     margin-top: 0;
   }
+
+  .buttonExport {
+    display: flex;
+    justify-content: flex-end;
+  }
 `;
 
 export default RealtorWrapper;

@@ -10,15 +10,6 @@ import {
 } from "../../../../redux/property/actions";
 import { getSignedUrlS3, uploadFile } from "../../../../utils/uploadFile";
 
-// function getBase64(file) {
-//   return new Promise((resolve, reject) => {
-//     const reader = new FileReader();
-//     reader.readAsDataURL(file);
-//     reader.onload = () => resolve(reader.result);
-//     reader.onerror = (error) => reject(error);
-//   });
-// }
-
 class PropertyMainImage extends Component {
   handleOnChange = async (info) => {
     if (info.file.status !== "uploading") {

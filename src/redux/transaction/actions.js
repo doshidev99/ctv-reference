@@ -57,7 +57,7 @@ export const TransactionTypes = makeConstantCreator(
   "CHANGE_TYPE",
   "CHANGE_TYPE_SUCCESS",
   "CHANGE_TYPE_FAILURE",
-  
+
   "SUBMIT_UPDATE_TRANSACTION",
   "SUBMIT_UPDATE_TRANSACTION_SUCCESS",
   "SUBMIT_UPDATE_TRANSACTION_FAILURE",
@@ -154,7 +154,7 @@ export const addPaymentFailureAction = error =>
   makeActionCreator(TransactionTypes.ADD_PAYMENT_FAILURE, { error });
 
 // Change type transaction
-export const changeTypeAction = (id) => 
+export const changeTypeAction = (id) =>
   makeActionCreator(TransactionTypes.CHANGE_TYPE, {id});
 export const changeTypeSuccessAction = (status) =>
   makeActionCreator(TransactionTypes.CHANGE_TYPE_SUCCESS, {status});
@@ -169,7 +169,7 @@ export const submitUpdateFormSuccessAction = () =>
 export const submitUpdateFormFailureAction = error =>
   makeActionCreator(TransactionTypes.SUBMIT_UPDATE_TRANSACTION_FAILURE, { error });
 
-  
+
   // Get one document
 export const getOnePaymentAction = (id) =>
 makeActionCreator(TransactionTypes.GET_ONE_PAYMENT, {id});
