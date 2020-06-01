@@ -290,15 +290,27 @@ export function* customQuerySaga({ resource, id, data = {}, queryUrl }) {
 
 export function* exportExcelSaga({ resource, data }) {
   try {
-    const { filter, order } = data;
-    const params = {};
-    params.filter = filter;
-    if (order) {
-      params.order = order;
-    }
-    const response = yield call(apiWrapper, exportExcel, true, false, resource, params);
-    window.open(response.url, '_blank');
+    // const { filter, order } = data;
+    // const params = {};
+    // params.filter = filter;
+    // if (order) {
+    //   params.order = order;
+    // }
+    // const response = yield call(apiWrapper, exportExcel, true, false, resource, params);
+    // window.open(response.url, '_blank');
 
+    const response = yield call(
+      apiWrapper,
+      {
+        isShowLoading: true,
+        isShowSucceedNoti: false,
+        errorDescription: "Có lỗi xảy ra",
+      },
+      exportExcel,
+      resource,
+      data,
+    );
+    window.open(response.Location, '_blank');
     yield put(actions.exportExcelSuccess());
   } catch (error) {
     yield put(actions.retrieveOneRecordFailed(error));
