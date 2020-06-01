@@ -106,6 +106,7 @@ const uploadImageSuccess = (state, { fileUrl }) => {
   return {
     ...state,
     eventImage: fileUrl,
+    loading: false,
   };
 };
 

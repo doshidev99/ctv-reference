@@ -6,9 +6,15 @@ import RestRow from "../../../components/RestLayout/RowLayout";
 import RestUpload from "../../../components/RestInput/RestUpload";
 import RestSelect from "../../../components/RestInput/RestSelect";
 import RestEditor from "../../../components/RestInput/RestEditor";
+import RestInputAdditon from "../../../components/RestInput/RestInputAddition";
+// import RestFormDatePicker from "../../../components/RestInput/RestDatePicker";
+import RestDatePicker from "../../../components/form/FormDatePicker";
+import { getListPropertyAction } from "../../../redux/property/actions";
 
-class EditForm extends Component {
-  state = {};
+class PartnerForm extends Component {
+  componentDidMount(){
+    this.props.getListProperty()
+  }
 
   render() {
     const GENDER = [
@@ -20,7 +26,8 @@ class EditForm extends Component {
         id: 2,
         name: "Nữ",
       },
-    ]
+    ];
+    const { properties } = this.props;
     return (
       <RestRow {...this.props}>
         <RestFormInput
@@ -30,7 +37,7 @@ class EditForm extends Component {
           placeholder="Họ và tên"
           requiredMessage="Vui lòng nhập họ và tên"
         />
-        <p style={{"margin-top": "1em"}}>Giới tính</p>
+        <p style={{marginTop: "1em"}}>Giới tính</p>
         <RestSelect
           source="gender"
           valueProp="id"
@@ -77,13 +84,46 @@ class EditForm extends Component {
           placeholder="Số điện thoại"
           requiredMessage="Vui lòng nhập số điện thoại"
         />
+        <RestInputAdditon 
+          source="assistance"
+          header="Các dự án đang thực hiện"
+          numberOfCols={2}
+        >
+          {properties ? (
+            <RestSelect
+              source="propertyId"
+              valueProp="key"
+              titleProp="name"
+              placeholder="Dự án"
+              resourceData={properties}
+              title="Dự án"
+            />
+          ) : ( null )}
+          <RestDatePicker
+            source="supportedFrom"
+            header="Ngày bắt đầu hỗ trợ"
+          />
+        </RestInputAdditon>
       </RestRow>
     );
   }
 }
 
-EditForm.propTypes = {
+const mapStateToProps = (state) => {
+  const {properties} = state.property
+  return {
+    properties,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  getListProperty: () => {
+    dispatch(getListPropertyAction(-1))
+  },
+})
+
+PartnerForm.propTypes = {
   form: PropTypes.object,
 };
 
-export default connect()(EditForm);
+export default connect(mapStateToProps, mapDispatchToProps)(PartnerForm);

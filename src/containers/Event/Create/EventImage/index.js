@@ -19,6 +19,7 @@ class EventImage extends Component {
   state = {
     previewVisible: false,
     previewImage: '',
+    loading: false,
   };
 
   handleCancel = () => this.setState({ previewVisible: false });
@@ -50,13 +51,19 @@ class EventImage extends Component {
 
   handleUpload = async ({ file, onSuccess, onError }) => {
     try {
+      this.setState({
+        loading: true,
+      })
       const signedUrlS3 = await getSignedUrlS3(
         file.name,
         file.type,
         "EVENT_IMAGE",
       );
       const response = await uploadFile(file, signedUrlS3.url);
-      this.props.uploadImageSuccess(response.url);
+      await this.props.uploadImageSuccess(response.url);
+      this.setState({
+        loading: false,
+      })
       onSuccess("OK");
     } catch (error) {
       message.error("Xảy ra lỗi, vui lòng thử lại");
@@ -82,7 +89,7 @@ class EventImage extends Component {
 
     const uploadButton = (
       <div>
-        <Button icon="plus" className="buttonUpload">
+        <Button icon="plus" loading={this.state.loading} className="buttonUpload">
           Upload
         </Button>
       </div>
@@ -109,6 +116,7 @@ class EventImage extends Component {
 
 const mapStateToProps = state => ({
   image: state.event.eventImage,
+  loading: state.event.loading,
 });
 
 const mapDispatchToProps = dispatch => ({
