@@ -48,7 +48,7 @@ class RestList extends Component {
     const { redirects, pushRoute, showModal, rootPath, setCurrentCustomData } = this.props;
     setCurrentCustomData(id, resourceCustom);
     const route = `${rootPath}/${resourceCustom}/${id}/edit`;
-    
+
     if (redirects.edit === 'modal') {
       showModal(route);
     } else {

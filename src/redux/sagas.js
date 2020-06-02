@@ -16,7 +16,6 @@ import serviceSaga from "./service/sagas";
 import dashboardSaga from "./dashboard/sagas";
 import restSaga from './rest/sagas';
 import restFilterSaga from './restFilter/sagas';
-import exportExcel from './realtor/exportExcel/sagas';
 
 export default function* root() {
   yield all([
@@ -36,6 +35,5 @@ export default function* root() {
     ...dashboardSaga,
     ...restSaga,
     ...restFilterSaga,
-    ...exportExcel,
   ]);
 }
