@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
 export default styled.div`
+  .card-main {
+    border-radius: 8px;
+  }
   .ant-card-body {
     display: flex;
     justify-content: space-between;
@@ -36,8 +39,9 @@ export default styled.div`
     }
   }
 
-  
+
   .blur-blue {
+    border-radius: 8px;
     .ant-card-body {
       background: #B8CCFF;
       .left-info {

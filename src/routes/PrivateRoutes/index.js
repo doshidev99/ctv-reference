@@ -149,6 +149,12 @@ const routes = [
     title: "Partner",
   },
   {
+    path: '/faqs',
+    component: lazy(() => import('../../pages/FAQ/List')),
+    exact: true,
+    title: "Partner",
+  },
+  {
     path: '/options',
     component: Option,
     exact: true,
