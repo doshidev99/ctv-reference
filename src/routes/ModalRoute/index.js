@@ -50,6 +50,14 @@ const modalRoutes = [
     path: '/partners',
     component: lazy(() => import('../../containers/Partner/Edit')),
   },
+  {
+    path: '/faqs/create',
+    component: lazy(() => import('../../containers/FAQ/Create')),
+  },
+  {
+    path: '/faqs',
+    component: lazy(() => import('../../containers/FAQ/Edit')),
+  },
 ];
 
 const getModalRoute = currentModal => {

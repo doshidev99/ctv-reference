@@ -56,9 +56,7 @@ const PrivateLayoutWrapper = styled.div`
       display: block;
     }
   }
-  
   .logo {
-    position: absolute;
     width: 200px;
     height: 64px;
     left: 0px;
@@ -112,10 +110,40 @@ const PrivateLayoutWrapper = styled.div`
     background: #fff;
     border-right: 1px solid #e8e8e8;
 
-    .sidebarMenu{
-      margin-top: 74px
+    .ant-layout-sider-children {
+      display: flex;
+      flex-direction: column;
     }
+
+    .sidebarMenu {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .sidebarMenu:hover {
+      height: 100%;
+      overflow-y: scroll;
+    }
+
     .ant-menu {
+      ::-webkit-scrollbar {
+        width: 9px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+
+
+      ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 5px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+
       border-right: 1px solid #fff;
       .ant-menu-submenu-title:hover {
         color: ${({ theme }) => theme.palette.lightPrimary};
@@ -133,8 +161,7 @@ const PrivateLayoutWrapper = styled.div`
     }
     .ant-menu-item {
       color: ${({ theme }) => theme.text.secondary};
-      
-      
+
       &.ant-menu-item-selected {
         color: ${({ theme }) => theme.palette.lightPrimary};
         background: ${({ theme }) => theme.background.light};
@@ -144,13 +171,13 @@ const PrivateLayoutWrapper = styled.div`
           font-weight: ${({ theme }) => theme.fontWeight.bold};
         }
       }
-      
+
     }
     .ant-menu-item::after {
       border-right: 3px solid ${({ theme }) => theme.background.light};
     }
   }
-  
+
 
   .header {
     position: 'fixed';

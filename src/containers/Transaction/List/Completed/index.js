@@ -20,6 +20,7 @@ class ListTransaction extends Component {
           filter={<Filter />}
           resource="transactions"
           initialFilter={{ limit: 10, skip: 0, filter: {status: {"$in": [3,4]}}}}
+          onDoubleClick="show"
           hasCreate={false}
           {...this.props}
           redirects={{

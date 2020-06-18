@@ -96,6 +96,12 @@ const sidebarMenu = [
     icon: "team",
   },
   {
+    key: "FAQ",
+    text: "FAQ",
+    url: "/faqs",
+    icon: "question-circle",
+  },
+  {
     key: "option",
     text: "Cài đặt",
     url: "/options",
