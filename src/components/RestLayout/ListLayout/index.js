@@ -67,6 +67,7 @@ class RestListLayout extends Component {
     const {
       resourceData,
       gotoEditPage,
+      gotoFAQPage,
       gotoEditCustomPage,
       deleteItem,
       cancelItem,
@@ -92,6 +93,7 @@ class RestListLayout extends Component {
                   gotoShowPage,
                   deleteItem,
                   gotoEditPage,
+                  gotoFAQPage,
                   gotoEditCustomPage,
                   cancelItem,
                   confirmItem,
@@ -112,6 +114,7 @@ RestListLayout.propTypes = {
   updateRecord: PropTypes.func,
   responseRender: PropTypes.func,
   gotoEditPage: PropTypes.func,
+  gotoFAQPage: PropTypes.func,
   gotoEditCustomPage: PropTypes.func,
   gotoShowPage: PropTypes.func,
   deleteItem: PropTypes.func,

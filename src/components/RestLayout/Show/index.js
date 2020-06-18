@@ -19,6 +19,7 @@ class RestShowComponent extends Component {
       noActions,
       deleteItem,
       gotoEditPage,
+      gotoFAQPage,
       gotoEditCustomPage,
       cancelItem,
       confirmItem,
@@ -27,6 +28,7 @@ class RestShowComponent extends Component {
       resourceCustom,
       children,
       hasEdit,
+      hasShowFAQ,
       hasEditCustom,
       hasDel,
       hasCancel,
@@ -44,6 +46,13 @@ class RestShowComponent extends Component {
             resource={resource}
             record={record}
             gotoEditPage={gotoEditPage}
+          />
+        )}
+        {hasShowFAQ && (
+          <ButtonEdit
+            resource={resourceCustom}
+            record={record}
+            gotoFAQPage={gotoFAQPage}
           />
         )}
         {hasEditCustom && (
@@ -102,6 +111,7 @@ RestShowComponent.propTypes = {
   noCardWrapper: PropTypes.bool,
   deleteItem: PropTypes.func,
   gotoEditPage: PropTypes.func,
+  gotoFAQPage: PropTypes.func,
   gotoEditCustomPage: PropTypes.func,
   resource: PropTypes.string,
   resourceCustom: PropTypes.string,

@@ -44,6 +44,17 @@ class RestList extends Component {
     }
   };
 
+  gotoFAQPage = id => {
+    const { redirects, pushRoute, showModal, resource, rootPath, setCurrentData } = this.props;
+    setCurrentData(id);
+    const route = `${rootPath}/${resource}/${id}/faqs`;
+    if (redirects.edit === 'modal') {
+      showModal(route);
+    } else {
+      pushRoute(route);
+    }
+  };
+
   gotoEditCustomPage = (id, resourceCustom) => {
     const { redirects, pushRoute, showModal, rootPath, setCurrentCustomData } = this.props;
     setCurrentCustomData(id, resourceCustom);
@@ -88,6 +99,7 @@ class RestList extends Component {
         {...this.props}
         onRow={this.props.onDoubleClick === 'show' ? this.gotoShowPage : null}
         gotoEditPage={this.gotoEditPage}
+        gotoFAQPage={this.gotoFAQPage}
         gotoEditCustomPage={this.gotoEditCustomPage}
         gotoCreatePage={this.gotoCreatePage}
         gotoShowPage={this.gotoShowPage}
