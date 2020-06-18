@@ -2,18 +2,18 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import RestFormInput from "../../../components/RestInput/RestFormInput";
+import {RestFormDateTimePicker} from "../../../components/RestInput/RestDateTimePicker";
 import RestRow from "../../../components/RestLayout/RowLayout";
 import RestEditor from "../../../components/RestInput/RestEditor";
 import RestSwitch from "../../../components/RestInput/RestSwitch";
 
-class FAQsEditForm extends Component {
-  state = {};
-
+class FAQsAnswerForm extends Component {
   componentDidMount(){
 
   }
 
   render() {
+    const today = new Date();
     return (
       <RestRow {...this.props}>
         <RestFormInput
@@ -29,6 +29,18 @@ class FAQsEditForm extends Component {
           label="Nội dung"
           requiredMessage="Vui lòng nhập nội dung"
         />
+        <RestFormInput
+          required
+          source="staffId"
+          title="Ctv id"
+          defaultValue={localStorage.getItem('id')}
+          disabled={true}
+        />
+        <p style={{"marginTop": "1em"}}>Thời gian trả lời</p>
+        <RestFormDateTimePicker
+          source="answerAt"
+          defaultValue={today}
+        />
         <RestSwitch
           source="isVisible"
           title="Trạng thái"
@@ -38,8 +50,8 @@ class FAQsEditForm extends Component {
   }
 }
 
-FAQsEditForm.propTypes = {
+FAQsAnswerForm.propTypes = {
   form: PropTypes.object,
 };
 
-export default connect()(FAQsEditForm);
+export default connect()(FAQsAnswerForm);

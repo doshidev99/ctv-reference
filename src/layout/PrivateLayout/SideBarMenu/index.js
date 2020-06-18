@@ -14,6 +14,7 @@ const sidebarMenu = [
   {
     key: "transactions",
     text: "Giao dịch",
+    icon: "transaction",
     subMenu: [
       {
         key: "transactions",
@@ -161,7 +162,7 @@ export default class SideBarMenu extends Component {
                 key={el.key}
                 title={(
                   <span>
-                    <Icon type="transaction" />
+                    <Icon type={el.icon} />
                     <span>{el.text}</span>
                   </span>
                 )}

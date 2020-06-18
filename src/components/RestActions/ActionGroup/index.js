@@ -7,6 +7,7 @@ const ActionGroup = ({
   children,
   elementProps,
   gotoEditPage,
+  gotoFAQPage,
   gotoEditCustomPage,
   gotoShowPage,
   deleteItem,
@@ -20,6 +21,7 @@ const ActionGroup = ({
         content={React.Children.map(children, element =>
           React.cloneElement(element, {
             gotoEditPage: element.props.gotoEditPage || gotoEditPage,
+            gotoFAQPage: element.props.gotoFAQPage || gotoFAQPage,
             gotoEditCustomPage: element.props.gotoEditCustomPage || gotoEditCustomPage,
             gotoShowPage: element.props.gotoShowPage || gotoShowPage,
             deleteItem: element.props.deleteItem || deleteItem,
@@ -41,6 +43,7 @@ ActionGroup.propTypes = {
   elementProps: PropTypes.object,
   record: PropTypes.object,
   gotoEditPage: PropTypes.func,
+  gotoFAQPage: PropTypes.func,
   gotoEditCustomPage: PropTypes.func,
   gotoShowPage: PropTypes.func,
   deleteItem: PropTypes.func,

@@ -7,8 +7,6 @@ import EditButton from '../../../components/RestActions/EditButton';
 import DeleteButton from '../../../components/RestActions/DeleteButton'
 import RestList from '../../rest/List';
 import RestSwitch from '../../../components/RestField/Switch'
-// import Filter from '../components/Filter';
-// import { EVENT_TAGS } from '../../../configs/constants';
 import FAQWrapper from './styles';
 
 class ListFAQ extends Component {
@@ -39,10 +37,6 @@ class ListFAQ extends Component {
             source="title"
             title="Tiêu đề"
             width="30%"
-          />
-          <Label
-            source="content"
-            title="Nội dung"
           />
           <RestSwitch
             source="isVisible"

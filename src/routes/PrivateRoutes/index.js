@@ -44,6 +44,12 @@ const routes = [
         exact: true,
         title: i18n.t('property.title'),
       },
+      {
+        path: '/:id/faqs',
+        component:lazy(() => import('../../pages/Property/FAQs')),
+        exact: true,
+        title: i18n.t('property.title'),
+      }
     ],
   },
   {
@@ -152,7 +158,7 @@ const routes = [
     path: '/faqs',
     component: lazy(() => import('../../pages/FAQ/List')),
     exact: true,
-    title: "Partner",
+    title: "FAQ",
   },
   {
     path: '/options',

@@ -51,12 +51,16 @@ const modalRoutes = [
     component: lazy(() => import('../../containers/Partner/Edit')),
   },
   {
-    path: '/faqs/create',
+    path: '/info/faqs/create',
     component: lazy(() => import('../../containers/FAQ/Create')),
   },
   {
-    path: '/faqs',
+    path: '/info/faqs',
     component: lazy(() => import('../../containers/FAQ/Edit')),
+  },
+  {
+    path: '/properties',
+    component: lazy(() => import('../../containers/Property/Answer')),
   },
 ];
 

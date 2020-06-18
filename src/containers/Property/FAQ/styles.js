@@ -4,9 +4,8 @@ const PropertyFormWrapper = styled.div`
   width: 100%;
   .filterContainer .filterContent {
     margin-right: 100px;
-    padding-top: 10px;
+    padding-top: 10px
   }
-
   .filterContainer .filterActions {
     right: -210px;
     width: 200px;
