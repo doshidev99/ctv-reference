@@ -15,11 +15,8 @@ export const initialState = {
   listPropertyFailure: undefined,
   createPropertyLoading: false,
   getOnePropertyLoading: false,
-  legalRecords: [
-    {
-      id: mongoObjectId(),
-    },
-  ],
+  legalRecords: [],
+  brokeragePolicies: [],
   sitePlans: [
     {
       id: mongoObjectId(),
@@ -27,14 +24,8 @@ export const initialState = {
     },
   ],
   salesPolicies: [
-    {
-      id: mongoObjectId(),
-    },
   ],
   paymentProgress: [
-    {
-      id: mongoObjectId(),
-    },
   ],
   deletedDiscountIds: [],
   deletedMediaIds: [],
@@ -104,6 +95,8 @@ const addNewLegalRecord = (state) => {
   const legalRecords = [...state.legalRecords];
   legalRecords.push({
     id: mongoObjectId(),
+    title: '',
+    updatedAt: moment(),
   });
   return {
     ...state,
@@ -128,6 +121,40 @@ const removeOneLegalRecord = (state, { id }) => {
   return {
     ...state,
     legalRecords,
+  };
+};
+
+// Brokerage policy
+const addNewBrokeragePolicy = (state) => {
+  const brokeragePolicies = [...state.brokeragePolicies];
+  brokeragePolicies.push({
+    id: mongoObjectId(),
+    title: '',
+    updatedAt: moment(),
+  });
+  return {
+    ...state,
+    brokeragePolicies,
+  };
+};
+const addNewBrokeragePolicySuccess = (state, { payload }) => {
+  const brokeragePolicies = [...state.brokeragePolicies];
+  const index = brokeragePolicies.findIndex((e) => e.id === payload.id);
+  brokeragePolicies[index] = {
+    ...payload,
+  };
+  return {
+    ...state,
+    brokeragePolicies,
+  };
+};
+
+const removeOneBrokeragePolicy = (state, { id }) => {
+  let brokeragePolicies = [...state.brokeragePolicies];
+  brokeragePolicies = brokeragePolicies.filter((e) => e.id !== id);
+  return {
+    ...state,
+    brokeragePolicies,
   };
 };
 
@@ -251,7 +278,6 @@ const removePropertyImage = (state, { link }) => {
 
 const addPropertyMedia = (state, { payload }) => {
   const mediaList = [...state.medias];
-  
   if (payload.type === 1) {
     const index = mediaList.findIndex((e) => e.type === payload.type);
     if (index >= 0) {
@@ -655,6 +681,7 @@ const getOnePropertySuccess = (state, { data }) => {
     commissionRate,
     overview,
     legalRecords,
+    brokeragePolicies,
     location,
     address,
     locationDescription,
@@ -702,6 +729,11 @@ const getOnePropertySuccess = (state, { data }) => {
       e.id = mongoObjectId();
       e.readOnly = true;
     });
+  brokeragePolicies &&
+    brokeragePolicies.forEach((e) => {
+      e.id = mongoObjectId();
+      e.readOnly = true;
+    });
   sitePlans &&
     sitePlans.forEach((e) => {
       e.id = mongoObjectId();
@@ -735,6 +767,7 @@ const getOnePropertySuccess = (state, { data }) => {
       currentProperty.location.longitude,
     ],
     legalRecords: legalRecords || [],
+    brokeragePolicies: brokeragePolicies || [],
     sitePlans: sitePlans || [],
     salesPolicies: salesPolicies || [],
     priceList,
@@ -820,6 +853,11 @@ export const property = makeReducerCreator(initialState, {
 
   [PropertyTypes.REMOVE_ONE_LEGAL_RECORD]: removeOneLegalRecord,
 
+  [PropertyTypes.ADD_NEW_BROKERAGE_POLICY]: addNewBrokeragePolicy,
+  [PropertyTypes.ADD_NEW_BROKERAGE_POLICY_SUCCESS]: addNewBrokeragePolicySuccess,
+
+  [PropertyTypes.REMOVE_ONE_BROKERAGE_POLICY]: removeOneBrokeragePolicy,
+
   [PropertyTypes.ADD_NEW_SITE_PLAN]: addSitePlan,
   [PropertyTypes.ADD_NEW_SITE_PLAN_SUCCESS]: addNewSitePlanSuccess,
 
@@ -883,5 +921,5 @@ export const property = makeReducerCreator(initialState, {
   [PropertyTypes.RETRIEVE_PRODUCT_TABLE]: getProductTable,
 
   [PropertyTypes.ADD_PROPERTY_MEDIA]: addPropertyMedia,
-  [PropertyTypes.REMOVE_PROPERTY_MEDIA]: removePropertyMedia,
+  [PropertyTypes.REMOVE_PROPERTY_MEDIA_SUCCESS]: removePropertyMedia,
 });

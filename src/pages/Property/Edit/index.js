@@ -3,8 +3,8 @@ import React from "react";
 import { Layout } from "antd";
 import PropertyPageWrapper from "./styles";
 import PageTitle from "../../../components/common/PageTitle/index";
-// import EditPropertyForm from '../../../containers/Property/Edit/test'
-import EditPropertyForm from '../../../containers/Property/Edit/index'
+import EditPropertyForm from '../../../containers/Property/EditRebase/index'
+// import EditPropertyForm from '../../../containers/Property/Edit/index'
 
 
 export default function NewProperty(props){

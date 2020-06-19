@@ -8,7 +8,8 @@ import {STATUS} from '../../../../configs/constants'
 import Wrapper from './styles';
 
 class ListTransaction extends Component {
-  componentDidMount() {}
+  componentDidMount() {
+  }
 
   render() {
     const apiUrl = `realtors/${this.props.match.params.id}/transactions`;

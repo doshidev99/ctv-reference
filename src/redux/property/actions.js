@@ -15,6 +15,10 @@ export const PropertyTypes = makeConstantCreator(
   "ADD_NEW_LEGAL_RECORD_SUCCESS",
   "REMOVE_ONE_LEGAL_RECORD",
 
+  "ADD_NEW_BROKERAGE_POLICY",
+  "ADD_NEW_BROKERAGE_POLICY_SUCCESS",
+  "REMOVE_ONE_BROKERAGE_POLICY",
+
   "ADD_NEW_SITE_PLAN",
   "ADD_NEW_SITE_PLAN_SUCCESS",
   "REMOVE_ONE_SITE_PLAN",
@@ -32,6 +36,7 @@ export const PropertyTypes = makeConstantCreator(
 
   "ADD_PROPERTY_MEDIA",
   "REMOVE_PROPERTY_MEDIA",
+  "REMOVE_PROPERTY_MEDIA_SUCCESS",
 
   "ADD_NEW_DISCOUNT",
   "REMOVE_DISCOUNT",
@@ -86,6 +91,7 @@ export const PropertyTypes = makeConstantCreator(
 
 
   "SUBMIT_EDIT_ONE_PROPERTY",
+  "SUBMIT_EDIT_CHILDREN_PROPERTY",
 
   "RETRIEVE_PRODUCT_TABLE",
   "RETRIEVE_PRODUCT_TABLE_SUCCESS",
@@ -128,9 +134,18 @@ export const addNewLegalRecordSuccessAction = (payload) =>
   makeActionCreator(PropertyTypes.ADD_NEW_LEGAL_RECORD_SUCCESS, {
     payload,
   });
-
 export const removeOneLegalRecordAction = (id) =>
   makeActionCreator(PropertyTypes.REMOVE_ONE_LEGAL_RECORD, { id });
+
+// BROKERAGE POLICY
+export const addNewBrokeragePolicyAction = () =>
+  makeActionCreator(PropertyTypes.ADD_NEW_BROKERAGE_POLICY);
+export const addNewBrokeragePolicySuccessAction = (payload) =>
+  makeActionCreator(PropertyTypes.ADD_NEW_BROKERAGE_POLICY_SUCCESS, {
+    payload,
+  });
+export const removeOneBrokeragePolicyAction = (id) =>
+  makeActionCreator(PropertyTypes.REMOVE_ONE_BROKERAGE_POLICY, { id });
 
 // Site Plan
 export const addNewSitePlanAction = () =>
@@ -305,6 +320,9 @@ export const getOnePropertySuccessAction = ( data) =>
 export const submitEditPropertyFormAction = (id, payload) =>
   makeActionCreator(PropertyTypes.SUBMIT_EDIT_ONE_PROPERTY, { id, payload });
 
+export const submitEditChildrenProperty = (id, values) =>
+  makeActionCreator(PropertyTypes.SUBMIT_EDIT_CHILDREN_PROPERTY, { id, values });
+
 
 // GET PRODUCT TABLE
 export const getProductTableAction = (id, filterParams ) =>
@@ -322,4 +340,5 @@ export const addPropertyMediaAction = (payload) =>
 
 export const removePropertyMediaAction = (id) =>
   makeActionCreator(PropertyTypes.REMOVE_PROPERTY_MEDIA, { id});
-
+export const removePropertyMediaSuccessAction = (id) =>
+  makeActionCreator(PropertyTypes.REMOVE_PROPERTY_MEDIA_SUCCESS, { id});

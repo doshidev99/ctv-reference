@@ -34,7 +34,7 @@ class FAQsAnswerForm extends Component {
           source="staffId"
           title="Ctv id"
           defaultValue={localStorage.getItem('id')}
-          disabled={true}
+          disabled
         />
         <p style={{"marginTop": "1em"}}>Thời gian trả lời</p>
         <RestFormDateTimePicker

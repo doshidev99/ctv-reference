@@ -12,6 +12,7 @@ import FAQButton from "../../../components/RestActions/FAQButton";
 
 class ListFAQsProperty extends Component {
   componentDidMount() {}
+
   render() {
     const {id} = this.props.match.params;
     return (

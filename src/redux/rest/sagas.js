@@ -68,6 +68,8 @@ export function* retrieveList({ resource }) {
 
 export function* retrieveOneRecord({ resource, id, data }) {
   try {
+    // console.log('RESOURCE-->', resource, 'id--->', id);
+    
     const response = yield call(
       apiWrapper,
       {

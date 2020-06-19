@@ -49,7 +49,7 @@ const routes = [
         component:lazy(() => import('../../pages/Property/FAQs')),
         exact: true,
         title: i18n.t('property.title'),
-      }
+      },
     ],
   },
   {

@@ -24,6 +24,7 @@ import moment from "moment";
 import Editor from "../../../components/common/Editor/index";
 import StyleWrapper from "./styles";
 import LegalRecord from "./LegalRecord";
+import BrokeragePolicy  from "./BrokeragePolicy";
 import Location from "./Location";
 import SitePlan from "./SitePlan";
 import SalesPolicy from "./SalesPolicy";
@@ -115,6 +116,7 @@ class CreatePropertyForm extends Component {
 
         const {
           legalRecords,
+          brokeragePolicies,
           sitePlans,
           discounts,
           salesPolicies,
@@ -139,6 +141,7 @@ class CreatePropertyForm extends Component {
         values = {
           ...values,
           legalRecords,
+          brokeragePolicies,
           // paymentMethods,
           sitePlans,
           discounts,
@@ -189,6 +192,7 @@ class CreatePropertyForm extends Component {
     const {
       form,
       legalRecords,
+      brokeragePolicies,
       sitePlans,
       discounts,
       createPropertyLoading,
@@ -200,6 +204,9 @@ class CreatePropertyForm extends Component {
     const { getFieldDecorator } = form;
     const legalArea = legalRecords.map((e) => (
       <LegalRecord key={e.id} id={e.id} />
+    ));
+    const brokerageArea = brokeragePolicies.map((e) => (
+      <BrokeragePolicy key={e.id} id={e.id} />
     ));
     const sitePlanArea = sitePlans.map((e) => (
       <SitePlan key={e.id} id={e.id} links={e.links} />
@@ -400,6 +407,45 @@ class CreatePropertyForm extends Component {
                       onClick={this.props.expandLegalRecord}
                     >
                       Thêm hồ sơ
+                    </Button>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col xs={24} lg={16} xl={12} style={{ paddingRight: "8px" }}>
+                {/* constructionProgress */}
+                <FormItem className="constructionProgress">
+                  {getFieldDecorator("constructionProgress", {
+                    rules: [
+                      {
+                        required: true,
+                        message: "Vui lòng nhập thông tin tiến độ dự án",
+                      },
+                    ],
+                  })(<Editor label="Tiến độ dự án" />)}
+                </FormItem>
+              </Col>
+              <Col
+                xs={24}
+                lg={16}
+                xl={12}
+                style={{ paddingLeft: "8px", paddingRight: "8px" }}
+              >
+                {/* brokeragePolicies */}
+                <div className="brokerageArea">
+                  <div className="legalTitle">
+                    <span>Chính sách môi giới</span>
+                  </div>
+                  {brokerageArea}
+                  <div className="actionGroup">
+                    <Button
+                      type="primary"
+                      icon="plus"
+                      onClick={this.props.expandbrokeragePolicies}
+                    >
+                      Thêm chính sách
                     </Button>
                   </div>
                 </div>
@@ -632,6 +678,7 @@ CreatePropertyForm.propTypes = {
 const mapStateToProps = (state) => {
   const {
     legalRecords,
+    brokeragePolicies,
     sitePlans,
     discounts,
     // paymentMethods,
@@ -652,6 +699,7 @@ const mapStateToProps = (state) => {
 
   return {
     legalRecords,
+    brokeragePolicies,
     sitePlans,
     discounts,
     salesPolicies,
@@ -679,6 +727,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, props) => ({
   expandLegalRecord: () => {
     dispatch(propertyActions.addNewLegalRecordAction());
+  },
+
+  expandbrokeragePolicies: () => {
+    dispatch(propertyActions.addNewBrokeragePolicyAction());
   },
 
   expandSalesPolicy: () => {

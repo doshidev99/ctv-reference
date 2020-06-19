@@ -57,9 +57,8 @@ class RestList extends Component {
 
   gotoEditCustomPage = (id, resourceCustom) => {
     const { redirects, pushRoute, showModal, rootPath, setCurrentCustomData } = this.props;
-    setCurrentCustomData(id, resourceCustom);
+    setCurrentCustomData(resourceCustom, id)
     const route = `${rootPath}/${resourceCustom}/${id}/edit`;
-
     if (redirects.edit === 'modal') {
       showModal(route);
     } else {
@@ -159,7 +158,7 @@ const mapDispatchToProps = (dispatch, props) => {
     showModal: data => dispatch(showModalAction(data)),
     pushRoute: data => dispatch(push(data)),
     setCurrentData: id => dispatch(setCurrentDataShow(props.resource, id)),
-    setCurrentCustomData: (id, resourceCustom) => dispatch(setCurrentDataShow(resourceCustom, id)),
+    setCurrentCustomData: (resourceCustom, id) => dispatch(setCurrentDataShow(resourceCustom, id)),
     exportExcel: (resource, data) => dispatch(exportExcelAction(resource, data)),
   };
 };

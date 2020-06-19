@@ -8,6 +8,7 @@ export default styled.div`
   .productTableTitle,
   .othersTitle,
   .legalTitle,
+  .brokarageLabel,
   .salesPolicyTitle,
   .cityLabel,
   .typeLabel,
@@ -26,7 +27,7 @@ export default styled.div`
       width: 100%;
     }
   }
-  .overview {
+  .overview, .constructionProgress {
     .ql-container {
       height: 350px;
     }
@@ -36,7 +37,7 @@ export default styled.div`
     }
   }
 
-  .legalArea {
+  .legalArea, .brokerageArea {
     margin-bottom: 10px;
   }
 
