@@ -160,3 +160,22 @@ export const IDENTITY_STATUS = [
     color: "gold",
   },
 ]
+
+export const PRODUCT_TABLE = [
+  {
+    id: 0,
+    name: 'SELLING',
+  },
+  {
+    id: 1,
+    name: 'BOOKED',
+  },
+  {
+    id: 2,
+    name: 'SOLD',
+  },
+  {
+    id: 3,
+    name: 'RESERVED',
+  },
+]

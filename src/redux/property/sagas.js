@@ -20,6 +20,7 @@ import {
   getOnePropertySuccessAction,
   getProductTableSuccessAction,
   getOnePropertyAction,
+  removePropertyMediaSuccessAction,
   // uploadFileSuccessAction,
   // uploadFileFailureAction,
 } from "./actions";
@@ -92,6 +93,10 @@ function* createProperty({ payload }) {
       body.legalRecords.forEach((e) => {
         delete e.id;
       });
+    body.brokeragePolicies &&
+      body.brokeragePolicies.forEach((e) => {
+        delete e.id;
+      });
     body.sitePlans &&
       body.sitePlans.forEach((e) => {
         delete e.id;
@@ -129,6 +134,9 @@ function* createProperty({ payload }) {
     const newLegalRecords = body.legalRecords.filter(
       (value) => Object.keys(value).length >= 2,
     );
+    const newBrokeragePolicies = body.brokeragePolicies.filter(
+      (value) => Object.keys(value).length >= 2,
+    );
     const newSitePlans = body.sitePlans.filter(
       (value) => Object.keys(value).length !== 1,
     );
@@ -141,6 +149,7 @@ function* createProperty({ payload }) {
       (value) => Object.keys(value).length >= 3,
     );
     body.legalRecords = newLegalRecords;
+    body.brokeragePolicies = newBrokeragePolicies;
     body.sitePlans = newSitePlans;
     body.discounts = newDiscounts;
     body.salesPolicies = newSalesPolicies;
@@ -203,6 +212,7 @@ function* getOneProperty({ id }) {
   }
 }
 function* updateProperty({ id, payload }) {
+  
   try {
     const { deletedDiscountIds, deletedMediaIds } = yield select((state) => {
       return state.property;
@@ -380,6 +390,108 @@ function* updateProperty({ id, payload }) {
   }
 }
 
+function* removeMedia({id}) {
+  try {
+    // eslint-disable-next-line no-restricted-globals
+    if(!isNaN(id)){
+      const payload = {
+        ids: [id],
+      }
+      yield call(
+        apiWrapper,
+        {
+          isShowProgress: true,
+          isShowSucceedNoti: true,
+          successDescription: "Xóa thành công",
+          errorDescription: "Có lỗi xảy ra",
+        },
+        delApiWithPayload,
+        "medias",
+        payload,
+      );
+    }
+    yield put(removePropertyMediaSuccessAction(id))
+  } catch (error) {
+    notification.error({
+      message: I18n.t("error.title"),
+      description: "Có lỗi xảy ra, vui lòng thử lại",
+    });
+    throw error;
+  }
+}
+// function* removeDiscounts({id}) {
+//   try {
+//     const payload = {
+//       ids: [id],
+//     }
+//     yield call(
+//       apiWrapper,
+//       {
+//         isShowProgress: true,
+//         isShowSucceedNoti: true,
+//         successDescription: "Xóa thành công",
+//         errorDescription: "Có lỗi xảy ra",
+//       },
+//       delApiWithPayload,
+//       "discounts",
+//       payload,
+//     );
+//     // yield put(removePropertyDiscountsSuccessAction(id))
+//   } catch (error) {
+//     notification.error({
+//       message: I18n.t("error.title"),
+//       description: "Có lỗi xảy ra, vui lòng thử lại",
+//     });
+//     throw error;
+//   }
+// }
+function* updateChildrenProperty({id, values}) {
+  try {
+    if(values.discounts) {
+      const { deletedDiscountIds } = yield select((state) => {
+        return state.property;
+      });
+  
+      if (deletedDiscountIds.length > 0) {
+        const deletedPayload = {
+          ids: [...deletedDiscountIds],
+        };
+        yield call(
+          apiWrapper,
+          {
+            isShowProgress: true,
+            isShowSucceedNoti: false,
+            errorDescription: "Có lỗi xảy ra",
+          },
+          delApiWithPayload,
+          "discounts",
+          deletedPayload,
+        );
+      }
+    }
+    yield call(
+      apiWrapper,
+      {
+        isShowProgress: true,
+        isShowSucceedNoti: true,
+        successDescription: "Cập nhật thành công",
+        errorDescription: "Có lỗi xảy ra",
+      },
+      putApi,
+      "properties",
+      id,
+      values,
+    );
+    // yield put(getOnePropertyAction(response.id));
+  } catch (error) {
+    notification.error({
+      message: I18n.t("error.title"),
+      description: "Có lỗi xảy ra, vui lòng tải lại trang",
+    });
+    throw error;
+  }
+}
+
 function* getPaymentMethod({ id }) {
   try {
     const { results } = yield getListPaymentMethod(id);
@@ -443,5 +555,10 @@ export default [
 
   takeEvery(PropertyTypes.GET_ONE_PROPERTY, getOneProperty),
   takeEvery(PropertyTypes.RETRIEVE_PRODUCT_TABLE, getProductTable),
+
+  
+  takeEvery(PropertyTypes.REMOVE_PROPERTY_MEDIA, removeMedia),
+  // takeEvery(PropertyTypes.REMOVE_DISCOUNT, removeDiscounts),
   takeEvery(PropertyTypes.SUBMIT_EDIT_ONE_PROPERTY, updateProperty),
+  takeEvery(PropertyTypes.SUBMIT_EDIT_CHILDREN_PROPERTY, updateChildrenProperty),
 ];

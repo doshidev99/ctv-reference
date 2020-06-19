@@ -8,7 +8,6 @@ export default styled.div`
   .productTableTitle,
   .othersTitle,
   .legalTitle,
-  .brokarageLabel,
   .salesPolicyTitle,
   .cityLabel,
   .typeLabel,
@@ -27,7 +26,7 @@ export default styled.div`
       width: 100%;
     }
   }
-  .overview, .constructionProgress {
+  .overview {
     .ql-container {
       height: 350px;
     }
@@ -37,7 +36,7 @@ export default styled.div`
     }
   }
 
-  .legalArea, .brokerageArea {
+  .legalArea {
     margin-bottom: 10px;
   }
 
@@ -87,6 +86,7 @@ export default styled.div`
     justify-content: flex-end;
     button {
       width: 200px;
+      margin: 1rem 0 0 0;
     }
   }
   .ant-table {
@@ -94,5 +94,10 @@ export default styled.div`
   }
   .ant-upload-list-item-info {
     max-width: 100px;
+  }
+  .blockEdit {
+    background-color: white;
+    padding: 15px;
+    margin: 30px 0 50px 0
   }
 `;

@@ -74,7 +74,7 @@ const mapStateToProps = (state, props) => {
     loading: state.loading.isMainLoading,
     errorRequest: state.rest.errorRequest,
     record: getOneRecord(state, props.resource),
-    route: state.modal.current,
+    route: props.customRoute || state.modal.current,
   };
 };
 
@@ -103,6 +103,7 @@ RestEdit.propTypes = {
   goBack: PropTypes.func,
   route: PropTypes.string,
   search: PropTypes.func,
+  customRoute: PropTypes.string,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RestEdit);

@@ -5,6 +5,7 @@ import Label from "../../../components/RestField/Label";
 import ActionGroup from "../../../components/RestActions/ActionGroup";
 import EditButton from "../../../components/RestActions/EditButton";
 import DeleteButton from "../../../components/RestActions/DeleteButton";
+import RestSwitch from '../../../components/RestField/Switch';
 import RestList from "../../rest/List";
 import Filter from "../components/Filter";
 // import { Property_ROLES } from '../../../configs/constants';
@@ -45,6 +46,16 @@ class ListProperty extends Component {
             source="createdAt"
             title="Ngày đăng"
             render={(value) => formatDate(value)}
+          />
+          <RestSwitch
+            source="isHighlighting"
+            title="Nổi bật"
+            confirmMessage="Bạn có muốn thay đổi?"
+            cancelConfirmMessage="Hủy bỏ"
+            align="center"
+            isShowConfirm
+            onChange={this.props.onChange}
+            type="switch"
           />
           <ActionGroup>
             <DeleteButton customMessage="Bạn có chắc chắn muốn xóa ?" />
