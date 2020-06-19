@@ -1,6 +1,6 @@
 import { get, put, post, del } from '../utils';
 
-export const getList = (resource, filter) => {  
+export const getList = (resource, filter) => {
   return get(`/${resource}`, filter);
 };
 
@@ -37,5 +37,5 @@ export const customQuery = (resource, id, queryUrl, data) => {
 };
 
 export const exportExcel = (resource, params) => {
-  return get(`/${resource}/exportExcel`, params);
+  return post(`/${resource}/export`, params);
 };

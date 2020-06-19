@@ -32,6 +32,13 @@ class PostForm extends Component{
           source="content"
           label="Nội dung"
         />
+        <RestFormInput
+          required
+          source="source"
+          title="Nguồn"
+          placeholder="source"
+          requiredMessage="Please input source"
+        />
         <p style={{marginTop: "1em"}}>Ảnh đính kèm</p>
         <UploadImage
           source="mainImage.link"

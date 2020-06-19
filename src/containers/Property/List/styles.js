@@ -2,8 +2,9 @@ import styled from 'styled-components';
 
 const PropertyFormWrapper = styled.div`
   width: 100%;
-  .filterContainer {
-    margin-right: 200px;
+  .filterContainer .filterContent {
+    margin-right: 100px;
+    padding-top: 10px;
   }
 
   .filterContainer .filterActions {

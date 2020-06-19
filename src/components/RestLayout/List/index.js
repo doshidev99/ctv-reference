@@ -124,6 +124,7 @@ class RestListComponent extends Component {
         {hasExport && (
           <ExportExcelButton
             loadingExport={loadingExport}
+            resource={resource}
             exportExcel={exportExcel}
           />
         )}

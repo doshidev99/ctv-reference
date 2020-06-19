@@ -6,6 +6,7 @@ import ActionGroup from "../../../components/RestActions/ActionGroup";
 import EditButton from "../../../components/RestActions/EditButton";
 import DeleteButton from "../../../components/RestActions/DeleteButton";
 import RestSwitch from '../../../components/RestField/Switch';
+import ShowFAQButton from "../../../components/RestActions/ShowFAQButton"
 import RestList from "../../rest/List";
 import Filter from "../components/Filter";
 // import { Property_ROLES } from '../../../configs/constants';
@@ -17,7 +18,6 @@ class ListProperty extends Component {
   componentDidMount() {}
 
   render() {
-
     return (
       <PropertyWrapper>
         <RestList
@@ -59,7 +59,8 @@ class ListProperty extends Component {
           />
           <ActionGroup>
             <DeleteButton customMessage="Bạn có chắc chắn muốn xóa ?" />
-            <EditButton />
+            <EditButton class="EditButton" />
+            <ShowFAQButton />
           </ActionGroup>
         </RestList>
       </PropertyWrapper>

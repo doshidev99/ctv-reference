@@ -18,7 +18,6 @@ import rest from './rest/reducer';
 import restFilter from './restFilter/reducer';
 import modal from './modal/reducer';
 import { loading } from './loading/reducer';
-import { exportExcel } from './realtor/exportExcel/reducer'
 
 export default history =>
   combineReducers({
@@ -41,5 +40,4 @@ export default history =>
     restFilter,
     modal,
     loading,
-    exportExcel,
   });

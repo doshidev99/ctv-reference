@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { Button } from 'antd';
 
 export const ButtonWrapper = styled(Button)`
+  width: 100%;
+  text-align-last: start;
   border: 0px !important;
   color: ${({ theme }) => theme.text.primary} !important;
   height: 30px !important;

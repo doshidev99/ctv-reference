@@ -11,7 +11,7 @@ import RestFormDatePicker from "../../../components/RestInput/RestDatePicker";
 // import RestDatePicker from "../../../components/form/FormDatePicker";
 import { getListPropertyAction } from "../../../redux/property/actions";
 
-class PartnerEdditForm extends Component {
+class PartnerEditForm extends Component {
   state = {};
 
   componentDidMount(){
@@ -86,7 +86,7 @@ class PartnerEdditForm extends Component {
           placeholder="Số điện thoại"
           requiredMessage="Vui lòng nhập số điện thoại"
         />
-        <RestInputAdditon 
+        <RestInputAdditon
           source="assistance"
           header="Các dự án đang thực hiện"
           numberOfCols={2}
@@ -111,7 +111,7 @@ class PartnerEdditForm extends Component {
   }
 }
 
-PartnerEdditForm.propTypes = {
+PartnerEditForm.propTypes = {
   form: PropTypes.object,
 };
 
@@ -128,4 +128,4 @@ const mapDispatchToProps = dispatch => ({
   },
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(PartnerEdditForm);
+export default connect(mapStateToProps, mapDispatchToProps)(PartnerEditForm);

@@ -16,15 +16,14 @@ class StatisticData extends Component {
       commissionAmount,
       properties,
       transactions,
-      // statisticLoading,
     } = this.props;
 
     return (
       <Wrapper>
-       
+
         <Row gutter={24}>
           <Col xs={24} md={12} lg={6}>
-            <Card>
+            <Card className="card-main">
               <Statistic
                 className="left-info"
                 title="Tổng dự án"
@@ -55,7 +54,7 @@ class StatisticData extends Component {
             </Card>
           </Col>
           <Col xs={24} md={12} lg={6}>
-            <Card>
+            <Card className="card-main">
               <Statistic
                 className="left-info"
                 title="Tổng hoa hồng (VND)"

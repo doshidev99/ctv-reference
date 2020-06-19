@@ -54,6 +54,18 @@ const modalRoutes = [
     path: '/property-sections',
     component: lazy(() => import('../../containers/Property/EditRebase/ProductTable/Edit')),
   },
+  {
+    path: '/info/faqs/create',
+    component: lazy(() => import('../../containers/FAQ/Create')),
+  },
+  {
+    path: '/info/faqs',
+    component: lazy(() => import('../../containers/FAQ/Edit')),
+  },
+  {
+    path: '/properties',
+    component: lazy(() => import('../../containers/Property/Answer')),
+  },
 ];
 
 const getModalRoute = currentModal => {
