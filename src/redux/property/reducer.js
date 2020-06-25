@@ -45,6 +45,7 @@ export const initialState = {
   //   },
   // ],
   productTable: [],
+  SectionTypeImage: [],
   mode: undefined,
   isShowRoom: false,
   roomInfo: {},
@@ -722,7 +723,7 @@ const getOnePropertySuccess = (state, { data }) => {
     vatRate,
     ...state.currentProperty,
   };
-  
+
   medias && medias.push(...mainImages);
   legalRecords &&
     legalRecords.forEach((e) => {
@@ -806,16 +807,16 @@ const loadExcelSuccess = (state, { data }) => {
   if(state.currentProperty.productTable) {
     productTable = [...state.currentProperty.productTable]  // productTable từ API
   }
-  
+
   // list new sections (in case unmapable)
   const newProductTable = _.differenceBy(data, productTable, "productCode");
-  
+
   productTable.forEach((row, index) => {
     data.forEach((d) => {
       if (d.productCode === row.productCode) {
         // if 2 productCode is equal
         if (row.status === 1 || row.status === 2 || row.status === 3) {
-         
+
           // If the old section is booked/sold/reserved
           // const { status, price } = row;
           const newData = _.pick(d, ['productCode','building', 'code', 'direction', 'floor', 'area', 'type' ])
@@ -828,10 +829,29 @@ const loadExcelSuccess = (state, { data }) => {
     });
   });
   productTable = [...productTable, ...newProductTable];
-  
+
   return {
     ...state,
     productTable,
+  };
+};
+
+// LOAD TYPE IMAGE
+const loadTypeImageSuccess = (state, { data }) => {
+  console.log("Đây là cái cũ >>",state.SectionTypeImage);
+  console.log("Đây là cái mới từ excel >>",data);
+  let SectionTypeImage = [];
+  if(state.currentProperty.SectionTypeImage) {
+    SectionTypeImage = [...state.currentProperty.SectionTypeImage]  // productTable từ API
+  }
+
+  // list new sections (in case unmapable)
+  const newTypeImageTable = _.differenceBy(data, SectionTypeImage);
+  SectionTypeImage = [...SectionTypeImage, ...newTypeImageTable];
+
+  return {
+    ...state,
+    SectionTypeImage,
   };
 };
 
@@ -894,6 +914,8 @@ export const property = makeReducerCreator(initialState, {
   [PropertyTypes.DELETE_PROPERTY_FAILURE]: deleteOnePropertyError,
 
   [PropertyTypes.LOAD_EXCEL_SUCCESS]: loadExcelSuccess,
+
+  [PropertyTypes.LOAD_TYPE_IMAGE_SUCCESS]: loadTypeImageSuccess,
 
   [PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM]: creatingProperty,
   [PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM_SUCCESS]: createPropertySuccess,

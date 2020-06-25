@@ -32,6 +32,7 @@ import PriceList from "./PriceList";
 import PropertyImage from "./PropertyImage";
 import Discount from "./Discount";
 import ProductTable from "./ProductTable";
+import TypeImageTable from "./TypeImageTable";
 // import { PROPERTY_TAGS } from "../../../configs/constants";
 
 // import {
@@ -593,6 +594,18 @@ class CreatePropertyForm extends Component {
                     <span>Bảng hàng</span>
                   </div>
                   <ProductTable />
+                </div>
+              </Col>
+            </Row>
+
+            {/* TYPE IMAGE TABLE */}
+            <Row>
+              <Col xs={24}>
+                <div className="productTable">
+                  <div className="productTableTitle">
+                    <span>Chỉnh sửa ảnh loại căn hộ</span>
+                  </div>
+                  <TypeImageTable />
                 </div>
               </Col>
             </Row>

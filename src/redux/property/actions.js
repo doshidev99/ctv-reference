@@ -42,7 +42,7 @@ export const PropertyTypes = makeConstantCreator(
   "REMOVE_DISCOUNT",
   "ON_CHANGE_DISCOUNT",
   "ADD_NEW_DISCOUNT_SUCCESS",
- 
+
   "MARK_LOCATION",
   "ON_CHANGE_LOCATION_DESCRIPTION",
 
@@ -61,6 +61,8 @@ export const PropertyTypes = makeConstantCreator(
   "DELETE_PROPERTY_FAILURE",
 
   "LOAD_EXCEL_SUCCESS",
+
+  "LOAD_TYPE_IMAGE_SUCCESS",
 
   "SUBMIT_CREATE_PROPERTY_FORM",
   "SUBMIT_CREATE_PROPERTY_FORM_SUCCESS",
@@ -82,7 +84,7 @@ export const PropertyTypes = makeConstantCreator(
   "GET_DISCOUNT_GROUP_SUCCESS",
   "GET_DISCOUNT_GROUP_FAILURE",
 
-  
+
   "CLEAR",
 
 
@@ -250,6 +252,12 @@ export const loadExcelSuccessAtion = (data) =>
   makeActionCreator(PropertyTypes.LOAD_EXCEL_SUCCESS, {
     data,
   });
+
+// Load type image table
+export const loadTypeImageSuccessAction = (data) =>
+makeActionCreator(PropertyTypes.LOAD_TYPE_IMAGE_SUCCESS, {
+  data,
+});
 
 // Submit create property form
 export const submitCreatePropertyFormAction = (payload) =>
