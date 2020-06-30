@@ -115,6 +115,7 @@ class ProductTable extends Component {
           area: e[6].value,
           price: e[7].value,
           status:   (e[8].value && this.STATUSES_2[e[8].value])|| undefined,
+          image: ``,
         };
       });
       this.props.loadExcelSuccess(result);
@@ -148,8 +149,6 @@ class ProductTable extends Component {
   };
 
   render() {
-    // console.log(this.props.floors);
-
     // const floors = this.props.floors.map(e => (
     //   <Floor key={e.id} id={e.id} name={e.name} rooms={e.rooms} />
     // ));

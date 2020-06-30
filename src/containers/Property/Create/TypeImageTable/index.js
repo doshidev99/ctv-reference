@@ -1,32 +1,40 @@
 import React, { Component } from "react";
-import { Upload, Table } from "antd";
+import { Table } from "antd";
 import { connect } from "react-redux";
 import TypeImageTableWrapper from "./styles";
-import _ from 'lodash';
 import Image from "./Image"
-// import Floor from "./Floor";
 import {
   loadTypeImageSuccessAction,
 } from "../../../../redux/property/actions";
-// import { handleXLSX } from "../../../../utils/uploadFile";
 
 class TypeImageTable extends Component {
+  state = {
+    editingKey: "",
+    visible: false,
+  };
+
   columnHeaders = [
     {
       title: "Loại căn hộ",
       dataIndex:"type",
       key: "type",
+      width: '10%',
     },
     {
-      title: "ảnh",
-      dataIndex: "Image",
-      key: "image",
-      render: (e, record) => {
-        console.log(record);
-        if (e === undefined) {
-          return <Image image={record.linkImage}/>;
+      title: "Ảnh",
+      dataIndex: "linkImage",
+      key: "linkImage",
+      render: (e) => {
+        if (e === null){
+          return "Chưa tải ảnh lên!!!"
         }
-        return "";
+        return <img src={e} alt="Apartment type" width="100" height="80" />
+      },
+    },
+    {
+      title: "Option",
+      render: (record) => {
+        return <Image data={record.type} />;
       },
     },
   ];
@@ -34,20 +42,12 @@ class TypeImageTable extends Component {
   data = [];
 
   render() {
-    console.log('[this.props]', this.props);
-    console.log(_.uniq(_.map(this.props.TypeImageTable,'type')));
-
-    const result = _.uniq(_.map(this.props.TypeImageTable,'type'));
-    const results = _.map(result, function(a) {return {type: a, linkImage: null}});
-    console.log('[results]', results);
-
-    this.props.loadTypeImageSuccess(results);
     return (
       <TypeImageTableWrapper>
         <Table
           columns={this.columnHeaders}
           className="TypeImage"
-          dataSource={this.props.TypeImageTable}
+          dataSource={this.props.typeImageTable}
           pagination
         />
       </TypeImageTableWrapper>
@@ -56,7 +56,7 @@ class TypeImageTable extends Component {
 }
 
 const mapStateToProps = state => ({
-  TypeImageTable: state.property.productTable,
+  typeImageTable: state.property.typeImageTable,
 });
 
 const mapDispatchToProps = dispatch => ({

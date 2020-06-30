@@ -307,7 +307,7 @@ class PropertyTypesTable extends Component {
                   initialValue:true,
                 })(<Switch  />)}
               </Item>
-              
+
             </Form>
           </Modal>
         </EditableContext.Provider>

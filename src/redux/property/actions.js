@@ -97,6 +97,10 @@ export const PropertyTypes = makeConstantCreator(
 
   "RETRIEVE_PRODUCT_TABLE",
   "RETRIEVE_PRODUCT_TABLE_SUCCESS",
+
+  "UPLOAD_TYPE_IMAGE_SUCCESS",
+  "UPLOAD_TYPE_IMAGE_FAILURE",
+  "REMOVE_TYPE_IMAGE",
 );
 
 // Get list property
@@ -350,3 +354,14 @@ export const removePropertyMediaAction = (id) =>
   makeActionCreator(PropertyTypes.REMOVE_PROPERTY_MEDIA, { id});
 export const removePropertyMediaSuccessAction = (id) =>
   makeActionCreator(PropertyTypes.REMOVE_PROPERTY_MEDIA_SUCCESS, { id});
+
+// Upload - remove image
+// export const uploadTypeImageSuccessAction = (fileUrl, mode) =>
+// makeActionCreator(PropertyTypes.UPLOAD_TYPE_IMAGE_SUCCESS, { fileUrl, mode });
+export const uploadTypeImageSuccessAction = (propertyType, fileUrl) =>
+makeActionCreator(PropertyTypes.UPLOAD_TYPE_IMAGE_SUCCESS, { propertyType, fileUrl });
+export const uploadTypeImageFailureAction = error =>
+makeActionCreator(PropertyTypes.UPLOAD_TYPE_IMAGE_FAILURE, { error });
+export const removeTypeImageAction = link =>
+makeActionCreator(PropertyTypes.REMOVE_TYPE_IMAGE, { link });
+

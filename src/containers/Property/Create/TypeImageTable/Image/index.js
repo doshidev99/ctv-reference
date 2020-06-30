@@ -1,45 +1,22 @@
 import React, { Component } from 'react'
-import { Upload, Modal, message, Button } from 'antd';
+import { Upload, message, Button } from 'antd';
 import { connect } from "react-redux";
 import ImageWrapper from './styles'
-
-import { uploadImageSuccessAction, removeImageAction } from "../../../../../redux/event/actions";
+import { uploadTypeImageSuccessAction, removeTypeImageAction } from "../../../../../redux/property/actions";
 import { getSignedUrlS3, uploadFile } from "../../../../../utils/uploadFile";
-
-function getBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-  });
-}
 
 class TypeImage extends Component {
   state = {
-    previewVisible: false,
-    previewImage: '',
+    // previewImage: '',
     loading: false,
-  };
-
-  handleCancel = () => this.setState({ previewVisible: false });
-
-  handlePreview = async file => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-
-    this.setState({
-      previewImage: file.url || file.preview,
-      previewVisible: true,
-    });
   };
 
   handleOnChange = async info => {
     if (info.file.status !== "uploading") {
-      // console.log(info.file, info.fileList);
+      // console.log("uploading ..........");
     }
     if (info.file.status === "done") {
+      // console.log("[done]");
       let newFileName = this.props.file;
       newFileName = newFileName.substring(newFileName.lastIndexOf("/") + 1);
       info.file.name = newFileName;
@@ -60,7 +37,8 @@ class TypeImage extends Component {
         "TYPE_IMAGE",
       );
       const response = await uploadFile(file, signedUrlS3.url);
-      await this.props.uploadImageSuccess(response.url);
+      const Proptype = this.props.data;
+      await this.props.uploadTypeImageSuccess(Proptype, response.url);
       this.setState({
         loading: false,
       })
@@ -76,7 +54,6 @@ class TypeImage extends Component {
   }
 
   render() {
-    const { previewVisible, previewImage } = this.state;
     const {image} = this.props;
     let fileList =[];
     if(image) {
@@ -99,16 +76,12 @@ class TypeImage extends Component {
         <Upload
           listType="picture"
           fileList={fileList}
-          onPreview={this.handlePreview}
           onChange={this.handleOnChange}
           customRequest={this.handleUpload}
           onRemove={this.handleRemove}
         >
           {fileList.length >= 8 ? null : uploadButton}
         </Upload>
-        <Modal visible={previewVisible} width="60%" footer={null} onCancel={this.handleCancel}>
-          <img alt="example" style={{ width: '100%' }} src={previewImage} />
-        </Modal>
       </ImageWrapper>
     );
   }
@@ -117,16 +90,21 @@ class TypeImage extends Component {
 const mapStateToProps = state => ({
   image: state.event.eventImage,
   loading: state.event.loading,
+  // productTable: state.property.productTable,
 });
 
 const mapDispatchToProps = dispatch => ({
-  uploadImageSuccess: fileUrl => {
-    dispatch(uploadImageSuccessAction(fileUrl, "create"));
+  // uploadTypeImageSuccess: (fileUrl) => {
+  //   dispatch(uploadTypeImageSuccessAction(fileUrl, "create"));
+  // },
+  uploadTypeImageSuccess: (type, fileUrl) => {
+    dispatch(uploadTypeImageSuccessAction(type, fileUrl));
   },
 
   removeImage: url => {
-    dispatch(removeImageAction(url));
+    dispatch(removeTypeImageAction(url));
   },
 
 });
+
 export default connect(mapStateToProps, mapDispatchToProps)(TypeImage);

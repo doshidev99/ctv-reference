@@ -33,7 +33,7 @@ const getListEvent = state => ({
 const getListEventSuccess = (state, { data, total, limit, offset }) => ({
   ...state,
   events: data,
-  limit, 
+  limit,
   offset,
   total,
   loading: false,
@@ -57,7 +57,7 @@ const createOneEventSuccess = state => {
     createEventFailure: false,
     createEventSuccess: true,
   }
-} 
+}
 
 const createOneEventFailure = state => ({
   ...state,
@@ -132,7 +132,7 @@ const getRegistrationsSuccess = (state,{data, total, limit, offset} )=> ({
   loading: false,
 })
 const getRegistrationsFailure = state => ({
-  ...state,  
+  ...state,
   loading: false,
 })
 
