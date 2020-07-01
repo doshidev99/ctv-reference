@@ -45,6 +45,7 @@ export const initialState = {
   //   },
   // ],
   productTable: [],
+  typeImageTable: [],
   mode: undefined,
   isShowRoom: false,
   roomInfo: {},
@@ -590,6 +591,47 @@ const addNewPaymentMethodSuccess = (state, { name }) => {
   };
 };
 
+// -----------------------------------------
+// UPLOAD APARTMENT TYPE IMAGE
+const uploadTypeImageSuccess = (state, { propertyType, fileUrl }) => {
+  const imageTable = [...state.typeImageTable]
+  // const uploadTypeImageSuccess = (state, { fileUrl }) => {
+  // console.log('[state-reducer]', state.productTable);
+  // console.log('[this.props]', props);
+  // console.log('[type reducer HERE >>>>>>>>]', propertyType);
+  // console.log('[fireUrl reducer HERE >>>>>>]', fileUrl);
+  // console.log('[state reducer HERE >>>>>>>>>>>]', imageTable);
+  // let results = state.productTable;
+  for (let i=0;i<state.productTable.length;i+=1){
+    if(state.productTable[i].type === propertyType){
+      state.productTable[i].image = fileUrl;
+    }
+  }
+  for (let i=0;i<imageTable.length;i+=1){
+    if(imageTable[i].type === propertyType){
+      imageTable[i].linkImage = fileUrl;
+    }
+  }
+  // console.log('[results productTable HERE >>>>>>>>>]', results);
+  // console.log('[[results TypeImageTable HERE >>>>>>>>>]]', state.typeImageTable);
+  return {
+    ...state,
+    linkImage: fileUrl,
+    typeImageTable: imageTable,
+    loading: false,
+  };
+};
+
+const uploadTypeImageFailure = state => ({
+  ...state,
+  loading: false,
+});
+
+const removeTypeImage = (state) => ({
+  ...state,
+  linkImage:null,
+})
+
 // REMOVE ONE PAYMENT
 const removeOnePaymentMethod = (state, { id }) => {
   const payments = [...state.paymentMethods];
@@ -722,7 +764,7 @@ const getOnePropertySuccess = (state, { data }) => {
     vatRate,
     ...state.currentProperty,
   };
-  
+
   medias && medias.push(...mainImages);
   legalRecords &&
     legalRecords.forEach((e) => {
@@ -806,16 +848,17 @@ const loadExcelSuccess = (state, { data }) => {
   if(state.currentProperty.productTable) {
     productTable = [...state.currentProperty.productTable]  // productTable từ API
   }
-  
+
+  // console.log("123");
   // list new sections (in case unmapable)
   const newProductTable = _.differenceBy(data, productTable, "productCode");
-  
+  // console.log('[newProductTable]', newProductTable);
   productTable.forEach((row, index) => {
     data.forEach((d) => {
       if (d.productCode === row.productCode) {
         // if 2 productCode is equal
         if (row.status === 1 || row.status === 2 || row.status === 3) {
-         
+
           // If the old section is booked/sold/reserved
           // const { status, price } = row;
           const newData = _.pick(d, ['productCode','building', 'code', 'direction', 'floor', 'area', 'type' ])
@@ -828,10 +871,40 @@ const loadExcelSuccess = (state, { data }) => {
     });
   });
   productTable = [...productTable, ...newProductTable];
-  
+
+
+  let sectionTypes = productTable.filter(e => e.type != null).map(e => e.type)
+  sectionTypes = [...new Set(sectionTypes)]
+  sectionTypes = sectionTypes.map( e=> ({
+    type: e,
+    linkImage:null,
+  }))
+  // console.log("sec >>>> ", sectionTypes)
   return {
     ...state,
     productTable,
+    typeImageTable: sectionTypes,
+  };
+};
+
+// LOAD TYPE IMAGE
+const loadTypeImageSuccess = (state, { data }) => {
+  let typeImageTable = [];
+  // const result = _.uniq(_.map(data.typeImageTable,'type'));
+  // // console.log('[result]', result);
+  // const results = _.map(result, function(a) {return {type: a, linkImage: null}});
+  // typeImageTable = results;
+  if(state.currentProperty.typeImageTable) {
+    typeImageTable = [...state.currentProperty.typeImageTable]  // productTable từ API
+  }
+
+  // list new sections (in case unmapable)
+  const newTypeImageTable = _.differenceBy(data, typeImageTable);
+  typeImageTable = [...typeImageTable, ...newTypeImageTable];
+
+  return {
+    ...state,
+    typeImageTable,
   };
 };
 
@@ -895,6 +968,8 @@ export const property = makeReducerCreator(initialState, {
 
   [PropertyTypes.LOAD_EXCEL_SUCCESS]: loadExcelSuccess,
 
+  [PropertyTypes.LOAD_TYPE_IMAGE_SUCCESS]: loadTypeImageSuccess,
+
   [PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM]: creatingProperty,
   [PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM_SUCCESS]: createPropertySuccess,
   [PropertyTypes.SUBMIT_CREATE_PROPERTY_FORM_FAILURE]: createPropertyFailure,
@@ -922,4 +997,8 @@ export const property = makeReducerCreator(initialState, {
 
   [PropertyTypes.ADD_PROPERTY_MEDIA]: addPropertyMedia,
   [PropertyTypes.REMOVE_PROPERTY_MEDIA_SUCCESS]: removePropertyMedia,
+
+  [PropertyTypes.UPLOAD_TYPE_IMAGE_SUCCESS]: uploadTypeImageSuccess,
+  [PropertyTypes.UPLOAD_TYPE_IMAGE_FAILURE]: uploadTypeImageFailure,
+  [PropertyTypes.REMOVE_TYPE_IMAGE]: removeTypeImage,
 });
