@@ -842,17 +842,12 @@ const getProductTableSuccess = (state, { data }) => {
 
 // LOAD EXCEL
 const loadExcelSuccess = (state, { data }) => {
-  // console.log("Đây là cái cũ >>",state.productTable);
-  // console.log("Đây là cái mới từ excel >>",data);
   let productTable = [];
   if(state.currentProperty.productTable) {
     productTable = [...state.currentProperty.productTable]  // productTable từ API
-  }
 
-  // console.log("123");
-  // list new sections (in case unmapable)
+  }
   const newProductTable = _.differenceBy(data, productTable, "productCode");
-  // console.log('[newProductTable]', newProductTable);
   productTable.forEach((row, index) => {
     data.forEach((d) => {
       if (d.productCode === row.productCode) {
@@ -879,7 +874,6 @@ const loadExcelSuccess = (state, { data }) => {
     type: e,
     linkImage:null,
   }))
-  // console.log("sec >>>> ", sectionTypes)
   return {
     ...state,
     productTable,
@@ -890,10 +884,6 @@ const loadExcelSuccess = (state, { data }) => {
 // LOAD TYPE IMAGE
 const loadTypeImageSuccess = (state, { data }) => {
   let typeImageTable = [];
-  // const result = _.uniq(_.map(data.typeImageTable,'type'));
-  // // console.log('[result]', result);
-  // const results = _.map(result, function(a) {return {type: a, linkImage: null}});
-  // typeImageTable = results;
   if(state.currentProperty.typeImageTable) {
     typeImageTable = [...state.currentProperty.typeImageTable]  // productTable từ API
   }

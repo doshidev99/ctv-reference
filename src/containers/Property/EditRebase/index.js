@@ -14,7 +14,7 @@ import {
   InputNumber,
   Spin,
   Typography,
-  
+
 } from "antd";
 // import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -28,6 +28,8 @@ import SitePlan from "./SitePlan";
 import SalesPolicy from "./SalesPolicy"
 import Discount from "./Discount";
 import ProductTable2 from "./ProductTable/index2"
+import UpdateProductTable from "./UpdateProductTable"
+import TypeImageTable from "./TypeImageTable"
 import * as propertyActions from "../../../redux/property/actions";
 // import Room from "./Room";
 import { retrieveList } from "../../../redux/rest/actions";
@@ -183,7 +185,7 @@ class EditPropertyForm extends Component {
       ]);
       const {id} = this.props.match.params;
       await this.props.submitGeneralInfo(id, payload)
-      
+
     } catch (error) {
       message.error("Có lỗi xảy ra");
     }
@@ -440,12 +442,12 @@ class EditPropertyForm extends Component {
           <div className="blockEdit">
             <SalesPolicy id={this.props.match.params.id} />
           </div>
-          
+
           {/* PAYMENT METHODS AND PAYMENT PROGRESS */}
           <div className="blockEdit">
             <PaymentMethod id={this.props.match.params.id} paymentMethodOptions={paymentMethodOptions} />
           </div>
-          
+
           <div className="blockEdit">
             <Row gutter={[16, 24]}>
               {/* DISCOUNT */}
@@ -481,8 +483,31 @@ class EditPropertyForm extends Component {
               </Col>
             </Row>
           </div>
-          
 
+          {/* UPDATE PRODUCT TABLE */}
+          <div className="blockEdit">
+            <Row>
+              <Col xs={24}>
+                <div className="productTable">
+                  <Typography.Title level={4}> Thêm bảng hàng </Typography.Title>
+                  <UpdateProductTable />
+                </div>
+              </Col>
+            </Row>
+            <br />
+            {/* TYPE IMAGE TABLE */}
+            <br />
+            <Row>
+              <Col xs={24}>
+                <div className="productTable">
+                  <div className="productTableTitle">
+                    <span>Chỉnh sửa ảnh loại căn hộ </span>
+                  </div>
+                  <TypeImageTable />
+                </div>
+              </Col>
+            </Row>
+          </div>
           {/* OTHERS */}
           <div className="others blockEdit">
             <Typography.Title level={4}> Khác </Typography.Title>

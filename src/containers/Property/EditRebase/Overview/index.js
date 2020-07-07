@@ -31,7 +31,7 @@ class Overview extends Component {
     // can use data-binding to set
     // this.props.legalRecords.splice(k, 1);
     // files.splice(k, 1);
-    
+
     form.setFieldsValue({
       keys: keys.filter(key => key !== k),
     });
@@ -43,7 +43,7 @@ class Overview extends Component {
     // can use data-binding to get
     const keys = form.getFieldValue('keys');
     const id = this.props.legalRecords.length;
-    
+
     const nextKeys = keys.concat(id);
     // can use data-binding to set
     // important! notify form to detect changes
@@ -79,7 +79,7 @@ class Overview extends Component {
         link: files[k].fileList[0].url,
         updatedAt: values.updatedAt[k],
       }))
-      
+
       await this.props.submitEdit(this.props.id, {
         overview: values.overview,
         legalRecords,
@@ -87,7 +87,7 @@ class Overview extends Component {
     } catch (error) {
       message.error("Có lỗi xảy ra");
     }
-    
+
   }
 
   handleOnChange = async (info) => {
@@ -154,7 +154,7 @@ class Overview extends Component {
     };
 
     if(this.props.legalRecords.length >0 && this.props.legalRecords.length !== files.length) {
-      
+
       this.props.legalRecords.map((e) => {
         files.push({
           fileList: [
@@ -184,17 +184,17 @@ class Overview extends Component {
       </div>
     )
     const initialKeys =  legalRecords.map((x,idx) => idx )
-    
+
     getFieldDecorator('keys', { initialValue: initialKeys});
     const keys = getFieldValue('keys');
 
-    
+
 
     return (
       <Wrapper>
         <Form onSubmit={this.handleSubmit}>
           {/* OVERVIEW */}
-          
+
           <Row>
             <Col xs={24} lg={16} xl={12} style={{ paddingRight: "8px" }}>
               <Typography.Title level={4}>Tổng quan dự án</Typography.Title>
@@ -220,7 +220,7 @@ class Overview extends Component {
               xl={12}
               style={{ paddingLeft: "8px", paddingRight: "8px" }}
             >
-              
+
               <Typography.Title level={4}>Hồ sơ pháp lý</Typography.Title>
 
               {keys.map((k) => (
@@ -275,7 +275,7 @@ class Overview extends Component {
                       />
                     ) : null}
                   </Col>
-        
+
                 </Row>
                 ))}
               <Form.Item>
@@ -289,9 +289,9 @@ class Overview extends Component {
           </Row>
           {buttonEdit}
         </Form>
-        
+
       </Wrapper>
-      
+
     );
   }
 }

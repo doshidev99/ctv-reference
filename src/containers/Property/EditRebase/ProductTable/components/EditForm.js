@@ -5,6 +5,7 @@ import RestFormInput from "../../../../../components/RestInput/RestFormInput";
 import RestSelect from "../../../../../components/RestInput/RestSelect";
 import RestRow from "../../../../../components/RestLayout/RowLayout";
 import { PRODUCT_TABLE } from "../../../../../configs/constants";
+import UploadImage from '../../../../../components/RestInput/RestUpload';
 
 class ProductEditForm extends Component{
   componentDidMount(){}
@@ -23,40 +24,33 @@ class ProductEditForm extends Component{
           source="floor"
           title="Tầng"
           placeholder="Tầng"
-          // requiredMessage="Vui lòng nhập tên sự kiện"
         />
         <RestFormInput
           source="code"
           title="Mã căn"
           placeholder="Mã căn"
-          // requiredMessage="Vui lòng nhập tên sự kiện"
         />
         <RestFormInput
           source="type"
           title="Loại căn hộ"
           placeholder="Loại căn hộ"
-          // requiredMessage="Vui lòng nhập tên sự kiện"
         />
         <RestFormInput
           source="direction"
           title="Hướng"
           placeholder="Hướng"
-          // requiredMessage="Vui lòng nhập tên sự kiện"
         />
-        {/* <RestFormInput
-          source="area"
-          title="Diện tích (m2)"
-          placeholder="Tòa nhà"
-          disable
-          // requiredMessage="Vui lòng nhập tên sự kiện"
+        <p style={{marginTop: "1em"}}>Ảnh</p>
+        <UploadImage
+          source="image"
+          folderPrefix="PRODUCT_TABLE_IMAGE"
         />
         <RestFormInput
           source="price"
-          title="Giá tiền"
-          placeholder="Giá tiền"
-          disable
-          // requiredMessage="Vui lòng nhập tên sự kiện"
-        /> */}
+          title="Giá bán chưa VAT+PBT"
+          placeholder="Giá"
+          type="number"
+        />
         <RestSelect
           source="status"
           header="Trạng thái"

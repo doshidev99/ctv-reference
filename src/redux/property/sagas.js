@@ -57,7 +57,7 @@ function* getListProperty({ limit }) {
     yield put(getListPropertySuccessAction(data));
   } catch (error) {
     yield put(getListPropertyFailureAction(error));
-    
+
   }
 }
 
@@ -212,7 +212,7 @@ function* getOneProperty({ id }) {
   }
 }
 function* updateProperty({ id, payload }) {
-  
+
   try {
     const { deletedDiscountIds, deletedMediaIds } = yield select((state) => {
       return state.property;
@@ -451,7 +451,7 @@ function* updateChildrenProperty({id, values}) {
       const { deletedDiscountIds } = yield select((state) => {
         return state.property;
       });
-  
+
       if (deletedDiscountIds.length > 0) {
         const deletedPayload = {
           ids: [...deletedDiscountIds],
@@ -543,6 +543,28 @@ function* getProductTable({ id, filterParams }) {
     yield put(getProductTableSuccessAction(response));
   } catch (error) {
     // eslint-disable-next-line no-console
+    // console.log(error);
+  }
+}
+
+function* updateSessionImageSuccess(id) {
+  try {
+      id.payload.sections.forEach(function del(v){ delete v.key });
+      yield call(
+        apiWrapper,
+        {
+          isShowProgress: true,
+          isShowSucceedNoti: true,
+          successDescription: "Cập nhật thành công",
+          errorDescription: "Có lỗi xảy ra",
+        },
+        putApi,
+        `properties`,
+        id.id,
+        id.payload,
+      );
+  } catch (error) {
+    // eslint-disable-next-line no-console
     console.log(error);
   }
 }
@@ -556,9 +578,11 @@ export default [
   takeEvery(PropertyTypes.GET_ONE_PROPERTY, getOneProperty),
   takeEvery(PropertyTypes.RETRIEVE_PRODUCT_TABLE, getProductTable),
 
-  
+
   takeEvery(PropertyTypes.REMOVE_PROPERTY_MEDIA, removeMedia),
   // takeEvery(PropertyTypes.REMOVE_DISCOUNT, removeDiscounts),
   takeEvery(PropertyTypes.SUBMIT_EDIT_ONE_PROPERTY, updateProperty),
   takeEvery(PropertyTypes.SUBMIT_EDIT_CHILDREN_PROPERTY, updateChildrenProperty),
+
+  takeEvery(PropertyTypes.UPDATE_SESSION_IMAGE_SUCCESS, updateSessionImageSuccess),
 ];
