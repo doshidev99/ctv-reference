@@ -14,6 +14,7 @@ class ListProduct extends Component {
   render() {
     const apiUrl = `properties/${this.props.match.params.id}/sections`;
     const apiEdit = `property-sections`;
+    // console.log('[this.props]', this.props);
     return (
       <Wrapper>
         <RestList
@@ -32,7 +33,7 @@ class ListProduct extends Component {
           <Label source="area" title="Diện tích (m2)" />
           <Label
             source="price"
-            title="Giá bán chưa VAT+PBT" 
+            title="Giá bán chưa VAT+PBT"
             render={value => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'Vnd' }).format(value)}
           />
           <Label

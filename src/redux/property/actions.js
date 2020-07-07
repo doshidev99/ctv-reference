@@ -101,6 +101,8 @@ export const PropertyTypes = makeConstantCreator(
   "UPLOAD_TYPE_IMAGE_SUCCESS",
   "UPLOAD_TYPE_IMAGE_FAILURE",
   "REMOVE_TYPE_IMAGE",
+
+  "UPDATE_SESSION_IMAGE_SUCCESS",
 );
 
 // Get list property
@@ -364,4 +366,8 @@ export const uploadTypeImageFailureAction = error =>
 makeActionCreator(PropertyTypes.UPLOAD_TYPE_IMAGE_FAILURE, { error });
 export const removeTypeImageAction = link =>
 makeActionCreator(PropertyTypes.REMOVE_TYPE_IMAGE, { link });
+
+// Update Session And Image
+export const updateSessionImageAction = (id, payload) =>
+makeActionCreator(PropertyTypes.UPDATE_SESSION_IMAGE_SUCCESS, { id, payload });
 

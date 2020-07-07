@@ -33,20 +33,11 @@ import PropertyImage from "./PropertyImage";
 import Discount from "./Discount";
 import ProductTable from "./ProductTable";
 import TypeImageTable from "./TypeImageTable";
-// import { PROPERTY_TAGS } from "../../../configs/constants";
-
-// import {
-//   addNewLegalRecordAction,
-//   addNewSitePlanAction,
-//   addNewDiscountAction,
-//   submitCreatePropertyFormAction,
-// } from "../../../redux/property/actions";
 import * as propertyActions from "../../../redux/property/actions";
 import Room from "./Room";
 import { getListCityAction } from "../../../redux/city/actions";
 import { getListPropertyTypeAction } from "../../../redux/propertyType/actions";
 import { retrieveList } from "../../../redux/rest/actions";
-// import Payment from "./Payment";
 import PropertyDiscount from "./PropertyDiscount";
 import RestSelect from "../../../components/RestInput/RestSelect";
 import {

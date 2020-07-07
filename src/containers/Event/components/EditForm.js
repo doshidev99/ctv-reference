@@ -41,10 +41,10 @@ class EventForm extends Component{
           requiredMessage="Vui lòng nhập địa điểm tổ chức"
         />
         <RestFormInput
-          // source="capacity"
           source="capacity"
           title="Số lượng tham gia"
           placeholder="Số lượng tham gia"
+          defaultValue={this.props.record.capacity.toString()}
           // type = "number"
         />
         <RestSwitch

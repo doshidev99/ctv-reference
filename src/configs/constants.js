@@ -164,18 +164,18 @@ export const IDENTITY_STATUS = [
 export const PRODUCT_TABLE = [
   {
     id: 0,
-    name: 'SELLING',
+    name: 'Đang bán',
   },
   {
     id: 1,
-    name: 'BOOKED',
+    name: 'Đặt cọc',
   },
   {
     id: 2,
-    name: 'SOLD',
+    name: 'Đã bán',
   },
   {
     id: 3,
-    name: 'RESERVED',
+    name: 'Đặt chỗ',
   },
 ]
