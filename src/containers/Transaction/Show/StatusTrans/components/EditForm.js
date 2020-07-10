@@ -25,7 +25,7 @@ class PaymentEditForm extends Component {
     }
     callback();
   };
-  
+
   render() {
     // const { roleData } = this.props;
     return (

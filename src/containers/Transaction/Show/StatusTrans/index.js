@@ -54,7 +54,7 @@ class StatusTrans extends Component {
       }
     });
   }
-  
+
   handleSubmitEdit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -150,7 +150,7 @@ class StatusTrans extends Component {
                           {i18n.t("transaction.detail.cancelTrans")}
                         </Button>
                       </Popconfirm>
-                        
+
                     </div>
                   </Col>
                 </Row>
@@ -168,7 +168,7 @@ class StatusTrans extends Component {
                       </Button>
                     </Popconfirm>
                   </Col>
-                </Row>  
+                </Row>
               )}
             </div>
             )}
@@ -309,12 +309,12 @@ class StatusTrans extends Component {
                     </p>
                     <p>
                         Tổng tiền hoa hồng đã thanh toán:
-                      {transaction.withdrawnAmount}
+                      {transaction.totalPayment}
                       {' VND'}
                     </p>
                     <p>
                         Tổng tiền hoa hồng chưa thanh toán:
-                      {transaction.actualCommissionAmount && transaction.withdrawnAmount !== null ? transaction.actualCommissionAmount - transaction.withdrawnAmount : ''}
+                      {transaction.actualCommissionAmount && transaction.totalPayment !== null ? transaction.actualCommissionAmount - transaction.totalPayment  : ''}
                       {' VND'}
                     </p>
                     <p style={{marginBottom: "2px"}}>
@@ -436,4 +436,4 @@ const mapDispatchToProps = dispatch => ({
 export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps,
-) (Form.create()(StatusTrans))) 
+) (Form.create()(StatusTrans)))

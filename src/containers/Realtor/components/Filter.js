@@ -7,6 +7,7 @@ import ColLayout from "../../../components/RestLayout/ColLayout";
 import RestFormInput from "../../../components/RestInput/RestFormInput";
 import RestSelect from "../../../components/RestInput/RestSelect";
 import {DIGITAL_CONTRACT_STATUS} from "../../../configs/constants"
+import  {RestFormDateRangePicker} from "../../../components/RestInput/RestDateTimePicker";
 
 class Filter extends Component {
   componentDidMount(){}
@@ -27,10 +28,10 @@ class Filter extends Component {
         <ColLayout elementProps={elementPropsCol}>
           <RestFormInput source="phone" placeholder="Số điện thoại" />
         </ColLayout>
-        <ColLayout elementProps={elementPropsCol}>
+        {/* <ColLayout  elementProps={elementPropsCol}>
           <RestFormInput source="email" placeholder="Email" />
-        </ColLayout>
-        <ColLayout elementProps={elementPropsCol}>
+        </ColLayout> */}
+        <ColLayout  elementProps={elementPropsCol}>
           <RestSelect
             source="digitalContractStatus"
             valueProp="id"
@@ -38,6 +39,12 @@ class Filter extends Component {
             placeholder="Hợp đồng điện tử"
             resourceData={DIGITAL_CONTRACT_STATUS}
             />
+        </ColLayout>
+        <ColLayout elementProps={elementPropsCol} class="rowDatePick">
+          <RestFormDateRangePicker
+            // source="createdAt.[$gte, $lte]"
+            source="createdAt.$range"
+          />
         </ColLayout>
       </RestRow>
     );

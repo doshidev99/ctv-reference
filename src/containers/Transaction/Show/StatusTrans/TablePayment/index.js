@@ -46,12 +46,12 @@ class TransactionPaymentTable extends Component {
       dataIndex: "amount",
       key: "amount",
     },
-    {
-      title: "Trạng thái gửi",
-      dataIndex: "isSent",
-      key: "isSent",
-      render: (value) => <Switch checked={value} disabled />,
-    },
+    // {
+    //   title: "Trạng thái gửi",
+    //   dataIndex: "isSent",
+    //   key: "isSent",
+    //   render: (value) => <Switch checked={value} disabled />,
+    // },
     {
       title: "Tùy chọn",
       width: "20%",
@@ -63,7 +63,7 @@ class TransactionPaymentTable extends Component {
             {' '}
             Sửa
           </a>
-          
+
         </div>
       ),
     },
@@ -99,7 +99,7 @@ class TransactionPaymentTable extends Component {
       if( this.props.transaction.actualCommissionAmount - this.props.transaction.withdrawnAmount <= 0 ) {
         await this.props.reloadStatus(this.props.match.params.id)
       }
-      
+
     } catch (error) {
       message.error("Có lỗi xảy ra");
       this.setState({
@@ -193,7 +193,7 @@ class TransactionPaymentTable extends Component {
               Thêm đợt thanh toán
               </Button>
             )}
-            
+
           </Col>
         </Row>
         <Table
@@ -230,7 +230,10 @@ class TransactionPaymentTable extends Component {
               <p>Tổng tiền hoa hồng chưa thanh toán:</p>
             </Col>
             <Col span={12}>
-              {this.props.transaction.actualCommissionAmount && this.props.transaction.withdrawnAmount !== null ? this.props.transaction.actualCommissionAmount - this.props.transaction.withdrawnAmount : ''}
+              {this.props.transaction.actualCommissionAmount
+              && this.props.transaction.withdrawnAmount !== null
+              ? this.props.transaction.actualCommissionAmount - this.props.transaction.withdrawnAmount
+              : ''}
               {' VND'}
             </Col>
           </Row>
@@ -281,7 +284,7 @@ class TransactionPaymentTable extends Component {
                 ],
               })(<Input />)}
             </Item>
-            <Item>
+            {/* <Item>
               <div
                 className="title"
                 style={{
@@ -294,7 +297,7 @@ class TransactionPaymentTable extends Component {
                 valuePropName: "checked",
                 initialValue: currentPayment.isSent,
               })(<Switch  />)}
-            </Item>
+            </Item> */}
           </Form>
         </Modal>
       </Wrapper>

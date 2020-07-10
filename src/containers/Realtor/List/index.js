@@ -6,6 +6,7 @@ import RestList from '../../rest/List';
 import Filter from '../components/Filter';
 import RealtorWrapper from './styles';
 import {DIGITAL_CONTRACT_STATUS} from "../../../configs/constants"
+import { formatDate } from "../../../utils/textProcessor";
 
 class ListRealtor extends Component {
   componentDidMount() {}
@@ -45,6 +46,11 @@ class ListRealtor extends Component {
                 </Tag>
               )
             }}
+          />
+          <Label
+            source="createdAt"
+            title="Ngày đăng ký"
+            render={(value) => formatDate(value)}
           />
         </RestList>
       </RealtorWrapper>
