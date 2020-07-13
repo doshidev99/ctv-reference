@@ -114,7 +114,7 @@ class ProductTable extends Component {
           direction: e[5].value|| undefined,
           area: e[6].value,
           price: e[7].value,
-          status:   (e[8].value && this.STATUSES_2[e[8].value])|| undefined,
+          status: this.STATUSES_2[e[8].value],
           image: null,
         };
       });
