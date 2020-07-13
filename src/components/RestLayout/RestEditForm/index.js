@@ -17,7 +17,7 @@ class FormComponent extends Component {
       this.props.record &&
       prevProps.record.id !== this.props.record.id
     ) {
-      
+
       this.props.form.setFieldsValue(this.props.record);
     }
   }

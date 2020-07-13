@@ -6,10 +6,10 @@ import { renderMessage } from '../../../utils/textProcessor';
 // import IntlMessages from '../../utility/IntlMessages';
 
 const RestSwitch = props => {
-  
+
   const value = getRecordData(props.record, props.source) || props.value;
   // const value = getRecordData(props.record, props.source)
-  
+
   return props.isShowConfirm ? (
     <Popconfirm
       title={

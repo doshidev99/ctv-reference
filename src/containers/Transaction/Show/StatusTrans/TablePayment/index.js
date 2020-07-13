@@ -11,12 +11,10 @@ import {
   message,
   Row,
   Col,
-  Icon,
   Pagination,
   Button,
   Modal,
   Input,
-  Switch,
 } from "antd";
 import {
   getTablePaymentAction,
@@ -52,21 +50,21 @@ class TransactionPaymentTable extends Component {
     //   key: "isSent",
     //   render: (value) => <Switch checked={value} disabled />,
     // },
-    {
-      title: "Tùy chọn",
-      width: "20%",
-      dataIndex: "operation",
-      render: (text, record) => (
-        <div className="option">
-          <a className="btnOption" onClick={() => this.showEditModal(record.key)}>
-            <Icon type="edit"  />
-            {' '}
-            Sửa
-          </a>
+    // {
+    //   title: "Tùy chọn",
+    //   width: "20%",
+    //   dataIndex: "operation",
+    //   render: (text, record) => (
+    //     <div className="option">
+    //       <a className="btnOption" onClick={() => this.showEditModal(record.key)}>
+    //         <Icon type="edit"  />
+    //         {' '}
+    //         Sửa
+    //       </a>
 
-        </div>
-      ),
-    },
+    //     </div>
+    //   ),
+    // },
   ];
 
   orderBy = "-createdAt";
@@ -231,8 +229,8 @@ class TransactionPaymentTable extends Component {
             </Col>
             <Col span={12}>
               {this.props.transaction.actualCommissionAmount
-              && this.props.transaction.withdrawnAmount !== null
-              ? this.props.transaction.actualCommissionAmount - this.props.transaction.withdrawnAmount
+              && this.props.transaction.totalPayment !== null
+              ? this.props.transaction.actualCommissionAmount - this.props.transaction.totalPayment
               : ''}
               {' VND'}
             </Col>

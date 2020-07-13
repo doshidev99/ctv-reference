@@ -50,7 +50,7 @@ class ProductEditForm extends Component{
           source="price"
           title="Giá bán chưa VAT+PBT"
           placeholder="Giá"
-          type="number"
+          ruleType='number'
         />
         <RestSelect
           source="status"

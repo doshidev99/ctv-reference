@@ -30,6 +30,8 @@ class RestEdit extends Component {
   };
 
   onSubmit = (data) => {
+    console.log('submit');
+    console.log(data);
     const { onSubmit } = this.props;
     onSubmit(getIdByUrl(this.props), data);
   };
@@ -40,10 +42,10 @@ class RestEdit extends Component {
   };
 
   render() {
-    const { 
-      showModal, 
-      title, 
-      // resource 
+    const {
+      showModal,
+      title,
+      // resource
     } = this.props;
     return !showModal ? (
       <RestEditComponent
