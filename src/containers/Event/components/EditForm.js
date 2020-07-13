@@ -44,8 +44,8 @@ class EventForm extends Component{
           source="capacity"
           title="Số lượng tham gia"
           placeholder="Số lượng tham gia"
-          defaultValue={this.props.record.capacity.toString()}
-          // type = "number"
+          // defaultValue={this.props.record.capacity.toString()}
+          ruleType='number'
         />
         <RestSwitch
           source="isVisible"

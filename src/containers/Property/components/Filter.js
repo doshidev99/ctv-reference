@@ -73,7 +73,7 @@ class Filter extends Component {
           )}
         </ColLayout>
         <ColLayout elementProps={elementPropsCol}>
-          <RestFormDateRangePicker 
+          <RestFormDateRangePicker
             // source="createdAt.[$gte, $lte]"
             source="createdAt.$range"
           />

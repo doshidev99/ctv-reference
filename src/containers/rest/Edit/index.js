@@ -40,10 +40,10 @@ class RestEdit extends Component {
   };
 
   render() {
-    const { 
-      showModal, 
-      title, 
-      // resource 
+    const {
+      showModal,
+      title,
+      // resource
     } = this.props;
     return !showModal ? (
       <RestEditComponent

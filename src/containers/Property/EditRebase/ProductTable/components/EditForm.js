@@ -6,6 +6,7 @@ import RestSelect from "../../../../../components/RestInput/RestSelect";
 import RestRow from "../../../../../components/RestLayout/RowLayout";
 import { PRODUCT_TABLE } from "../../../../../configs/constants";
 import UploadImage from '../../../../../components/RestInput/RestUpload';
+import RestSwitch from "../../../../../components/RestInput/RestSwitch";
 
 class ProductEditForm extends Component{
   componentDidMount(){}
@@ -49,7 +50,7 @@ class ProductEditForm extends Component{
           source="price"
           title="Giá bán chưa VAT+PBT"
           placeholder="Giá"
-          type="number"
+          ruleType='number'
         />
         <RestSelect
           source="status"
@@ -57,6 +58,10 @@ class ProductEditForm extends Component{
           valueProp="id"
           titleProp="name"
           resourceData={PRODUCT_TABLE}
+        />
+        <RestSwitch
+          source="isVisible"
+          title="Hiển thị"
         />
       </RestRow>
     );

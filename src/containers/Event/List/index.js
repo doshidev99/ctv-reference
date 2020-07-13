@@ -18,7 +18,7 @@ class ListEvent extends Component {
   componentDidMount() {}
 
   render() {
-    
+
     return (
       <EventWrapper>
         <RestList
