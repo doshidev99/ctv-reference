@@ -18,7 +18,6 @@ class ProductEditForm extends Component{
           source="building"
           title="Tòa nhà"
           placeholder="Tòa nhà"
-          required
           requiredMessage="Vui lòng nhập tên tòa nhà"
         />
         <RestFormInput
