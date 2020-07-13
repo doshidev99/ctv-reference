@@ -4,7 +4,7 @@ import Label from '../../../../components/RestField/Label';
 import RestList from '../../../rest/List';
 import ActionGroup from '../../../../components/RestActions/ActionGroup';
 import EditCustom from '../../../../components/RestActions/CustomEditButton';
-// import RestSwitch from '../../../../components/RestField/Switch';
+import RestSwitch from '../../../../components/RestField/Switch';
 // import Filter from '../components/Filter';
 import {PRODUCT_TABLE} from '../../../../configs/constants'
 import Wrapper from './styles';
@@ -43,7 +43,7 @@ class ListProduct extends Component {
             render={value => PRODUCT_TABLE.find(item => item.id === value)
             && PRODUCT_TABLE.find(item => item.id === value).name}
           />
-          {/* <RestSwitch
+          <RestSwitch
             source="isVisible"
             title="Hiển thị"
             align="center"
@@ -53,7 +53,7 @@ class ListProduct extends Component {
             // isShowConfirm
             // onChange={this.props.onChange}
             // type="switch"
-          /> */}
+          />
           <ActionGroup>
             <EditCustom resourceCustom={apiEdit} />
           </ActionGroup>
