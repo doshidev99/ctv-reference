@@ -6,7 +6,7 @@ import EditWrapper from "./styles";
 const EditProduct = (props) => {
   return (
     <EditWrapper>
-      <RestEdit {...props} resource="properties" title="Chỉnh sửa bảng hàng">
+      <RestEdit {...props} resource="property-sections" title="Chỉnh sửa bảng hàng">
         <EditForm />
       </RestEdit>
     </EditWrapper>

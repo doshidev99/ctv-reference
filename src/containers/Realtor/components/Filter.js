@@ -31,7 +31,7 @@ class Filter extends Component {
         {/* <ColLayout  elementProps={elementPropsCol}>
           <RestFormInput source="email" placeholder="Email" />
         </ColLayout> */}
-        <ColLayout  elementProps={elementPropsCol}>
+        <ColLayout elementProps={elementPropsCol}>
           <RestSelect
             source="digitalContractStatus"
             valueProp="id"

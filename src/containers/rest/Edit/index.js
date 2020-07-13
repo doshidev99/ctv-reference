@@ -30,8 +30,6 @@ class RestEdit extends Component {
   };
 
   onSubmit = (data) => {
-    console.log('submit');
-    console.log(data);
     const { onSubmit } = this.props;
     onSubmit(getIdByUrl(this.props), data);
   };

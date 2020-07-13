@@ -51,7 +51,7 @@ const modalRoutes = [
     component: lazy(() => import('../../containers/Partner/Edit')),
   },
   {
-    path: '/properties',
+    path: "/property-sections",
     component: lazy(() => import('../../containers/Property/EditRebase/ProductTable/Edit')),
   },
   {
@@ -62,10 +62,10 @@ const modalRoutes = [
     path: '/info/faqs',
     component: lazy(() => import('../../containers/FAQ/Edit')),
   },
-  // {
-  //   path: '/properties',
-  //   component: lazy(() => import('../../containers/Property/Answer')),
-  // },
+  {
+    path: '/properties',
+    component: lazy(() => import('../../containers/Property/Answer')),
+  },
 ];
 
 const getModalRoute = currentModal => {
@@ -92,8 +92,8 @@ class ModalRoute extends Component {
   }
 
   render() {
-    console.log('[this.props]', this.props);
-    console.log('[this.state]', this.state);
+    // console.log('[this.props]', this.props);
+    // console.log('[this.state]', this.state);
     const { match, location, closeModal } = this.props;
 
     const { visible, currentModal } = this.state;

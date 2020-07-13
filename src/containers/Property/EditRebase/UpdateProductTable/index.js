@@ -70,7 +70,6 @@ class ProductTable extends Component {
         if (e === undefined) {
           return "";
         }
-        console.log('[this.STATUSES_1]', this.STATUSES_1[e]);
         return `${this.STATUSES_1[e]}`;
       },
     },
@@ -94,7 +93,6 @@ class ProductTable extends Component {
     try {
       let df = await handleXLSX(file);
       // eslint-disable-next-line prefer-destructuring
-      console.log('[HERE =>>>>>>>>>>>>>>>>> df]', df);
       df = df[0];
       const result = df.map(row => {
         const obj = Object.keys(row).map(key => {
@@ -120,7 +118,6 @@ class ProductTable extends Component {
           image: null,
         };
       });
-      console.log(result);
       this.props.loadExcelSuccess(result);
       onSuccess("OK");
     } catch (error) {
