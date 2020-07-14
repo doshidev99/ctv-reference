@@ -46,9 +46,6 @@ export const initialState = {
   errors: [],
 
   bonus: [
-    {
-      id: mongoObjectId(),
-    },
   ],
 }
 // End setup
@@ -79,7 +76,7 @@ const getTablePaymentSuccess = (state, { data, total, limit, offset }) => ({
   transactionPayments: {
     ...state.transactionPayments,
     payments: data,
-    limit, 
+    limit,
     offset,
     total,
     loading: false,
@@ -125,7 +122,7 @@ const updateOnePaymentSuccess = state => ({
     updatePaymentFailure: false,
     updatePaymentSuccess: true,
   },
-  
+
 })
 const updateOnePaymentFailure = state => ({
   ...state,
