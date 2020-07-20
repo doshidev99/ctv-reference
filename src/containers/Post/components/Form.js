@@ -32,17 +32,27 @@ class PostForm extends Component {
           placeholder="Mô tả"
           requiredMessage="Please input description"
         />
-        <p style={{"marginTop": "1em"}}>Nội dung</p>
+        {/* <p style={{"marginTop": "1em"}}>Nội dung</p> */}
         <RestEditor
           source="content"
           label="Nội dung"
         />
         <RestFormInput
-          required
+          // required
           source="source"
           title="Nguồn"
           placeholder="source"
-          requiredMessage="Please input source"
+          // requiredMessage="Please input source"
+          rules={[
+            {
+                required: true,
+                message: "Please input source",
+            },
+            {
+                type: "url",
+                message: "This field must be a valid url.",
+            },
+          ]}
         />
         <p style={{marginTop: "1em"}}>Ảnh đính kèm</p>
         <UploadImage

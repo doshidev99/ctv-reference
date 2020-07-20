@@ -49,8 +49,6 @@ export function* retrieveList({ resource }) {
       resource,
       params,
     );
-    // console.log("Saga: Response: ",response);
-
     const convertData = convertResponseData('getAll', response);
     yield put(
       actions.retrieveListSuccess(resource, {
@@ -69,7 +67,7 @@ export function* retrieveList({ resource }) {
 export function* retrieveOneRecord({ resource, id, data }) {
   try {
     // console.log('RESOURCE-->', resource, 'id--->', id);
-    
+
     const response = yield call(
       apiWrapper,
       {
@@ -177,7 +175,9 @@ export function* createRecord({ resource, data, isGoToShowPage }) {
     yield put(
       actions.createRecordSuccess(resource, {
         list: { [convertData.id]: convertData },
-        ids: rest[resource] ? [...rest[resource].ids, convertData.id] : [convertData.id],
+        // ids: rest[resource] ? [...rest[resource].ids, convertData.id] : [convertData.id],
+        ids: rest[resource] ? [ convertData.id, ...rest[resource].ids] : [convertData.id],
+
         count: rest[resource] ? rest[resource].count + 1 : 1,
       }),
     );

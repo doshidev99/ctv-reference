@@ -6,7 +6,7 @@ import EditWrapper from "./style";
 const EditPost = (props) => {
   return (
     <EditWrapper>
-      <RestEdit {...props} resource="posts" title="Edit tin tức">
+      <RestEdit {...props} resource="posts" title="Chỉnh sửa tin tức">
         <PostForm />
       </RestEdit>
     </EditWrapper>

@@ -49,7 +49,12 @@ class ProductEditForm extends Component{
           source="price"
           title="Giá bán chưa VAT+PBT"
           placeholder="Giá"
-          ruleType='number'
+          defaultValue={this.props.record.price.toString()}
+          rules={[{
+            // type: "number",
+            pattern: new RegExp("^[0-9]+$"),
+            message: 'Need to enter number',
+          }]}
         />
         <RestSelect
           source="status"
