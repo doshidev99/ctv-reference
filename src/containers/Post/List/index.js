@@ -26,7 +26,7 @@ class ListPost extends Component {
           title="Tin tức"
           filter={<Filter />}
           resource="posts"
-          initialFilter={{ limit: 10, skip: 0, order: 'id', filter: {} }}
+          initialFilter={{ limit: 10, skip: 0, orderBy: '-id', filter: {} }}
           {...this.props}
         >
           <Label source="id" title="ID" width="90px" />

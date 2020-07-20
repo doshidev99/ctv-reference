@@ -42,10 +42,14 @@ class EventForm extends Component{
         />
         <RestFormInput
           source="capacity"
-          title="Số lượng tham gia"
+          title="Số lượng tham giaa"
           placeholder="Số lượng tham gia"
-          // defaultValue={this.props.record.capacity.toString()}
-          ruleType='number'
+          defaultValue={this.props.record.capacity.toString()}
+          rules={[{
+            // type: "number",
+            pattern: new RegExp("^[0-9]+$"),
+            message: 'Need to enter number',
+          }]}
         />
         <RestSwitch
           source="isVisible"
