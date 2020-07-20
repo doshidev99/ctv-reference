@@ -13,15 +13,15 @@ class ListProduct extends Component {
   componentDidMount() {}
 
   render() {
-    const apiUrl = `properties/${this.props.match.params.id}/sections`;
+    // const apiUrl = `properties/${this.props.match.params.id}/sections`;
     const apiEdit = `property-sections`;
-    // console.log('[this.props]', this.props);
+    const {id} = this.props.match.params;
     return (
       <Wrapper>
         <RestList
           // filter={<Filter />}
-          resource={apiUrl}
-          initialFilter={{ limit: 10, skip: 0, filter: {} }}
+          resource={apiEdit}
+          initialFilter={{ limit: 10, skip: 0, filter: {"propertyId":id} }}
           hasCreate={false}
           {...this.props}
         >
@@ -47,12 +47,12 @@ class ListProduct extends Component {
             source="isVisible"
             title="Hiển thị"
             align="center"
-            // resourceCustom='property-sections'
-            // confirmMessage="Bạn có muốn thay đổi?"
-            // cancelConfirmMessage="Hủy bỏ"
-            // isShowConfirm
-            // onChange={this.props.onChange}
-            // type="switch"
+            resourceCustom='property-sections'
+            confirmMessage="Bạn có muốn thay đổi?"
+            cancelConfirmMessage="Hủy bỏ"
+            isShowConfirm
+            onChange={this.props.onChange}
+            type="switch"
           />
           <ActionGroup>
             <EditCustom resourceCustom={apiEdit} />

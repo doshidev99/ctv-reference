@@ -189,7 +189,7 @@ function* addPayment({id, payload}) {
       id,
       payload,
     );
-    
+
     yield getTableSaga({id,limit: 5, offset: 0,filter: null,orderBy: '-createdAt'})
     yield getDetailSaga({id})
     yield put(addPaymentSuccessAction())
@@ -213,7 +213,7 @@ function* updateOnePayment({id, payload}) {
       id,
       payload,
     );
-    
+
     yield getTableSaga({id: response.transactionId, limit: 5, offset: 0,filter: null,orderBy: '-createdAt'})
     yield getDetailSaga({id: response.transactionId})
     yield put(updateOnePaymentSuccessAction())
