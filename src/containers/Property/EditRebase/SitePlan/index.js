@@ -7,6 +7,7 @@ import {
   submitEditChildrenProperty,
   uploadFileSuccessAction,
   addNewSitePlanSuccessAction,
+  removeSitePlanImageAction,
 } from "../../../../redux/property/actions";
 import { getSignedUrlS3, uploadFile } from "../../../../utils/uploadFile";
 
@@ -41,7 +42,7 @@ class SitePlan extends Component {
     // can use data-binding to set
     // this.props.sitePlans.splice(k, 1);
     // files.splice(k, 1);
-    
+
     form.setFieldsValue({
       keys: keys.filter(key => key !== k),
     });
@@ -53,7 +54,7 @@ class SitePlan extends Component {
     // can use data-binding to get
     const keys = form.getFieldValue('keys');
     const id = this.props.sitePlans.length;
-    
+
     const nextKeys = keys.concat(id);
     // can use data-binding to set
     // important! notify form to detect changes
@@ -88,7 +89,7 @@ class SitePlan extends Component {
     } catch (error) {
       message.error("Có lỗi xảy ra");
     }
-    
+
   }
 
   handleChange = async (k, info) => {
@@ -116,14 +117,18 @@ class SitePlan extends Component {
         "sitePlanImage",
       );
       const response = await uploadFile(file, signedUrlS3.url);
-      this.props.uploadFileSuccess(response.url);
       this.props.sitePlans[k].links.push(response.url);
+      this.props.uploadFileSuccess(response.url);
       onSuccess('OK')
     } catch (error) {
       message.error("Xảy ra lỗi, vui lòng thử lại");
       onError("Error");
     }
   };
+
+  removeImage = async (k, e) => {
+    this.props.removeImage(this.props.sitePlans[k].id, e.url)
+  }
 
   handleCancel = () => this.setState({ previewVisible: false });
 
@@ -177,16 +182,16 @@ class SitePlan extends Component {
     );
 
     const initialKeys =  sitePlans.map((x,idx) => idx )
-    
+
     getFieldDecorator('keys', { initialValue: initialKeys});
     const keys = getFieldValue('keys');
 
-    
+
 
     return (
       <Wrapper>
         <Form onSubmit={this.handleSubmit}>
-          <Typography.Title level={4}>Mặt bằng dự án</Typography.Title>
+          <Typography.Title level={4}>Mặt bằng dự ánn</Typography.Title>
           {keys.map((k) => (
             <Row className="site-row" key={k}>
               <Col span={22}>
@@ -217,7 +222,7 @@ class SitePlan extends Component {
                     fileList={files[k].fileList.length > 0 && files[k].fileList}
                     customRequest={( action ) => this.handleUpload(k, action)}
                     onPreview={this.handlePreview}
-                    onRemove={this.removeImage}
+                    onRemove={( e ) => this.removeImage(k, e)}
               >
                     {uploadButton}
                   </Upload>
@@ -243,7 +248,7 @@ class SitePlan extends Component {
                   style={{color: 'red'}}
             />
               </Col>
-              
+
             </Row>
           ))}
           <Button type="dashed" onClick={this.add} style={{ width: '30%' }}>
@@ -253,9 +258,9 @@ class SitePlan extends Component {
           </Button>
           {buttonEdit}
         </Form>
-        
+
       </Wrapper>
-      
+
     );
   }
 }
@@ -271,10 +276,12 @@ const mapDispatchToProps = (dispatch) => ({
   uploadFileSuccess: (fileUrl) => {
     dispatch(uploadFileSuccessAction(fileUrl, "create"));
   },
+  removeImage: (id, url) => {
+    dispatch(removeSitePlanImageAction(id, url))
+  },
   submitEdit: (idProperty, values) => {
     dispatch(submitEditChildrenProperty(idProperty, values))
   },
-
   addNewSitePlanSuccess: (id, title, url) => {
     dispatch(addNewSitePlanSuccessAction(id, title, url));
   },
