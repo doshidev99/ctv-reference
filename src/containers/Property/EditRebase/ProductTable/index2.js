@@ -5,7 +5,7 @@ import RestList from '../../../rest/List';
 import ActionGroup from '../../../../components/RestActions/ActionGroup';
 import EditCustom from '../../../../components/RestActions/CustomEditButton';
 import RestSwitch from '../../../../components/RestField/Switch';
-// import Filter from '../components/Filter';
+import Filter from './components/Filter';
 import {PRODUCT_TABLE} from '../../../../configs/constants'
 import Wrapper from './styles';
 
@@ -19,7 +19,7 @@ class ListProduct extends Component {
     return (
       <Wrapper>
         <RestList
-          // filter={<Filter />}
+          filter={<Filter />}
           resource={apiEdit}
           initialFilter={{ limit: 10, skip: 0, filter: {"propertyId":id} }}
           hasCreate={false}
