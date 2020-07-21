@@ -191,7 +191,7 @@ class SitePlan extends Component {
     return (
       <Wrapper>
         <Form onSubmit={this.handleSubmit}>
-          <Typography.Title level={4}>Mặt bằng dự ánn</Typography.Title>
+          <Typography.Title level={4}>Mặt bằng dự án</Typography.Title>
           {keys.map((k) => (
             <Row className="site-row" key={k}>
               <Col span={22}>
