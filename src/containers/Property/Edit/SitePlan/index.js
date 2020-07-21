@@ -110,7 +110,7 @@ class SitePlan extends Component {
     const { previewVisible, previewImage } = this.state;
     const { links } = this.props.data;
     let fileList = links || [];
-    
+
     fileList = fileList.map((e, index) => ({
       url: e,
       status: "done",
