@@ -1,21 +1,29 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-export default styled.div`
-  margin: 10px 0;
-  .floors {
-    margin-bottom: 10px;
+const FormWrapper = styled.div`
+  width: 100%;
+  .filterContainer .filterContent {
+    padding-top: 5px;
   }
-  .uploadExcel {
+  .ant-input-disabled {
+    display: none;
+    visibility: hidden;
+  }
+  .clearButton {
+    display: none;
+    visibility: hidden;
+  }
+  .filterContainer .filterActions {
+    margin-right: -111px;
     width: 200px;
-    .ant-upload-list {
-      width: 200px;
-    }
-    .ant-btn-round{
-      margin-bottom: 10px
-    }
   }
-  .ant-table-thead > tr > th {
-    background: #F2F3F5;
-    color: black;
+  .filterActions .ant-col-24 {
+    width: 100%;
+    padding: 25%;
+  }
+  .filterContainer .clearButton {
+    margin-top: 0;
   }
 `;
+
+export default FormWrapper;

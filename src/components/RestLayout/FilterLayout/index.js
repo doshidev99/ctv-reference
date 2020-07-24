@@ -21,7 +21,7 @@ class FormComponent extends Component {
   };
 
   render() {
-    
+
     const { form, children, retrieveList, resourceData } = this.props;
 
     const components = React.Children.map(children, element =>
