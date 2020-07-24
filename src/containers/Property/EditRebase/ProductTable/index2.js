@@ -5,9 +5,9 @@ import RestList from '../../../rest/List';
 import ActionGroup from '../../../../components/RestActions/ActionGroup';
 import EditCustom from '../../../../components/RestActions/CustomEditButton';
 import RestSwitch from '../../../../components/RestField/Switch';
-import Filter from './components/Filter';
+import Filter from './components/Filter'
 import {PRODUCT_TABLE} from '../../../../configs/constants'
-import Wrapper from './styles';
+import FormWrapper from './styles';
 
 class ListProduct extends Component {
   componentDidMount() {}
@@ -17,7 +17,7 @@ class ListProduct extends Component {
     const apiEdit = `property-sections`;
     const {id} = this.props.match.params;
     return (
-      <Wrapper>
+      <FormWrapper>
         <RestList
           filter={<Filter />}
           resource={apiEdit}
@@ -58,7 +58,7 @@ class ListProduct extends Component {
             <EditCustom resourceCustom={apiEdit} />
           </ActionGroup>
         </RestList>
-      </Wrapper>
+      </FormWrapper>
     );
   }
 }
