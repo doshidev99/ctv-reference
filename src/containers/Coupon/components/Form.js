@@ -44,6 +44,10 @@ class CouponForm extends Component {
           source="isVisible"
           title="Trạng thái"
         />
+        <RestSwitch
+          source="isNotify"
+          title="Thông báo"
+        />
       </RestRow>
     );
   }
