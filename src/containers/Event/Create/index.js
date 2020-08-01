@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input,InputNumber, Form, message, DatePicker, Row, Col, Button, Switch, Select } from "antd";
+import { Input,InputNumber, Form, message, DatePicker, Row, Col, Button, Switch, Select, Checkbox  } from "antd";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import Wrapper from "./styles";
@@ -95,6 +95,14 @@ class CreateEventForm extends Component {
               </Item>
             </Col>
             <Col span={6}>
+              <Item label="Thông báo">
+                {getFieldDecorator("isNotify", {
+                  valuePropName: "checked",
+                  initialValue: true,
+                })(<Checkbox />)}
+              </Item>
+            </Col>
+            <Col span={6}>
               <Item label="Số lượng người">
                 {getFieldDecorator("capacity", {
                   rules: [
@@ -106,7 +114,7 @@ class CreateEventForm extends Component {
                 })(<InputNumber step={1} />)}
               </Item>
             </Col>
-            <Col span={12}>
+            <Col span={6}>
               <Item label="Tags">
                 {getFieldDecorator("tags", {
                       valuePropName: "option",
@@ -130,7 +138,7 @@ class CreateEventForm extends Component {
               </Item>
             </Col>
           </Row>
-          
+
           <Item label="Hình ảnh sự kiện">
             {/* {getFieldDecorator("mainImage", {
               rules: [

@@ -19,6 +19,7 @@ import {
   Modal,
   Input,
   Icon,
+  Checkbox,
 } from "antd";
 import Editor from "../../../components/common/Editor/index";
 
@@ -346,7 +347,7 @@ class DocumentTable extends Component {
               <Col xs={12}>
                 <AttachmentFile />
               </Col>
-              <Col offset={6} xs={6}>
+              <Col xs={6}>
                 <Item>
                   <div
                     className="title"
@@ -360,6 +361,22 @@ class DocumentTable extends Component {
                     valuePropName: "checked",
                     initialValue: true,
                   })(<Switch />)}
+                </Item>
+              </Col>
+              <Col xs={6}>
+                <Item>
+                  <div
+                    className="title"
+                    style={{
+                      lineHeight: "initial",
+                    }}
+                  >
+                    <span>Thông báo</span>
+                  </div>
+                  {getFieldDecorator("isNotify", {
+                    valuePropName: "checked",
+                    initialValue: true,
+                  })(<Checkbox />)}
                 </Item>
               </Col>
             </Row>

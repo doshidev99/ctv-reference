@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import RestFormInput from "../../../components/RestInput/RestFormInput";
+import RestFormInputNumber from "../../../components/RestInput/RestFormInputNumber";
 import {RestFormDateTimePicker} from "../../../components/RestInput/RestDateTimePicker";
 import RestSwitch from "../../../components/RestInput/RestSwitch";
 import RestSelectMulti from "../../../components/RestInput/RestSelectMulti";
@@ -40,16 +41,10 @@ class EventForm extends Component{
           placeholder="Địa điểm"
           requiredMessage="Vui lòng nhập địa điểm tổ chức"
         />
-        <RestFormInput
+        <RestFormInputNumber
           source="capacity"
-          title="Số lượng tham giaa"
-          placeholder="Số lượng tham gia"
-          defaultValue={this.props.record.capacity.toString()}
-          rules={[{
-            // type: "number",
-            pattern: new RegExp("^[0-9]+$"),
-            message: 'Need to enter number',
-          }]}
+          title="Số lượng tham gia"
+          placeholder="vd: 100"
         />
         <RestSwitch
           source="isVisible"
