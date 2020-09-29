@@ -64,7 +64,6 @@ class DiscountTable extends Component {
       editable: true,
       render: (text, record) => {
         const editable = this.isEditing(record);
-        // console.log(record);
         return editable ? "" : <Switch checked={record.isVisible} disabled />;
       },
     },

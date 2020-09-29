@@ -17,7 +17,6 @@ class Discount extends Component {
       // các giá trị bị chậm 1 kí tự
       this.props.onChange(this.props.id, name, proportion);
     } catch (error) {
-      // console.log(error);
       message.error("Có lỗi xảy ra");
     }
   };

@@ -5,6 +5,9 @@ import { getRecordData } from '../../../utils/tools';
 import Text from '../../common/Text';
 
 const RestLabel = ({ record, source, loading, highlight, fontWeight, format }) => {
+    // eslint-disable-next-line no-console
+  // console.log(record, 'record');
+  console.log(source, 'source');
   return loading && !getRecordData(record, source) ? (
     <Spin />
   ) : (

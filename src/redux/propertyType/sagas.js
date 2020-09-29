@@ -62,8 +62,6 @@ function* createOnePropertyType({ payload}) {
 
 function* updateOnePropertyType({ id, payload }) {
   try {
-    // console.log(id);
-    // console.log(payload);
     payload = {
       name: payload.name,
       code: payload.code,

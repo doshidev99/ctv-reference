@@ -90,7 +90,6 @@ class TransactionTable extends Component {
   };
 
   render() {
-    // console.log(this.props.transaction);
     const {
       transactions,
       offset,

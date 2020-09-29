@@ -61,7 +61,6 @@ export const uploadFile = (file, signedRequest, width = 1920) =>
       resolve(null);
     }
   }).catch((err) => {
-    console.log(err);
   });
 
 export const handleXLSX = async (file) => {
@@ -82,14 +81,12 @@ export const handleXLSX = async (file) => {
         resolve(df);
       } catch (e) {
         reject(e);
-        console.log(e);
         // throw e;
       }
     };
     // fileReader.onerror = reject
     fileReader.readAsBinaryString(file);
   }).catch((e) => {
-    console.log(e);
     // throw e;
   });
 };

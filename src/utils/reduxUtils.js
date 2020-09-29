@@ -45,7 +45,6 @@ export function* apiWrapper(
     return response;
   } catch (err) {
     notification.destroy();
-    console.log(err);
     
     notification.error({
       message: I18n.t('error.title'),
@@ -59,7 +58,6 @@ export function* apiWrapper(
 export function* checkError(res) {
   const staff = yield select(state => state.staff);
   if (res.code === 401 && staff.isAuthenticated) {
-    console.log('System failed ~~');
   }
   if (ERROR_CODE.indexOf(res.code) > -1) {
     yield put(push(`/error/${res.code}`));

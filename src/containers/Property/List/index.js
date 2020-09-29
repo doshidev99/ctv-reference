@@ -13,7 +13,6 @@ import Filter from "../components/Filter";
 import PropertyWrapper from "./styles";
 import { formatDate } from "../../../utils/textProcessor";
 
-
 class ListProperty extends Component {
   componentDidMount() {}
 
@@ -35,9 +34,6 @@ class ListProperty extends Component {
             source="name"
             title="Tên dự án"
             // isRedirect
-            render={( value, record) => {
-            return <Link to={`/properties/${record.id}/edit`}>{value}</Link>
-          }}
 
           />
           <Label source="type.name" title="Loại dự án" />

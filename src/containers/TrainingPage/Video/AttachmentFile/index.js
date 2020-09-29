@@ -8,7 +8,7 @@ import {uploadFileSuccessAction, removeFileAction  } from "../../../../redux/tra
 class AttachmentFile extends Component {
   handleOnChange = async info => {
     if (info.file.status !== "uploading") {
-      // console.log(info.file, info.fileList);
+      
     }
     if (info.file.status === "done") {
       let newFileName = this.props.file;
@@ -17,7 +17,7 @@ class AttachmentFile extends Component {
       info.file.name = newFileName;
       // eslint-disable-next-line no-param-reassign
       // info.file.originFileObj.name = newFileName
-      // console.log(info.file, info.fileList);
+      
       message.success(`${info.file.name} file uploaded successfully`);
     } else if (info.file.status === "error") {
       message.error(`${info.file.name} file upload failed.`);
@@ -58,7 +58,7 @@ class AttachmentFile extends Component {
       <AttachmentFileWrapper>
         <div className="title">
           <span>
-           File đính kèm
+            File đính kèm
           </span>
         </div>
         <div className="files">

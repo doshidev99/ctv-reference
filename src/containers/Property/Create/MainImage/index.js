@@ -22,7 +22,6 @@ import { getSignedUrlS3, uploadFile } from "../../../../utils/uploadFile";
 class PropertyMainImage extends Component {
   handleOnChange = async (info) => {
     if (info.file.status !== "uploading") {
-      // console.log(info.file, info.fileList);
     }
     if (info.file.status === "done") {
       let newFileName = this.props.file;
@@ -77,7 +76,7 @@ class PropertyMainImage extends Component {
     const uploadButton = (
       <Button>
         <Icon type="upload" />
-          Upload
+        Upload
       </Button>
     );
     return (

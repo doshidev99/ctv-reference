@@ -190,7 +190,6 @@ function* getOneProperty({ id }) {
       "properties",
       `${Number(id)}/payment-methods?limit=50`,
     );
-    // console.log(paymentMethods);
     const response = yield call(
       apiWrapper,
       {
@@ -203,12 +202,12 @@ function* getOneProperty({ id }) {
       Number(id),
     );
     response.paymentMethodIds = paymentMethods.results.map((e) => e.id);
-    // console.log(response);
+    
 
     yield put(getOnePropertySuccessAction(response));
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.log(error);
+    
   }
 }
 function* updateProperty({ id, payload }) {
@@ -364,8 +363,6 @@ function* updateProperty({ id, payload }) {
     body.discounts = newDiscounts;
     body.salesPolicies = newSalesPolicies;
     body.paymentProgress = newPaymentProgress;
-
-    // console.log(body);
 
     const response = yield call(
       apiWrapper,
@@ -543,7 +540,7 @@ function* getProductTable({ id, filterParams }) {
     yield put(getProductTableSuccessAction(response));
   } catch (error) {
     // eslint-disable-next-line no-console
-    // console.log(error);
+    
   }
 }
 
@@ -565,7 +562,7 @@ function* updateSessionImageSuccess(id) {
       );
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.log(error);
+    
   }
 }
 export default [

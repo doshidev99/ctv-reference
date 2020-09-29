@@ -232,7 +232,6 @@ class PrivateRoutes extends Component {
             <Route
               {...route}
               component={e => {
-                // console.log(e);
 
                 return(
                   <PrivateLayout>

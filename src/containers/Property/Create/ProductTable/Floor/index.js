@@ -46,7 +46,6 @@ class Floor extends Component {
   render() {
 
     const {name, rooms} = this.props;
-    // console.log(rooms);
     
     const roomList = rooms.map(e => (
       <Badge className="item" key={e.id} count={<Button onClick={()=>this.showDeleteRoomConfirm(e.id)} className="removeIcon" icon="minus" shape="circle" size="small" type="danger" />}>

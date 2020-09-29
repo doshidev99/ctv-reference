@@ -30,7 +30,6 @@ function* getListRole({ limit, offset }) {
 function* createOneRole({ payload}) {
   try {
     // eslint-disable-next-line no-console
-    console.log(payload);
     yield put (createOneRoleSuccessAction());
     
   } catch (error) {
@@ -40,10 +39,6 @@ function* createOneRole({ payload}) {
 
 function* updateOneRole({ id, payload }) {
   try {
-    // eslint-disable-next-line no-console
-    console.log(id);
-    // eslint-disable-next-line no-console
-    console.log(payload);
     yield put (updateOneRoleSuccessAction());
     
   } catch (error) {

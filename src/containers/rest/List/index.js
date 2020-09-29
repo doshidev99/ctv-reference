@@ -23,14 +23,10 @@ class RestList extends Component {
     const paramFromUrl = getFilterFromUrl(this.props.location.search);
     const filter = (this.props.location && paramFromUrl) || this.props.initialFilter;
     this.props.retrieveList(filter || { limit: 20, skip: 0, filter: {} }, true);
-    // console.log("HERE " ,filter);
-
   }
 
   retrieveList = filter => {
-    // this.props.pushQuery(filter);
     this.props.retrieveList(filter, true);
-    // console.log("HERE " ,filter);
   };
 
   gotoEditPage = id => {

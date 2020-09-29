@@ -139,6 +139,7 @@ export const getFilterFromUrl = (searchStr) => {
 };
 
 export const getRecordData = (record, source) => {
+  // eslint-disable-next-line no-console
   const arrKeys = source
     ? replaceAll(replaceAll(source, "\\[", "."), "\\]", "").split(".")
     : [];

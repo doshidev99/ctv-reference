@@ -17,7 +17,6 @@ class Filter extends Component {
       sm: 6,
       xs: 24,
     };
-    // console.log('[this.props]', this.props.record.propertyId);
     const id = this.props.record.propertyId;
     return (
       <RestRow

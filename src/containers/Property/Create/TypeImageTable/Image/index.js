@@ -13,10 +13,8 @@ class TypeImage extends Component {
 
   handleOnChange = async info => {
     if (info.file.status !== "uploading") {
-      // console.log("uploading ..........");
     }
     if (info.file.status === "done") {
-      // console.log("[done]");
       let newFileName = this.props.file;
       newFileName = newFileName.substring(newFileName.lastIndexOf("/") + 1);
       info.file.name = newFileName;

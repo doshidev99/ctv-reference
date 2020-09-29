@@ -11,7 +11,6 @@ const retrieveList = (state, { resource, filter = {} }) => {
   if (state[resource]) {
     limit = filter.limit || state[resource].limit || 20;
   }
-  // console.log(`Source ${resource} >>`,filter);
   return {
     ...state,
     [resource]: {

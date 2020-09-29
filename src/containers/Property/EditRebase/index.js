@@ -149,7 +149,6 @@ class EditPropertyForm extends Component {
     try {
       this.props.form.validateFields(async (err, payload) => {
         if (!err) {
-          // console.log('Received values of form: ', payload);
           payload.openSaleDate = payload.openSaleDate
             ? payload.openSaleDate.format()
             : null;
@@ -524,7 +523,7 @@ class EditPropertyForm extends Component {
                             currentProperty && currentProperty.isVisible,
                         })(<Switch onChange={this.onChangeSwitch} />)}
                     </div>
-                      ,
+                    ,
                   </FormItem>
                 </Col>
                 <Col offset={2} xs={3}>

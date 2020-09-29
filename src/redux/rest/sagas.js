@@ -27,7 +27,6 @@ export function* retrieveList({ resource }) {
     const { limit, skip, filter, include, order } = yield select(state => {
       return state.rest[resource];
     });
-    // console.log("Saga: Resource: ", resource, " >>" ,{ limit, skip, filter, include, order });
 
     const params = convertRequestParams('getAll', {
       limit: limit < 1000 && limit,
@@ -37,7 +36,6 @@ export function* retrieveList({ resource }) {
       order,
     });
 
-    // console.log("Saga: Params: ", resource, " >>", params)
     const response = yield call(
       apiWrapper,
       {
@@ -58,7 +56,6 @@ export function* retrieveList({ resource }) {
       }),
     );
   } catch (error) {
-    // console.log("Error: ",error);
 
     yield put(actions.retrieveListFailed(resource, error));
   }
@@ -66,7 +63,6 @@ export function* retrieveList({ resource }) {
 
 export function* retrieveOneRecord({ resource, id, data }) {
   try {
-    // console.log('RESOURCE-->', resource, 'id--->', id);
 
     const response = yield call(
       apiWrapper,
@@ -81,7 +77,7 @@ export function* retrieveOneRecord({ resource, id, data }) {
       data,
     );
 
-      // console.log(response);
+      
 
     const rest = yield select(state => state.rest);
     const convertData = convertResponseData('getOne', response);
@@ -132,9 +128,6 @@ export function* editRecord({ resource, id, data, isGoBack }) {
       data,
     );
 
-    // console.log({ resource, id, data, isGoBack });
-    // console.log(response);
-
 
     const rest = yield select(state => state.rest);
     const convertData = convertResponseData('update', response);
@@ -169,7 +162,6 @@ export function* createRecord({ resource, data, isGoToShowPage }) {
       resource,
       data,
     );
-    // console.log(response);
     const rest = yield select(state => state.rest);
     const convertData = convertResponseData('create', response);
     yield put(

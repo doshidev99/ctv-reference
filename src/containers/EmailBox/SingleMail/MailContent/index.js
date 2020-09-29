@@ -16,7 +16,6 @@ import { composeMailAction } from "../../../../redux/mail/actions";
 
 class MailContent extends Component {
   handleClick = () => {
-    // console.log("OK");
   };
 
   render() {

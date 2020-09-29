@@ -8,7 +8,6 @@ import {addPriceListAction, uploadFileSuccessAction, removePriceListAction  } fr
 class PriceList extends Component {
   handleOnChange = async info => {
     if (info.file.status !== "uploading") {
-      // console.log(info.file, info.fileList);
     }
     if (info.file.status === "done") {
       let newFileName = this.props.file;
@@ -17,7 +16,6 @@ class PriceList extends Component {
       info.file.name = newFileName;
       // eslint-disable-next-line no-param-reassign
       // info.file.originFileObj.name = newFileName
-      // console.log(info.file, info.fileList);
       message.success(`${info.file.name} file uploaded successfully`);
     } else if (info.file.status === "error") {
       message.error(`${info.file.name} file upload failed.`);
@@ -56,7 +54,7 @@ class PriceList extends Component {
         <Row>
           <div className="title">
             <p>
-            Bảng giá
+              Bảng giá
             </p>
           </div>
         </Row>

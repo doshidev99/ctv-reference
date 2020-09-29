@@ -16,7 +16,6 @@ class Discount extends Component {
       const { name, proportion } = vals;
       this.props.onChange(this.props.id, name, proportion);
     } catch (error) {
-      // console.log(error);
       message.error("Có lỗi xảy ra");
     }
   };

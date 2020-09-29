@@ -102,7 +102,6 @@ function* markRead({ id }) {
 
 function* sendMail({ payload }) {
   try {
-    // console.log("From saga >> ", payload);
     yield call(
       apiWrapper,
       {

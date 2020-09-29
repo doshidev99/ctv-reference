@@ -9,8 +9,6 @@ const EDIT_BLACKLIST = ['createdAt', 'updatedAt'];
 
 class FormComponent extends Component {
   componentDidUpdate(prevProps) {
-    // console.log(this.props);
-
     if (
       this.props.showModal &&
       prevProps.record &&

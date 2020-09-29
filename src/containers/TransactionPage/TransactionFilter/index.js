@@ -39,7 +39,6 @@ class Filter extends Component {
         const filterDate = {"$gte": from, "$lte":to };
         filter.updatedAt = filterDate;
       }
-      // console.log(filter);
       this.props.applyFilter(10, 0, filter, this.orderBy);
     } catch (error) {
       message.error("Có lỗi xảy ra")

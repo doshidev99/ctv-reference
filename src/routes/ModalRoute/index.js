@@ -92,8 +92,6 @@ class ModalRoute extends Component {
   }
 
   render() {
-    // console.log('[this.props]', this.props);
-    // console.log('[this.state]', this.state);
     const { match, location, closeModal } = this.props;
 
     const { visible, currentModal } = this.state;

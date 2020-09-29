@@ -1,0 +1,19 @@
+import React from 'react';
+import { Switch, Route } from 'react-router-dom';
+
+/* IMPORT_PAGE */
+
+const routes = [
+  /* CONFIG_IMPORT_PAGE */
+
+];
+
+const PublicRoutes = () => (
+  <Switch>
+    {routes.map((route) => (
+      <Route {...route} key={route.path} />
+    ))}
+  </Switch>
+);
+
+export default PublicRoutes;

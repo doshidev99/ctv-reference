@@ -117,7 +117,6 @@ function* getListTransaction ({ limit, offset, filter }) {
     filter = JSON.stringify(filter)
     const {results, total} = yield getTransaction({ limit, offset, filter });
     // const data = results;
-    // // console.log(data,total);
 
     yield put(getListTransactionSuccessAction(results, total, limit, offset));
   } catch (error) {

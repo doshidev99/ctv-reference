@@ -44,7 +44,7 @@ class StandingOrderImage extends Component {
 
   handleOnChange = async info => {
     if (info.file.status !== "uploading") {
-      // console.log(info.file, info.fileList);
+      
     }
     if (info.file.status === "done") {
       let newFileName = this.props.file;

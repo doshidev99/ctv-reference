@@ -99,7 +99,6 @@ class CreatePropertyForm extends Component {
     e.preventDefault();
     const test = await this.props.form.getFieldsValue();
     // eslint-disable-next-line no-console
-    console.log(test);
     this.props.form.validateFields((err, values) => {
       if (!err) {
         values.openSaleDate = values.openSaleDate

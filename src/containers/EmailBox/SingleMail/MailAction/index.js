@@ -12,11 +12,9 @@ import { deleteMailAction } from "../../../../redux/mail/actions";
 
 class MailAction extends Component {
   handleClick = () => {
-    // console.log("clicked");
   };
 
   handleDelete = () => {
-    // console.log(this.props.currentMail);
     if(this.props.currentMail) {
       this.props.deleteMail(this.props.currentMail.id)
     }

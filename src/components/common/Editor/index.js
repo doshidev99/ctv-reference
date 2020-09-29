@@ -97,8 +97,6 @@ export default class Editor extends Component {
       value = this.state.value;
     } else if (content) {
       value = content
-      // console.log(value);
-      
     } else {
       value = "";
     }

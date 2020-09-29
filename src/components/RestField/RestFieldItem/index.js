@@ -18,9 +18,6 @@ const RestFieldItem = ({
       onChangeRecord(formatSubmitData(value));
     },
   });
-  // element.setAttributeNode('update', e => {
-  //   console.log('e', e);
-  // });
   return element;
 };
 RestFieldItem.propTypes = {

@@ -29,9 +29,7 @@ function* getListEvent({ limit, offset, filter, orderBy, fields }) {
     if (fields === undefined) {
       fields = `["id", "name"]`;
     }
-    // console.log(
-    //   limit, offset, filter , orderBy, fields,
-    // );
+   
 
     const { results, total } = yield getEvents({
       limit,
@@ -40,7 +38,6 @@ function* getListEvent({ limit, offset, filter, orderBy, fields }) {
       orderBy,
       fields,
     });
-    // console.log(results);
 
     const data = results.map(e => ({
       name: e.name,
@@ -50,8 +47,6 @@ function* getListEvent({ limit, offset, filter, orderBy, fields }) {
       happenAt: moment(e.happenAt).format("L"),
       locationDescription: e.locationDescription,
     }));
-    // console.log(data);
-
     yield put(getListEventSuccessAction(data, total, limit, offset));
   } catch (error) {
     yield put(getListEventFailureAction(error));
@@ -81,8 +76,6 @@ function* createOneEvent({ payload }) {
 
 function* updateOneEvent({ id, payload }) {
   try {
-    // console.log(id);
-    // console.log(payload);
     payload = {
       name: payload.name,
       code: payload.code,

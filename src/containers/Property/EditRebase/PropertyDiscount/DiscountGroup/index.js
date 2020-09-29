@@ -38,7 +38,7 @@ class DiscountGroup extends Component {
         }
       }
     } catch (error) {
-      // console.log(error);
+      
 
       message.error("Xuất hiện lỗi");
     }
@@ -51,7 +51,6 @@ class DiscountGroup extends Component {
 
   render() {
     const { data } = this.props;
-    // console.log("ITEM>>", data);
     let discounts = [];
     if (data.discounts) {
       discounts = data.discounts.map((e) => (
